@@ -7,3 +7,6 @@ Shell scripts for quickly building different versions of several projects.
 
 - Scripts are executed with `/bin/sh -e`.
 
+- Install to a local temporary directory then merge to target.
+
+		cp -aT _tmux-install/ ~/.usr/
