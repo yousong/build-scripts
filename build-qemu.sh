@@ -25,13 +25,12 @@ dirclean() {
 prepare_from_tarball() {
     local ver="${1#v}"
     local tar_dir="$BASE_BUILD_DIR/qemu-$ver"
-    local fn="$BASE_DL_DIR/qemu-$ver.tar.bz2"
+    local fn="qemu-$ver.tar.bz2"
     local url="http://wiki.qemu-project.org/download/$fn"
 
     # wiki.qemu-project.org does not support Range header.
-	cd "$BASE_DL_DIR"
-    #wget -c -O "$fn" "$url"
-    tar -C "$BASE_BUILD_DIR" -xjf "$fn"
+    wget -c -O "$BASE_DL_DIR/$fn" "$url"
+    tar -C "$BASE_BUILD_DIR" -xjf "$BASE_DL_DIR/$fn"
     rm -rf "$BUILD_DIR"
     mv -T "$tar_dir" "$BUILD_DIR"
 }
