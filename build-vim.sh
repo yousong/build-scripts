@@ -41,6 +41,7 @@ prepare_from_tarball() {
 
 fetch_patches() {
     local ver="$VER"
+    local baseurl="ftp://ftp.vim.org/pub/vim/patches/$ver"
     local num_patches
     local num_process
     local i
@@ -63,7 +64,7 @@ fetch_patches() {
     for i in $(seq 0 $num_process); do
         # Each wget fetches at most 100 patches.
         cat .listing | \
-            awk " \$9 ~ /$ver\.$i[0-9]{2}/ { print \"ftp://ftp.vim.org/pub/vim/patches/$ver/\"\$9 } " | \
+            awk " \$9 ~ /$ver\.$i[0-9]{2}/ { print \"$baseurl/\"\$9 } " | \
             wget --no-verbose -c -i - &
     done
     wait
@@ -128,3 +129,4 @@ prepare_from_tarball
 fetch_patches
 apply_patches
 build_vim
+#remove_build_dep
