@@ -12,17 +12,14 @@
 #
 
 # N.B. prefix the version number with `v'
+PKGNAME=ag
 VER="0.30.0"
 
-# where to install
-INSTALL_PREFIX="$PWD/_ag-install"
-NJOBS=32
+. "$PWD/env.sh"
 
 # If we have git repo present, extract sources from there
 # rather than downloading them over the network.
-TOPDIR="$PWD"
-SOURCE_DIR="$PWD/the_silver_searcher-$VER"
-BUILD_DIR="$PWD/the_silver_searcher-$VER"
+BUILD_DIR="$BASE_BUILD_DIR/the_silver_searcher-$VER"
 
 __errmsg() {
     echo "$1" >&2
@@ -33,25 +30,26 @@ prepare_from_tarball() {
     local fn="the_silver_searcher-$ver.tar.gz"
     local url="http://geoff.greer.fm/ag/releases/$fn"
 
-    [ -x "$SOURCE_DIR/configure" ] && {
-        __errmsg "$SOURCE_DIR/configure already exists, skip preparing."
+    if [ -x "$BUILD_DIR/configure" ]; then
+        __errmsg "$BUILD_DIR/configure already exists, skip preparing."
         return 0
-    } || {
+    else
+		cd "$BASE_DL_DIR"
         wget -c -O "$fn" "$url"
-        tar -xzf "$fn"
-    }
+        tar -C "$BASE_BUILD_DIR" -xzf "$fn"
+    fi
 }
 
 build_ag() {
+    mkdir -p "$BUILD_DIR"
     cd "$BUILD_DIR"
 
-    "$SOURCE_DIR/configure"           \
+    "$BUILD_DIR/configure"            \
         --prefix="$INSTALL_PREFIX"    \
 
     make -j "$NJOBS"
-    make install
-
-    cd "$TOPDIR"
+    make DESTDIR="$BASE_DESTDIR/_$PKGNAME-install" install
+    cp "$BASE_DESTDIR/_$PKGNAME-install/$INSTALL_PREFIX" "$INSTALL_PREFIX"
 }
 
 prepare_from_tarball

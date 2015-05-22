@@ -12,17 +12,13 @@
 #  - set focus-events off, >= 1.8, see CHANGES file in source code.
 #
 
+PKGNAME=tmux
 VER="2.0"
 
-# where to install
-INSTALL_PREFIX="$PWD/_tmux-install"
-NJOBS=32
-
+. "$PWD/env.sh"
 # If we have git repo present, extract sources from there
 # rather than downloading them over the network.
-TOPDIR="$PWD"
-SOURCE_DIR="$PWD/tmux-$VER"
-BUILD_DIR="$PWD/tmux-$VER"
+BUILD_DIR="$BASE_BUILD_DIR/tmux-$VER"
 
 __errmsg() {
     echo "$1" >&2
@@ -33,26 +29,28 @@ prepare_from_tarball() {
     local fn="tmux-$ver.tar.gz"
     local url="http://downloads.sourceforge.net/tmux/$fn"
 
-    [ -x "$SOURCE_DIR/configure" ] && {
-        __errmsg "$SOURCE_DIR/configure already exists, skip preparing."
+    [ -x "$BUILD_DIR/configure" ] && {
+        __errmsg "$BUILD_DIR/configure already exists, skip preparing."
         return 0
     } || {
-        wget -c -O "$fn" "$url"
-        tar -xzf "$fn"
+		cd "$BASE_DL_DIR"
+		wget -c -O "$fn" "$url"
+        tar -C "$BASE_BUILD_DIR" -xzf "$fn"
     }
 }
 
 build_tmux() {
-    mkdir -p "$BUILD_DIR"
+	local dest_dir="$BASE_DESTDIR/_$PKGNAME-install"
+
     cd "$BUILD_DIR"
 
-    "$SOURCE_DIR/configure"           \
+    "$BUILD_DIR/configure"            \
         --prefix="$INSTALL_PREFIX"    \
 
     make -j "$NJOBS"
-    make install
-
-    cd "$TOPDIR"
+	rm -rf "$dest_dir"
+    make DESTDIR="$dest_dir" install
+    cp "$dest_dir/$INSTALL_PREFIX" "$INSTALL_PREFIX"
 }
 
 prepare_from_tarball

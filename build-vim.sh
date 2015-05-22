@@ -4,22 +4,18 @@
 #
 #       sudo apt-get build-dep vim-nox
 #
-
 # 7.3 is the release version.
 # 547 is the number of applied patches provided by vim.org.
+PKGNAME=vim
 VER="7.4"
 VER_ND="$(echo $VER | tr -d .)"
 
-# where to install
-INSTALL_PREFIX="$PWD/_vim-install"
-NJOBS=32
+. "$PWD/env.sh"
 
 # If we have git repo present, extract sources from there
 # rather than downloading them over the network.
-TOPDIR="$PWD"
-SOURCE_DIR="$PWD/vim$VER_ND"
-PATCH_DIR="$PWD/vim$VER_ND-patches"
-BUILD_DIR="$PWD/vim$VER_ND"
+PATCH_DIR="$BASE_DL_DIR/vim$VER_ND-patches"
+BUILD_DIR="$BASE_BUILD_DIR/vim$VER_ND"
 
 __errmsg() {
     echo "$1" >&2
@@ -30,13 +26,14 @@ prepare_from_tarball() {
     local fn="vim-$ver.tar.bz2"
     local url="ftp://ftp.vim.org/pub/vim/unix/$fn"
 
-    [ -x "$SOURCE_DIR/configure" ] && {
-        __errmsg "$SOURCE_DIR/configure already exists, skip preparing."
+    if [ -x "$BUILD_DIR/configure" ]; then
+        __errmsg "$BUILD_DIR/configure already exists, skip preparing."
         return 0
-    } || {
+    else
+        cd "$BASE_DL_DIR"
         wget -c -O "$fn" "$url"
-        tar -xjf "$fn"
-    }
+        tar -C "$BASE_BUILD_DIR" -xjf "$fn"
+    fi
 }
 
 fetch_patches() {
@@ -68,16 +65,15 @@ fetch_patches() {
             wget --no-verbose -c -i - &
     done
     wait
-    cd -
 }
 
 apply_patches() {
     local f
 
-    cd "$SOURCE_DIR"
+    cd "$BUILD_DIR"
 
     [ -f ".patched" ] && {
-        __errmsg "$SOURCE_DIR/.patched exists, skip patching."
+        __errmsg "$BUILD_DIR/.patched exists, skip patching."
         return 0
     } || true
 
@@ -85,16 +81,14 @@ apply_patches() {
         patch -p0 -i "$PATCH_DIR/$f"
     done
     touch .patched
-
-    cd -
 }
 
 build_vim() {
     mkdir -p "$BUILD_DIR"
     cd "$BUILD_DIR"
 
-    # re-prepare $SOURCE_DIR if configure failed due to cache problems.
-    "$SOURCE_DIR/configure"           \
+    # re-prepare $BUILD_DIR if configure failed due to cache problems.
+    "$BUILD_DIR/configure"            \
         --prefix="$INSTALL_PREFIX"    \
         --enable-fail-if-missing      \
         --enable-luainterp            \
@@ -106,9 +100,8 @@ build_vim() {
         #--enable-python3interp        \
 
     make -j "$NJOBS"
-    make install
-
-    cd "$TOPDIR"
+    make DESTDIR="$BASE_DESTDIR/_$PKGNAME-install" install
+    cp "$BASE_DESTDIR/_$PKGNAME-install/$INSTALL_PREFIX" "$INSTALL_PREFIX"
 }
 
 show_build_dep() {
