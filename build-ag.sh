@@ -8,6 +8,9 @@
 #
 #   apt-get install -y automake pkg-config libpcre3-dev zlib1g-dev liblzma-dev
 #
+#   yum -y groupinstall "Development Tools"
+#   yum -y install pcre-devel xz-devel
+#
 # See https://github.com/ggreer/the_silver_searcher for details.
 #
 
