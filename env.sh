@@ -17,7 +17,6 @@ _init() {
     mkdir -p "$BASE_DESTDIR"
     mkdir -p "$INSTALL_PREFIX"
 
-	# toy build, don't try to preserve target attributes.
-    alias cp="cp --no-preserve=all -R -T"
+    alias cp="cp -a -T"
 }
 _init
