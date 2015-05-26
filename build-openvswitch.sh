@@ -80,10 +80,12 @@ build_openvswitch() {
     #
     #       sudo apt-get install "linux-headers-$(uname -r)"
     #
-    #    VXLAN support requires at least kernel 3.7.0.  Debian Wheezy's default
-    #    kernel version is 3.2.
+    #    OVS has checks to determine if the vxlan module has required features
+    #    available.  If all rquired features are in the module then only OVS
+    #    uses it.
     #
-    #    - https://networkautomation.wordpress.com/2013/01/27/installing-kernel-3-7-4-and-iproute2-3-7-0-on-debian-6-0-6-to-provide-vxlan-functionality/
+    #    - [ovs-discuss] VxLAN kernel module.
+    #      http://openvswitch.org/pipermail/discuss/2015-March/016947.html
     #
     #  - See INSTALL in openvswtich source tree for details.
     #
