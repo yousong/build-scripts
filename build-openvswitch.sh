@@ -56,8 +56,8 @@ prepare_openvswitch() {
 }
 
 build_openvswitch() {
-    local dest_dir="$BASE_DESTDIR/_$PKGNAME-install"
-    local dest_kmod_dir="$BASE_DESTDIR/_$PKGNAME-kmod-install"
+    local dest_dir
+    local dest_kmod_dir
     local kbuild_dir="/lib/modules/$(uname -r)/build"
 
     mkdir -p "$BUILD_DIR" || {
@@ -89,18 +89,27 @@ build_openvswitch() {
     #    - [ovs-discuss] VxLAN kernel module.
     #      http://openvswitch.org/pipermail/discuss/2015-March/016947.html
     #
+    #    You may need to upgrade the kernel
+    #
+    #    - skb_copy_ubufs() not exported by the Debian Linux kernel 3.2.57-3,
+    #      https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=746602
+    #
     #  - See INSTALL in openvswtich source tree for details.
     #
+    # On hot upgrade and ovs-ctl
+    #
+    #     sudo apt-get install uuid-runtime
+    #     /usr/local/share/openvswitch/scripts/ovs-ctl force-reload-kmod --system-id=random
+    #
     "$BUILD_DIR/configure"            \
-        --prefix="$INSTALL_PREFIX"    \
         --with-linux="$kbuild_dir"    \
         --enable-ndebug               \
 
     make -j "$NJOBS"
     rm -rf "$dest_dir"
     rm -rf "$dest_kmod_dir"
-    make DESTDIR="$dest_dir" install
-    make INSTALL_MOD_PATH="$dest_kmod_dir" modules_install
+    sudo make DESTDIR="$dest_dir" install
+    sudo make INSTALL_MOD_PATH="$dest_kmod_dir" modules_install
     #cp "$dest_dir/$INSTALL_PREFIX" "$INSTALL_PREFIX"
 }
 
