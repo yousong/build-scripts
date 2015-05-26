@@ -8,7 +8,7 @@ BUILD_DIR="$BASE_BUILD_DIR/openvswitch-$VER"
 
 # If we have git repo present, extract sources from there
 # rather than downloading them over the network.
-# 
+#
 #  - OVS repo version tags are prefixed with `v'.
 #  - OVS repo tag v2.3 corresponds to release version 2.3.0
 #  - OVS repo tag v2.0 corresponds to release version 2.0.0
@@ -56,8 +56,9 @@ prepare_openvswitch() {
 }
 
 build_openvswitch() {
-	local dest_dir="$BASE_DESTDIR/_$PKGNAME-install"
-	local kbuild_dir="/lib/modules/$(uname -r)/build"
+    local dest_dir="$BASE_DESTDIR/_$PKGNAME-install"
+    local dest_kmod_dir="$BASE_DESTDIR/_$PKGNAME-kmod-install"
+    local kbuild_dir="/lib/modules/$(uname -r)/build"
 
     mkdir -p "$BUILD_DIR" || {
         __errmsg "Creating build dir "$BUILD_DIR" failed."
@@ -66,18 +67,36 @@ build_openvswitch() {
 
     cd "$BUILD_DIR"
 
-	if [ ! -x "$BUILD_DIR/configure" ]; then
-		__errmsg "Bootstrap a configure script."
-		./boot.sh
-	fi
+    if [ ! -x "$BUILD_DIR/configure" ]; then
+        __errmsg "Bootstrap a configure script."
+        ./boot.sh
+    fi
+
+    # On building kernel module
+    #
+    #  - Build on CentOS 7 will not work.  CentOS 7 already ships a
+    #    openvswitch.ko module with GRE and VXLAN support (kernel 3.10).
+    #  - Build on Debian requires to install
+    #
+    #       sudo apt-get install "linux-headers-$(uname -r)"
+    #
+    #    VXLAN support requires at least kernel 3.7.0.  Debian Wheezy's default
+    #    kernel version is 3.2.
+    #
+    #    - https://networkautomation.wordpress.com/2013/01/27/installing-kernel-3-7-4-and-iproute2-3-7-0-on-debian-6-0-6-to-provide-vxlan-functionality/
+    #
+    #  - See INSTALL in openvswtich source tree for details.
+    #
     "$BUILD_DIR/configure"            \
         --prefix="$INSTALL_PREFIX"    \
         --with-linux="$kbuild_dir"    \
         --enable-ndebug               \
 
     make -j "$NJOBS"
-	rm -rf "$dest_dir"
+    rm -rf "$dest_dir"
+    rm -rf "$dest_kmod_dir"
     make DESTDIR="$dest_dir" install
+    make INSTALL_MOD_PATH="$dest_kmod_dir" modules_install
     #cp "$dest_dir/$INSTALL_PREFIX" "$INSTALL_PREFIX"
 }
 
