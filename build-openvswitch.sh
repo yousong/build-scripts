@@ -84,6 +84,8 @@ build_openvswitch() {
     #    available.  If all rquired features are in the module then only OVS
     #    uses it.
     #
+    #    Search for `USE_KERNEL_TUNNEL_API` in the source code.
+    #
     #    - [ovs-discuss] VxLAN kernel module.
     #      http://openvswitch.org/pipermail/discuss/2015-March/016947.html
     #
