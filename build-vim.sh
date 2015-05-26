@@ -60,8 +60,10 @@ fetch_patches() {
     num_process="$(($num_patches / 100))"
     for i in $(seq 0 $num_process); do
         # Each wget fetches at most 100 patches.
+        #  - There is mawk in Debian wheezy not supporting `[0-9]{2}',
+        #    http://invisible-island.net/mawk/manpage/mawk.html#h3-3_-Regular-expressions
         cat .listing | \
-            awk " \$9 ~ /$ver\.$i[0-9]{2}/ { print \"$baseurl/\"\$9 } " | \
+            awk " \$9 ~ /$ver\.$i[0-9][0-9]/ { print \"$baseurl/\"\$9 } " | \
             wget --no-verbose -c -i - &
     done
     wait
