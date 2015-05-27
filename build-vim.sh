@@ -4,6 +4,11 @@
 #
 #       sudo apt-get build-dep vim-nox
 #
+# Vim on CentOS 7 has version 7.4.160
+#
+#       sudo yum-builddep vim-enhanced
+#       sudo yum install -y lua-devel
+#
 # 7.3 is the release version.
 # 547 is the number of applied patches provided by vim.org.
 PKGNAME=vim
