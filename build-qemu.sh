@@ -8,7 +8,7 @@ VER="v2.3.0"
 TARGETS="i386-softmmu mipsel-softmmu mips-softmmu arm-softmmu"
 
 . "$PWD/env.sh"
-BUILD_DIR="$BASE_BUILD_DIR/build-$VER"
+BUILD_DIR="$BASE_BUILD_DIR/$PKGNAME-$VER"
 
 # If we have git repo present, extract sources from there
 # rather than downloading them over the network.
