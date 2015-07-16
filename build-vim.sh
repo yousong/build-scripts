@@ -94,7 +94,8 @@ build_vim() {
     mkdir -p "$BUILD_DIR"
     cd "$BUILD_DIR"
 
-    # re-prepare $BUILD_DIR if configure failed due to cache problems.
+    # - re-prepare $BUILD_DIR if configure failed due to cache problems.
+    # - use "big" feature set for mouse_sgr support.
     "$BUILD_DIR/configure"            \
         --prefix="$INSTALL_PREFIX"    \
         --enable-fail-if-missing      \
@@ -104,6 +105,7 @@ build_vim() {
         --enable-rubyinterp           \
         --enable-cscope               \
         --enable-multibyte            \
+        --with-features=big           \
         #--enable-python3interp        \
 
     make -j "$NJOBS"
