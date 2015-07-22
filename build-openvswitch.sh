@@ -15,10 +15,6 @@ BUILD_DIR="$BASE_BUILD_DIR/openvswitch-$VER"
 #  - ...
 #DIR_REPO="$HOME/devstack/git-repo/ovs"
 
-__errmsg() {
-    echo "$1" >&2
-}
-
 dirclean() {
     rm -rf "$BUILD_DIR"
 }

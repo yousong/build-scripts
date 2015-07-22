@@ -8,10 +8,6 @@ VER="3.0.2"
 # rather than downloading them over the network.
 BUILD_DIR="$BASE_BUILD_DIR/redis-$VER"
 
-__errmsg() {
-    echo "$1" >&2
-}
-
 prepare_from_tarball() {
     local ver="$VER"
     local fn="redis-$ver.tar.gz"

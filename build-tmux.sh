@@ -20,10 +20,6 @@ VER="2.0"
 # rather than downloading them over the network.
 BUILD_DIR="$BASE_BUILD_DIR/tmux-$VER"
 
-__errmsg() {
-    echo "$1" >&2
-}
-
 prepare_from_tarball() {
     local ver="$VER"
     local fn="tmux-$ver.tar.gz"

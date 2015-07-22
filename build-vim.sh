@@ -22,10 +22,6 @@ VER_ND="$(echo $VER | tr -d .)"
 PATCH_DIR="$BASE_DL_DIR/vim$VER_ND-patches"
 BUILD_DIR="$BASE_BUILD_DIR/vim$VER_ND"
 
-__errmsg() {
-    echo "$1" >&2
-}
-
 prepare_from_tarball() {
     local ver="$VER"
     local fn="vim-$ver.tar.bz2"

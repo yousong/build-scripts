@@ -24,10 +24,6 @@ VER="0.30.0"
 # rather than downloading them over the network.
 BUILD_DIR="$BASE_BUILD_DIR/the_silver_searcher-$VER"
 
-__errmsg() {
-    echo "$1" >&2
-}
-
 prepare_from_tarball() {
     local ver="$VER"
     local fn="the_silver_searcher-$ver.tar.gz"

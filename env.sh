@@ -11,6 +11,10 @@ BASE_DESTDIR="$TOPDIR/dest_dir"
 # where to install
 INSTALL_PREFIX="$HOME/.usr"
 
+__errmsg() {
+    echo "$1" >&2
+}
+
 _init() {
     mkdir -p "$BASE_DL_DIR"
     mkdir -p "$BASE_BUILD_DIR"

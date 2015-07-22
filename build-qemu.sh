@@ -14,10 +14,6 @@ BUILD_DIR="$BASE_BUILD_DIR/$PKGNAME-$VER"
 # rather than downloading them over the network.
 DIR_REPO="qemu/"
 
-__errmsg() {
-    echo "$1" >&2
-}
-
 dirclean() {
     rm -rf "$BUILD_DIR"
 }

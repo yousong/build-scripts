@@ -6,10 +6,6 @@ PKGNAME=nginx
 # where to put source code
 MODPATH="$BASE_DL_DIR"
 
-__errmsg() {
-    echo "$1" >&2
-}
-
 _ngx_clone_or_pull() {
     local url="$1"
     local p="$2"
