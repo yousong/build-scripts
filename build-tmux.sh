@@ -6,6 +6,12 @@
 #
 # tmux on Debian Wheezy 7 has version 1.6 (Fetched with command "tmux -V")
 #
+# CentOS 6.6 lacks a libevent version that fulfils tmux's requirement so that
+# we have to build it manually here with the following commands
+#
+#		setup_dev_env
+#		./build-libevent.sh
+#
 # Newer versions are required for the following features to work
 #
 #  - TMUX plugins, >= 1.9, https://github.com/tmux-plugins/tpm
@@ -23,7 +29,7 @@ BUILD_DIR="$BASE_BUILD_DIR/tmux-$VER"
 prepare_from_tarball() {
     local ver="$VER"
     local fn="tmux-$ver.tar.gz"
-    local url="http://downloads.sourceforge.net/tmux/$fn"
+    local url="https://github.com/tmux/tmux/releases/download/$VER/$fn"
 
     [ -x "$BUILD_DIR/configure" ] && {
         __errmsg "$BUILD_DIR/configure already exists, skip preparing."
