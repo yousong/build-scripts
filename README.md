@@ -11,6 +11,10 @@ Shell scripts for quickly building different versions of several projects.
 - Try to be reentrant.
 - Use abs path in scripts.
 
+On CentOS 6.6, manpages installed manually cannot be found man command by
+default.  To solve this, try adding the following line to `/etc/man.config`
+
+	MANPATH_MAP	/home/yousong/.usr/bin	/home/yousong/.usr/share/man
 
 ## TODO
 
