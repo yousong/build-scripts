@@ -5,7 +5,7 @@ PKGNAME=qemu
 VER="v2.3.0"
 # Others targets can be found in text for `--target-list` option from output of
 # `./configure --help`
-TARGETS="i386-softmmu mipsel-softmmu mips-softmmu arm-softmmu"
+TARGETS="i386-softmmu x86_64-softmmu mipsel-softmmu mips-softmmu arm-softmmu"
 
 . "$PWD/env.sh"
 BUILD_DIR="$BASE_BUILD_DIR/$PKGNAME-$VER"
