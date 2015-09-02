@@ -41,3 +41,17 @@ default.  To solve this, try adding the following line to `/etc/man.config`
 	# 4. make a list of installed files
 	# 5. remove files in final install area
 	FLAVOR=vanilla ./nginx.sh uninstall
+
+Or make
+
+	make ag
+	make ag/builddep
+	make ag/download
+	make ag/prepare
+	make ag/build
+	make ag/install
+
+	make nginx FLAVOR=vanilla
+
+	make ag/clean
+	make ag/uninstall
