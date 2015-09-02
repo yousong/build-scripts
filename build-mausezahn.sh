@@ -9,6 +9,10 @@
 # reset and dependent libraries cannot be found.  The solution can be one of
 # the following if any of them work for the then current situation.
 #
+#  - Setup an alias and use mz as usual
+#
+#			alias mz="sudo LD_LIBRARY_PATH=$LD_LIBRARY_PATH $(which mz)"
+#
 #  - Use "sudo -E mz" if system security policy permits
 #  - Use "sudo LD_LIBRARY_PATH=$LD_LIBRARY_PATH mz"
 #
