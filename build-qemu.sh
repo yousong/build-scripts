@@ -71,6 +71,15 @@ build_qemu() {
 	rm -rf "$dest_dir"
     make DESTDIR="$dest_dir" install
     cp "$dest_dir/$INSTALL_PREFIX" "$INSTALL_PREFIX"
+
+	cat <<EOF
+
+To use qemu-bridge-helper, appropriate permission bits need to be set
+
+	sudo chown root:root $INSTALL_PREFIX/libexec/qemu-bridge-helper
+	sudo chmod u+s $INSTALL_PREFIX/libexec/qemu-bridge-helper
+
+EOF
 }
 
 #dirclean
