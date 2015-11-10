@@ -3,6 +3,7 @@
 # Vim on Debian Wheezy 7 has version 7.3.547 (Fetched with command "vim --version")
 #
 #       sudo apt-get build-dep vim-nox
+#       sudo apt-get install gawk liblua5.2-dev libncurses5-dev
 #
 # Vim on CentOS 7 has version 7.4.160
 #
