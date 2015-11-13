@@ -35,7 +35,7 @@ _csum_check() {
 	local csum
 
 	csum="$(md5sum "$file" | cut -f1 -d' ')"
-	if [ "$csum" = "$PKG_SOURCE_MD5SUM" ]; then
+	if [ -z "$PKG_SOURCE_MD5SUM" -o "$csum" = "$PKG_SOURCE_MD5SUM" ]; then
 		return 0
 	else
 		__errmsg "md5sum not match"
