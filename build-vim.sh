@@ -33,6 +33,11 @@ CONFIGURE_ARGS='				\
 	--enable-multibyte			\
 	--with-features=big			\
 '
+if os_is_darwin; then
+	CONFIGURE_ARGS="$CONFIGURE_ARGS			\\
+		--with-lua-prefix=$MACPORTS_PREFIX	\\
+"
+fi
 
 patches_all_fetched() {
 	if [ -s ".listing" ]; then
