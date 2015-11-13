@@ -1,37 +1,22 @@
 #!/bin/sh -e
 
-PKGNAME=redis
-VER="3.0.2"
+PKG_NAME=redis
+PKG_VERSION="3.0.5"
+PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
+PKG_SOURCE_URL="http://download.redis.io/releases/$PKG_SOURCE"
+PKG_SOURCE_MD5SUM="c7ba233e5f92ad2f48860c815bb05480"
 
 . "$PWD/env.sh"
-# If we have git repo present, extract sources from there
-# rather than downloading them over the network.
-BUILD_DIR="$BASE_BUILD_DIR/redis-$VER"
 
-prepare_from_tarball() {
-    local ver="$VER"
-    local fn="redis-$ver.tar.gz"
-    local url="http://download.redis.io/releases/$fn"
-
-    [ -x "$BUILD_DIR/src/redis.c" ] && {
-        __errmsg "$BUILD_DIR/src/redis.c already exists, skip preparing."
-        return 0
-    } || {
-		cd "$BASE_DL_DIR"
-		wget -c -O "$fn" "$url"
-        tar -C "$BASE_BUILD_DIR" -xzf "$fn"
-    }
+build_configure() {
+	true
 }
 
-build_redis() {
-	local dest_dir="$BASE_DESTDIR/_$PKGNAME-install"
-
-    cd "$BUILD_DIR"
-    make -j "$NJOBS"
-	rm -rf "$dest_dir"
-    make PREFIX="$dest_dir" install
-    #cp "$dest_dir/$INSTALL_PREFIX" "$INSTALL_PREFIX"
+install_do() {
+	cd "$PKG_BUILD_DIR"
+	# build system of redis just install all its binaries in bin/ directory
+	make PREFIX="$_PKG_STAGING_DIR" install
+	cp "$_PKG_STAGING_DIR" "$INSTALL_PREFIX"
 }
 
-prepare_from_tarball
-build_redis
+main
