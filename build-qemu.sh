@@ -1,9 +1,5 @@
 #!/bin/sh -e
 
-PKGNAME=qemu
-# N.B. prefix the version number with `v'
-VER="v2.3.0"
-
 PKG_NAME=qemu
 PKG_VERSION="2.3.0"
 PKG_SOURCE="qemu-${PKG_VERSION}.tar.bz2"

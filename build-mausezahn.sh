@@ -17,10 +17,6 @@
 #  - Use "sudo -E mz" if system security policy permits
 #  - Use "sudo LD_LIBRARY_PATH=$LD_LIBRARY_PATH mz"
 #
-
-PKGNAME=mausezahn
-VER="0.40"
-
 PKG_NAME=mausezahn
 PKG_VERSION="0.40"
 PKG_SOURCE="mz-${PKG_VERSION}.tar.gz"

@@ -14,8 +14,6 @@
 # See https://github.com/ggreer/the_silver_searcher for details.
 #
 
-PKGNAME=ag
-VER="0.31.0"
 PKG_NAME=ag
 PKG_VERSION="0.31.0"
 PKG_SOURCE="the_silver_searcher-${PKG_VERSION}.tar.gz"
@@ -24,6 +22,6 @@ PKG_SOURCE_MD5SUM="6a4275e0191e7fe2f834f7ec00eabbbe"
 
 . "$PWD/env.sh"
 
-PKG_BUILD_DIR="$BASE_BUILD_DIR/the_silver_searcher-$VER"
+PKG_BUILD_DIR="$BASE_BUILD_DIR/the_silver_searcher-$PKG_VERSION"
 
 main
