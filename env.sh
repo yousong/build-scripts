@@ -80,6 +80,14 @@ prepare_source() {
 	local fn="$(basename $file)"
 	local ftyp opts
 
+	# The following options are only supported by GNU tar.
+	#
+	#	--transform
+	#	--gzip (-z)
+	#	--bzip2 (-j)
+	#	--xz (-J)
+	#
+	# The MacPorts package name is gnutar
 	case "$fn" in
 		*.tar.gz|*.tgz)
 			ftyp="--gzip"
@@ -95,8 +103,6 @@ prepare_source() {
 			return 1
 			;;
 	esac
-	# --transform option is only supported by GNU tar.
-	# The MacPorts package name is gnutar
 	[ ! -d "$dir" ] || opts="$opts -C $dir"
 	[ -z "$trans_exp" ] || opts="$opts --transform=$trans_exp"
 	tar $opts $ftyp -xf "$file"
