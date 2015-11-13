@@ -12,72 +12,68 @@
 #
 # 7.3 is the release version.
 # 547 is the number of applied patches provided by vim.org.
-PKGNAME=vim
-VER="7.4"
-VER_ND="$(echo $VER | tr -d .)"
+PKG_NAME=vim
+PKG_VERSION="7.4"
+PKG_SOURCE="vim-${PKG_VERSION}.tar.bz2"
+PKG_SOURCE_URL="ftp://ftp.vim.org/pub/vim/unix/$PKG_SOURCE"
+PKG_SOURCE_MD5SUM="607e135c559be642f210094ad023dc65"
 
 . "$PWD/env.sh"
-
-# If we have git repo present, extract sources from there
-# rather than downloading them over the network.
+VER_ND="$(echo $PKG_VERSION | tr -d .)"
+PKG_BUILD_DIR="$BASE_BUILD_DIR/vim$VER_ND"
 PATCH_DIR="$BASE_DL_DIR/vim$VER_ND-patches"
-BUILD_DIR="$BASE_BUILD_DIR/vim$VER_ND"
 
-prepare_from_tarball() {
-    local ver="$VER"
-    local fn="vim-$ver.tar.bz2"
-    local url="ftp://ftp.vim.org/pub/vim/unix/$fn"
-
-    if [ -x "$BUILD_DIR/configure" ]; then
-        __errmsg "$BUILD_DIR/configure already exists, skip preparing."
-        return 0
-    else
-        cd "$BASE_DL_DIR"
-        wget -c -O "$fn" "$url"
-        tar -C "$BASE_BUILD_DIR" -xjf "$fn"
-    fi
-}
+CONFIGURE_ARGS='				\
+	--enable-fail-if-missing    \
+	--enable-luainterp			\
+	--enable-perlinterp			\
+	--enable-pythoninterp		\
+	--enable-rubyinterp			\
+	--enable-cscope				\
+	--enable-multibyte			\
+	--with-features=big			\
+'
 
 fetch_patches() {
-    local ver="$VER"
-    local baseurl="ftp://ftp.vim.org/pub/vim/patches/$ver"
-    local num_patches
-    local num_process
-    local i
+	local ver="$PKG_VERSION"
+	local baseurl="ftp://ftp.vim.org/pub/vim/patches/$PKG_VERSION"
+	local num_patches
+	local num_process
+	local i
 
-    mkdir -p "$PATCH_DIR"
-    cd "$PATCH_DIR"
+	mkdir -p "$PATCH_DIR"
+	cd "$PATCH_DIR"
 
-    [ -s ".listing" ] && {
-        num_patches="$(cat .listing | awk '{ print $9 }' | grep -F "$ver." | wc -l)"
-        num_patches_0="$(ls | wc -l)"
-        [ "$num_patches" -eq "$num_patches_0" ] && {
-            __errmsg "All fetched, skip fetching patches."
-            return 0
-        } || true
-    } || true
+	if [ -s ".listing" ]; then
+		num_patches="$(cat .listing | awk '{ print $9 }' | grep -F "$ver." | wc -l)"
+		num_patches_0="$(ls | wc -l)"
+		if [ "$num_patches" -eq "$num_patches_0" ]; then
+			__errmsg "All fetched, skip fetching patches."
+			return 0
+		fi
+	fi
 
-    wget --no-remove-listing --spider "ftp://ftp.vim.org/pub/vim/patches/$ver/"
-    num_patches="$(cat .listing | awk '{ print $9 }' | grep -F "$ver." | wc -l)"
-    num_process="$(($num_patches / 100))"
-    for i in $(seq 0 $num_process); do
-        # Each wget fetches at most 100 patches.
-        #  - There is mawk in Debian wheezy not supporting `[0-9]{2}',
-        #    http://invisible-island.net/mawk/manpage/mawk.html#h3-3_-Regular-expressions
-        cat .listing | \
-            awk " \$9 ~ /$ver\.$i[0-9][0-9]/ { print \"$baseurl/\"\$9 } " | \
-            wget --no-verbose -c -i - &
-    done
-    wait
+	wget --no-remove-listing --spider "$baseurl/"
+	num_patches="$(cat .listing | awk '{ print $9 }' | grep -F "$ver." | wc -l)"
+	num_process="$(($num_patches / 100))"
+	for i in $(seq 0 $num_process); do
+		# Each wget fetches at most 100 patches.
+		#  - There is mawk in Debian wheezy not supporting `[0-9]{2}',
+		#    http://invisible-island.net/mawk/manpage/mawk.html#h3-3_-Regular-expressions
+		cat .listing | \
+			awk " \$9 ~ /$ver\.$i[0-9][0-9]/ { print \"$baseurl/\"\$9 } " | \
+			wget --no-verbose -c -i - &
+	done
+	wait
 }
 
 apply_patches() {
     local f
 
-    cd "$BUILD_DIR"
+    cd "$PKG_BUILD_DIR"
 
     [ -f ".patched" ] && {
-        __errmsg "$BUILD_DIR/.patched exists, skip patching."
+        __errmsg "$PKG_BUILD_DIR/.patched exists, skip patching."
         return 0
     } || true
 
@@ -85,29 +81,6 @@ apply_patches() {
         patch -p0 -i "$PATCH_DIR/$f"
     done
     touch .patched
-}
-
-build_vim() {
-    mkdir -p "$BUILD_DIR"
-    cd "$BUILD_DIR"
-
-    # - re-prepare $BUILD_DIR if configure failed due to cache problems.
-    # - use "big" feature set for mouse_sgr support.
-    "$BUILD_DIR/configure"            \
-        --prefix="$INSTALL_PREFIX"    \
-        --enable-fail-if-missing      \
-        --enable-luainterp            \
-        --enable-perlinterp           \
-        --enable-pythoninterp         \
-        --enable-rubyinterp           \
-        --enable-cscope               \
-        --enable-multibyte            \
-        --with-features=big           \
-        #--enable-python3interp        \
-
-    make -j "$NJOBS"
-    make DESTDIR="$BASE_DESTDIR/_$PKGNAME-install" install
-    cp "$BASE_DESTDIR/_$PKGNAME-install/$INSTALL_PREFIX" "$INSTALL_PREFIX"
 }
 
 show_build_dep() {
@@ -124,8 +97,9 @@ remove_build_dep() {
     sudo apt-get autoremove
 }
 
-prepare_from_tarball
-fetch_patches
-apply_patches
-build_vim
-#remove_build_dep
+do_patch() {
+	fetch_patches
+	apply_patches
+}
+
+main
