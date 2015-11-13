@@ -3,6 +3,7 @@
 # Mausezahn depends on libnet, libpcap, libcli
 #
 #          sudo yum install -y libnet-devel libpcap-devel
+#          sudo apt-get install -y libnet-dev libpcap-dev
 #
 # The built command mz needs to be run with root privileges.  Simply doing
 # "sudo mz" is not enough as the environment variable LD_LIBRARY_PATH will be
@@ -20,28 +21,17 @@
 PKGNAME=mausezahn
 VER="0.40"
 
+PKG_NAME=mausezahn
+PKG_VERSION="0.40"
+PKG_SOURCE="mz-${PKG_VERSION}.tar.gz"
+PKG_SOURCE_URL="http://www.perihel.at/sec/mz/$PKG_SOURCE"
+PKG_SOURCE_MD5SUM="d3d959c92cbf3d81224f5b2f8409e9d8"
+
 . "$PWD/env.sh"
+PKG_BUILD_DIR="$BASE_BUILD_DIR/mz-$PKG_VERSION"
 
-BUILD_DIR="$BASE_BUILD_DIR/mz-$VER"
-
-prepare_from_tarball() {
-    local ver="$VER"
-    local fn="mz-$ver.tar.gz"
-    local url="http://www.perihel.at/sec/mz/mz-$ver.tar.gz"
-
-    if [ -x "$BUILD_DIR/CMakeLists.txt" ]; then
-        __errmsg "$BUILD_DIR/CMakeLists.txt already exists, skip preparing."
-        return 0
-    else
-        cd "$BASE_DL_DIR"
-        wget -c -O "$fn" "$url"
-        tar -C "$BASE_BUILD_DIR" -xzf "$fn"
-    fi
-}
-
-build_mausezahn() {
-    mkdir -p "$BUILD_DIR"
-    cd "$BUILD_DIR"
+do_patch() {
+    cd "$PKG_BUILD_DIR"
 
 	patch <<"EOF"
 --- CMakeLists.txt.orig	2015-08-31 17:53:28.525000435 +0800
@@ -55,16 +45,14 @@ build_mausezahn() {
  
  ADD_CUSTOM_TARGET(uninstall
 EOF
-
-	rm -rvf _t/
-    mkdir -p _t/
-    cd _t/
-    # cmake should pick CFLAGS environment variable
-	cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$HOME/.usr" ..
-    make -j "1" VERBOSE=1
-    make DESTDIR="$BASE_DESTDIR/_$PKGNAME-install" install
-    cp "$BASE_DESTDIR/_$PKGNAME-install/$INSTALL_PREFIX" "$INSTALL_PREFIX"
 }
 
-prepare_from_tarball
-build_mausezahn
+MAKE_VARS="VERBOSE=1"
+
+build_configure() {
+    cd "$PKG_BUILD_DIR"
+    # cmake should pick CFLAGS environment variable
+	cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$INSTALL_PREFIX"
+}
+
+main
