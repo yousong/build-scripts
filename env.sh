@@ -16,6 +16,14 @@ __errmsg() {
     echo "$1" >&2
 }
 
+os_is_darwin() {
+	[ "$(uname -o)" = "Darwin" ]
+}
+
+os_is_linux() {
+	[ "$(uname -o)" = "GNU/Linux" ]
+}
+
 _init() {
     mkdir -p "$BASE_DL_DIR"
     mkdir -p "$BASE_BUILD_DIR"
@@ -24,6 +32,14 @@ _init() {
 
     alias cp="cp -a -T"
 	export PKG_CONFIG_PATH="$INSTALL_PREFIX/lib/pkgconfig:$INSTALL_PREFIX/share/pkgconfig"
+	if os_is_darwin; then
+		MACPORTS_PREFIX="${MACPORTS_PREFIX:-/opt/local}"
+		export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$MACPORTS_PREFIX/lib/pkgconfig"
+		export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$MACPORTS_PREFIX/share/pkgconfig"
+		export CPPFLAGS="-I$MACPORTS_PREFIX/include"
+		export CFLAGS="-I$MACPORTS_PREFIX/include"
+		export LDFLAGS="-L$MACPORTS_PREFIX/lib"
+	fi
 }
 _init
 
