@@ -14,42 +14,16 @@
 # See https://github.com/ggreer/the_silver_searcher for details.
 #
 
-# N.B. prefix the version number with `v'
 PKGNAME=ag
-VER="0.30.0"
+VER="0.31.0"
+PKG_NAME=ag
+PKG_VERSION="0.31.0"
+PKG_SOURCE="the_silver_searcher-${PKG_VERSION}.tar.gz"
+PKG_SOURCE_URL="http://geoff.greer.fm/ag/releases/$PKG_SOURCE"
+PKG_SOURCE_MD5SUM="6a4275e0191e7fe2f834f7ec00eabbbe"
 
 . "$PWD/env.sh"
 
-# If we have git repo present, extract sources from there
-# rather than downloading them over the network.
-BUILD_DIR="$BASE_BUILD_DIR/the_silver_searcher-$VER"
+PKG_BUILD_DIR="$BASE_BUILD_DIR/the_silver_searcher-$VER"
 
-prepare_from_tarball() {
-    local ver="$VER"
-    local fn="the_silver_searcher-$ver.tar.gz"
-    local url="http://geoff.greer.fm/ag/releases/$fn"
-
-    if [ -x "$BUILD_DIR/configure" ]; then
-        __errmsg "$BUILD_DIR/configure already exists, skip preparing."
-        return 0
-    else
-		cd "$BASE_DL_DIR"
-        wget -c -O "$fn" "$url"
-        tar -C "$BASE_BUILD_DIR" -xzf "$fn"
-    fi
-}
-
-build_ag() {
-    mkdir -p "$BUILD_DIR"
-    cd "$BUILD_DIR"
-
-    "$BUILD_DIR/configure"            \
-        --prefix="$INSTALL_PREFIX"    \
-
-    make -j "$NJOBS"
-    make DESTDIR="$BASE_DESTDIR/_$PKGNAME-install" install
-    cp "$BASE_DESTDIR/_$PKGNAME-install/$INSTALL_PREFIX" "$INSTALL_PREFIX"
-}
-
-prepare_from_tarball
-build_ag
+main
