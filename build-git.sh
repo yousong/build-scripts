@@ -7,40 +7,18 @@
 #   yum -y groupinstall "Development Tools"
 #   yum-builddep git-email
 #
+# Manpages and perl bindings are installed with readonly permissions 0444.  To overwrite previous install, clean them
+#
+#	rm -rfv /home/yousong/.usr/share/man/man3/Git*
+#	rm -rfv /home/yousong/.usr/share/perl/5.14.2/Git*
+#
 
-PKGNAME=git
-VER="2.5.0"
+PKG_NAME=git
+PKG_VERSION="2.6.3"
+PKG_SOURCE="git-${PKG_VERSION}.tar.gz"
+PKG_SOURCE_URL="https://www.kernel.org/pub/software/scm/git/$PKG_SOURCE"
+PKG_SOURCE_MD5SUM="b711be7628a4a2c25f38d859ee81b423"
 
 . "$PWD/env.sh"
 
-BUILD_DIR="$BASE_BUILD_DIR/$PKGNAME-$VER"
-
-prepare_from_tarball() {
-    local ver="$VER"
-    local fn="git-$ver.tar.gz"
-    local url="https://www.kernel.org/pub/software/scm/git/$fn"
-
-    if [ -x "$BUILD_DIR/configure" ]; then
-        __errmsg "$BUILD_DIR/configure already exists, skip preparing."
-        return 0
-    else
-		cd "$BASE_DL_DIR"
-        wget -c -O "$fn" "$url"
-        tar -C "$BASE_BUILD_DIR" -xzf "$fn"
-    fi
-}
-
-build_git() {
-    mkdir -p "$BUILD_DIR"
-    cd "$BUILD_DIR"
-
-    "$BUILD_DIR/configure"            \
-        --prefix="$INSTALL_PREFIX"    \
-
-    make -j "$NJOBS"
-    make DESTDIR="$BASE_DESTDIR/_$PKGNAME-install" install
-    cp "$BASE_DESTDIR/_$PKGNAME-install/$INSTALL_PREFIX" "$INSTALL_PREFIX"
-}
-
-prepare_from_tarball
-build_git
+main
