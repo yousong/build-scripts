@@ -38,6 +38,11 @@ PKG_SOURCE_MD5SUM="5a5739ed82f1accac1c2d8d7553dc88f"
 
 . "$PWD/env.sh"
 
+if ! os_is_linux; then
+	__errmsg "we build Open vSwitch only on Linux"
+	exit 1
+fi
+
 KBUILD_DIR="/lib/modules/$(uname -r)/build"
 CONFIGURE_ARGS="					\\
 	--with-linux="$KBUILD_DIR"		\\
