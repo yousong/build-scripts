@@ -11,7 +11,7 @@ mkdir -p "$tests_dir"
 
 export TOPDIR=$PWD
 export INSTALL_PREFIX="$tests_dir/_install"
-export BASE_BUILD_DIR="$tests_dir/_build_dir}"
+export BASE_BUILD_DIR="$tests_dir/_build_dir"
 
 mkdir -p "$INSTALL_PREFIX"
 
