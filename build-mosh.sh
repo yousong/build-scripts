@@ -4,7 +4,10 @@
 #
 #		protobuf-c-compiler libprotobuf-dev
 #
-
+# On Mac OS X with MacPorts
+#
+#		sudo port install protobuf-c
+#
 PKG_NAME=mosh
 PKG_VERSION="1.2.5"
 PKG_SOURCE="mosh-${PKG_VERSION}.tar.gz"
