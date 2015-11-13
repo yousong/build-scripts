@@ -2,7 +2,7 @@
 
 PKG_NAME=qemu
 PKG_VERSION="2.3.0"
-PKG_SOURCE="qemu-${PKG_VERSION}.tar.bz2"
+PKG_SOURCE="$PKG_NAME-${PKG_VERSION}.tar.bz2"
 PKG_SOURCE_URL="http://wiki.qemu-project.org/download/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM="2fab3ea4460de9b57192e5b8b311f221"
 
