@@ -1,4 +1,4 @@
-#!/bin/sh -ex
+#!/bin/sh -e
 
 # mosh requires protobuf to build, but the version provided by Debian Wheezy might be too old
 #
