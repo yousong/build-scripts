@@ -1,114 +1,63 @@
 #!/bin/sh -e
+#
+# On building kernel module
+#
+#  - Build on CentOS 7 will not work.  CentOS 7 already ships a
+#    openvswitch.ko module with GRE and VXLAN support (kernel 3.10).
+#  - Build on Debian requires to install
+#
+#       sudo apt-get install "linux-headers-$(uname -r)"
+#
+#    OVS has checks to determine if the vxlan module has required features
+#    available.  If all rquired features are in the module then only OVS
+#    uses it.
+#
+#    Search for `USE_KERNEL_TUNNEL_API` in the source code.
+#
+#    - [ovs-discuss] VxLAN kernel module.
+#      http://openvswitch.org/pipermail/discuss/2015-March/016947.html
+#
+#    You may need to upgrade the kernel
+#
+#    - skb_copy_ubufs() not exported by the Debian Linux kernel 3.2.57-3,
+#      https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=746602
+#
+#  - See INSTALL in openvswtich source tree for details.
+#
+# On hot upgrade and ovs-ctl
+#
+#     sudo apt-get install uuid-runtime
+#     /usr/local/share/openvswitch/scripts/ovs-ctl force-reload-kmod --system-id=random
+#
 
-PKGNAME=openvswitch
-VER="2.3.1"
+PKG_NAME=openvswitch
+PKG_VERSION="2.3.2"
+PKG_SOURCE="$PKG_NAME-${PKG_VERSION}.tar.gz"
+PKG_SOURCE_URL="http://openvswitch.org/releases/$PKG_SOURCE"
+PKG_SOURCE_MD5SUM="5a5739ed82f1accac1c2d8d7553dc88f"
 
 . "$PWD/env.sh"
-BUILD_DIR="$BASE_BUILD_DIR/openvswitch-$VER"
 
-# If we have git repo present, extract sources from there
-# rather than downloading them over the network.
-#
-#  - OVS repo version tags are prefixed with `v'.
-#  - OVS repo tag v2.3 corresponds to release version 2.3.0
-#  - OVS repo tag v2.0 corresponds to release version 2.0.0
-#  - ...
-#DIR_REPO="$HOME/devstack/git-repo/ovs"
+KBUILD_DIR="/lib/modules/$(uname -r)/build"
+CONFIGURE_ARGS="					\\
+	--with-linux="$KBUILD_DIR"		\\
+	--enable-ndebug					\\
+"
 
-dirclean() {
-    rm -rf "$BUILD_DIR"
-}
-
-prepare_from_tarball() {
-    local ver="$1"
-    local tar_dir="$BASE_BUILD_DIR/openvswitch-$ver"
-    local fn="openvswitch-$ver.tar.gz"
-    local url="http://openvswitch.org/releases/$fn"
-
-    wget -c -O "$BASE_DL_DIR/$fn" "$url"
-    tar -C "$BASE_BUILD_DIR" -xzf "$BASE_DL_DIR/$fn"
-}
-
-prepare_from_git() {
-    local tag="v$1"
-
-    cd "$DIR_REPO"
-    mkdir -p "$BUILD_DIR"
-    git archive --format=tar "$tag" | tar -C "$BUILD_DIR" -x
-}
-
-prepare_openvswitch() {
-    [ -x "$BUILD_DIR/boot.sh" ] && {
-        __errmsg "$BUILD_DIR/boot.sh already exists, skip preparing."
-        __errmsg "    manually remove it to re-prepare it."
-        return
-    }
-
-    if [ -d "$DIR_REPO/.git" ]; then
-        prepare_from_git "$VER"
-    else
-        prepare_from_tarball "$VER"
-    fi
-}
-
-build_openvswitch() {
-    local dest_dir
-    local dest_kmod_dir
-    local kbuild_dir="/lib/modules/$(uname -r)/build"
-
-    mkdir -p "$BUILD_DIR" || {
-        __errmsg "Creating build dir "$BUILD_DIR" failed."
-        return 1
-    }
-
-    cd "$BUILD_DIR"
+build_pre() {
+	cd "$PKG_BUILD_DIR"
 
     if [ ! -x "$BUILD_DIR/configure" ]; then
-        __errmsg "Bootstrap a configure script."
+        __errmsg "Bootstrapping a configure script"
         ./boot.sh
     fi
-
-    # On building kernel module
-    #
-    #  - Build on CentOS 7 will not work.  CentOS 7 already ships a
-    #    openvswitch.ko module with GRE and VXLAN support (kernel 3.10).
-    #  - Build on Debian requires to install
-    #
-    #       sudo apt-get install "linux-headers-$(uname -r)"
-    #
-    #    OVS has checks to determine if the vxlan module has required features
-    #    available.  If all rquired features are in the module then only OVS
-    #    uses it.
-    #
-    #    Search for `USE_KERNEL_TUNNEL_API` in the source code.
-    #
-    #    - [ovs-discuss] VxLAN kernel module.
-    #      http://openvswitch.org/pipermail/discuss/2015-March/016947.html
-    #
-    #    You may need to upgrade the kernel
-    #
-    #    - skb_copy_ubufs() not exported by the Debian Linux kernel 3.2.57-3,
-    #      https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=746602
-    #
-    #  - See INSTALL in openvswtich source tree for details.
-    #
-    # On hot upgrade and ovs-ctl
-    #
-    #     sudo apt-get install uuid-runtime
-    #     /usr/local/share/openvswitch/scripts/ovs-ctl force-reload-kmod --system-id=random
-    #
-    "$BUILD_DIR/configure"            \
-        --with-linux="$kbuild_dir"    \
-        --enable-ndebug               \
-
-    make -j "$NJOBS"
-    rm -rf "$dest_dir"
-    rm -rf "$dest_kmod_dir"
-    sudo make DESTDIR="$dest_dir" install
-    sudo make INSTALL_MOD_PATH="$dest_kmod_dir" modules_install
-    #cp "$dest_dir/$INSTALL_PREFIX" "$INSTALL_PREFIX"
 }
 
-#dirclean
-prepare_openvswitch
-build_openvswitch
+install_do() {
+	cd "$PKG_BUILD_DIR"
+	make DESTDIR="$_PKG_STAGING_DIR" install
+    #sudo make modules_install
+	cp "$_PKG_STAGING_DIR/$INSTALL_PREFIX" "$INSTALL_PREFIX"
+}
+
+main
