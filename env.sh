@@ -128,9 +128,10 @@ build_pre() {
 
 build_configure() {
 	cd "$PKG_BUILD_DIR"
-	eval "$PKG_BUILD_DIR/configure"        \
-		--prefix="$INSTALL_PREFIX"         \
-		"$CONFIGURE_ARGS"
+	eval "$CONFIGURE_VARS"				\
+		 "$PKG_BUILD_DIR/configure"		\
+			--prefix="$INSTALL_PREFIX"	\
+			"$CONFIGURE_ARGS"
 }
 
 build_compile() {
