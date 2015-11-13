@@ -14,12 +14,13 @@ PKG_SOURCE_MD5SUM="f6899825e7a8deadba4948ff84515ad6"
 
 # nginx-lua depends on LuaJIT, LuaJIT.  They has to be preinstalled.
 #
-# If they are installed on Mac OS X with MacPorts, try adding support for
-# CONFIGURE_VARS and adding the following values
-#
-#	LUAJIT_LIB=/opt/local/lib                        \
-#	LUAJIT_INC=/opt/local/include/luajit-2.0         \
-#
+# If they are installed on Mac OS X with MacPorts (luajit)
+if os_is_darwin; then
+	CONFIGURE_VARS="											\\
+		LUAJIT_LIB='$MACPORTS_PREFIX/lib'						\\
+		LUAJIT_INC='$MACPORTS_PREFIX/include/luajit-2.0'		\\
+"
+fi
 CONFIGURE_ARGS='					\
 	--sbin-path=nginx				\
 	--conf-path=nginx.conf			\
@@ -29,11 +30,6 @@ CONFIGURE_ARGS='					\
 	--with-http_ssl_module			\
 	--with-http_mp4_module			\
 '
-
-install_do() {
-	cd "$PKG_BUILD_DIR"
-	make DESTDIR="$_PKG_STAGING_DIR" install
-}
 
 # master:agentzh/dns-nginx-module cannot build with NGINX 1.9.6 because of API change
 MODS_DIR="$PKG_BUILD_DIR/_mods"
@@ -102,5 +98,10 @@ add_modules() {
 	done
 }
 add_modules
+
+install_do() {
+	cd "$PKG_BUILD_DIR"
+	make DESTDIR="$_PKG_STAGING_DIR" install
+}
 
 main
