@@ -1,41 +1,14 @@
 #!/bin/sh -e
-
 #
-# This is mainly for tmux-2.0 on CentOS 6.6
+# This is mainly for tmux-2.x on CentOS 6.6
 
-PKGNAME=libevent
-VER="2.0.22"
+PKG_NAME=libevent
+PKG_VERSION="2.0.22"
+PKG_SOURCE="$PKG_NAME-${PKG_VERSION}-stable.tar.gz"
+PKG_SOURCE_URL="https://sourceforge.net/projects/levent/files/libevent/libevent-2.0/$PKG_SOURCE"
+PKG_SOURCE_MD5SUM="c4c56f986aa985677ca1db89630a2e11"
 
 . "$PWD/env.sh"
+PKG_BUILD_DIR="$BASE_BUILD_DIR/$PKG_NAME-$PKG_VERSION-stable"
 
-BUILD_DIR="$BASE_BUILD_DIR/libevent-$VER-stable"
-
-prepare_from_tarball() {
-    local ver="$VER"
-    local fn="libevent-$ver-stable.tar.gz"
-    local url="https://sourceforge.net/projects/levent/files/libevent/libevent-2.0/$fn"
-
-    if [ -x "$BUILD_DIR/configure" ]; then
-        __errmsg "$BUILD_DIR/configure already exists, skip preparing."
-        return 0
-    else
-		cd "$BASE_DL_DIR"
-        wget -c -O "$fn" "$url"
-        tar -C "$BASE_BUILD_DIR" -xzf "$fn"
-    fi
-}
-
-build_libevent() {
-    mkdir -p "$BUILD_DIR"
-    cd "$BUILD_DIR"
-
-    "$BUILD_DIR/configure"            \
-        --prefix="$INSTALL_PREFIX"    \
-
-    make -j "$NJOBS"
-    make DESTDIR="$BASE_DESTDIR/_$PKGNAME-install" install
-    cp "$BASE_DESTDIR/_$PKGNAME-install/$INSTALL_PREFIX" "$INSTALL_PREFIX"
-}
-
-prepare_from_tarball
-build_libevent
+main
