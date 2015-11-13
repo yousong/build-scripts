@@ -64,30 +64,44 @@ download_http() {
 	_csum_check "$file"
 }
 
-download() {
-	download_http
+download_extra() {
+	true
 }
 
-prepare_build_dir() {
-	local file="$BASE_DL_DIR/$PKG_SOURCE"
-	local fn="$PKG_SOURCE"
+download() {
+	download_http
+	download_extra
+}
 
-	rm -rf "$PKG_BUILD_DIR"
+prepare_source() {
+	local file="$1"
+	local dir="$2"
+	local trans_exp="$3"
+	local fn="$(basename $file)"
+	local ftyp opts
+
 	case "$fn" in
 		*.tar.gz|*.tgz)
-			tar -C "$BASE_BUILD_DIR" -xzf "$file"
+			ftyp="--gzip"
 			;;
 		*.tar.bz2)
-			tar -C "$BASE_BUILD_DIR" -xjf "$file"
+			ftyp="--bzip2"
 			;;
 		*.tar.xz)
-			tar -C "$BASE_BUILD_DIR" -xJf "$file"
+			ftyp="--xz"
 			;;
 		*)
 			__errmsg "unknown file type: $file"
 			return 1
 			;;
 	esac
+	[ ! -d "$dir" ] || opts="$opts -C $dir"
+	[ -z "$trans_exp" ] || opts="$opts --transform=$trans_exp"
+	tar $opts $ftyp -xf "$file"
+}
+
+prepare_extra() {
+	true
 }
 
 do_patch() {
@@ -99,7 +113,9 @@ prepare() {
 		__errmsg "$PKG_BUILD_DIR already exists, skip preparing."
 		return 0
 	else
-		prepare_build_dir
+		rm -rf "$PKG_BUILD_DIR"
+		prepare_source "$BASE_DL_DIR/$PKG_SOURCE" "$BASE_BUILD_DIR"
+		prepare_extra
 		do_patch
 	fi
 }
