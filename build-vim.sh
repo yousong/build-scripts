@@ -34,6 +34,19 @@ CONFIGURE_ARGS='				\
 	--with-features=big			\
 '
 
+patches_all_fetched() {
+	if [ -s ".listing" ]; then
+		num_patches="$(cat .listing | awk '{ print $9 }' | grep -F "$ver." | wc -l)"
+		num_patches_0="$(ls | wc -l)"
+		if [ "$num_patches" -eq "$num_patches_0" ]; then
+			return 0
+		else
+			return 1
+		fi
+	fi
+	return 1
+}
+
 fetch_patches() {
 	local ver="$PKG_VERSION"
 	local baseurl="ftp://ftp.vim.org/pub/vim/patches/$PKG_VERSION"
@@ -44,13 +57,9 @@ fetch_patches() {
 	mkdir -p "$PATCH_DIR"
 	cd "$PATCH_DIR"
 
-	if [ -s ".listing" ]; then
-		num_patches="$(cat .listing | awk '{ print $9 }' | grep -F "$ver." | wc -l)"
-		num_patches_0="$(ls | wc -l)"
-		if [ "$num_patches" -eq "$num_patches_0" ]; then
-			__errmsg "All fetched, skip fetching patches."
-			return 0
-		fi
+	if patches_all_fetched; then
+		__errmsg "All fetched, skip fetching patches"
+		return 0
 	fi
 
 	wget --no-remove-listing --spider "$baseurl/"
@@ -65,6 +74,11 @@ fetch_patches() {
 			wget --no-verbose -c -i - &
 	done
 	wait
+
+	if ! patches_all_fetched; then
+		__errmsg "Some patches were missing"
+		return 1
+	fi
 }
 
 apply_patches() {
