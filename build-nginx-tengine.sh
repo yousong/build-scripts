@@ -15,6 +15,12 @@ CONFIGURE_ARGS='					\
 	--error-log-path=error.log		\
 	--http-log-path=access.log		\
 '
+if os_is_darwin; then
+	CONFIGURE_ARGS="$CONFIGURE_ARGS					\\
+		--with-cc-opt='-I$MACPORTS_PREFIX/include'	\\
+		--with-ld-opt='-L$MACPORTS_PREFIX/lib'		\\
+"
+fi
 
 install_do() {
 	cd "$PKG_BUILD_DIR"
