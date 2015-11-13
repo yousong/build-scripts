@@ -10,10 +10,9 @@ rm -rf "$tests_dir"
 mkdir -p "$tests_dir"
 
 export TOPDIR=$PWD
-export INSTALL_PREFIX="$tests_dir/_install"
+export BASE_DESTDIR="$tests_dir/_dest_dir"
 export BASE_BUILD_DIR="$tests_dir/_build_dir"
-
-mkdir -p "$INSTALL_PREFIX"
+export INSTALL_PREFIX="$tests_dir/_install"
 
 for b in $builders; do
 	echo -n "working on $b: "
