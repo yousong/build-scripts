@@ -14,6 +14,10 @@ export BASE_DESTDIR="$tests_dir/_dest_dir"
 export BASE_BUILD_DIR="$tests_dir/_build_dir"
 export INSTALL_PREFIX="$tests_dir/_install"
 
+echo() {
+	/bin/echo "$@"
+}
+
 for b in $builders; do
 	echo -n "working on $b: "
 	sh -ex $b 1>"$tests_dir/${b}.log" 2>&1
