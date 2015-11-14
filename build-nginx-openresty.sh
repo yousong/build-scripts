@@ -16,6 +16,11 @@ CONFIGURE_ARGS='					\
 	--error-log-path=error.log		\
 	--http-log-path=access.log		\
 '
+# openresty is self-contained
+if os_is_darwin; then
+	export CFLAGS=""
+	export LDFLAGS=""
+fi
 
 install_do() {
 	cd "$PKG_BUILD_DIR"
