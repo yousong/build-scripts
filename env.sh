@@ -152,7 +152,7 @@ build_pre() {
 	true
 }
 
-build_configure() {
+build_configure_default() {
 	cd "$PKG_BUILD_DIR"
 	eval "$CONFIGURE_VARS"				\
 		 "$PKG_BUILD_DIR/configure"		\
@@ -160,9 +160,37 @@ build_configure() {
 			"$CONFIGURE_ARGS"
 }
 
+build_configure_cmake() {
+	local lflags="-L$INSTALL_PREFIX/lib"
+	local iflags="-I$INSTALL_PREFIX/include"
+
+	if [ -d "$MACPORTS_PREFIX" ]; then
+		lflags="$lflags -L$MACPORTS_PREFIX/lib"
+		iflags="$lflags -I$MACPORTS_PREFIX/include"
+	fi
+
+	cd "$PKG_BUILD_DIR"
+
+	eval cmake										\
+		-DCMAKE_BUILD_TYPE=Release					\
+		-DCMAKE_INSTALL_PREFIX="'$INSTALL_PREFIX'"	\
+		-DCMAKE_EXE_LINKER_FLAGS="'$lflags'"		\
+		-DCMAKE_SHARED_LINKER_FLAGS="'$lflags'"		\
+		-DCMAKE_C_FLAGS="'$iflags'"					\
+		$CMAKE_ARGS
+}
+
+build_configure() {
+	if [ -n "$PKG_CMAKE" ]; then
+		build_configure_cmake
+	else
+		build_configure_default
+	fi
+}
+
 build_compile() {
 	cd "$PKG_BUILD_DIR"
-	eval make -j "$NJOBS" "$MAKE_VARS"
+	eval make -j "$NJOBS" ${PKG_CMAKE:+VERBOSE=1} "$MAKE_VARS"
 }
 
 build_post() {
