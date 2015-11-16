@@ -89,7 +89,7 @@ download() {
 	download_extra
 }
 
-prepare_source() {
+untar() {
 	local file="$1"
 	local dir="$2"
 	local trans_exp="$3"
@@ -124,6 +124,10 @@ prepare_source() {
 	tar $opts $ftyp -xf "$file"
 }
 
+prepare_source() {
+		untar "$BASE_DL_DIR/$PKG_SOURCE" "$BASE_BUILD_DIR"
+}
+
 prepare_extra() {
 	true
 }
@@ -138,7 +142,7 @@ prepare() {
 		return 0
 	else
 		rm -rf "$PKG_BUILD_DIR"
-		prepare_source "$BASE_DL_DIR/$PKG_SOURCE" "$BASE_BUILD_DIR"
+		prepare_source
 		prepare_extra
 		do_patch
 	fi

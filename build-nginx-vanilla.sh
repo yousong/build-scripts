@@ -78,7 +78,7 @@ prepare_extra() {
 		fn="${repo#*/}-$ref"
 		source="$BASE_DL_DIR/$fn.tar.gz"
 
-		prepare_source "$source" "$MODS_DIR" "s:^[^/]\\+:$fn:"
+		untar "$source" "$MODS_DIR" "s:^[^/]\\+:$fn:"
 	done
 }
 
