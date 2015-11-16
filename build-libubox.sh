@@ -4,6 +4,8 @@
 #
 #	sudo yum install -y json-c-devel
 #
+# It's libjson0-dev on Debian Wheezy
+#
 PKG_NAME=libubox
 PKG_VERSION="2015-11-09"
 PKG_SOURCE_VERSION="10429bccd0dc5d204635e110a7a8fae7b80d16cb"
@@ -54,11 +56,14 @@ index 10c6dc1..bd8164b 100644
 EOF
 }
 
+# XXX: on Debian Wheezy, json.h is in directory /usr/include/json/ and cannot
+# be found by examples code
+CMAKE_ARGS="-DBUILD_EXAMPLES=no"
 # XXX: MacPorts currently installs header files of lua-5.3 to /opt/local/include
 # directory instead of a subdirectory 5.3/ there like the 5.1/ does.  In this
 # case the incompatible 5.3 headers will be used and compilation error happens
 if os_is_darwin; then
-	CMAKE_ARGS="-DBUILD_LUA=no"
+	CMAKE_ARGS="$CMAKE_ARGS -DBUILD_LUA=no"
 fi
 
 main
