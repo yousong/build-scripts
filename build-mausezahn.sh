@@ -22,6 +22,7 @@ PKG_VERSION="0.40"
 PKG_SOURCE="mz-${PKG_VERSION}.tar.gz"
 PKG_SOURCE_URL="http://www.perihel.at/sec/mz/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM="d3d959c92cbf3d81224f5b2f8409e9d8"
+PKG_CMAKE=1
 
 . "$PWD/env.sh"
 PKG_BUILD_DIR="$BASE_BUILD_DIR/mz-$PKG_VERSION"
@@ -37,18 +38,10 @@ do_patch() {
  endif(COMMAND cmake_policy)
  
 -SET(CMAKE_C_FLAGS "-Wall -pipe -fexceptions -fstack-protector --param=ssp-buffer-size=4 -fasynchronous-unwind-tables")
-+SET(CMAKE_C_FLAGS "-Wall -pipe -fexceptions -fstack-protector --param=ssp-buffer-size=4 -fasynchronous-unwind-tables -I$ENV{HOME}/.usr/include -L$ENV{HOME}/.usr/lib")
++SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -pipe -fexceptions -fstack-protector --param=ssp-buffer-size=4 -fasynchronous-unwind-tables")
  
  ADD_CUSTOM_TARGET(uninstall
 EOF
-}
-
-MAKE_VARS="VERBOSE=1"
-
-build_configure() {
-    cd "$PKG_BUILD_DIR"
-    # cmake should pick CFLAGS environment variable
-	cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$INSTALL_PREFIX"
 }
 
 main
