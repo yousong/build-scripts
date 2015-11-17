@@ -40,16 +40,11 @@ if os_is_darwin; then
 fi
 
 patches_all_fetched() {
-	if [ -s ".listing" ]; then
-		num_patches="$(cat .listing | awk '{ print $9 }' | grep -F "$ver." | wc -l)"
-		num_patches_0="$(ls | wc -l)"
-		if [ "$num_patches" -eq "$num_patches_0" ]; then
-			return 0
-		else
-			return 1
-		fi
+	if [ -s "MD5SUMS" ] && md5sum --status -c MD5SUMS; then
+		return 0
+	else
+		return 1
 	fi
-	return 1
 }
 
 fetch_patches() {
@@ -57,7 +52,7 @@ fetch_patches() {
 	local baseurl="ftp://ftp.vim.org/pub/vim/patches/$PKG_VERSION"
 	local num_patches
 	local num_process
-	local i
+	local i l
 
 	mkdir -p "$PATCH_DIR"
 	cd "$PATCH_DIR"
@@ -67,16 +62,16 @@ fetch_patches() {
 		return 0
 	fi
 
-	wget --no-remove-listing --spider "$baseurl/"
-	num_patches="$(cat .listing | awk '{ print $9 }' | grep -F "$ver." | wc -l)"
+	# delete MD5SUMS to check for new patches
+	wget -c "$baseurl/MD5SUMS"
+	num_patches="$(wc -l MD5SUMS | cut -f1 -d' ')"
 	num_process="$(($num_patches / 100))"
 	for i in $(seq 0 $num_process); do
 		# Each wget fetches at most 100 patches.
-		#  - There is mawk in Debian wheezy not supporting `[0-9]{2}',
-		#    http://invisible-island.net/mawk/manpage/mawk.html#h3-3_-Regular-expressions
-		cat .listing | \
-			awk " \$9 ~ /$ver\.$i[0-9][0-9]/ { print \"$baseurl/\"\$9 } " | \
+		grep "$PKG_VERSION\\.$i[0-9]\\+$" MD5SUMS | \
+			while read l; do echo "$l" | md5sum --status -c || echo "$baseurl/${l##* }"; done | \
 			wget --no-verbose -c -i - &
+		echo $i
 	done
 	wait
 
@@ -87,33 +82,35 @@ fetch_patches() {
 }
 
 apply_patches() {
-    local f
+	local f
 
-    cd "$PKG_BUILD_DIR"
+	cd "$PKG_BUILD_DIR"
 
-    [ -f ".patched" ] && {
-        __errmsg "$PKG_BUILD_DIR/.patched exists, skip patching."
-        return 0
-    } || true
+	[ -f ".patched" ] && {
+	__errmsg "$PKG_BUILD_DIR/.patched exists, skip patching."
+	return 0
+} || true
 
-    for f in $(ls "$PATCH_DIR"); do
-        patch -p0 -i "$PATCH_DIR/$f"
-    done
-    touch .patched
+for f in $(ls "$PATCH_DIR/$PKG_VERSION."*); do
+	echo "applying patch $f"
+	patch -p0 -i "$f"
+	echo
+done
+touch .patched
 }
 
 show_build_dep() {
-    local pkg="$1"
+	local pkg="$1"
 
-    apt-cache showsrc "$pkg" | sed -e '/Build-Depends:/!d;s/Build-Depends: \| |\|,\|([^)]*),*\|\[[^]]*\]//g'
-    apt-cache showsrc "$pkg" | sed -e '/Build-Depends-Indep:/!d;s/Build-Depends-Indep: \| |\|,\|([^)]*),*\|\[[^]]*\]//g'
+	apt-cache showsrc "$pkg" | sed -e '/Build-Depends:/!d;s/Build-Depends: \| |\|,\|([^)]*),*\|\[[^]]*\]//g'
+	apt-cache showsrc "$pkg" | sed -e '/Build-Depends-Indep:/!d;s/Build-Depends-Indep: \| |\|,\|([^)]*),*\|\[[^]]*\]//g'
 }
 
 remove_build_dep() {
-    local build_dep_vim_nox="$(show_build_dep vim-nox)"
+	local build_dep_vim_nox="$(show_build_dep vim-nox)"
 
-    sudo aptitude markauto $build_dep_vim_nox
-    sudo apt-get autoremove
+	sudo aptitude markauto $build_dep_vim_nox
+	sudo apt-get autoremove
 }
 
 do_patch() {
