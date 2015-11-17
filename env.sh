@@ -41,13 +41,16 @@ _init() {
 
     alias cp="cp -a -T"
 	export PKG_CONFIG_PATH="$INSTALL_PREFIX/lib/pkgconfig:$INSTALL_PREFIX/share/pkgconfig"
+	export CPPFLAGS="-I$INSTALL_PREFIX/include"
+	export CFLAGS="-I$INSTALL_PREFIX/include"
+	export LDFLAGS="-L$INSTALL_PREFIX/lib"
 	if os_is_darwin; then
 		MACPORTS_PREFIX="${MACPORTS_PREFIX:-/opt/local}"
 		export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$MACPORTS_PREFIX/lib/pkgconfig"
 		export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$MACPORTS_PREFIX/share/pkgconfig"
-		export CPPFLAGS="-I$MACPORTS_PREFIX/include"
-		export CFLAGS="-I$MACPORTS_PREFIX/include"
-		export LDFLAGS="-L$MACPORTS_PREFIX/lib"
+		export CPPFLAGS="$CPPFLAGS -I$MACPORTS_PREFIX/include"
+		export CFLAGS="$CFLAGS -I$MACPORTS_PREFIX/include"
+		export LDFLAGS="$LDFLAGS -L$MACPORTS_PREFIX/lib"
 	fi
 	NJOBS="${NJOBS:-$((2 * $(ncpus)))}"
 }
