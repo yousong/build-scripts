@@ -1,7 +1,7 @@
-# where to do the build
-TOPDIR="${TOPDIR:-$PWD}"
 NJOBS=32
 
+# the top level directory of these scripts
+TOPDIR="${TOPDIR:-$PWD}"
 # where to put source code.
 BASE_DL_DIR="${BASE_DL_DIR:-$TOPDIR/dl}"
 # where to do the build.
