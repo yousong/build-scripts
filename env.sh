@@ -1,5 +1,3 @@
-NJOBS=32
-
 # the top level directory of these scripts
 TOPDIR="${TOPDIR:-$PWD}"
 # where to put source code.
@@ -24,6 +22,17 @@ os_is_linux() {
 	[ "$(uname -o)" = "GNU/Linux" ]
 }
 
+ncpus() {
+	if os_is_darwin; then
+		sysctl -n hw.logicalcpu
+	elif os_is_linux; then
+		# nproc is part of coreutils
+		nproc || cat /proc/cpuinfo  | grep '^processor\s\+:' | wc -l
+	else
+		__errmsg "os not supported"
+	fi
+}
+
 _init() {
     mkdir -p "$BASE_DL_DIR"
     mkdir -p "$BASE_BUILD_DIR"
@@ -40,6 +49,7 @@ _init() {
 		export CFLAGS="-I$MACPORTS_PREFIX/include"
 		export LDFLAGS="-L$MACPORTS_PREFIX/lib"
 	fi
+	NJOBS="${NJOBS:-$((2 * $(ncpus)))}"
 }
 _init
 
