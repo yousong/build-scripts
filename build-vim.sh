@@ -71,7 +71,6 @@ fetch_patches() {
 		grep "$PKG_VERSION\\.$i[0-9]\\+$" MD5SUMS | \
 			while read l; do echo "$l" | md5sum --status -c || echo "$baseurl/${l##* }"; done | \
 			wget --no-verbose -c -i - &
-		echo $i
 	done
 	wait
 
