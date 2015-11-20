@@ -10,11 +10,6 @@ PKG_SOURCE_MD5SUM="c7ba233e5f92ad2f48860c815bb05480"
 
 # verbose output instead of colorful output for better logging
 MAKE_VARS="V=1"
-# redis uses lua library built by itself.
-if os_is_darwin; then
-	export CFLAGS=""
-	export LDFLAGS=""
-fi
 
 build_configure() {
 	true

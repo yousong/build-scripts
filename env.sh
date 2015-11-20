@@ -41,16 +41,16 @@ _init() {
 
     alias cp="cp -a -T"
 	export PKG_CONFIG_PATH="$INSTALL_PREFIX/lib/pkgconfig:$INSTALL_PREFIX/share/pkgconfig"
-	export CPPFLAGS="-I$INSTALL_PREFIX/include"
-	export CFLAGS="-I$INSTALL_PREFIX/include"
-	export LDFLAGS="-Wl,-rpath,$INSTALL_PREFIX/lib"
+	EXTRA_CPPFLAGS="-I$INSTALL_PREFIX/include"
+	EXTRA_CFLAGS="-I$INSTALL_PREFIX/include"
+	EXTRA_LDFLAGS="-L$INSTALL_PREFIX/lib -Wl,-rpath,$INSTALL_PREFIX/lib"
 	if os_is_darwin; then
 		MACPORTS_PREFIX="${MACPORTS_PREFIX:-/opt/local}"
 		export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$MACPORTS_PREFIX/lib/pkgconfig"
 		export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$MACPORTS_PREFIX/share/pkgconfig"
-		export CPPFLAGS="$CPPFLAGS -I$MACPORTS_PREFIX/include"
-		export CFLAGS="$CFLAGS -I$MACPORTS_PREFIX/include"
-		export LDFLAGS="$LDFLAGS -Wl,-rpath,$MACPORTS_PREFIX/lib"
+		EXTRA_CPPFLAGS="$EXTRA_CPPFLAGS -I$MACPORTS_PREFIX/include"
+		EXTRA_CFLAGS="$EXTRA_CFLAGS -I$MACPORTS_PREFIX/include"
+		EXTRA_LDFLAGS="$EXTRA_LDFLAGS -L$MACPORTS_PREFIX/lib -Wl,-rpath,$MACPORTS_PREFIX/lib"
 	fi
 	NJOBS="${NJOBS:-$((2 * $(ncpus)))}"
 }
@@ -167,7 +167,10 @@ build_pre() {
 
 build_configure_default() {
 	cd "$PKG_BUILD_DIR"
-	eval "$CONFIGURE_VARS"				\
+	eval CPPFLAGS="'$EXTRA_CPPFLAGS'"	\
+		 CFLAGS="'$EXTRA_CFLAGS'"		\
+		 LDFLAGS="'$EXTRA_LDFLAGS'"		\
+		 "$CONFIGURE_VARS"				\
 		 "$PKG_BUILD_DIR/configure"		\
 			--prefix="$INSTALL_PREFIX"	\
 			"$CONFIGURE_ARGS"
@@ -179,9 +182,9 @@ build_configure_cmake() {
 	eval cmake												\
 		-DCMAKE_BUILD_TYPE=Release							\
 		-DCMAKE_INSTALL_PREFIX="'$INSTALL_PREFIX'"			\
-		-DCMAKE_EXE_LINKER_FLAGS="'$LDFLAGS'"				\
-		-DCMAKE_SHARED_LINKER_FLAGS="'$LDFLAGS'"			\
-		-DCMAKE_C_FLAGS="'$CFLAGS'"							\
+		-DCMAKE_EXE_LINKER_FLAGS="'$EXTRA_LDFLAGS'"			\
+		-DCMAKE_SHARED_LINKER_FLAGS="'$EXTRA_LDFLAGS'"		\
+		-DCMAKE_C_FLAGS="'$EXTRA_CFLAGS'"					\
 		-DCMAKE_MACOSX_RPATH=on								\
 		$CMAKE_ARGS
 }
