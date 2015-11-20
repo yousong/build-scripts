@@ -22,6 +22,9 @@ if os_is_darwin; then
 "
 fi
 
+.  "$PWD/utils-nginx.sh"
+nginx_add_modules
+
 install_do() {
 	cd "$PKG_BUILD_DIR"
 	make DESTDIR="$_PKG_STAGING_DIR" install

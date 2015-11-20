@@ -32,7 +32,6 @@ CONFIGURE_ARGS='					\
 '
 
 # master:agentzh/dns-nginx-module cannot build with NGINX 1.9.6 because of API change
-MODS_DIR="$PKG_BUILD_DIR/_mods"
 MODS='
 	master:chaoslawful/lua-nginx-module
 	master:simpl/ngx_devel_kit
@@ -47,57 +46,8 @@ MODS='
 	master:agentzh/xss-nginx-module
 '
 
-download_extra() {
-	local m
-	local ref repo
-	local fn source source_url
-
-	for m in $MODS; do
-		ref="${m%:*}"
-		repo="${m#*:}"
-		fn="${repo#*/}-$ref"
-		source="$BASE_DL_DIR/$fn.tar.gz"
-		source_url="https://github.com/$repo/archive/$ref.tar.gz"
-
-		if [ ! -s "$source" ]; then
-			wget -c -O "$source.dl" "$source_url"
-			mv "$source.dl" "$source"
-		fi
-	done
-}
-
-prepare_extra() {
-	local m
-	local ref repo
-	local fn source
-
-	mkdir -p "$MODS_DIR"
-	for m in $MODS; do
-		ref="${m%:*}"
-		repo="${m#*:}"
-		fn="${repo#*/}-$ref"
-		source="$BASE_DL_DIR/$fn.tar.gz"
-
-		untar "$source" "$MODS_DIR" "s:^[^/]\\+:$fn:"
-	done
-}
-
-add_modules() {
-	local m
-	local ref repo
-	local fn source
-	local arg
-
-	for m in $MODS; do
-		ref="${m%:*}"
-		repo="${m#*:}"
-		fn="${repo#*/}-$ref"
-
-		arg="	--add-module=$MODS_DIR/$fn"
-		CONFIGURE_ARGS="${CONFIGURE_ARGS}${arg}"
-	done
-}
-add_modules
+.  "$PWD/utils-nginx.sh"
+nginx_add_modules
 
 install_do() {
 	cd "$PKG_BUILD_DIR"
