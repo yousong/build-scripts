@@ -43,14 +43,14 @@ _init() {
 	export PKG_CONFIG_PATH="$INSTALL_PREFIX/lib/pkgconfig:$INSTALL_PREFIX/share/pkgconfig"
 	export CPPFLAGS="-I$INSTALL_PREFIX/include"
 	export CFLAGS="-I$INSTALL_PREFIX/include"
-	export LDFLAGS="-L$INSTALL_PREFIX/lib"
+	export LDFLAGS="-Wl,-rpath,$INSTALL_PREFIX/lib"
 	if os_is_darwin; then
 		MACPORTS_PREFIX="${MACPORTS_PREFIX:-/opt/local}"
 		export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$MACPORTS_PREFIX/lib/pkgconfig"
 		export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$MACPORTS_PREFIX/share/pkgconfig"
 		export CPPFLAGS="$CPPFLAGS -I$MACPORTS_PREFIX/include"
 		export CFLAGS="$CFLAGS -I$MACPORTS_PREFIX/include"
-		export LDFLAGS="$LDFLAGS -L$MACPORTS_PREFIX/lib"
+		export LDFLAGS="$LDFLAGS -Wl,-rpath,$MACPORTS_PREFIX/lib"
 	fi
 	NJOBS="${NJOBS:-$((2 * $(ncpus)))}"
 }
@@ -174,22 +174,15 @@ build_configure_default() {
 }
 
 build_configure_cmake() {
-	local lflags="-L$INSTALL_PREFIX/lib"
-	local iflags="-I$INSTALL_PREFIX/include"
-
-	if [ -d "$MACPORTS_PREFIX" ]; then
-		lflags="$lflags -L$MACPORTS_PREFIX/lib"
-		iflags="$lflags -I$MACPORTS_PREFIX/include"
-	fi
-
 	cd "$PKG_BUILD_DIR"
 
-	eval cmake										\
-		-DCMAKE_BUILD_TYPE=Release					\
-		-DCMAKE_INSTALL_PREFIX="'$INSTALL_PREFIX'"	\
-		-DCMAKE_EXE_LINKER_FLAGS="'$lflags'"		\
-		-DCMAKE_SHARED_LINKER_FLAGS="'$lflags'"		\
-		-DCMAKE_C_FLAGS="'$iflags'"					\
+	eval cmake												\
+		-DCMAKE_BUILD_TYPE=Release							\
+		-DCMAKE_INSTALL_PREFIX="'$INSTALL_PREFIX'"			\
+		-DCMAKE_EXE_LINKER_FLAGS="'$LDFLAGS'"				\
+		-DCMAKE_SHARED_LINKER_FLAGS="'$LDFLAGS'"			\
+		-DCMAKE_C_FLAGS="'$CFLAGS'"							\
+		-DCMAKE_MACOSX_RPATH=on								\
 		$CMAKE_ARGS
 }
 
