@@ -51,4 +51,9 @@ So do it this way, as it was before. Needs some realignment later.
  #endif
 EOF
 }
+
+if os_is_darwin; then
+	export MACOSX_DEPLOYMENT_TARGET="10.5"
+fi
+
 main
