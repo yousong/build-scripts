@@ -1,9 +1,8 @@
 #!/bin/sh -e
-
-# NGINX does not support out of tree build.
 #
+# NGINX does not support autotools configure style out of tree build, because
+# it's already out of src/ tree...
 #
-
 PKG_NAME=nginx
 PKG_VERSION="1.9.6"
 PKG_SOURCE="$PKG_NAME-${PKG_VERSION}.tar.gz"
@@ -11,7 +10,12 @@ PKG_SOURCE_URL="http://nginx.org/download/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM="f6899825e7a8deadba4948ff84515ad6"
 
 . "$PWD/env.sh"
+. "$PWD/utils-nginx.sh"
 
+CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
+	--with-http_ssl_module			\\
+	--with-http_mp4_module			\\
+"
 # nginx-lua depends on LuaJIT, LuaJIT.  They has to be preinstalled.
 #
 # If they are installed on Mac OS X with MacPorts (luajit)
@@ -21,15 +25,6 @@ if os_is_darwin; then
 		LUAJIT_INC='$MACPORTS_PREFIX/include/luajit-2.0'		\\
 "
 fi
-CONFIGURE_ARGS='					\
-	--sbin-path=nginx				\
-	--conf-path=nginx.conf			\
-	--pid-path=nginx.pid			\
-	--error-log-path=error.log		\
-	--http-log-path=access.log		\
-	--with-http_ssl_module			\
-	--with-http_mp4_module			\
-'
 
 # master:agentzh/dns-nginx-module cannot build with NGINX 1.9.6 because of API change
 MODS='
@@ -45,8 +40,6 @@ MODS='
 	master:agentzh/set-misc-nginx-module
 	master:agentzh/xss-nginx-module
 '
-
-.  "$PWD/utils-nginx.sh"
 nginx_add_modules
 
 install_do() {

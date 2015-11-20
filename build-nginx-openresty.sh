@@ -7,15 +7,9 @@ PKG_SOURCE_URL="http://openresty.org/download/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM="cde1f7127f6ba413ee257003e49d6d0a"
 
 . "$PWD/env.sh"
+. "$PWD/utils-nginx.sh"
 PKG_BUILD_DIR="$BASE_BUILD_DIR/ngx_openresty-$PKG_VERSION"
 
-CONFIGURE_ARGS='					\
-	--sbin-path=nginx				\
-	--conf-path=nginx.conf			\
-	--pid-path=nginx.pid			\
-	--error-log-path=error.log		\
-	--http-log-path=access.log		\
-'
 # openresty is self-contained
 if os_is_darwin; then
 	export CFLAGS=""

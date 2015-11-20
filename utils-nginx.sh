@@ -1,4 +1,11 @@
 NGINX_MODS_DIR="$PKG_BUILD_DIR/_mods"
+CONFIGURE_ARGS='					\
+	--sbin-path=nginx				\
+	--conf-path=nginx.conf			\
+	--pid-path=nginx.pid			\
+	--error-log-path=error.log		\
+	--http-log-path=access.log		\
+'
 
 download_extra() {
 	local m

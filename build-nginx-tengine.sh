@@ -7,23 +7,14 @@ PKG_SOURCE_URL="http://tengine.taobao.org/download/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM="fb60c57c2610c6a356153613c485e4af"
 
 . "$PWD/env.sh"
+. "$PWD/utils-nginx.sh"
 
-CONFIGURE_ARGS='					\
-	--sbin-path=nginx				\
-	--conf-path=nginx.conf			\
-	--pid-path=nginx.pid			\
-	--error-log-path=error.log		\
-	--http-log-path=access.log		\
-'
 if os_is_darwin; then
 	CONFIGURE_ARGS="$CONFIGURE_ARGS					\\
 		--with-cc-opt='-I$MACPORTS_PREFIX/include'	\\
 		--with-ld-opt='-L$MACPORTS_PREFIX/lib'		\\
 "
 fi
-
-.  "$PWD/utils-nginx.sh"
-nginx_add_modules
 
 install_do() {
 	cd "$PKG_BUILD_DIR"
