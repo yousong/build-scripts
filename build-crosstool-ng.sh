@@ -4,6 +4,9 @@
 #
 #	yum install -y gperf texinfo
 #
+# On Mac OS X, objdump and objcopy from binutils are needed,
+#  https://sourceware.org/ml/crossgcc/2010-05/msg00121.html
+#
 PKG_NAME=crosstool-ng
 PKG_VERSION="1.21.0"
 PKG_SOURCE="${PKG_NAME}-${PKG_VERSION}.tar.bz2"
