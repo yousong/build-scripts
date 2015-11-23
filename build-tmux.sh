@@ -1,5 +1,5 @@
 #!/bin/sh -e
-
+#
 # TMUX depends on libevent-dev to build.
 #
 #	sudo apt-get build-dep tmux
@@ -17,10 +17,9 @@
 #  - TMUX plugins, >= 1.9, https://github.com/tmux-plugins/tpm
 #  - set focus-events off, >= 1.8, see CHANGES file in source code.
 #
-
 PKG_NAME=tmux
 PKG_VERSION="2.1"
-PKG_SOURCE="tmux-${PKG_VERSION}.tar.gz"
+PKG_SOURCE="$PKG_NAME-${PKG_VERSION}.tar.gz"
 PKG_SOURCE_URL="https://github.com/tmux/tmux/releases/download/$PKG_VERSION/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM="74a2855695bccb51b6e301383ad4818c"
 
