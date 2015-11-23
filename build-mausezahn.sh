@@ -5,18 +5,6 @@
 #          sudo yum install -y libnet-devel libpcap-devel
 #          sudo apt-get install -y libnet-dev libpcap-dev
 #
-# The built command mz needs to be run with root privileges.  Simply doing
-# "sudo mz" is not enough as the environment variable LD_LIBRARY_PATH will be
-# reset and dependent libraries cannot be found.  The solution can be one of
-# the following if any of them work for the then current situation.
-#
-#  - Setup an alias and use mz as usual
-#
-#			alias mz="sudo LD_LIBRARY_PATH=$LD_LIBRARY_PATH $(which mz)"
-#
-#  - Use "sudo -E mz" if system security policy permits
-#  - Use "sudo LD_LIBRARY_PATH=$LD_LIBRARY_PATH mz"
-#
 PKG_NAME=mausezahn
 PKG_VERSION="0.40"
 PKG_SOURCE="mz-${PKG_VERSION}.tar.gz"
