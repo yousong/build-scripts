@@ -52,16 +52,16 @@ CONFIGURE_ARGS="					\\
 build_pre() {
 	cd "$PKG_BUILD_DIR"
 
-    if [ ! -x "$BUILD_DIR/configure" ]; then
-        __errmsg "Bootstrapping a configure script"
-        ./boot.sh
-    fi
+	if [ ! -x "$BUILD_DIR/configure" ]; then
+		__errmsg "Bootstrapping a configure script"
+		./boot.sh
+	fi
 }
 
 install_do() {
 	cd "$PKG_BUILD_DIR"
 	make DESTDIR="$_PKG_STAGING_DIR" install
-    #sudo make modules_install
+	#sudo make modules_install
 	cp "$_PKG_STAGING_DIR/$INSTALL_PREFIX" "$INSTALL_PREFIX"
 }
 
