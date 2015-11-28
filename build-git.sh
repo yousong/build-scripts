@@ -7,6 +7,10 @@
 #   yum -y groupinstall "Development Tools"
 #   yum-builddep git-email
 #
+# Sometimes we need to install several perl modules for the git-send-email to work
+#
+#	sudo cpan Net::SMTP::SSL MIME::Base64 Authen::SASL
+#
 # Manpages and perl bindings are installed with readonly permissions 0444.  To overwrite previous install, clean them
 #
 #	rm -rfv /home/yousong/.usr/share/man/man3/Git*
