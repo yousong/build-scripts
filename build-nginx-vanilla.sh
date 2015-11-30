@@ -1,5 +1,10 @@
 #!/bin/sh -e
 #
+# Or you can use the binary package provided by upstream NGINX project.
+#
+# - Info on how the pre-built packages are configured, http://nginx.org/en/linux_packages.html
+# - Repo setup info for CentOS, RHEL, Ubuntu, Debian, http://nginx.org/en/linux_packages.html
+#
 # NGINX does not support autotools configure style out of tree build, because
 # it's already out of src/ tree...
 #
