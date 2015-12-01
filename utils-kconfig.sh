@@ -1,5 +1,3 @@
-DOT_CONFIG="${DOT_CONFIG:-.config}"
-
 set_option() {
 	local opt="$1"
 	local val="$2"
