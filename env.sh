@@ -152,7 +152,6 @@ do_patch() {
 prepare() {
 	if [ -d "$PKG_BUILD_DIR" ]; then
 		__errmsg "$PKG_BUILD_DIR already exists, skip preparing."
-		return 0
 	else
 		rm -rf "$PKG_BUILD_DIR"
 		prepare_source
