@@ -53,9 +53,7 @@ prepare_extra() {
 	mkdir -p "$INITRAMFS_DIR"
 
 	cd "$INITRAMFS_DIR"
-	mkdir -p proc sys dev tmp
 	mkdir -p bin sbin usr/bin usr/sbin
-
 	/bin/cp "$bbpath" "$INITRAMFS_DIR/bin/"
 	for bin in mount sh; do
 		ln -s /bin/busybox "$INITRAMFS_DIR/bin/$bin"
@@ -69,12 +67,17 @@ mount -t sysfs none /sys
 mount -t tmpfs none /tmp
 busybox --install
 
-exec /bin/sh
+exec setsid sh -c 'while true; do echo; echo Press any key to activate this console; read; /bin/sh </dev/ttyS0 &>/dev/ttyS0; done'
 EOF
 	chmod a+x init
 
 	# Copied from OpenWrt base-files
 	cat >"$INITRAMFS_BASE/base-files.txt" <<EOF
+dir /proc 755 0 0
+dir /sys 755 0 0
+dir /tmp 777 0 0
+dir /dev 755 0 0
+dir /dev/pts 755 0 0
 nod /dev/console 600 0 0 c 5 1
 nod /dev/null 666 0 0 c 1 3
 nod /dev/zero 666 0 0 c 1 5
@@ -83,7 +86,6 @@ nod /dev/tty0 660 0 0 c 4 0
 nod /dev/tty1 660 0 0 c 4 1
 nod /dev/random 666 0 0 c 1 8
 nod /dev/urandom 666 0 0 c 1 9
-dir /dev/pts 755 0 0
 EOF
 }
 
@@ -92,7 +94,7 @@ build_configure() {
 	if [ -s ".config" ]; then
 		mv ".config" ".config.old"
 	fi
-	cat >>.config <<EOF
+	cat >.config <<EOF
 CONFIG_DEBUG_INFO=y
 CONFIG_SMP=y
 CONFIG_HOTPLUG_PCI=y
@@ -114,6 +116,8 @@ CONFIG_INITRAMFS_ROOT_GID=$(id -g)
 # CONFIG_RD_LZO is not set
 # CONFIG_RD_XZ is not set
 # CONFIG_RD_LZ4 is not set
+CONFIG_TMPFS=y
+CONFIG_DEVTMPFS=y
 EOF
 	make ARCH=x86_64 kvmconfig
 }
