@@ -16,9 +16,4 @@ if os_is_darwin; then
 	EXTRA_LDFLAGS=""
 fi
 
-install_do() {
-	cd "$PKG_BUILD_DIR"
-	make DESTDIR="$_PKG_STAGING_DIR" install
-}
-
 main

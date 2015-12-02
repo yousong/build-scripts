@@ -1,3 +1,4 @@
+INSTALL_PREFIX="$INSTALL_PREFIX/nginx/$PKG_NAME-$PKG_VERSION"
 NGINX_MODS_DIR="$PKG_BUILD_DIR/_mods"
 CONFIGURE_ARGS='					\
 	--sbin-path=nginx				\

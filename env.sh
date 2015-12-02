@@ -220,21 +220,26 @@ install_pre() {
 	true
 }
 
-install_do() {
+install_staging() {
 	cd "$PKG_BUILD_DIR"
 	make DESTDIR="$_PKG_STAGING_DIR" install
-	cp "$_PKG_STAGING_DIR/$INSTALL_PREFIX" "$INSTALL_PREFIX"
 }
 
 install_post() {
 	true
 }
 
+install_to_final() {
+	mkdir -p "$INSTALL_PREFIX"
+	cp "$_PKG_STAGING_DIR/$INSTALL_PREFIX" "$INSTALL_PREFIX"
+}
+
 install() {
 	rm -rf "$_PKG_STAGING_DIR"
 	install_pre
-	install_do
+	install_staging
 	install_post
+	install_to_final
 }
 
 main() {

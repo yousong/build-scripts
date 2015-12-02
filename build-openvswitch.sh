@@ -58,11 +58,9 @@ build_pre() {
 	fi
 }
 
-install_do() {
+install_staging() {
 	cd "$PKG_BUILD_DIR"
 	make DESTDIR="$_PKG_STAGING_DIR" install
-	#sudo make modules_install
-	cp "$_PKG_STAGING_DIR/$INSTALL_PREFIX" "$INSTALL_PREFIX"
 }
 
 main

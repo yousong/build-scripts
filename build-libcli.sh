@@ -12,10 +12,9 @@ build_configure() {
 	true
 }
 
-install_do() {
+install_staging() {
 	cd "$PKG_BUILD_DIR"
 	make DESTDIR="$_PKG_STAGING_DIR" PREFIX="$INSTALL_PREFIX" install
-	cp "$_PKG_STAGING_DIR/$INSTALL_PREFIX" "$INSTALL_PREFIX"
 }
 
 main

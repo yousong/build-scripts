@@ -15,10 +15,14 @@ build_configure() {
 	true
 }
 
-install_do() {
+install_staging() {
 	cd "$PKG_BUILD_DIR"
 	# build system of redis just install all its binaries in bin/ directory
 	make PREFIX="$_PKG_STAGING_DIR" install
+}
+
+install_to_final() {
+	mkdir -p "$INSTALL_PREFIX"
 	cp "$_PKG_STAGING_DIR" "$INSTALL_PREFIX"
 }
 

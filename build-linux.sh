@@ -122,8 +122,8 @@ EOF
 	make ARCH=x86_64 kvmconfig
 }
 
-install_do() {
-	cd "$PKG_BUILD_DIR"
+install() {
+	true
 }
 
 main
