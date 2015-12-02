@@ -2,9 +2,8 @@
 #
 # Build a kernel with embedded initramfs for trying various kernel features
 #
-#		qemu-system-x86_64 -smp cpus=4 -m 32 -nographic -kernel arch/x86/boot/bzImage -append 'console=ttyS0'
-#
 # Initramfs will be constructed with busybox so build it statically first
+#
 PKG_NAME=linux
 PKG_VERSION=4.3
 PKG_SOURCE="$PKG_NAME-${PKG_VERSION}.tar.xz"
@@ -26,9 +25,6 @@ MAKE_VARS="V=1"
 
 # WiP
 #
-# 1. `dir` definition in initramfs-base-files.txt for `proc`, `sys`, `dev`,
-#    `tmp` do not work.  They have to be firstly created on the specified
-#    directory
 # 2. Default init is `/init`, or specify it with `rdinit=/linuxrc`
 # 3. init/main.c: see "call chain of start_kernel()" in kernel-notes.md
 # 4. /proc/cpuinfo will have flag `hypervisor' when running on a hypervisor
@@ -123,7 +119,13 @@ EOF
 }
 
 install() {
-	true
+	cat <<EOF
+
+Test the built kernel
+
+	qemu-system-x86_64 -smp cpus=4 -m 32 -nographic -kernel $PKG_BUILD_DIR/arch/x86/boot/bzImage -append 'console=ttyS0'
+
+EOF
 }
 
 main
