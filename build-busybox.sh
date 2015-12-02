@@ -2,6 +2,10 @@
 #
 # Install a statically linked busybox binary to $INSTALL_PREFIX/bin
 #
+# Static busybox needs static library dependencies and on CentOS6 we need
+#
+#	yum install -y glibc-static
+#
 # In case those applets are installed accidentally as symbolic links
 #
 #	for f in $(find . -type l) ; do i="$(readlink -f "$f")"; i="$(basename "$i")"; [ "$i" = busybox ] && rm -vf $f; done
