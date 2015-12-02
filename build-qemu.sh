@@ -22,7 +22,7 @@ CONFIGURE_ARGS="--target-list='$TARGETS'"
 #   mkdir -p "$BUILD_DIR"
 #   git archive --format=tar "$tag" | tar -C "$BUILD_DIR" -x
 
-post_build() {
+install_post() {
 	cat <<EOF
 
 To use qemu-bridge-helper, appropriate permission bits need to be set
