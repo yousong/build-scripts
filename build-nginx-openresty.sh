@@ -12,6 +12,7 @@ PKG_BUILD_DIR="$BASE_BUILD_DIR/ngx_openresty-$PKG_VERSION"
 
 # openresty is self-contained
 if os_is_darwin; then
+	EXTRA_CPPFLAGS=""
 	EXTRA_CFLAGS=""
 	EXTRA_LDFLAGS=""
 fi
