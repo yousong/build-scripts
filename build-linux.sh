@@ -59,8 +59,9 @@ prepare_extra() {
 #!/bin/sh
 mount -t devtmpfs none /dev
 mount -t proc none /proc
-mount -t sysfs none /sys
 mount -t tmpfs none /tmp
+mount -t sysfs none /sys
+mount -t debugfs none /sys/kernel/debug
 busybox --install
 
 exec setsid sh -c 'while true; do echo; echo Press any key to activate this console; read; /bin/sh </dev/ttyS0 &>/dev/ttyS0; done'
@@ -82,6 +83,36 @@ nod /dev/tty0 660 0 0 c 4 0
 nod /dev/tty1 660 0 0 c 4 1
 nod /dev/random 666 0 0 c 1 8
 nod /dev/urandom 666 0 0 c 1 9
+EOF
+}
+
+_build_configure_ftrace() {
+	# FTRACE support in kernel,
+	#
+	# -Debugging the kernel using Ftrace - part 1, http://lwn.net/Articles/365835/
+	#
+	#		mount -t debugfs none /sys/kernel/debug
+	#		cd /sys/kernel/debug/tracing
+	#		cat available_tracers
+	#		echo function >current_tracer
+	#		head -n32 trace
+	#		echo function_graph >current_tracer
+	#		head -n32 trace
+	#		echo 1 >tracing_on
+	#		echo 0 >tracing_on
+	#
+	# - trace-cmd: A front-end for Ftrace, https://lwn.net/Articles/410200/
+	#
+	#	trace-cmd is also available in OpenWrt package/devel/trace-cmd
+	#
+	# - https://github.com/rostedt/trace-cmd
+	# - http://git.kernel.org/cgit/linux/kernel/git/rostedt/trace-cmd.git/?h=trace-cmd-v2.6
+	#
+	cat <<EOF
+CONFIG_FUNCTION_TRACER=y
+CONFIG_FUNCTION_GRAPH_TRACER=y
+CONFIG_STACK_TRACER=y
+CONFIG_DYNAMIC_FTRACE=y
 EOF
 }
 
@@ -115,6 +146,7 @@ CONFIG_INITRAMFS_ROOT_GID=$(id -g)
 CONFIG_TMPFS=y
 CONFIG_DEVTMPFS=y
 EOF
+	#_build_configure_ftrace >>.config
 	make ARCH=x86_64 kvmconfig
 }
 
