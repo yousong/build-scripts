@@ -9,6 +9,10 @@ Scripts for quickly building/installing specified versions of projects from sour
 - Try to be reentrant
 - Use absolute path
 
+## Backup Mirror
+
+- https://distfiles.macports.org/$PKG_NAME
+
 ## Tips
 
 On CentOS 6.6, manpages installed manually cannot be found by `man` command by default.  To solve this, try adding something like the following to `/etc/man.config`
