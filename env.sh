@@ -199,7 +199,7 @@ build_configure() {
 
 build_compile() {
 	cd "$PKG_BUILD_DIR"
-	eval CFLAGS="'$EXTRA_CFLAGS'" CPPFLAGS="'$EXTRA_CPPFLAGS'" LDFLAGS="'$EXTRA_LDFLAGS'" \
+	eval CFLAGS="'$EXTRA_CFLAGS'" CPPFLAGS="'$EXTRA_CPPFLAGS'" LDFLAGS="'$EXTRA_LDFLAGS'" "$MAKE_VARS" \
 		make -j "$NJOBS" ${PKG_CMAKE:+VERBOSE=1} "$MAKE_VARS"
 }
 
@@ -222,7 +222,8 @@ install_pre() {
 
 install_staging() {
 	cd "$PKG_BUILD_DIR"
-	make DESTDIR="$_PKG_STAGING_DIR" install
+	eval "$MAKE_VARS" \
+		make -j "$NJOBS" install DESTDIR="$_PKG_STAGING_DIR" ${PKG_CMAKE:+VERBOSE=1} "$MAKE_VARS"
 }
 
 install_post() {
