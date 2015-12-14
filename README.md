@@ -15,9 +15,12 @@ Scripts for quickly building/installing specified versions of projects from sour
 
 ## Tips
 
-On CentOS 6.6, manpages installed manually cannot be found by `man` command by default.  To solve this, try adding something like the following to `/etc/man.config`
+On CentOS 6.6, manpages installed manually cannot be found by `man` command by default.  To solve this
 
+	# Try adding something like the following to `/etc/man.config`
 	MANPATH_MAP	/home/yousong/.usr/bin	/home/yousong/.usr/share/man
+	# Or, setting MANPATH variable as such
+	MANPATH="$INSTALL_PREFIX/share/man:$(manpath)"
 
 Many of the times packages depend on the installation of other packages to be successfully built and run.  Currently we just use the distribution's package manager to install those dependencies for us.
 
