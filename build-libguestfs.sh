@@ -50,6 +50,17 @@ do_patch() {
 +$INSTALL_PREFIX/lib/libaugeas.*
 +$INSTALL_PREFIX/lib/libfa.*
 +$INSTALL_PREFIX/share/augeas/lenses/dist/*
+--- a/builder/paths.ml.orig	2015-12-14 11:57:27.104578901 +0800
++++ b/builder/paths.ml	2015-12-14 11:57:48.788586611 +0800
+@@ -35,7 +35,7 @@ let xdg_config_home () =
+ let xdg_config_dirs () =
+   let dirs =
+     try Sys.getenv "XDG_CONFIG_DIRS"
+-    with Not_found -> "/etc/xdg" in
++    with Not_found -> "$INSTALL_PREFIX/etc/xdg" in
+   let dirs = string_nsplit ":" dirs in
+   let dirs = List.filter (fun x -> x <> "") dirs in
+   List.map (fun x -> x // prog) dirs
 EOF
 	patch -p1 <<"EOF"
 --- a/configure.ac.orig	2015-12-12 10:44:43.397114670 +0800
