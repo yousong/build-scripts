@@ -23,7 +23,7 @@ EXTRA_CFLAGS=
 EXTRA_CPPFLAGS=
 EXTRA_LDFLAGS=
 
-build_configure() {
+configure() {
 	cd "$PKG_BUILD_DIR"
 	if [ -s ".config" ]; then
 		mv ".config" ".config.old"

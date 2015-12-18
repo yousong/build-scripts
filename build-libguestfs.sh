@@ -99,7 +99,7 @@ EOF
 EOF
 }
 
-build_pre() {
+configure_pre() {
 	cd "$PKG_BUILD_DIR"
 	autoreconf
 }

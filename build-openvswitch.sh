@@ -49,7 +49,7 @@ CONFIGURE_ARGS="					\\
 	--enable-ndebug					\\
 "
 
-build_pre() {
+configure_pre() {
 	cd "$PKG_BUILD_DIR"
 
 	if [ ! -x "$BUILD_DIR/configure" ]; then

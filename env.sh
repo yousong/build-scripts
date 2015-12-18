@@ -165,10 +165,6 @@ prepare() {
 	fi
 }
 
-build_pre() {
-	true
-}
-
 build_configure_default() {
 	cd "$PKG_BUILD_DIR"
 	eval CPPFLAGS="'$EXTRA_CPPFLAGS'"	\
@@ -194,14 +190,6 @@ build_configure_cmake() {
 		$CMAKE_ARGS
 }
 
-build_configure() {
-	if [ -n "$PKG_CMAKE" ]; then
-		build_configure_cmake
-	else
-		build_configure_default
-	fi
-}
-
 build_compile() {
 	cd "$PKG_BUILD_DIR"
 	eval CFLAGS="'$EXTRA_CFLAGS'" \
@@ -214,10 +202,19 @@ build_post() {
 	true
 }
 
-build() {
-	build_pre
+configure_pre() {
+	true
+}
 
-	build_configure
+configure() {
+	if [ -n "$PKG_CMAKE" ]; then
+		build_configure_cmake
+	else
+		build_configure_default
+	fi
+}
+
+build() {
 	build_compile
 
 	build_post
@@ -253,6 +250,8 @@ install() {
 main() {
 	download
 	prepare
+	configure_pre
+	configure
 	build
 	install
 }

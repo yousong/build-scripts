@@ -8,7 +8,7 @@ PKG_SOURCE_MD5SUM=bd2821b7a124b4b9aa356e12f09c4cb2
 
 . "$PWD/env.sh"
 
-build_configure() {
+configure() {
 	true
 }
 

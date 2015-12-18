@@ -86,7 +86,7 @@ nod /dev/urandom 666 0 0 c 1 9
 EOF
 }
 
-_build_configure_ftrace() {
+_configure_ftrace() {
 	# FTRACE support in kernel,
 	#
 	# -Debugging the kernel using Ftrace - part 1, http://lwn.net/Articles/365835/
@@ -116,7 +116,7 @@ CONFIG_DYNAMIC_FTRACE=y
 EOF
 }
 
-build_configure() {
+configure() {
 	cd "$PKG_BUILD_DIR"
 	if [ -s ".config" ]; then
 		mv ".config" ".config.old"
@@ -146,7 +146,7 @@ CONFIG_INITRAMFS_ROOT_GID=$(id -g)
 CONFIG_TMPFS=y
 CONFIG_DEVTMPFS=y
 EOF
-	#_build_configure_ftrace >>.config
+	#_configure_ftrace >>.config
 	make ARCH=x86_64 kvmconfig
 }
 

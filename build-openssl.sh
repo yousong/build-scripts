@@ -12,7 +12,7 @@ PKG_SOURCE_MD5SUM=5262bfa25b60ed9de9f28d5d52d77fc5
 
 # OpenSSL currently does not support parallel build
 NJOBS=1
-build_configure() {
+configure() {
 	local kern="$(uname -s)"
 	local mach="$(uname -m)"
 	local os
