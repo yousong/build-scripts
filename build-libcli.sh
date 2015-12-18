@@ -17,4 +17,3 @@ staging() {
 	make DESTDIR="$PKG_STAGING_DIR" PREFIX="$INSTALL_PREFIX" install
 }
 
-main

@@ -118,4 +118,3 @@ do_patch() {
 	apply_patches
 }
 
-main

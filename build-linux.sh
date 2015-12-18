@@ -164,4 +164,3 @@ Test the built kernel
 EOF
 }
 
-main

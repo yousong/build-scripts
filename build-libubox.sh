@@ -66,4 +66,3 @@ if os_is_darwin; then
 	CMAKE_ARGS="$CMAKE_ARGS -DBUILD_LUA=no"
 fi
 
-main

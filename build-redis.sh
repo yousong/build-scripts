@@ -32,4 +32,3 @@ install() {
 	cp "$PKG_STAGING_DIR" "$INSTALL_PREFIX"
 }
 
-main

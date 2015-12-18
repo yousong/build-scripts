@@ -24,4 +24,3 @@ PKG_SOURCE_MD5SUM="6a4275e0191e7fe2f834f7ec00eabbbe"
 
 PKG_BUILD_DIR="$BASE_BUILD_DIR/the_silver_searcher-$PKG_VERSION"
 
-main

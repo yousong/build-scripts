@@ -38,4 +38,3 @@ configure() {
 	set_option CONFIG_PREFIX "\"$PKG_STAGING_DIR/$INSTALL_PREFIX\""
 }
 
-main

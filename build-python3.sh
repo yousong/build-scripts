@@ -54,4 +54,3 @@ if os_is_darwin; then
 	export MACOSX_DEPLOYMENT_TARGET="10.5"
 fi
 
-main

@@ -56,4 +56,3 @@ do_patch() {
 EOF
 }
 
-main

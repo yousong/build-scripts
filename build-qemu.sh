@@ -33,4 +33,3 @@ To use qemu-bridge-helper, appropriate permission bits need to be set
 EOF
 }
 
-main

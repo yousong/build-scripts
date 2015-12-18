@@ -58,4 +58,3 @@ configure_pre() {
 	fi
 }
 
-main

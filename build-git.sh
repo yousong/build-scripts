@@ -26,4 +26,3 @@ PKG_SOURCE_MD5SUM="b711be7628a4a2c25f38d859ee81b423"
 
 . "$PWD/env.sh"
 
-main

@@ -56,4 +56,3 @@ staging() {
 		make -j "$NJOBS" install INSTALL_PREFIX="$PKG_STAGING_DIR" "$MAKE_VARS"
 }
 
-main

@@ -104,4 +104,3 @@ configure_pre() {
 	autoreconf
 }
 
-main

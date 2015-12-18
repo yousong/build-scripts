@@ -47,4 +47,3 @@ MODS='
 '
 nginx_add_modules
 
-main

@@ -17,4 +17,3 @@ prepare_source() {
 	untar "$BASE_DL_DIR/$PKG_SOURCE" "$BASE_BUILD_DIR" "s:^[^/]\\+:$dir:"
 }
 
-main

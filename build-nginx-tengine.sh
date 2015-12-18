@@ -16,4 +16,3 @@ if os_is_darwin; then
 "
 fi
 
-main

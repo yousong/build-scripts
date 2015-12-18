@@ -7,4 +7,3 @@ PKG_SOURCE_URL="http://download.augeas.net/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=a2536a9c3d744dc09d234228fe4b0c93
 
 . "$PWD/env.sh"
-main

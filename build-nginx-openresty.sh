@@ -17,4 +17,3 @@ if os_is_darwin; then
 	EXTRA_LDFLAGS=""
 fi
 
-main

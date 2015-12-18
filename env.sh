@@ -244,15 +244,31 @@ clean() {
 	rm -rf "$PKG_BUILD_DIR"
 }
 
-main() {
-	download
-	prepare
-	configure_pre
-	configure
-	compile
-	staging_pre
-	staging
-	install_pre
-	install
-	install_post
+till() {
+	local p="$1"
+	local a
+	local phases='
+		download
+		prepare
+		configure_pre
+		configure
+		compile
+		staging_pre
+		staging
+		install_pre
+		install
+		install_post
+	'
+
+	for a in $phases; do
+		$a
+		if [ "$a" = "$p" ]; then
+			return 0
+		fi
+	done
 }
+
+if [ "$#" -eq 0 ]; then
+	set -- till _end
+fi
+trap "$*" EXIT
