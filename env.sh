@@ -236,6 +236,14 @@ install_post() {
 	true
 }
 
+archive() {
+	true
+}
+
+clean() {
+	rm -rf "$PKG_BUILD_DIR"
+}
+
 main() {
 	download
 	prepare
