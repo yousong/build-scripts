@@ -27,7 +27,7 @@ staging() {
 	make PREFIX="$PKG_STAGING_DIR" install
 }
 
-install_to_final() {
+install() {
 	mkdir -p "$INSTALL_PREFIX"
 	cp "$PKG_STAGING_DIR" "$INSTALL_PREFIX"
 }

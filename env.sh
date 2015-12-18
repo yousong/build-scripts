@@ -210,10 +210,6 @@ configure() {
 	fi
 }
 
-install_pre() {
-	true
-}
-
 staging_pre() {
 	rm -rf "$PKG_STAGING_DIR"
 }
@@ -224,19 +220,20 @@ staging() {
 		make -j "$NJOBS" install DESTDIR="$PKG_STAGING_DIR" ${PKG_CMAKE:+VERBOSE=1} "$MAKE_VARS"
 }
 
-install_post() {
+install_pre() {
+	# 1. Find the non-wriable ones in staging dir
+	# 2. rm -rf them in install_prefix before the installation
+	# find dest_dir/openssl-1.0.2e-install/home/yousong/.usr -not -perm -0200
 	true
 }
 
-install_to_final() {
+install() {
 	mkdir -p "$INSTALL_PREFIX"
 	cp "$PKG_STAGING_DIR/$INSTALL_PREFIX" "$INSTALL_PREFIX"
 }
 
-install() {
-	install_pre
-	install_post
-	install_to_final
+install_post() {
+	true
 }
 
 main() {
@@ -247,5 +244,7 @@ main() {
 	compile
 	staging_pre
 	staging
+	install_pre
 	install
+	install_post
 }
