@@ -204,8 +204,10 @@ build_configure() {
 
 build_compile() {
 	cd "$PKG_BUILD_DIR"
-	eval CFLAGS="'$EXTRA_CFLAGS'" CPPFLAGS="'$EXTRA_CPPFLAGS'" LDFLAGS="'$EXTRA_LDFLAGS'" "$MAKE_VARS" \
-		make -j "$NJOBS" ${PKG_CMAKE:+VERBOSE=1} "$MAKE_VARS"
+	eval CFLAGS="'$EXTRA_CFLAGS'" \
+		 CPPFLAGS="'$EXTRA_CPPFLAGS'" \
+		 LDFLAGS="'$EXTRA_LDFLAGS'" \
+		 make -j "$NJOBS" "$MAKE_VARS" ${PKG_CMAKE:+VERBOSE=1}
 }
 
 build_post() {
