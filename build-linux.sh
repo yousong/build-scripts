@@ -150,6 +150,10 @@ EOF
 	make ARCH=x86_64 kvmconfig
 }
 
+staging() {
+	true
+}
+
 install() {
 	cat <<EOF
 

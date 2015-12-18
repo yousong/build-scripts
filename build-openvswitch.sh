@@ -58,9 +58,4 @@ configure_pre() {
 	fi
 }
 
-install_staging() {
-	cd "$PKG_BUILD_DIR"
-	make DESTDIR="$_PKG_STAGING_DIR" install
-}
-
 main

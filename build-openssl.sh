@@ -48,12 +48,12 @@ compile() {
 		all
 }
 
-install_staging() {
+staging() {
 	cd "$PKG_BUILD_DIR"
 
 	# OpenSSL use INSTALL_PREFIX instead of DESTDIR
 	eval "$MAKE_VARS" \
-		make -j "$NJOBS" install INSTALL_PREFIX="$_PKG_STAGING_DIR" "$MAKE_VARS"
+		make -j "$NJOBS" install INSTALL_PREFIX="$PKG_STAGING_DIR" "$MAKE_VARS"
 }
 
 main

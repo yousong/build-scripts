@@ -62,7 +62,7 @@ _init() {
 _init
 
 PKG_BUILD_DIR="$BASE_BUILD_DIR/$PKG_NAME-$PKG_VERSION"
-_PKG_STAGING_DIR="$BASE_DESTDIR/$PKG_NAME-$PKG_VERSION-install"
+PKG_STAGING_DIR="$BASE_DESTDIR/$PKG_NAME-$PKG_VERSION-install"
 
 _csum_check() {
 	local file="$1"
@@ -214,10 +214,14 @@ install_pre() {
 	true
 }
 
-install_staging() {
+staging_pre() {
+	rm -rf "$PKG_STAGING_DIR"
+}
+
+staging() {
 	cd "$PKG_BUILD_DIR"
 	eval "$MAKE_VARS" \
-		make -j "$NJOBS" install DESTDIR="$_PKG_STAGING_DIR" ${PKG_CMAKE:+VERBOSE=1} "$MAKE_VARS"
+		make -j "$NJOBS" install DESTDIR="$PKG_STAGING_DIR" ${PKG_CMAKE:+VERBOSE=1} "$MAKE_VARS"
 }
 
 install_post() {
@@ -226,13 +230,11 @@ install_post() {
 
 install_to_final() {
 	mkdir -p "$INSTALL_PREFIX"
-	cp "$_PKG_STAGING_DIR/$INSTALL_PREFIX" "$INSTALL_PREFIX"
+	cp "$PKG_STAGING_DIR/$INSTALL_PREFIX" "$INSTALL_PREFIX"
 }
 
 install() {
-	rm -rf "$_PKG_STAGING_DIR"
 	install_pre
-	install_staging
 	install_post
 	install_to_final
 }
@@ -243,5 +245,7 @@ main() {
 	configure_pre
 	configure
 	compile
+	staging_pre
+	staging
 	install
 }

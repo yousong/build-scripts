@@ -12,9 +12,9 @@ configure() {
 	true
 }
 
-install_staging() {
+staging() {
 	cd "$PKG_BUILD_DIR"
-	make DESTDIR="$_PKG_STAGING_DIR" PREFIX="$INSTALL_PREFIX" install
+	make DESTDIR="$PKG_STAGING_DIR" PREFIX="$INSTALL_PREFIX" install
 }
 
 main
