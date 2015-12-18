@@ -190,16 +190,12 @@ build_configure_cmake() {
 		$CMAKE_ARGS
 }
 
-build_compile() {
+compile() {
 	cd "$PKG_BUILD_DIR"
 	eval CFLAGS="'$EXTRA_CFLAGS'" \
 		 CPPFLAGS="'$EXTRA_CPPFLAGS'" \
 		 LDFLAGS="'$EXTRA_LDFLAGS'" \
 		 make -j "$NJOBS" "$MAKE_VARS" ${PKG_CMAKE:+VERBOSE=1}
-}
-
-build_post() {
-	true
 }
 
 configure_pre() {
@@ -212,12 +208,6 @@ configure() {
 	else
 		build_configure_default
 	fi
-}
-
-build() {
-	build_compile
-
-	build_post
 }
 
 install_pre() {
@@ -252,6 +242,6 @@ main() {
 	prepare
 	configure_pre
 	configure
-	build
+	compile
 	install
 }

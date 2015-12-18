@@ -40,7 +40,7 @@ configure() {
 	make depend
 }
 
-build_compile() {
+compile() {
 	cd "$PKG_BUILD_DIR"
 
 	eval make -j "$NJOBS" \
