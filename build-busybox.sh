@@ -17,6 +17,11 @@ PKG_SOURCE_URL="http://busybox.net/downloads/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM="be98a40cadf84ce2d6b05fa41a275c6a"
 
 . "$PWD/env.sh"
+if ! os_is_linux; then
+	__errmsg "we build BusyBox only on Linux"
+	exit 1
+fi
+
 . "$PWD/utils-kconfig.sh"
 
 EXTRA_CFLAGS=
