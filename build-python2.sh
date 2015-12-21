@@ -1,7 +1,5 @@
 #!/bin/sh -e
 
-. "$PWD/env.sh"
-
 PKG_NAME=python2
 PKG_VERSION="2.7.10"
 PKG_SOURCE="Python-${PKG_VERSION}.tar.xz"

@@ -1,7 +1,5 @@
 #!/bin/sh -e
 
-. "$PWD/env.sh"
-
 PKG_NAME=python3
 PKG_VERSION="3.5.0"
 PKG_SOURCE="Python-${PKG_VERSION}.tar.xz"
