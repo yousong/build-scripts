@@ -9,10 +9,10 @@
 # it's already out of src/ tree...
 #
 PKG_NAME=nginx
-PKG_VERSION="1.9.6"
-PKG_SOURCE="$PKG_NAME-${PKG_VERSION}.tar.gz"
+PKG_VERSION=1.9.6
+PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://nginx.org/download/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM="f6899825e7a8deadba4948ff84515ad6"
+PKG_SOURCE_MD5SUM=f6899825e7a8deadba4948ff84515ad6
 
 . "$PWD/env.sh"
 . "$PWD/utils-nginx.sh"

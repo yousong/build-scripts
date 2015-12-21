@@ -7,6 +7,10 @@ CONFIGURE_ARGS='					\
 	--error-log-path=error.log		\
 	--http-log-path=access.log		\
 '
+CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
+	--with-cc-opt='$EXTRA_CFLAGS'	\\
+	--with-ld-opt='$EXTRA_LDFLAGS'	\\
+"
 
 download_extra() {
 	local m
