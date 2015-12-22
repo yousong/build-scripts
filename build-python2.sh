@@ -9,8 +9,3 @@ PKG_SOURCE_MD5SUM="c685ef0b8e9f27b5e3db5db12b268ac6"
 . "$PWD/env.sh"
 PKG_BUILD_DIR="$BASE_BUILD_DIR/Python-$PKG_VERSION"
 CONFIGURE_ARGS="--enable-unicode=ucs4"
-
-if os_is_darwin; then
-	export MACOSX_DEPLOYMENT_TARGET="10.5"
-fi
-
