@@ -13,6 +13,7 @@ export TOPDIR=$PWD
 export BASE_DESTDIR="$tests_dir/_dest_dir"
 export BASE_BUILD_DIR="$tests_dir/_build_dir"
 export INSTALL_PREFIX="$tests_dir/_install"
+export PATH=$INSTALL_PREFIX/bin:$INSTALL_PREFIX/sbin:$PATH
 
 echo() {
 	/bin/echo "$@"
