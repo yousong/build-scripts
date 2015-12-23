@@ -1,5 +1,14 @@
 #!/bin/sh -e
-
+#
+# With GCC version prior to 4.5 (like the case with CentOS 6, the build log
+# will be flooded with the following warning messages which should be okay to
+# live with
+#
+#		warning: will never be executed
+#
+# - -Wunreachable-code is broken and has been removed from GCC 4.5. Do not use
+#	it. https://gcc.gnu.org/bugzilla/show_bug.cgi?id=46158
+#
 PKG_NAME=python3
 PKG_VERSION="3.5.0"
 PKG_SOURCE="Python-${PKG_VERSION}.tar.xz"
