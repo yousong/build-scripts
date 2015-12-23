@@ -155,6 +155,10 @@ staging() {
 }
 
 install() {
+	true
+}
+
+install_post() {
 	cat <<EOF
 
 Test the built kernel
@@ -163,4 +167,3 @@ Test the built kernel
 
 EOF
 }
-
