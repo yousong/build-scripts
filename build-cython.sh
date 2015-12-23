@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Building python binding requires Cython
+# Cython FAQ, https://github.com/cython/cython/wiki/FAQ
 #
 PKG_NAME=Cython
 PKG_VERSION=0.23.4
