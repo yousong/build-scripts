@@ -34,12 +34,12 @@ ncpus() {
 }
 
 _init() {
-    mkdir -p "$BASE_DL_DIR"
-    mkdir -p "$BASE_BUILD_DIR"
-    mkdir -p "$BASE_DESTDIR"
-    mkdir -p "$INSTALL_PREFIX"
+	mkdir -p "$BASE_DL_DIR"
+	mkdir -p "$BASE_BUILD_DIR"
+	mkdir -p "$BASE_DESTDIR"
+	mkdir -p "$INSTALL_PREFIX"
 
-    alias cp="cp -a -T"
+	alias cp="cp -a -T"
 	PKG_CONFIG_PATH="$INSTALL_PREFIX/lib/pkgconfig:$INSTALL_PREFIX/share/pkgconfig"
 	EXTRA_CPPFLAGS="-I$INSTALL_PREFIX/include"
 	EXTRA_CFLAGS="-I$INSTALL_PREFIX/include"
@@ -145,7 +145,7 @@ untar() {
 }
 
 prepare_source() {
-		untar "$BASE_DL_DIR/$PKG_SOURCE" "$BASE_BUILD_DIR"
+	untar "$BASE_DL_DIR/$PKG_SOURCE" "$BASE_BUILD_DIR"
 }
 
 prepare_extra() {
@@ -170,10 +170,10 @@ prepare() {
 build_configure_default() {
 	cd "$PKG_BUILD_DIR"
 	eval CPPFLAGS="'$EXTRA_CPPFLAGS'"	\
-		 CFLAGS="'$EXTRA_CFLAGS'"		\
-		 LDFLAGS="'$EXTRA_LDFLAGS'"		\
-		 "$CONFIGURE_VARS"				\
-		 "$PKG_BUILD_DIR/configure"		\
+		CFLAGS="'$EXTRA_CFLAGS'"		\
+		LDFLAGS="'$EXTRA_LDFLAGS'"		\
+		"$CONFIGURE_VARS"				\
+		"$PKG_BUILD_DIR/configure"		\
 			--prefix="$INSTALL_PREFIX"	\
 			"$CONFIGURE_ARGS"
 }
@@ -195,9 +195,9 @@ build_configure_cmake() {
 compile() {
 	cd "$PKG_BUILD_DIR"
 	eval CFLAGS="'$EXTRA_CFLAGS'" \
-		 CPPFLAGS="'$EXTRA_CPPFLAGS'" \
-		 LDFLAGS="'$EXTRA_LDFLAGS'" \
-		 make -j "$NJOBS" "$MAKE_VARS" ${PKG_CMAKE:+VERBOSE=1}
+		CPPFLAGS="'$EXTRA_CPPFLAGS'" \
+		LDFLAGS="'$EXTRA_LDFLAGS'" \
+		make -j "$NJOBS" "$MAKE_VARS" ${PKG_CMAKE:+VERBOSE=1}
 }
 
 configure_pre() {

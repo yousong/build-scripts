@@ -6,7 +6,7 @@ else
 	builders="$(ls build-*.sh)"
 fi
 tests_dir=$PWD/tests_dir
-rm -rf "$tests_dir"
+#rm -rf "$tests_dir"
 mkdir -p "$tests_dir"
 
 export TOPDIR=$PWD
