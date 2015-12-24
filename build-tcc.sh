@@ -19,37 +19,39 @@ do_patch() {
 	cd "$PKG_BUILD_DIR"
 
 	patch -p1 <<"EOF"
-From ac93dabe74c513ea78549ad14e04320df53f752c Mon Sep 17 00:00:00 2001
+From daec3e743fc7346c49d240b0dc0f917077012309 Mon Sep 17 00:00:00 2001
 From: Yousong Zhou <yszhou4tech@gmail.com>
 Date: Thu, 24 Dec 2015 11:25:44 +0800
 Subject: [PATCH] configure: avoid ln the same file
 
 The fix is for a clean configure exit status
 ---
- configure | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ configure | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/configure b/configure
-index 6a796f3..4cf73b7 100755
+index 6a796f3..febea70 100755
 --- a/configure
 +++ b/configure
-@@ -585,6 +585,10 @@ rm -f $TMPN* $CONFTEST
+@@ -585,6 +585,12 @@ rm -f $TMPN* $CONFTEST
  # ---------------------------------------------------------------------------
  # build tree in object directory if source path is different from current one
  
-+fn_inode() {
-+    stat -c %i "$1" 2>/dev/null
++fn_sameinode() {
++	local v0="$(stat -c %i%D "$1" 2>/dev/null)"
++	local v1="$(stat -c %i%D "$2" 2>/dev/null)"
++	[ "$v0" = "$v1" ]
 +}
 +
  fn_makelink()
  {
      tgt=$1/$2
-@@ -600,7 +604,9 @@ fn_makelink()
+@@ -600,7 +606,9 @@ fn_makelink()
           esac
           ;;
      esac
 -    ln -sfn $tgt $2
-+    if [ "$(fn_inode "$tgt")" != "$(fn_inode "$2")" ]; then
++    if ! fn_sameinode "$tgt" "$2"; then
 +        ln -sfn $tgt $2
 +    fi
  }
