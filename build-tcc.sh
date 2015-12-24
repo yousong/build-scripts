@@ -7,6 +7,12 @@
 # - Tiny C Compiler, http://bellard.org/tcc/
 # - Tiny C Compiler Savannah project page, http://savannah.gnu.org/projects/tinycc
 #
+# Relevant stuff by Rob Landley
+#
+# - QCC, QEMU C Compiler, http://landley.net/code/tinycc/qcc/todo.txt
+# - Commands to provide, http://landley.net/code/tinycc/qcc/commands.txt
+# - http://landley.net/qcc/
+#
 PKG_NAME=tcc
 PKG_VERSION=0.9.26
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.bz2"
