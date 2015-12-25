@@ -158,6 +158,10 @@ install() {
 	true
 }
 
+uninstall() {
+	true
+}
+
 install_post() {
 	cat <<EOF
 

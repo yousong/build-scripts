@@ -246,6 +246,21 @@ clean() {
 	rm -rf "$PKG_BUILD_DIR"
 }
 
+uninstall() {
+	local sf tf
+	local dir="$PKG_STAGING_DIR/$INSTALL_PREFIX"
+
+	for sf in $(find "$dir" -mindepth 1); do
+		tf="${sf#$dir/}"
+		tf="$INSTALL_PREFIX/$tf"
+		if [ -f "$tf" ]; then
+			rm -vf $tf
+		elif [ -d "$tf" ]; then
+			rmdir -v --parents --ignore-fail-on-non-empty "$tf"
+		fi
+	done
+}
+
 till() {
 	local p="$1"
 	local a
