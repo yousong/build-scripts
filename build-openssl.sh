@@ -40,6 +40,9 @@ configure() {
 	make depend
 }
 
+MAKE_VARS="								\\
+	MANDIR=$INSTALL_PREFIX/share/man	\\
+"
 compile() {
 	cd "$PKG_BUILD_DIR"
 
