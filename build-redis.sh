@@ -1,10 +1,10 @@
 #!/bin/sh -e
 
 PKG_NAME=redis
-PKG_VERSION="3.0.5"
+PKG_VERSION=3.0.6
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://download.redis.io/releases/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM="c7ba233e5f92ad2f48860c815bb05480"
+PKG_SOURCE_MD5SUM=9a44ea6bff987d2113caea7761730376
 
 . "$PWD/env.sh"
 
