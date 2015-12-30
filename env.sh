@@ -68,36 +68,39 @@ PKG_STAGING_DIR="$BASE_DESTDIR/$PKG_NAME-$PKG_VERSION-install"
 
 _csum_check() {
 	local file="$1"
+	local xcsum="$2"
 	local csum
 
 	csum="$(md5sum "$file" | cut -f1 -d' ')"
-	if [ -z "$PKG_SOURCE_MD5SUM" -o "$csum" = "$PKG_SOURCE_MD5SUM" ]; then
+	if [ -z "$xcsum" -o "$xcsum" = "$csum" ]; then
 		return 0
 	else
 		__errmsg "md5sum not match"
 		__errmsg ""
 		__errmsg "        file: $file"
-		__errmsg "    expected: $PKG_SOURCE_MD5SUM"
+		__errmsg "    expected: $xcsum"
 		__errmsg "      actual: $csum"
 		return 1
 	fi
 }
 
 download_http() {
-	local file="$BASE_DL_DIR/$PKG_SOURCE"
+	local file="$BASE_DL_DIR/$1"
+	local url="$2"
+	local csum="$3"
 	local tmp="$file.dl"
 
 	# expecting set -e will abort if anything bad happens
 	if [ -f "$file" ]; then
-		if _csum_check "$file"; then
+		if _csum_check "$file" "$csum"; then
 			return 0
 		else
 			return 1
 		fi
 	fi
-	wget -c -O "$tmp" "$PKG_SOURCE_URL"
+	wget -c -O "$tmp" "$url"
 	mv "$tmp" "$file"
-	_csum_check "$file"
+	_csum_check "$file" "$csum"
 }
 
 download_extra() {
@@ -105,7 +108,7 @@ download_extra() {
 }
 
 download() {
-	download_http
+	download_http "$PKG_SOURCE" "$PKG_SOURCE_URL" "$PKG_SOURCE_MD5SUM"
 	download_extra
 }
 
