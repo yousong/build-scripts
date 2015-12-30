@@ -19,10 +19,9 @@
 #	rm -rfv /home/yousong/.usr/share/perl/5.14.2/Git*
 #
 PKG_NAME=git
-PKG_VERSION="2.6.3"
-PKG_SOURCE="${PKG_NAME}-${PKG_VERSION}.tar.gz"
+PKG_VERSION=2.6.4
+PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="https://www.kernel.org/pub/software/scm/git/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM="b711be7628a4a2c25f38d859ee81b423"
+PKG_SOURCE_MD5SUM=169409c2f9872797f1efb41fb9a99dc3
 
 . "$PWD/env.sh"
-
