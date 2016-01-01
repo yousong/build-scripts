@@ -71,8 +71,11 @@ _csum_check() {
 	local xcsum="$2"
 	local csum
 
+	if [ -z "$xcsum" ]; then
+		return 0
+	fi
 	csum="$(md5sum "$file" | cut -f1 -d' ')"
-	if [ -z "$xcsum" -o "$xcsum" = "$csum" ]; then
+	if [ "$xcsum" = "$csum" ]; then
 		return 0
 	else
 		__errmsg "md5sum not match"
