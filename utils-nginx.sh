@@ -21,13 +21,10 @@ download_extra() {
 		ref="${m%:*}"
 		repo="${m#*:}"
 		fn="${repo#*/}-$ref"
-		source="$BASE_DL_DIR/$fn.tar.gz"
+		source="$fn.tar.gz"
 		source_url="https://github.com/$repo/archive/$ref.tar.gz"
 
-		if [ ! -s "$source" ]; then
-			wget -c -O "$source.dl" "$source_url"
-			mv "$source.dl" "$source"
-		fi
+		download_http "$source" "$source_url"
 	done
 }
 
