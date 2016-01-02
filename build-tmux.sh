@@ -7,9 +7,11 @@
 # tmux on Debian Wheezy 7 has version 1.6 (Fetched with command "tmux -V")
 #
 # CentOS 6.6 lacks a libevent version that fulfils tmux's requirement so that
-# we have to build it manually here with the following commands
+# we have to build it manually here with the following commands.
 #
 #		./build-libevent.sh
+#
+# Note that currently running tmux may crash on installation of libevent...
 #
 # Newer versions are required for the following features to work
 #
