@@ -49,6 +49,8 @@ configure() {
 	true
 }
 
-MAKE_VARS="					\\
-	prefix=$INSTALL_PREFIX	\\
+MAKE_VARS="							\\
+	prefix=$INSTALL_PREFIX			\\
+	XCFLAGS='$EXTRA_CFLAGS'			\\
+	XLDFLAGS='$EXTRA_LDFLAGS'		\\
 "
