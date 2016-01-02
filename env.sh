@@ -50,6 +50,8 @@ _init() {
 	fi
 	if os_is_darwin; then
 		# ld: -rpath can only be used when targeting Mac OS X 10.5 or later
+		#
+		# OpenResty uses first two numbers of "sw_vers -productVersion"
 		export MACOSX_DEPLOYMENT_TARGET="10.5"
 		MACPORTS_PREFIX="${MACPORTS_PREFIX:-/opt/local}"
 		PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$MACPORTS_PREFIX/lib/pkgconfig"
