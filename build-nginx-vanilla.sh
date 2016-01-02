@@ -8,11 +8,17 @@
 # NGINX does not support autotools configure style out of tree build, because
 # it's already out of src/ tree...
 #
+# HTTP/2 spec does not require the use of encryption.  "some implementations
+# have stated that they will only support HTTP/2 when it is used over an
+# encrypted connection, and currently no browser supports HTTP/2 unencrypted."
+#
+# - HTTP2 FAQ, https://http2.github.io/faq
+#
 PKG_NAME=nginx
-PKG_VERSION=1.9.6
+PKG_VERSION=1.9.9
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://nginx.org/download/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=f6899825e7a8deadba4948ff84515ad6
+PKG_SOURCE_MD5SUM=50fdfa08e93ead7a111cba5a5f5735af
 
 . "$PWD/env.sh"
 . "$PWD/utils-nginx.sh"
@@ -20,6 +26,7 @@ PKG_SOURCE_MD5SUM=f6899825e7a8deadba4948ff84515ad6
 CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
 	--with-http_ssl_module			\\
 	--with-http_mp4_module			\\
+	--with-http_v2_module			\\
 "
 # nginx-lua depends on LuaJIT, LuaJIT.  They has to be preinstalled.
 #
