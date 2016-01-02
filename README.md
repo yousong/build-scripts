@@ -33,6 +33,43 @@ Many of the times packages depend on the installation of other packages to be su
 
 When dependencies cannot be satisfied by system package manager, we build the required version ourself.
 
+## Versioned symbols
+
+On Debian, Warning messages like the follow can be emitted by dynamic loader
+
+	/usr/bin/curl: /home/yousong/.usr/lib/libcurl.so.4: no version information available (required by /usr/bin/curl)
+	/home/yousong/.usr/sbin/openvpn: /home/yousong/.usr/lib/libssl.so.1.0.0: no version information available (required by /home/yousong/.usr/sbin/openvpn)
+	/home/yousong/.usr/sbin/openvpn: /home/yousong/.usr/lib/libcrypto.so.1.0.0: no version information available (required by /home/yousong/.usr/sbin/openvpn)
+
+These informations are most likely related to libraries provided by OpenSSL (`libcrypto.so` and `libssl.so`)
+
+The first message about `curl` was caused by the following facts
+
+- `/usr/bin/curl` was provided by `apt-get` and was configured with `--enable-versioned-symbols`, so the result binary references (depends on) those symbols (`CURL_OPENSSL_3`)
+- `libcurl.so` built by us does not enable that configure option, so the result library is missing the symbol
+- The `ldd /usr/bin/curl` was run with `LD_LIBRARY_PATH` being set to `$INSTALL_PREFIX/lib` causing the loader to first look for and find the libcurl there provided by us
+
+The messages about `openvpn` was caused by the following facts
+
+- That `openvpn` binary was built before we have OpenSSL libraries present in `$INSTALL_PREFIX/lib`
+- That `openvpn` binary references (depends on) symbol `OPENSSL_1.0.0` as is provided by OpenSSL libraries provided by `apt-get`
+- Then custom OpenSSL libraries were built by us
+- Then `RPATH` still points the loader to first lookup the library in `$INSTALL_PREFIX/lib`
+- Then loader found that the versioned symbol information is missing
+
+To solve the problem
+
+- `unset LD_LIBRARY_PATH` or just remove `$INSTALL_PREFIX/lib` from `$LD_LIBRARY_PATH`
+- Rebuild packages here to produce fresh binaries
+
+Background information while debugging this
+
+- `dpkg --search /lib64/ld-linux-x86-64.so.2` to find out that the loader was provided by `libc6`.  It seems from the source code `elf/dl-version.c:match_symbol` that the warning message should not hurt much as long as the binaries themselves are compatible with each other
+- `objdump -p /usr/bin/curl` to find out provides and version references from *p*rivate headers (headers that are binary format specific)
+- `--version-script` is the linker option for producing dynamic libraries with versioned symbols
+- OpenSSL packaged by Debian is patched with `debian/patches/version-script.patch` to provide versioned symbols
+- Curl packaged by Debian is configured with `--enable-versioned-symbols`
+
 ## Background
 
 There are times when we want to build packages from source for reasons like
@@ -53,6 +90,10 @@ The idea is not new, yet the result is rewarding.
 Build scripts here uses the naming convention from OpenWrt package `Makefile`.
 
 ## TODO
+
+Dependency handling
+
+...
 
 	# install builddep with apt-get or yum
 	./ag.sh builddep
