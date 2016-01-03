@@ -86,17 +86,17 @@ apply_patches() {
 
 	cd "$PKG_BUILD_DIR"
 
-	[ -f ".patched" ] && {
-	__errmsg "$PKG_BUILD_DIR/.patched exists, skip patching."
-	return 0
-} || true
+	if [ -f ".patched" ]; then
+		__errmsg "$PKG_BUILD_DIR/.patched exists, skip patching."
+		return 0
+	fi
 
-for f in $(ls "$PATCH_DIR/$PKG_VERSION."*); do
-	echo "applying patch $f"
-	patch -p0 -i "$f"
-	echo
-done
-touch .patched
+	for f in $(ls "$PATCH_DIR/$PKG_VERSION."*); do
+		__errmsg "applying patch $f"
+		patch -p0 -i "$f"
+		__errmsg
+	done
+	touch .patched
 }
 
 show_build_dep() {
