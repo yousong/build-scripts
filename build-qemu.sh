@@ -1,10 +1,10 @@
 #!/bin/sh -e
 
 PKG_NAME=qemu
-PKG_VERSION="2.3.0"
-PKG_SOURCE="$PKG_NAME-${PKG_VERSION}.tar.bz2"
+PKG_VERSION=2.5.0
+PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.bz2"
 PKG_SOURCE_URL="http://wiki.qemu-project.org/download/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM="2fab3ea4460de9b57192e5b8b311f221"
+PKG_SOURCE_MD5SUM=f469f2330bbe76e3e39db10e9ac4f8db
 
 . "$PWD/env.sh"
 
@@ -32,4 +32,3 @@ To use qemu-bridge-helper, appropriate permission bits need to be set
 
 EOF
 }
-
