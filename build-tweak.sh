@@ -7,16 +7,11 @@
 PKG_NAME=tweak
 PKG_VERSION=2015-04-22
 PKG_SOURCE_VERSION=18448721678b2169a4e3cc03c048f8fb85ee7776
-PKG_SOURCE="$PKG_NAME-${PKG_VERSION}-${PKG_SOURCE_VERSION}.tar.gz"
+PKG_SOURCE="$PKG_NAME-$PKG_VERSION-$PKG_SOURCE_VERSION.tar.gz"
 PKG_SOURCE_URL="http://tartarus.org/~simon-git/gitweb/?p=tweak.git;a=snapshot;h=$PKG_SOURCE_VERSION;sf=tgz"
-PKG_SOURCE_MD5SUM=
+PKG_SOURCE_UNTAR_FIXUP=1
 
 . "$PWD/env.sh"
-
-prepare_source() {
-	local dir="$(basename $PKG_BUILD_DIR)"
-	untar "$BASE_DL_DIR/$PKG_SOURCE" "$BASE_BUILD_DIR" "s:^[^/]\\+:$dir:"
-}
 
 configure() {
 	true

@@ -7,19 +7,14 @@
 # It's libjson0-dev on Debian Wheezy
 #
 PKG_NAME=libubox
-PKG_VERSION="2015-11-09"
-PKG_SOURCE_VERSION="10429bccd0dc5d204635e110a7a8fae7b80d16cb"
+PKG_VERSION=2015-11-09
+PKG_SOURCE_VERSION=10429bccd0dc5d204635e110a7a8fae7b80d16cb
 PKG_SOURCE="$PKG_NAME-${PKG_VERSION}-${PKG_SOURCE_VERSION}.tar.gz"
 PKG_SOURCE_URL="http://git.openwrt.org/?p=project/libubox.git;a=snapshot;h=$PKG_SOURCE_VERSION;sf=tgz"
-PKG_SOURCE_MD5SUM=""
+PKG_SOURCE_UNTAR_FIXUP=1
 PKG_CMAKE=1
 
 . "$PWD/env.sh"
-
-prepare_source() {
-	local dir="$(basename $PKG_BUILD_DIR)"
-	untar "$BASE_DL_DIR/$PKG_SOURCE" "$BASE_BUILD_DIR" "s:^[^/]\\+:$dir:"
-}
 
 do_patch() {
     cd "$PKG_BUILD_DIR"

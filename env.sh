@@ -153,7 +153,14 @@ untar() {
 }
 
 prepare_source() {
-	untar "$BASE_DL_DIR/$PKG_SOURCE" "$BASE_BUILD_DIR"
+	local dir
+	local trans_exp
+
+	if [ -n "$PKG_SOURCE_UNTAR_FIXUP" ]; then
+		dir="$(basename $PKG_BUILD_DIR)"
+		trans_exp="s:^[^/]\\+:$dir:"
+	fi
+	untar "$BASE_DL_DIR/$PKG_SOURCE" "$BASE_BUILD_DIR" "$trans_exp"
 }
 
 prepare_extra() {
