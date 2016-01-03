@@ -14,6 +14,14 @@
 #
 # - HTTP2 FAQ, https://http2.github.io/faq
 #
+# To use "reuseport" in "listen" directive, Linux kernel of version at least
+# 3.9 is required.  We can use 3.16 with Debian Wheezy backports repository
+#
+#	# linux-libc-dev is required for definition of SO_REUSEPORT
+#	sudo apt-get install -t wheezy-backports linux-image-amd64 linux-libc-dev
+#
+# - Benchmark results across accept_mutex, reuseport, https://www.nginx.com/blog/socket-sharding-nginx-release-1-9-1/
+#
 PKG_NAME=nginx
 PKG_VERSION=1.9.9
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
