@@ -15,10 +15,14 @@
 # - HTTP2 FAQ, https://http2.github.io/faq
 #
 # To use "reuseport" in "listen" directive, Linux kernel of version at least
-# 3.9 is required.  We can use 3.16 with Debian Wheezy backports repository
+# 3.9 is required.
+#
+# With Debian we can use kernel 3.16 backports repository
 #
 #	# linux-libc-dev is required for definition of SO_REUSEPORT
 #	sudo apt-get install -t wheezy-backports linux-image-amd64 linux-libc-dev
+#
+# On CentOS 6, the feature has been backported since kernel version "2.6.32-417.el6"
 #
 # - Benchmark results across accept_mutex, reuseport, https://www.nginx.com/blog/socket-sharding-nginx-release-1-9-1/
 #
