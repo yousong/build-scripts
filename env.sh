@@ -52,7 +52,9 @@ _init() {
 		# ld: -rpath can only be used when targeting Mac OS X 10.5 or later
 		#
 		# OpenResty uses first two numbers of "sw_vers -productVersion"
-		export MACOSX_DEPLOYMENT_TARGET="10.5"
+		MACOSX_DEPLOYMENT_TARGET="$(sw_vers -productVersion)"
+		MACOSX_DEPLOYMENT_TARGET="${MACOSX_DEPLOYMENT_TARGET%.*}"
+		export MACOSX_DEPLOYMENT_TARGET
 		MACPORTS_PREFIX="${MACPORTS_PREFIX:-/opt/local}"
 		PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$MACPORTS_PREFIX/lib/pkgconfig"
 		PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$MACPORTS_PREFIX/share/pkgconfig"

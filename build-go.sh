@@ -2,6 +2,12 @@
 #
 # Building go1.5 and newer versions requires go1.4 to bootstrap
 #
+# The ports for Snow Leopard (Apple OS X 10.6) are no longer released as a
+# download or maintained since Apple no longer maintains that version of the
+# operating system.
+#
+# - Go 1.5 Release Notes, https://golang.org/doc/go1.5
+#
 PKG_NAME=go
 PKG_VERSION=1.5.2
 PKG_SOURCE="$PKG_NAME$PKG_VERSION.src.tar.gz"

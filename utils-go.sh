@@ -1,5 +1,4 @@
 GOROOT_FINAL="$INSTALL_PREFIX/go/goroot-$PKG_VERSION"
-export MACOSX_DEPLOYMENT_TARGET="10.6"
 
 prepare_extra() {
 	mv "$BASE_BUILD_DIR/go" "$PKG_BUILD_DIR"
