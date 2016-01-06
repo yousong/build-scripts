@@ -13,7 +13,6 @@ PKG_CMAKE=1
 do_patch() {
 	cd "$PKG_BUILD_DIR"
 
-	# $3 (implicit-install-check) for APR_FIND_APR should be set to 1
 	patch -p0 <<"EOF"
 --- Makefile.orig	2016-01-04 01:30:30.640813279 +0800
 +++ Makefile	2016-01-04 01:34:22.872885305 +0800
