@@ -15,4 +15,26 @@ PKG_SOURCE_URL="http://www.us.apache.org/dist//httpd/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=3690b3cc991b7dfd22aea9e1264a11b9
 
 . "$PWD/env.sh"
-INSTALL_PREFIX="$INSTALL_PREFIX/httpd"
+
+do_patch() {
+	cd "$PKG_BUILD_DIR"
+
+	# use a libexec/apache2/ for apache modules
+	patch -p0 <<"EOF"
+--- config.layout.orig	2016-01-06 13:59:58.729021336 +0800
++++ config.layout	2016-01-06 14:00:04.793019093 +0800
+@@ -41,7 +41,7 @@
+     bindir:        ${exec_prefix}/bin
+     sbindir:       ${exec_prefix}/sbin
+     libdir:        ${exec_prefix}/lib
+-    libexecdir:    ${exec_prefix}/libexec
++    libexecdir:    ${exec_prefix}/libexec+
+     mandir:        ${prefix}/man
+     sysconfdir:    ${prefix}/etc+
+     datadir:       ${prefix}/share+
+EOF
+}
+
+CONFIGURE_ARGS='			\
+	--enable-layout=GNU		\
+'

@@ -33,3 +33,7 @@ configure_pre() {
 	cd "$PKG_BUILD_DIR"
 	autoreconf
 }
+
+CONFIGURE_ARGS='			\
+	--enable-layout=GNU		\
+'
