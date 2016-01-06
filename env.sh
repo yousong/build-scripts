@@ -267,7 +267,7 @@ uninstall() {
 	local sf tf
 	local dir="$PKG_STAGING_DIR/$INSTALL_PREFIX"
 
-	for sf in $(find "$dir" -mindepth 1); do
+	for sf in $(find "$dir" -mindepth 1 -depth); do
 		tf="${sf#$dir/}"
 		tf="$INSTALL_PREFIX/$tf"
 		if [ -f "$tf" ]; then
