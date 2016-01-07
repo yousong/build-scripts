@@ -70,6 +70,14 @@ _init
 PKG_BUILD_DIR="$BASE_BUILD_DIR/$PKG_NAME-$PKG_VERSION"
 PKG_STAGING_DIR="$BASE_DESTDIR/$PKG_NAME-$PKG_VERSION-install"
 
+# these are for building with Makefile
+if [ -z "$PKG_SCRIPT_NAME" ]; then
+	PKG_SCRIPT_NAME="$0"
+fi
+if [ -z "$STAMP_DIR" ]; then
+	STAMP_DIR="$TOPDIR/tmp/stamp"
+fi
+
 _csum_check() {
 	local file="$1"
 	local xcsum="$2"
@@ -284,6 +292,72 @@ uninstall() {
 			rmdir -v --parents --ignore-fail-on-non-empty "$tf"
 		fi
 	done
+}
+
+genmake() {
+	local d mdepends
+	# description format: target:<actions#separated#by#HASH:prerequisite
+	local dep_desc='
+		download:download:
+		prepare:prepare:download
+		configure:configure_pre#configure:prepare
+		compile:compile:configure
+		staging:staging_pre#staging:compile
+		archive:archive:staging
+		install:install_pre#install#install_post:staging
+	'
+
+	for d in $dep_desc; do
+		local phasel="${d%%:*}"
+		local phaser="${d##*:}"
+		local action actions
+
+		cat <<EOF
+$STAMP_DIR/stamp.$PKG_NAME.$phasel:
+EOF
+		actions="${d#*:}"
+		actions="${actions%:*}"
+		actions="$(echo $actions | tr '#' ' ')"
+		for action in $actions; do
+		cat <<EOF
+	$PKG_SCRIPT_NAME $action
+EOF
+		done
+
+		cat <<EOF
+	mkdir -p \$\$(dirname \$@)
+	touch \$@
+$PKG_NAME/$phasel: $STAMP_DIR/stamp.$PKG_NAME.$phasel
+.PHONY: $PKG_NAME/$phasel
+$phasel: $STAMP_DIR/stamp.$PKG_NAME.$phasel
+
+EOF
+		if [ -n "$phaser" ]; then
+			cat <<EOF
+$STAMP_DIR/stamp.$PKG_NAME.$phasel: $STAMP_DIR/stamp.$PKG_NAME.$phaser
+
+EOF
+		fi
+	done
+
+	for d in $PKG_DEPENDS; do
+		mdepends="$STAMP_DIR/stamp.$d.install $mdepends"
+	done
+	mdepends="${mdepends% }"
+
+	cat <<EOF
+$PKG_SCRIPT_NAME: $TOPDIR/env.sh
+$STAMP_DIR/stamp.$PKG_NAME.prepare: $PKG_SCRIPT_NAME
+$STAMP_DIR/stamp.$PKG_NAME.configure: $mdepends
+$PKG_NAME/clean:
+	$PKG_SCRIPT_NAME clean
+
+$PKG_NAME/uninstall:
+	$PKG_SCRIPT_NAME uninstall
+
+.PHONY: $PKG_NAME/clean
+.PHONY: $PKG_NAME/uninstall
+EOF
 }
 
 till() {

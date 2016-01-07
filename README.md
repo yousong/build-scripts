@@ -9,9 +9,34 @@ Scripts for quickly building/installing specified versions of projects from sour
 - Try to be reentrant
 - Use absolute path
 
-## Backup Mirror
+## How to use this
 
-- https://distfiles.macports.org/$PKG_NAME
+Compile one by one and handle dependencies by mind
+
+	# download, prepare, configure, compile, staging
+	./build-nginx-vanilla.sh till staging
+
+	# single action configure
+	./build-nginx-vanilla.sh till configure
+
+	# remove build_dir/nginx-1.9.9
+	./build-nginx-vanilla.sh clean
+
+	# uninstall based on dest_dir/nginx-1.9.9-install
+	./build-nginx-vanilla.sh uninstall
+
+Compile with `Makefile`
+
+	# download, prepare, configure, compile, staging
+	make nginx/staging
+
+	# same but only happens in tests_dir/
+	make nginx/staging/test
+
+	# do them all
+	make download
+	make staging
+	make install/test
 
 ## Tips
 
@@ -91,44 +116,16 @@ Build scripts here uses the naming convention from OpenWrt package `Makefile`.
 
 ## TODO
 
-Dependency handling
+- reinstall by copying and overwrite would fail because of permission bits issues
 
-...
+	openssl, git, libguestfs, readline
 
-	# install builddep with apt-get or yum
-	./ag.sh builddep
+- build logs: `tmp/logs/logs.openssl.configure`
+- Hmm, ignore openvswitch, linux, busybox when testing
+- archive
+- provides listing and uninstall
 
-	# download source tarballs
-	./ag.sh download
+## Backup Mirror
 
-	./ag.sh prepare
-	./ag.sh build
-	./ag.sh install
+- https://distfiles.macports.org/$PKG_NAME
 
-	./nginx.sh flavors
-	FLAVOR=vanilla ./nginx.sh prepare
-	FLAVOR=vanilla ./nginx.sh build
-
-	# clean files in build_dir
-	FLAVOR=vanilla ./nginx.sh clean
-
-	# 1. prepare
-	# 2. build
-	# 3. install to staging area
-	# 4. make a list of installed files
-	# 5. remove files in final install area
-	FLAVOR=vanilla ./nginx.sh uninstall
-
-Or make
-
-	make ag
-	make ag/builddep
-	make ag/download
-	make ag/prepare
-	make ag/build
-	make ag/install
-
-	make nginx FLAVOR=vanilla
-
-	make ag/clean
-	make ag/uninstall
