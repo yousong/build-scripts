@@ -8,6 +8,7 @@ PKG_SOURCE_VERSION=67f40fb237d5c2fa5a8b9604e76a99716492a44a
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION-$PKG_SOURCE_VERSION.tar.gz"
 PKG_SOURCE_URL="https://github.com/micropython/micropython/archive/$PKG_SOURCE_VERSION.tar.gz"
 PKG_SOURCE_UNTAR_FIXUP=1
+PKG_DEPENDS='libffi'
 
 . "$PWD/env.sh"
 

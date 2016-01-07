@@ -31,6 +31,7 @@ PKG_VERSION=1.9.9
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://nginx.org/download/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=50fdfa08e93ead7a111cba5a5f5735af
+PKG_DEPENDS='openssl pcre'
 
 . "$PWD/env.sh"
 . "$PWD/utils-nginx.sh"
@@ -40,15 +41,19 @@ CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
 	--with-http_mp4_module			\\
 	--with-http_v2_module			\\
 "
-# nginx-lua depends on LuaJIT, LuaJIT.  They has to be preinstalled.
-#
-# If they are installed on Mac OS X with MacPorts (luajit)
-if os_is_darwin; then
-	CONFIGURE_VARS="											\\
-		LUAJIT_LIB='$MACPORTS_PREFIX/lib'						\\
-		LUAJIT_INC='$MACPORTS_PREFIX/include/luajit-2.0'		\\
-"
-fi
+
+# nginx-lua depends on LuaJIT or Lua 5.1
+nginx_init_lua_conf() {
+	local lua_lib="$(pkg-config --libs-only-L luajit 2>/dev/null | sed 's/-L//')"
+	local lua_inc="$(pkg-config --cflags-only-I luajit 2>/dev/null | sed 's/-I//')"
+
+	CONFIGURE_VARS="					\\
+		LUAJIT_LIB='$lua_lib'			\\
+		LUAJIT_INC='$lua_inc'			\\
+	"
+	PKG_DEPENDS="$PKG_DEPENDS LuaJIT"
+}
+nginx_init_lua_conf
 
 # master:agentzh/dns-nginx-module cannot build with NGINX 1.9.6 because of API change
 MODS='

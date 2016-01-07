@@ -1,8 +1,6 @@
 #!/bin/sh -e
 #
-# tweak depends on
-#
-#	@halibut
+# tweak depends on @halibut to make docs
 #
 PKG_NAME=tweak
 PKG_VERSION=2015-04-22
@@ -10,6 +8,7 @@ PKG_SOURCE_VERSION=18448721678b2169a4e3cc03c048f8fb85ee7776
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION-$PKG_SOURCE_VERSION.tar.gz"
 PKG_SOURCE_URL="http://tartarus.org/~simon-git/gitweb/?p=tweak.git;a=snapshot;h=$PKG_SOURCE_VERSION;sf=tgz"
 PKG_SOURCE_UNTAR_FIXUP=1
+PKG_DEPENDS='halibut'
 
 . "$PWD/env.sh"
 
@@ -20,7 +19,7 @@ configure() {
 MAKE_VARS="LFLAGS='$EXTRA_LDFLAGS' PREFIX='$PKG_STAGING_DIR$INSTALL_PREFIX'"
 
 do_patch() {
-    cd "$PKG_BUILD_DIR"
+	cd "$PKG_BUILD_DIR"
 	patch -p1 <<"EOF"
 --- a/Makefile.orig	2015-12-14 11:13:57.000000000 +0800
 +++ b/Makefile	2015-12-14 11:17:00.000000000 +0800
@@ -50,4 +49,3 @@ do_patch() {
  	halibut --man=$@ $<
 EOF
 }
-

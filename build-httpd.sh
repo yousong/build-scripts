@@ -2,6 +2,8 @@
 #
 # Requires Apache Portable Runtime @apr
 # Requires Apache Portable Runtime utility @apr-util
+# @nghttp2 for HTTP/2 support
+# @openssl for HTTPS support
 #
 # HTTP/2 support was available starting with Apache 2.4.12, then at 2.4.17
 # mod_http2 was introduced
@@ -13,6 +15,7 @@ PKG_VERSION=2.4.18
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.bz2"
 PKG_SOURCE_URL="http://www.us.apache.org/dist//httpd/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=3690b3cc991b7dfd22aea9e1264a11b9
+PKG_DEPENDS='apr apr-util nghttp2 openssl'
 
 . "$PWD/env.sh"
 

@@ -1,5 +1,7 @@
 #!/bin/sh -e
-
+#
+# @curl is required for curl block driver
+#
 PKG_NAME=qemu
 PKG_VERSION=2.5.0
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.bz2"

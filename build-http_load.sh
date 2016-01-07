@@ -9,8 +9,9 @@
 PKG_NAME=http_load
 PKG_VERSION=14aug2014
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
-PKG_SOURCE_URL="http://acme.com/software/http_load/http_load-14aug2014.tar.gz"
+PKG_SOURCE_URL="http://acme.com/software/http_load/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=44514f4f1f2a4791be6f2e003618ae99
+PKG_DEPENDS='openssl'
 
 . "$PWD/env.sh"
 

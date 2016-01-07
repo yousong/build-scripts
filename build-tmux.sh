@@ -7,9 +7,7 @@
 # tmux on Debian Wheezy 7 has version 1.6 (Fetched with command "tmux -V")
 #
 # CentOS 6.6 lacks a libevent version that fulfils tmux's requirement so that
-# we have to build it manually here with the following commands.
-#
-#		./build-libevent.sh
+# we have to build it manually here
 #
 # Note that currently running tmux may crash on installation of libevent...
 #
@@ -23,6 +21,7 @@ PKG_VERSION=2.0
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="https://github.com/tmux/tmux/releases/download/$PKG_VERSION/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=9fb6b443392c3978da5d599f1e814eaa
+PKG_DEPENDS='libevent'
 
 . "$PWD/env.sh"
 

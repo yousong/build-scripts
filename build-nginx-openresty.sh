@@ -5,6 +5,7 @@ PKG_VERSION=1.9.7.1
 PKG_SOURCE="ngx_openresty-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://openresty.org/download/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=7bc29aa81af962c610f0d07656df85d9
+PKG_DEPENDS='openssl pcre'
 
 . "$PWD/env.sh"
 PKG_BUILD_DIR="$BASE_BUILD_DIR/ngx_openresty-$PKG_VERSION"

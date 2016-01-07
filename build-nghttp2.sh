@@ -1,6 +1,7 @@
 #!/bin/sh -e
 #
-# Building python binding requires Cython
+# @cython for building python binding
+# @libevent for libevent_openssl lib
 #
 # - Features and requirements, https://nghttp2.org/documentation/package_README.html#requirements
 #
@@ -9,6 +10,7 @@ PKG_VERSION=1.5.0
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.bz2"
 PKG_SOURCE_URL="https://github.com/tatsuhiro-t/nghttp2/releases/download/v$PKG_VERSION/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=390f2cc0a4898069d5933ba8163365f2
+PKG_DEPENDS='Cython libevent'
 
 . "$PWD/env.sh"
 
