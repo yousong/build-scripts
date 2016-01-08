@@ -49,3 +49,7 @@ configure_pre() {
 
 	autoreconf
 }
+
+CONFIGURE_ARGS='				\
+	--disable-silent-rules		\
+'
