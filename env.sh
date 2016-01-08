@@ -210,11 +210,14 @@ build_configure_cmake() {
 }
 
 compile() {
+	local vars="${MAKE_VARS%\\*}"
+	local args="${MAKE_ARGS%\\*}"
+
 	cd "$PKG_BUILD_DIR"
 	eval CFLAGS="'$EXTRA_CFLAGS'" \
 		CPPFLAGS="'$EXTRA_CPPFLAGS'" \
 		LDFLAGS="'$EXTRA_LDFLAGS'" \
-		make -j "$NJOBS" $MAKE_ARGS "$MAKE_VARS" ${PKG_CMAKE:+VERBOSE=1}
+		make -j "$NJOBS" "$args" ${PKG_CMAKE:+VERBOSE=1} "$vars"
 }
 
 configure_pre() {
@@ -234,9 +237,10 @@ staging_pre() {
 }
 
 staging() {
+	local vars="${MAKE_VARS%\\*}"
+
 	cd "$PKG_BUILD_DIR"
-	eval "$MAKE_VARS" \
-		make -j "$NJOBS" $MAKE_ARGS install DESTDIR="$PKG_STAGING_DIR" ${PKG_CMAKE:+VERBOSE=1} "$MAKE_VARS"
+	eval make -j "$NJOBS" $MAKE_ARGS install DESTDIR="$PKG_STAGING_DIR" ${PKG_CMAKE:+VERBOSE=1} $vars
 }
 
 install_pre() {
