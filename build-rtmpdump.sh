@@ -1,10 +1,11 @@
 #!/bin/sh -e
-
+#
+# rtmpdump 2.4 is still in the git repo and contains a lot of features and
+# bugfixes not available in 2.3 which was released at 2010-06-30
 PKG_NAME=rtmpdump
-PKG_VERSION=2.3
-PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tgz"
-PKG_SOURCE_URL="http://rtmpdump.mplayerhq.hu/download/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=eb961f31cd55f0acf5aad1a7b900ef59
+PKG_VERSION=2015-12-23
+PKG_SOURCE_URL="git://git.ffmpeg.org/rtmpdump"
+PKG_SOURCE_VERSION=fa8646daeb19dfd12c181f7d19de708d623704c0
 
 . "$PWD/env.sh"
 
@@ -14,7 +15,7 @@ do_patch() {
 	patch -p0 <<"EOF"
 --- Makefile.orig	2015-12-23 12:05:04.901000015 +0800
 +++ Makefile	2015-12-23 12:05:09.890000016 +0800
-@@ -25,7 +25,7 @@ LDFLAGS=-Wall $(XLDFLAGS)
+@@ -26,7 +26,7 @@ LDFLAGS=-Wall $(XLDFLAGS)
  
  bindir=$(prefix)/bin
  sbindir=$(prefix)/sbin
@@ -25,7 +26,7 @@ do_patch() {
  SBINDIR=$(DESTDIR)$(sbindir)
 --- librtmp/Makefile.orig	2015-12-23 12:05:04.901000015 +0800
 +++ librtmp/Makefile	2015-12-23 12:05:09.890000016 +0800
-@@ -44,7 +44,7 @@ LDFLAGS=-Wall $(XLDFLAGS)
+@@ -5,7 +5,7 @@ LDFLAGS=-Wall $(XLDFLAGS)
  incdir=$(prefix)/include/librtmp
  bindir=$(prefix)/bin
  libdir=$(prefix)/lib
@@ -34,14 +35,14 @@ do_patch() {
  BINDIR=$(DESTDIR)$(bindir)
  INCDIR=$(DESTDIR)$(incdir)
  LIBDIR=$(DESTDIR)$(libdir)
-@@ -84,6 +84,7 @@ LDFLAGS=-Wall $(XLDFLAGS)
+@@ -115,6 +115,7 @@ LDFLAGS=-Wall $(XLDFLAGS)
  	cp librtmp.3 $(MANDIR)/man3
  
- install_so.0:	librtmp.so.0
-+	-mkdir -p $(LIBDIR)
- 	cp librtmp.so.0 $(LIBDIR)
- 	cd $(LIBDIR); ln -sf librtmp.so.0 librtmp.so
- 
+ install_so:	librtmp$(SO_EXT)
++	-mkdir -p $(SODIR)
+ 	cp librtmp$(SO_EXT) $(SODIR)
+	$(INSTALL_IMPLIB)
+ 	cd $(SODIR); ln -sf librtmp$(SO_EXT) librtmp.$(SOX)
 EOF
 }
 
