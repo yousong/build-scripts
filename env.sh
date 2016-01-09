@@ -8,6 +8,10 @@ BASE_BUILD_DIR="${BASE_BUILD_DIR:-$TOPDIR/build_dir}"
 BASE_DESTDIR="${BASE_DESTDIR:-$TOPDIR/dest_dir}"
 # where to do the final install
 INSTALL_PREFIX="${INSTALL_PREFIX:-$HOME/.usr}"
+# where to put repos and files for Makefile
+TMP_DIR="${TMP_DIR:-$TOPDIR/tmp}"
+# where to put stamp files for Makefile
+STAMP_DIR="${STAMP_DIR:-$TMP_DIR/stamp}"
 
 
 __errmsg() {
@@ -67,16 +71,35 @@ _init() {
 }
 _init
 
-PKG_BUILD_DIR="$BASE_BUILD_DIR/$PKG_NAME-$PKG_VERSION"
-PKG_STAGING_DIR="$BASE_DESTDIR/$PKG_NAME-$PKG_VERSION-install"
+_init_pkg() {
+	local proto
 
-# these are for building with Makefile
-if [ -z "$PKG_SCRIPT_NAME" ]; then
-	PKG_SCRIPT_NAME="$0"
-fi
-if [ -z "$STAMP_DIR" ]; then
-	STAMP_DIR="$TOPDIR/tmp/stamp"
-fi
+	if [ -z "$PKG_SCRIPT_NAME" ]; then
+		PKG_SCRIPT_NAME="$0"
+	fi
+
+	if [ -z "$PKG_SOURCE_PROTO" ]; then
+		for proto in http https ftp git; do
+			if [ "${PKG_SOURCE_URL#$proto://}" != "$PKG_SOURCE_URL" ]; then
+				PKG_SOURCE_PROTO="$proto"
+				break
+			fi
+		done
+	fi
+	if [ -z "$PKG_SOURCE_PROTO" ]; then
+		__errmsg "unknown proto for PKG_SOURCE_URL: $PKG_SOURCE_URL"
+		return 1
+	fi
+	if [ "$PKG_SOURCE_PROTO" = git ]; then
+		PKG_SOURCE="$PKG_NAME-$PKG_VERSION-$PKG_SOURCE_VERSION.tar.gz"
+		PKG_BUILD_DIR="$BASE_BUILD_DIR/${PKG_SOURCE%.tar.gz}"
+		PKG_STAGING_DIR="$BASE_DESTDIR/${PKG_SOURCE%.tar.gz}-install"
+	else
+		PKG_BUILD_DIR="$BASE_BUILD_DIR/$PKG_NAME-$PKG_VERSION"
+		PKG_STAGING_DIR="$BASE_DESTDIR/$PKG_NAME-$PKG_VERSION-install"
+	fi
+}
+_init_pkg
 
 _csum_check() {
 	local file="$1"
@@ -118,12 +141,43 @@ download_http() {
 	_csum_check "$file" "$csum"
 }
 
+download_git() {
+	local name="$1"
+	local url="$2"
+	local commit="$3"
+	local file="$4"
+
+	if [ -f "$BASE_DL_DIR/$file" ]; then
+		return 0
+	fi
+
+	mkdir -p "$TMP_DIR/repos" && cd "$TMP_DIR/repos"
+	if [ ! -d "$name" ]; then
+		git clone "$url" "$name" --recursive
+	fi
+	cd $name
+	if [ "$(git cat-file -t "$commit" 2>/dev/null)" != commit ]; then
+		git pull
+	fi
+	git archive --prefix="${file%.tar.gz}/" --output "$BASE_DL_DIR/$file" "$commit"
+}
+
 download_extra() {
 	true
 }
 
 download() {
-	download_http "$PKG_SOURCE" "$PKG_SOURCE_URL" "$PKG_SOURCE_MD5SUM"
+	case "$PKG_SOURCE_PROTO" in
+		http|https|ftp)
+			download_http "$PKG_SOURCE" "$PKG_SOURCE_URL" "$PKG_SOURCE_MD5SUM"
+			;;
+		git)
+			download_git "$PKG_NAME" "$PKG_SOURCE_URL" "$PKG_SOURCE_VERSION" "$PKG_SOURCE"
+			;;
+		*)
+			__errmsg "unknown PKG_SOURCE_PROTO: $PKG_SOURCE_PROTO"
+			return 1
+	esac
 	download_extra
 }
 
