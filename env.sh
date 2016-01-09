@@ -243,6 +243,10 @@ staging() {
 	eval make -j "$NJOBS" $MAKE_ARGS install DESTDIR="$PKG_STAGING_DIR" ${PKG_CMAKE:+VERBOSE=1} $vars
 }
 
+staging_post() {
+	true
+}
+
 install_pre() {
 	# 1. Find the non-wriable ones in staging dir
 	# 2. rm -rf them in install_prefix before the installation
@@ -293,6 +297,7 @@ till() {
 		compile
 		staging_pre
 		staging
+		staging_post
 		install_pre
 		install
 		install_post
