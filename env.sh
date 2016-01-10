@@ -302,7 +302,7 @@ genmake() {
 		prepare:prepare:download
 		configure:configure_pre#configure:prepare
 		compile:compile:configure
-		staging:staging_pre#staging:compile
+		staging:staging_pre#staging#staging_post:compile
 		archive:archive:staging
 		install:install_pre#install#install_post:staging
 	'
