@@ -1,3 +1,12 @@
+utils_python_init() {
+	local ver
+
+	for ver in $PKG_PYTHON_VERION; do
+		PKG_DEPENDS="$PKG_DEPENDS python$ver"
+	done
+}
+utils_python_init
+
 configure() {
 	true
 }
