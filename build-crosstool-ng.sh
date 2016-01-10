@@ -18,8 +18,9 @@ PKG_DEPENDS='ncurses5'
 
 # - To prevent false "Recursive detection" failing out
 # - To solve -Idir missing when building kconfig/
-MAKE_VARS="				\\
-	MAKELEVEL=0			\\
-	EXTRA_CFLAGS='$EXTRA_CFLAGS'	\\
-	EXTRA_LDFLAGS='$EXTRA_LDFLAGS'	\\
+# - libncurses.a requries -ldl
+MAKE_VARS="					\\
+	MAKELEVEL=0				\\
+	EXTRA_CFLAGS='$EXTRA_CFLAGS'		\\
+	EXTRA_LDFLAGS='$EXTRA_LDFLAGS -ldl'	\\
 "
