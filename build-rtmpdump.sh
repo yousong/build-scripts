@@ -50,8 +50,19 @@ configure() {
 	true
 }
 
-MAKE_VARS="							\\
-	prefix=$INSTALL_PREFIX			\\
-	XCFLAGS='$EXTRA_CFLAGS'			\\
-	XLDFLAGS='$EXTRA_LDFLAGS'		\\
-"
+
+rtmpdump_init() {
+	local sys
+	if os_is_darwin; then
+		sys=darwin
+	else
+		sys=posix
+	fi
+	MAKE_VARS="							\\
+		prefix=$INSTALL_PREFIX			\\
+		SYS=$sys						\\
+		XCFLAGS='$EXTRA_CFLAGS'			\\
+		XLDFLAGS='$EXTRA_LDFLAGS'		\\
+	"
+}
+rtmpdump_init
