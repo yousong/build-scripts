@@ -373,7 +373,7 @@ EOF
 		actions="${actions%:*}"
 		actions="$(echo $actions | tr '#' ' ')"
 		for action in $actions; do
-		cat <<EOF
+			cat <<EOF
 	$PKG_SCRIPT_NAME $action
 EOF
 		done
@@ -403,7 +403,7 @@ EOF
 	cat <<EOF
 $PKG_SCRIPT_NAME: $TOPDIR/env.sh
 	touch $PKG_SCRIPT_NAME
-$STAMP_DIR/stamp.$PKG_NAME.prepare: $PKG_SCRIPT_NAME
+$STAMP_DIR/stamp.$PKG_NAME.download: $PKG_SCRIPT_NAME
 $STAMP_DIR/stamp.$PKG_NAME.configure: $mdepends
 $PKG_NAME/clean:
 	$PKG_SCRIPT_NAME clean
