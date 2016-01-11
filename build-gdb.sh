@@ -5,6 +5,7 @@ PKG_VERSION=7.10.1
 PKG_SOURCE="${PKG_NAME}-${PKG_VERSION}.tar.xz"
 PKG_SOURCE_URL="http://ftp.gnu.org/gnu/gdb/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=39e654460c9cdd80200a29ac020cfe11
+PKG_PLATFORM=linux
 
 . "$PWD/env.sh"
 

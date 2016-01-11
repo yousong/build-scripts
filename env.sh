@@ -19,11 +19,11 @@ __errmsg() {
 }
 
 os_is_darwin() {
-	[ "$(uname -o)" = "Darwin" ]
+	[ "$(uname -s)" = "Darwin" ]
 }
 
 os_is_linux() {
-	[ "$(uname -o)" = "GNU/Linux" ]
+	[ "$(uname -s)" = "Linux" ]
 }
 
 ncpus() {
@@ -73,6 +73,19 @@ _init
 
 _init_pkg() {
 	local proto
+	local os curos="$(uname -s | tr A-Z a-z)"
+
+	if [ -n "$PKG_PLATFORM" ]; then
+		# check if we should build this package on $curos
+		for os in $PKG_PLATFORM no; do
+			if [ "$os" = "$curos" ]; then
+				break
+			elif [ "$os" = no ]; then
+				__errmsg "$PKG_NAME skipped on $curos"
+				exit 0
+			fi
+		done
+	fi
 
 	if [ -z "$PKG_SCRIPT_NAME" ]; then
 		PKG_SCRIPT_NAME="$0"

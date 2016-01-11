@@ -35,13 +35,9 @@ PKG_VERSION="2.3.2"
 PKG_SOURCE="$PKG_NAME-${PKG_VERSION}.tar.gz"
 PKG_SOURCE_URL="http://openvswitch.org/releases/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM="5a5739ed82f1accac1c2d8d7553dc88f"
+PKG_PLATFORM=linux
 
 . "$PWD/env.sh"
-
-if ! os_is_linux; then
-	__errmsg "we build Open vSwitch only on Linux"
-	exit 1
-fi
 
 KBUILD_DIR="/lib/modules/$(uname -r)/build"
 CONFIGURE_ARGS="					\\

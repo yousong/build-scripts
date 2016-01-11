@@ -10,13 +10,9 @@ PKG_SOURCE="$PKG_NAME-${PKG_VERSION}.tar.xz"
 PKG_SOURCE_URL="https://cdn.kernel.org/pub/linux/kernel/v${PKG_VERSION%.*}.x/$PKG_SOURCE"
 #PKG_SOURCE_URL="http://mirrors.ustc.edu.cn/linux-kernel/v${PKG_VERSION%.*}.x/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM="58b35794eee3b6d52ce7be39357801e7"
+PKG_PLATFORM=linux
 
 . "$PWD/env.sh"
-
-if ! os_is_linux; then
-	__errmsg "we build Linux kernel only on Linux"
-	exit 1
-fi
 
 EXTRA_CFLAGS=
 EXTRA_CPPFLAGS=
