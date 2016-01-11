@@ -17,6 +17,7 @@ PKG_SOURCE_MD5SUM="d149d2812f10cbe04c042232e7964171"
 
 . "$PWD/env.sh"
 PKG_BUILD_DIR="$BASE_BUILD_DIR/Python-$PKG_VERSION"
+PKG_STAGING_DIR="$BASE_DESTDIR/Python-$PKG_VERSION-install"
 
 do_patch() {
 	if ! os_is_darwin; then
