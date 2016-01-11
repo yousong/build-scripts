@@ -407,6 +407,7 @@ $STAMP_DIR/stamp.$PKG_NAME.prepare: $PKG_SCRIPT_NAME
 $STAMP_DIR/stamp.$PKG_NAME.configure: $mdepends
 $PKG_NAME/clean:
 	$PKG_SCRIPT_NAME clean
+	rm -v $STAMP_DIR/stamp.$PKG_NAME.* || true
 
 $PKG_NAME/uninstall:
 	$PKG_SCRIPT_NAME uninstall
