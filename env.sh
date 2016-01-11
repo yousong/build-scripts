@@ -399,8 +399,10 @@ EOF
 	done
 	mdepends="${mdepends% }"
 
+	# TODO: track utils-.sh
 	cat <<EOF
 $PKG_SCRIPT_NAME: $TOPDIR/env.sh
+	touch $PKG_SCRIPT_NAME
 $STAMP_DIR/stamp.$PKG_NAME.prepare: $PKG_SCRIPT_NAME
 $STAMP_DIR/stamp.$PKG_NAME.configure: $mdepends
 $PKG_NAME/clean:

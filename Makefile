@@ -4,21 +4,20 @@ TESTS_DIR:=$(TOPDIR)/tests_dir
 
 genmake: $(TMP_DIR)/Makefile
 
-# TODO
-# 1. track Makefile.$name individually
-# 2. track utils-.sh
-$(TMP_DIR)/Makefile: env.sh $(wildcard $(TOPDIR)/build-*.sh)
-$(TMP_DIR)/Makefile:
+names:=$(patsubst $(TOPDIR)/build-%.sh,%,$(wildcard $(TOPDIR)/build-*.sh))
+$(TMP_DIR)/Makefile: $(patsubst %,$(TMP_DIR)/include/Makefile.%.mk,$(names))
 	rm -f $(TMP_DIR)/Makefile
-	rm -rf $(TMP_DIR)/include
-	mkdir -p $(TMP_DIR)/include
-	for b in $(wildcard $(TOPDIR)/build-*.sh); do				\
-		name=`basename $$b`;						\
-		name=$${name#*-};						\
-		name=$${name%.sh};						\
-		$$b genmake >$(TMP_DIR)/include/Makefile.$$name.mk;		\
-		echo "include $(TMP_DIR)/include/Makefile.$$name.mk" >>$(TMP_DIR)/Makefile;	\
+	for mk in $^; do	\
+		echo "include $$mk" >>$(TMP_DIR)/Makefile;		\
 	done
+
+$(TMP_DIR)/include/Makefile.%.mk: $(TOPDIR)/build-%.sh
+	mkdir -p $(TMP_DIR)/include
+	b="$(TOPDIR)/build-$*.sh";					\
+	name=`basename $$b`;						\
+	name=$${name#*-};						\
+	name=$${name%.sh};						\
+	$$b genmake >$(TMP_DIR)/include/Makefile.$$name.mk;		\
 
 %/test:
 	TMP_DIR="$(TESTS_DIR)/tmp" \
@@ -29,8 +28,9 @@ $(TMP_DIR)/Makefile:
 	PATH="$(TESTS_DIR)/install/bin:$(TESTS_DIR)/install/sbin:$(PATH)" \
 	$(MAKE) $*
 
--include $(TMP_DIR)/Makefile
+ifeq ($(filter genmake %/test,$(MAKECMDGOALS)),)
+  -include $(TMP_DIR)/Makefile
+endif
 
 .PHONY: genmake
-.PHONY: test
 .PHONY: download staging archive install
