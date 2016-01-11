@@ -353,7 +353,8 @@ uninstall() {
 	for sf in $(find "$dir" -mindepth 1 -depth); do
 		tf="${sf#$dir/}"
 		tf="$INSTALL_PREFIX/$tf"
-		if [ -f "$tf" ]; then
+		# remove regular file and symbolic link
+		if [ -f "$tf" -o -L "$tf" ]; then
 			rm -vf $tf
 		elif [ -d "$tf" ]; then
 			rmdir -v --parents --ignore-fail-on-non-empty "$tf"
