@@ -1,6 +1,6 @@
 PKG_BUILD_DIR="$BASE_BUILD_DIR/lua-$PKG_VERSION"
 PKG_STAGING_DIR="$BASE_DESTDIR/lua-$PKG_VERSION-install"
-PKG_DEPENDS='readline ncurses5'
+PKG_DEPENDS='readline ncurses'
 LUA_DEFAULT_VERSION=5.1
 
 configure() {

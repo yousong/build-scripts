@@ -3,7 +3,7 @@
 # - See section "Growth of the feature set",
 #   http://invisible-island.net/ncurses/ncurses.faq.html
 #
-PKG_NAME=ncurses5
+PKG_NAME=ncurses
 PKG_VERSION=5.9
 PKG_SOURCE="ncurses-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://ftp.gnu.org/gnu/ncurses/$PKG_SOURCE"
@@ -18,8 +18,6 @@ PATCHBALL="ncurses-$PKG_VERSION-patch-$PATCHDATE.sh.gz"
 PATCHURL="ftp://invisible-island.net/ncurses/$PKG_VERSION/patch-$PKG_VERSION-$PATCHDATE.sh.gz"
 
 fetch_patches() {
-	local l
-
 	download_http "$PATCHBALL" "$PATCHURL" "170392a335809136d8fb6ba175ee1dba"
 }
 
