@@ -9,6 +9,18 @@ Scripts for quickly building/installing specified versions of projects from sour
 - Try to be reentrant
 - Use absolute path
 
+## Prerequisites
+
+	GNU wget
+	GNU tar, command line option --transform support
+	patch
+	uudecode, can be provided by debian package sharutils
+	md5sum
+	git
+	make
+	cmake
+	autoconf, there are times we need to patch configure.ac and regenerate configure script with autoreconf
+
 ## How to use this
 
 Compile one by one and handle dependencies by mind
