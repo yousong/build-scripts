@@ -7,6 +7,6 @@ PKG_VERSION=1.7.3.0
 PKG_SOURCE="$PKG_NAME-${PKG_VERSION}.tar.bz2"
 PKG_SOURCE_URL="http://www.dest-unreach.org/socat/download/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM="b607edb65bc6c57f4a43f06247504274"
-PKG_DEPENDS='readline'
+PKG_DEPENDS='readline openssl'
 
 . "$PWD/env.sh"
