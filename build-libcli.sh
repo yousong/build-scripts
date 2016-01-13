@@ -14,6 +14,6 @@ configure() {
 
 staging() {
 	cd "$PKG_BUILD_DIR"
-	make DESTDIR="$PKG_STAGING_DIR" PREFIX="$INSTALL_PREFIX" install
+	$MAKEJ DESTDIR="$PKG_STAGING_DIR" PREFIX="$INSTALL_PREFIX" install
 }
 

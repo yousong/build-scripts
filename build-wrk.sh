@@ -35,6 +35,7 @@ do_patch() {
  .SUFFIXES: .c .o .lua
 EOF
 }
+
 configure() {
 	true
 }

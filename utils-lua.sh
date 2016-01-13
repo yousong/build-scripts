@@ -19,7 +19,7 @@ compile() {
 		__errmsg 'unknown system'
 		false
 	fi
-	make $target test \
+	$MAKEJ $target test \
 		MYCFLAGS="$EXTRA_CFLAGS" \
 		MYLDFLAGS="$EXTRA_LDFLAGS" \
 		MYLIBS="-ltermcap"
@@ -27,7 +27,7 @@ compile() {
 
 staging() {
 	cd "$PKG_BUILD_DIR"
-	make -j "$NJOBS" echo install \
+	$MAKEJ echo install \
 		INSTALL_TOP="$PKG_STAGING_DIR$INSTALL_PREFIX" \
 		INSTALL_INC="$PKG_STAGING_DIR$INSTALL_PREFIX/include/$PKG_NAME" \
 		INSTALL_LIB="$PKG_STAGING_DIR$INSTALL_PREFIX/lib/$PKG_NAME" \

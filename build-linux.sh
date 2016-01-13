@@ -143,7 +143,7 @@ CONFIG_TMPFS=y
 CONFIG_DEVTMPFS=y
 EOF
 	#_configure_ftrace >>.config
-	make ARCH=x86_64 kvmconfig
+	$MAKEJ ARCH=x86_64 kvmconfig
 }
 
 staging() {

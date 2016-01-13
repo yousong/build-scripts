@@ -67,7 +67,12 @@ _init() {
 		EXTRA_LDFLAGS="$EXTRA_LDFLAGS -L$MACPORTS_PREFIX/lib -Wl,-rpath,$MACPORTS_PREFIX/lib"
 	fi
 	export PKG_CONFIG_PATH
-	NJOBS="${NJOBS:-$((2 * $(ncpus)))}"
+	if [ "${MAKEFLAGS-unset}" = unset -o -n "$NJOBS" ]; then
+		NJOBS="${NJOBS:-$((2 * $(ncpus)))}"
+		MAKEJ="make -j $NJOBS"
+	else
+		MAKEJ=make
+	fi
 }
 _init
 
@@ -292,7 +297,7 @@ compile() {
 	eval CFLAGS="'$EXTRA_CFLAGS'" \
 		CPPFLAGS="'$EXTRA_CPPFLAGS'" \
 		LDFLAGS="'$EXTRA_LDFLAGS'" \
-		make -j "$NJOBS" "$args" ${PKG_CMAKE:+VERBOSE=1} "$vars"
+		$MAKEJ "$args" ${PKG_CMAKE:+VERBOSE=1} "$vars"
 }
 
 configure_pre() {
@@ -315,7 +320,7 @@ staging() {
 	local vars="${MAKE_VARS%\\*}"
 
 	cd "$PKG_BUILD_DIR"
-	eval make -j "$NJOBS" $MAKE_ARGS install DESTDIR="$PKG_STAGING_DIR" ${PKG_CMAKE:+VERBOSE=1} $vars
+	eval $MAKEJ $MAKE_ARGS install DESTDIR="$PKG_STAGING_DIR" ${PKG_CMAKE:+VERBOSE=1} $vars
 }
 
 staging_post() {
@@ -388,7 +393,7 @@ EOF
 		actions="$(echo $actions | tr '#' ' ')"
 		for action in $actions; do
 			cat <<EOF
-	$PKG_SCRIPT_NAME $action
+	+$PKG_SCRIPT_NAME $action
 EOF
 		done
 
