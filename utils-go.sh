@@ -1,8 +1,6 @@
 GOROOT_FINAL="$INSTALL_PREFIX/go/goroot-$PKG_VERSION"
-
-prepare_extra() {
-	mv "$BASE_BUILD_DIR/go" "$PKG_BUILD_DIR"
-}
+# tarballs of golang are prefixed with go/ without version information
+PKG_SOURCE_UNTAR_FIXUP=1
 
 configure() {
 	true
@@ -27,7 +25,6 @@ install() {
 }
 
 do_patch_common() {
-
 	# os/exec: TestNohup fails inside tmux, https://github.com/golang/go/issues/5135
 	patch -p1 <<"EOF"
 From acb47657096a728d10b33f2949b5a52ef5226b9d Mon Sep 17 00:00:00 2001
