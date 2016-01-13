@@ -10,8 +10,6 @@ PKG_SOURCE_URL="http://ftp.gnu.org/gnu/ncurses/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=8cb9c412e5f2d96bc6f459aa8c6282a1
 
 . "$PWD/env.sh"
-PKG_BUILD_DIR="$BASE_BUILD_DIR/ncurses-$PKG_VERSION"
-PKG_STAGING_DIR="$BASE_DESTDIR/ncurses-$PKG_VERSION-install"
 
 PATCHDATE=20141206
 PATCHBALL="ncurses-$PKG_VERSION-patch-$PATCHDATE.sh.gz"
@@ -49,7 +47,6 @@ EOF
 EXTRA_CPPFLAGS=
 EXTRA_CFLAGS=
 EXTRA_LDFLAGS="-L$INSTALL_PREFIX/lib -Wl,-rpath,$INSTALL_PREFIX/lib"
-# - --with-termlib, generate separate tinfo library
 # - enable building shared libraries
 # - suppress check for ada95
 # - dont generate debug-libraries (those ending with _g)
@@ -58,7 +55,6 @@ EXTRA_LDFLAGS="-L$INSTALL_PREFIX/lib -Wl,-rpath,$INSTALL_PREFIX/lib"
 # - compile in termcap fallback support
 # - compile with SIGWINCH handler
 CONFIGURE_ARGS="						\\
-	--with-termlib						\\
 	--with-shared						\\
 	--with-cxx-shared					\\
 	--with-normal						\\
@@ -90,7 +86,7 @@ staging_post() {
 	fi
 
 	# link from normal version to the wchar version
-	for f in form menu panel ncurses ncurses++ tinfo; do
+	for f in form menu panel ncurses ncurses++; do
 		ln -s "lib${f}w.$sufm" "$based/lib/lib${f}.$suf"
 		ln -s "lib${f}w.$sufm" "$based/lib/lib${f}.$sufm"
 		ln -s "lib${f}w.a" "$based/lib/lib${f}.a"
