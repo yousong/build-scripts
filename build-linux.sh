@@ -11,6 +11,7 @@ PKG_SOURCE_URL="https://cdn.kernel.org/pub/linux/kernel/v${PKG_VERSION%.*}.x/$PK
 #PKG_SOURCE_URL="http://mirrors.ustc.edu.cn/linux-kernel/v${PKG_VERSION%.*}.x/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM="58b35794eee3b6d52ce7be39357801e7"
 PKG_PLATFORM=linux
+PKG_DEPENDS=busybox
 
 . "$PWD/env.sh"
 
@@ -33,7 +34,7 @@ MAKE_VARS="V=1"
 INITRAMFS_BASE="$PKG_BUILD_DIR/_b"
 INITRAMFS_DIR="$INITRAMFS_BASE/_initramfs"
 
-prepare_extra() {
+configure_pre() {
 	local bbpath="$INSTALL_PREFIX/bin/busybox"
 	local bin
 
