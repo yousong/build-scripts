@@ -1,5 +1,6 @@
 TOPDIR:=${CURDIR}
 TMP_DIR?=$(TOPDIR)/tmp
+STAMP_DIR?=$(TMP_DIR)/stamp
 TESTS_DIR:=$(TOPDIR)/tests_dir
 
 genmake: $(TMP_DIR)/Makefile
@@ -29,7 +30,10 @@ $(TMP_DIR)/include/Makefile.%.mk: $(TOPDIR)/build-%.sh
 	$(MAKE) $*
 
 ifeq ($(filter genmake %/test,$(MAKECMDGOALS)),)
-  -include $(TMP_DIR)/Makefile
+$(STAMP_DIR):
+	mkdir -p $@
+
+-include $(TMP_DIR)/Makefile
 endif
 
 .PHONY: genmake

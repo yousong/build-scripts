@@ -386,7 +386,7 @@ genmake() {
 		local action actions
 
 		cat <<EOF
-$STAMP_DIR/stamp.$PKG_NAME.$phasel:
+$STAMP_DIR/stamp.$PKG_NAME.$phasel: | $STAMP_DIR
 EOF
 		actions="${d#*:}"
 		actions="${actions%:*}"
@@ -398,7 +398,6 @@ EOF
 		done
 
 		cat <<EOF
-	mkdir -p \$\$(dirname \$@)
 	touch \$@
 $PKG_NAME/$phasel: $STAMP_DIR/stamp.$PKG_NAME.$phasel
 .PHONY: $PKG_NAME/$phasel
