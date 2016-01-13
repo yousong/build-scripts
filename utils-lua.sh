@@ -19,10 +19,11 @@ compile() {
 		__errmsg 'unknown system'
 		false
 	fi
-	$MAKEJ $target test \
+	$MAKEJ $target \
 		MYCFLAGS="$EXTRA_CFLAGS" \
 		MYLDFLAGS="$EXTRA_LDFLAGS" \
 		MYLIBS="-ltermcap"
+	$MAKEJ test
 }
 
 staging() {
