@@ -34,6 +34,7 @@ PKG_VERSION=2.3.2
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://openvswitch.org/releases/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=5a5739ed82f1accac1c2d8d7553dc88f
+PKG_DEPENDS=openssl
 PKG_PLATFORM=linux
 
 . "$PWD/env.sh"

@@ -6,6 +6,7 @@ PKG_NAME=rtmpdump
 PKG_VERSION=2015-12-23
 PKG_SOURCE_URL="git://git.ffmpeg.org/rtmpdump"
 PKG_SOURCE_VERSION=fa8646daeb19dfd12c181f7d19de708d623704c0
+PKG_DEPENDS=openssl
 
 . "$PWD/env.sh"
 
