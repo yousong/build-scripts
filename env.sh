@@ -17,7 +17,7 @@ LOG_DIR="${LOG_DIR:-$TMP_DIR/log}"
 
 
 __errmsg() {
-    echo "$1" >&2
+	echo "$1" >&2
 }
 
 os_is_darwin() {

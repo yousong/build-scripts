@@ -17,7 +17,7 @@ PKG_DEPENDS='libcli'
 PKG_BUILD_DIR="$BASE_BUILD_DIR/mz-$PKG_VERSION"
 
 do_patch() {
-    cd "$PKG_BUILD_DIR"
+	cd "$PKG_BUILD_DIR"
 
 	patch <<"EOF"
 --- CMakeLists.txt.orig	2015-08-31 17:53:28.525000435 +0800

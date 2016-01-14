@@ -17,7 +17,7 @@ PKG_CMAKE=1
 . "$PWD/env.sh"
 
 do_patch() {
-    cd "$PKG_BUILD_DIR"
+	cd "$PKG_BUILD_DIR"
 
 	if ! os_is_darwin; then
 		return 0
