@@ -1,6 +1,7 @@
 TOPDIR:=${CURDIR}
 TMP_DIR?=$(TOPDIR)/tmp
 STAMP_DIR?=$(TMP_DIR)/stamp
+LOG_DIR?=$(TMP_DIR)/log
 TESTS_DIR:=$(TOPDIR)/tests_dir
 
 genmake: $(TMP_DIR)/Makefile
@@ -23,6 +24,7 @@ $(TMP_DIR)/include/Makefile.%.mk: $(TOPDIR)/build-%.sh
 %/test:
 	TMP_DIR="$(TESTS_DIR)/tmp" \
 	STAMP_DIR="$(TESTS_DIR)/tmp/stamp" \
+	LOG_DIR="$(TESTS_DIR)/tmp/log" \
 	INSTALL_PREFIX="$(TESTS_DIR)/install" \
 	BASE_DESTDIR="$(TESTS_DIR)/dest_dir" \
 	BASE_BUILD_DIR="$(TESTS_DIR)/build_dir" \
@@ -30,7 +32,7 @@ $(TMP_DIR)/include/Makefile.%.mk: $(TOPDIR)/build-%.sh
 	$(MAKE) $*
 
 ifeq ($(filter genmake %/test,$(MAKECMDGOALS)),)
-$(STAMP_DIR):
+$(STAMP_DIR) $(LOG_DIR):
 	mkdir -p $@
 
 -include $(TMP_DIR)/Makefile

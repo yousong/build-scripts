@@ -12,6 +12,8 @@ INSTALL_PREFIX="${INSTALL_PREFIX:-$HOME/.usr}"
 TMP_DIR="${TMP_DIR:-$TOPDIR/tmp}"
 # where to put stamp files for Makefile
 STAMP_DIR="${STAMP_DIR:-$TMP_DIR/stamp}"
+# where to put log files when building with Makefile
+LOG_DIR="${LOG_DIR:-$TMP_DIR/log}"
 
 
 __errmsg() {
@@ -386,19 +388,21 @@ genmake() {
 		local action actions
 
 		cat <<EOF
-$STAMP_DIR/stamp.$PKG_NAME.$phasel: | $STAMP_DIR
+$STAMP_DIR/stamp.$PKG_NAME.$phasel: | $STAMP_DIR $LOG_DIR
 EOF
 		actions="${d#*:}"
 		actions="${actions%:*}"
 		actions="$(echo $actions | tr '#' ' ')"
 		for action in $actions; do
 			cat <<EOF
-	+$PKG_SCRIPT_NAME $action
+	@echo "${PKG_SCRIPT_NAME##*/} $action"
+	@+$PKG_SCRIPT_NAME $action 1>$LOG_DIR/log.$PKG_NAME.$phasel 2>&1 || \\
+		{ echo '${PKG_SCRIPT_NAME##*/} $action failed;  see $LOG_DIR/log.$PKG_NAME.$phasel for details'; false; }
 EOF
 		done
 
 		cat <<EOF
-	touch \$@
+	@touch \$@
 $PKG_NAME/$phasel: $STAMP_DIR/stamp.$PKG_NAME.$phasel
 .PHONY: $PKG_NAME/$phasel
 $phasel: $STAMP_DIR/stamp.$PKG_NAME.$phasel
