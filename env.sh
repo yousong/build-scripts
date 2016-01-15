@@ -302,6 +302,14 @@ compile() {
 		$MAKEJ "$args" ${PKG_CMAKE:+VERBOSE=1} "$vars"
 }
 
+autoconf_fixup() {
+	# cd to the right directory before calling me
+	#
+	# --force, consider all files obsolete
+	# --install, copy missing auxiliary files
+	autoreconf --verbose --force --install
+}
+
 configure_pre() {
 	true
 }

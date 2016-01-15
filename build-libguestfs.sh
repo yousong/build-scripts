@@ -102,6 +102,6 @@ EOF
 
 configure_pre() {
 	cd "$PKG_BUILD_DIR"
-	autoreconf
+	autoconf_fixup
 }
 
