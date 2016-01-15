@@ -292,6 +292,7 @@ build_configure_cmake() {
 }
 
 compile() {
+	local envs="${MAKE_ENVS%\\*}"
 	local vars="${MAKE_VARS%\\*}"
 	local args="${MAKE_ARGS%\\*}"
 
@@ -299,6 +300,7 @@ compile() {
 	eval CFLAGS="'$EXTRA_CFLAGS'" \
 		CPPFLAGS="'$EXTRA_CPPFLAGS'" \
 		LDFLAGS="'$EXTRA_LDFLAGS'" \
+		"$envs" \
 		$MAKEJ "$args" ${PKG_CMAKE:+VERBOSE=1} "$vars"
 }
 
@@ -327,10 +329,11 @@ staging_pre() {
 }
 
 staging() {
+	local envs="${MAKE_ENVS%\\*}"
 	local vars="${MAKE_VARS%\\*}"
 
 	cd "$PKG_BUILD_DIR"
-	eval $MAKEJ $MAKE_ARGS install DESTDIR="$PKG_STAGING_DIR" ${PKG_CMAKE:+VERBOSE=1} $vars
+	eval "$envs" $MAKEJ $MAKE_ARGS install DESTDIR="$PKG_STAGING_DIR" ${PKG_CMAKE:+VERBOSE=1} $vars
 }
 
 staging_post() {
