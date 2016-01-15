@@ -39,6 +39,8 @@ PKG_DEPENDS='openssl pcre'
 CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
 	--with-http_ssl_module			\\
 	--with-http_mp4_module			\\
+	--with-stream					\\
+	--with-stream_ssl_module		\\
 	--with-http_v2_module			\\
 "
 
