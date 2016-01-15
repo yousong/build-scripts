@@ -5,7 +5,7 @@ PKG_VERSION=1.2.19
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://www.keepalived.org/software/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=5c98b06639dd50a6bff76901b53febb6
-PKG_DEPENDS='libnl net-snmp openssl'
+PKG_DEPENDS='libnl3 net-snmp openssl'
 PKG_PLATFORM=linux
 
 . "$PWD/env.sh"
