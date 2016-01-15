@@ -28,6 +28,10 @@ os_is_linux() {
 	[ "$(uname -s)" = "Linux" ]
 }
 
+running_in_make() {
+	[ "${MAKEFLAGS-unset}" != unset ]
+}
+
 ncpus() {
 	if os_is_darwin; then
 		sysctl -n hw.logicalcpu
@@ -69,7 +73,7 @@ _init() {
 		EXTRA_LDFLAGS="$EXTRA_LDFLAGS -L$MACPORTS_PREFIX/lib -Wl,-rpath,$MACPORTS_PREFIX/lib"
 	fi
 	export PKG_CONFIG_PATH
-	if [ "${MAKEFLAGS-unset}" = unset -o -n "$NJOBS" ]; then
+	if [ ! running_in_make -o -n "$NJOBS" ]; then
 		NJOBS="${NJOBS:-$((2 * $(ncpus)))}"
 		MAKEJ="make -j $NJOBS"
 	else
@@ -80,19 +84,6 @@ _init
 
 _init_pkg() {
 	local proto
-	local os curos="$(uname -s | tr A-Z a-z)"
-
-	if [ -n "$PKG_PLATFORM" ]; then
-		# check if we should build this package on $curos
-		for os in $PKG_PLATFORM no; do
-			if [ "$os" = "$curos" ]; then
-				break
-			elif [ "$os" = no ]; then
-				__errmsg "$PKG_NAME skipped on $curos"
-				exit 0
-			fi
-		done
-	fi
 
 	if [ -z "$PKG_SCRIPT_NAME" ]; then
 		PKG_SCRIPT_NAME="$0"
@@ -380,6 +371,31 @@ uninstall() {
 	done
 }
 
+platform_check() {
+	local os curos="$(uname -s | tr A-Z a-z)"
+	local dep
+
+	if [ -n "$PKG_PLATFORM" ]; then
+		# check if we should build this package on $curos
+		for os in $PKG_PLATFORM no; do
+			if [ "$os" = "$curos" ]; then
+				break
+			elif [ "$os" = no ]; then
+				__errmsg "$PKG_NAME skipped on $curos"
+				exit 1
+			fi
+		done
+	fi
+
+	for dep in $PKG_DEPENDS; do
+		# the stamp is made when running_in_make
+		if [ -f "$STAMP_DIR/stamp.$dep.skipped" ]; then
+			__errmsg "Skipping $PKG_NAME since $dep was already skipped"
+			exit 1
+		fi
+	done
+}
+
 genmake() {
 	local d mdepends
 	# description format: target:<actions#separated#by#HASH:prerequisite
@@ -400,17 +416,19 @@ genmake() {
 
 		cat <<EOF
 $STAMP_DIR/stamp.$PKG_NAME.$phasel: | $STAMP_DIR $LOG_DIR
+	@+$PKG_SCRIPT_NAME platform_check >$LOG_DIR/log.$PKG_NAME.$phasel 2>&1 || \\
+		{ touch "$STAMP_DIR/stamp.$PKG_NAME.skipped"; exit 0; }; \\
 EOF
 		actions="${d#*:}"
 		actions="${actions%:*}"
 		actions="$(echo $actions | tr '#' ' ')"
-		for action in $actions; do
-			cat <<EOF
-	@echo "${PKG_SCRIPT_NAME##*/} $action"
-	@+$PKG_SCRIPT_NAME $action 1>$LOG_DIR/log.$PKG_NAME.$phasel 2>&1 || \\
-		{ echo '${PKG_SCRIPT_NAME##*/} $action failed;  see $LOG_DIR/log.$PKG_NAME.$phasel for details'; false; }
+		cat <<EOF
+	for action in $actions; do \\
+		echo "${PKG_SCRIPT_NAME##*/} \$\$action"; \\
+		$PKG_SCRIPT_NAME \$\$action >$LOG_DIR/log.$PKG_NAME.$phasel 2>&1 || \\
+			{ echo "${PKG_SCRIPT_NAME##*/} \$\$action failed;  see $LOG_DIR/log.$PKG_NAME.$phasel for details"; false; }; \\
+	done
 EOF
-		done
 
 		cat <<EOF
 	@touch \$@
