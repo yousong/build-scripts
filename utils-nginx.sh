@@ -28,33 +28,35 @@ download_extra() {
 	done
 }
 
+nginx_get_mod_dirname() {
+	local desc="$1"
+	local ref="${desc%:*}"
+	local repo="${desc#*:}"
+	local fn="${repo#*/}-$ref"
+
+	echo "$fn"
+}
+
 prepare_extra() {
 	local m
-	local ref repo
-	local fn source
+	local fn tarball
 
 	mkdir -p "$NGINX_MODS_DIR"
 	for m in $MODS; do
-		ref="${m%:*}"
-		repo="${m#*:}"
-		fn="${repo#*/}-$ref"
-		source="$BASE_DL_DIR/$fn.tar.gz"
+		fn="$(nginx_get_mod_dirname "$m")"
+		tarball="$BASE_DL_DIR/$fn.tar.gz"
 
-		untar "$source" "$NGINX_MODS_DIR" "s:^[^/]\\+:$fn:"
+		untar "$tarball" "$NGINX_MODS_DIR" "s:^[^/]\\+:$fn:"
 	done
 }
 
 nginx_add_modules() {
 	local m
-	local ref repo
-	local fn source
+	local fn
 	local arg
 
 	for m in $MODS; do
-		ref="${m%:*}"
-		repo="${m#*:}"
-		fn="${repo#*/}-$ref"
-
+		fn="$(nginx_get_mod_dirname "$m")"
 		arg="	--add-module=$NGINX_MODS_DIR/$fn"
 		CONFIGURE_ARGS="${CONFIGURE_ARGS}${arg}"
 	done
