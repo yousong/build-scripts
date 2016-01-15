@@ -32,6 +32,9 @@ do_patch() {
 EOF
 }
 
+# clear up -I$INSTALL_PREFIX/include to avoid libipvs to include
+# netlink/netlink.h from libnl1
+EXTRA_CFLAGS=
 CONFIGURE_ARGS='			\
 	--enable-snmp			\
 	--enable-sha1			\
