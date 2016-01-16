@@ -5,6 +5,8 @@
 #          sudo yum install -y libnet-devel libpcap-devel
 #          sudo apt-get install -y libnet-dev libpcap-dev
 #
+# We do not have libnet on Mac OS X...
+#
 PKG_NAME=mausezahn
 PKG_VERSION="0.40"
 PKG_SOURCE="mz-${PKG_VERSION}.tar.gz"
@@ -12,6 +14,7 @@ PKG_SOURCE_URL="http://www.perihel.at/sec/mz/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM="d3d959c92cbf3d81224f5b2f8409e9d8"
 PKG_CMAKE=1
 PKG_DEPENDS='libcli'
+PKG_PLATFORM=linux
 
 . "$PWD/env.sh"
 PKG_BUILD_DIR="$BASE_BUILD_DIR/mz-$PKG_VERSION"
