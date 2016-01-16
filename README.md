@@ -132,8 +132,6 @@ Build scripts here uses the naming convention from OpenWrt package `Makefile`.
 
 	openssl, git, libguestfs, readline
 
-- build logs: `tmp/logs/logs.openssl.configure`
-- Hmm, ignore openvswitch, linux, busybox when testing
 - archive
 - provides listing and uninstall
 
