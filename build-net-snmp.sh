@@ -29,6 +29,16 @@ do_patch() {
  PERLLDOPTS_FOR_APPS = @PERLLDOPTS_FOR_APPS@
  PERLLDOPTS_FOR_LIBS = @PERLLDOPTS_FOR_LIBS@
  
+--- configure.ac.orig	2016-01-15 23:08:21.438696906 +0800
++++ configure.ac	2016-01-15 23:11:02.314743436 +0800
+@@ -79,6 +79,7 @@ if test "x$with_nl" != "xno"; then
+ AC_SUBST(PARTIALTARGETFLAGS)
+ AC_SUBST(ac_cv_NETSNMP_SYSTEM_INCLUDE_FILE)
+ 
++AC_CONFIG_FILES([include/net-snmp/system/darwin.h])
+ AC_CONFIG_FILES([Makefile:Makefile.top:Makefile.in:Makefile.rules])
+ AC_CONFIG_FILES([snmplib/Makefile:Makefile.top:snmplib/Makefile.in:Makefile.rules:snmplib/Makefile.depend])
+ AC_CONFIG_FILES([apps/Makefile:Makefile.top:apps/Makefile.in:Makefile.rules:apps/Makefile.depend])
 --- configure.d/config_os_libs2.orig	2016-01-15 23:08:21.438696906 +0800
 +++ configure.d/config_os_libs2	2016-01-15 23:11:02.314743436 +0800
 @@ -226,10 +226,10 @@ if test "x$with_nl" != "xno"; then
@@ -44,6 +54,32 @@ do_patch() {
              [CPPFLAGS="$netsnmp_save_CPPFLAGS"], [], [], [LMIBLIBS])
          if test "x$ac_cv_header_netlink_netlink_h" != xyes; then
              NETSNMP_SEARCH_LIBS(nl_connect, nl, [
+--- configure.d/config_os_progs.orig	2016-01-16 11:04:26.000000000 +0800
++++ configure.d/config_os_progs	2016-01-16 11:14:37.000000000 +0800
+@@ -273,6 +273,12 @@ done
+ changequote([, ])
+ AC_MSG_RESULT($ac_cv_NETSNMP_SYSTEM_INCLUDE_FILE)
+ AC_DEFINE_UNQUOTED(NETSNMP_SYSTEM_INCLUDE_FILE, "$ac_cv_NETSNMP_SYSTEM_INCLUDE_FILE")
++if test "x$filebase" = "xdarwin"; then
++    MACOSX_PRODUCT_VERSION="$target_os"
++    MACOSX_PRODUCT_VERSION_MAJOR="`echo $target_os | $SED 's/darwin\([[0-9]]\+\).*/\1/'`"
++    AC_SUBST(MACOSX_PRODUCT_VERSION)
++    AC_SUBST(MACOSX_PRODUCT_VERSION_MAJOR)
++fi
+ 
+ 
+ #       Determine appropriate <net-snmp/machine/{cpu}.h> include
+--- /dev/null	2016-01-16 11:16:23.000000000 +0800
++++ include/net-snmp/system/darwin.h.in	2016-01-16 11:02:37.000000000 +0800
+@@ -0,0 +1,8 @@
++#include "darwin13.h"
++/*
++ * This section defines Mac OS X @MACOSX_PRODUCT_VERSION@ (and later) specific additions.
++ */
++#undef darwin
++#undef darwin@MACOSX_PRODUCT_VERSION_MAJOR@
++#define darwin@MACOSX_PRODUCT_VERSION_MAJOR@ darwin
++#define darwin @MACOSX_PRODUCT_VERSION_MAJOR@
 EOF
 }
 
