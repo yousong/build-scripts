@@ -66,6 +66,20 @@ index 6a796f3..febea70 100755
 -- 
 2.6.3
 EOF
+	# building libtcc1.a needs tcc$(EXESUF)
+	patch -p0 <<"EOF"
+--- Makefile
++++ Makefile
+@@ -200,6 +200,7 @@
+ 	$(CC) -o $@ $< $(CPPFLAGS) $(CFLAGS) $(LDFLAGS)
+ 
+ # TinyCC runtime libraries
++libtcc1.a : tcc$(EXESUF)
+ libtcc1.a : FORCE
+ 	$(MAKE) -C lib native
+ lib/%/libtcc1.a : FORCE $(PROGS_CROSS)
+ 	$(MAKE) -C lib cross TARGET=$*
+EOF
 }
 
 CONFIGURE_ARGS='		\
