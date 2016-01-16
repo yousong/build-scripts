@@ -425,8 +425,8 @@ EOF
 		cat <<EOF
 	for action in $actions; do \\
 		echo "${PKG_SCRIPT_NAME##*/} \$\$action"; \\
-		$PKG_SCRIPT_NAME \$\$action >$LOG_DIR/log.$PKG_NAME.$phasel 2>&1 || \\
-			{ echo "${PKG_SCRIPT_NAME##*/} \$\$action failed;  see $LOG_DIR/log.$PKG_NAME.$phasel for details"; false; }; \\
+		$PKG_SCRIPT_NAME \$\$action >>$LOG_DIR/log.$PKG_NAME.$phasel 2>&1 || \\
+			{ echo "${PKG_SCRIPT_NAME##*/} \$\$action failed;  see $LOG_DIR/log.$PKG_NAME.$phasel for details"; exit 1; }; \\
 	done
 EOF
 
