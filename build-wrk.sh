@@ -22,6 +22,17 @@ do_patch() {
  LIBS    := -lpthread -lm -lcrypto -lssl
  
  TARGET  := $(shell uname -s | tr '[A-Z]' '[a-z]' 2>/dev/null || echo unknown)
+@@ -26,8 +26,8 @@ $(LDIR)/libluajit.a:
+ 
+ LDIR     = deps/luajit/src
+ LIBS    := -lluajit $(LIBS)
+-CFLAGS  += -I$(LDIR)
+-LDFLAGS += -L$(LDIR)
++CFLAGS  := -I$(LDIR) $(CFLAGS)
++LDFLAGS := -L$(LDIR) $(LDFLAGS)
+ 
+ all: $(BIN)
+ 
 @@ -56,6 +56,10 @@ $(LDIR)/libluajit.a:
  	@echo Building LuaJIT...
  	@$(MAKE) -C $(LDIR) BUILDMODE=static
