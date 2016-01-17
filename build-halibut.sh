@@ -64,6 +64,16 @@ do_patch() {
  	$(MAKE) -C ../doc install prefix="$(prefix)" INSTALL="$(INSTALL)"
  
  FORCE: # phony target to force version.o to be rebuilt every time
+--- a/charset/Makefile.orig	2015-12-14 10:23:39.000000000 +0800
++++ b/charset/Makefile	2015-12-14 10:23:48.000000000 +0800
+@@ -215,6 +215,7 @@
+ 	$(LIBCHARSET_OBJDIR)sbcsdat.c
+ 	$(CC) $(CFLAGS) $(MD) -c -o $@ $<
+ 
++$(LIBCHARSET_OBJS): $(LIBCHARSET_OBJDIR)sbcsdat.c $(LIBCHARSET_OBJDIR)sbcsdat.h
+ $(LIBCHARSET_OBJDIR)sbcsdat.c $(LIBCHARSET_OBJDIR)sbcsdat.h: \
+ 	$(LIBCHARSET_SRCDIR)sbcs.dat \
+ 	$(LIBCHARSET_SRCDIR)sbcsgen.pl
 EOF
 }
 
