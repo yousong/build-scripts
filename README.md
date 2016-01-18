@@ -128,6 +128,10 @@ Build scripts here uses the naming convention from OpenWrt package `Makefile`.
 
 ## TODO
 
+- Build toolchain: binutils, linux-headers, libc, gcc
+
+	- 5. Constructing a Temporary System, http://www.linuxfromscratch.org/lfs/view/stable/
+
 - reinstall by copying and overwrite would fail because of permission bits issues
 
 	openssl, git, libguestfs, readline
