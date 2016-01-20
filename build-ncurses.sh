@@ -29,7 +29,7 @@ apply_patches() {
 		return 0
 	fi
 
-	gunzip -c "$BASE_DL_DIR/$PATCHBALL" | sh
+	gunzip -c "$BASE_DL_DIR/$PATCHBALL" | sh -e
 	touch .patched
 }
 
@@ -38,9 +38,6 @@ do_patch() {
 
 	fetch_patches
 	apply_patches
-
-	patch -p0 <<"EOF"
-EOF
 }
 
 # We don't want to be affected by ncurses libraries of the build system
