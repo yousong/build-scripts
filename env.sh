@@ -73,7 +73,7 @@ _init() {
 		EXTRA_LDFLAGS="$EXTRA_LDFLAGS -L$MACPORTS_PREFIX/lib -Wl,-rpath,$MACPORTS_PREFIX/lib"
 	fi
 	export PKG_CONFIG_PATH
-	if [ ! running_in_make -o -n "$NJOBS" ]; then
+	if ! running_in_make || [ -n "$NJOBS" ]; then
 		NJOBS="${NJOBS:-$((2 * $(ncpus)))}"
 		MAKEJ="make -j $NJOBS"
 	else
