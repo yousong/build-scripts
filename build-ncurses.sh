@@ -82,12 +82,20 @@ staging_post() {
 		sufm="${major}.dylib"
 	fi
 
-	# link from normal version to the wchar version
+	# link from normal version to the wchar version.  and the name ncurses++w
+	# is just right, not the ncursesw++
 	for f in form menu panel ncurses ncurses++; do
 		ln -s "lib${f}w.$sufm" "$based/lib/lib${f}.$suf"
 		ln -s "lib${f}w.$sufm" "$based/lib/lib${f}.$sufm"
 		ln -s "lib${f}w.a" "$based/lib/lib${f}.a"
 		ln -s "${f}w.pc" "$based/lib/pkgconfig/${f}.pc"
+	done
+	# link from curses version to ncurses with wchar support version
+	for f in curses curses++; do
+		# or we can make a lib${f}.$suf with content INPUT(libn${f}w.$suf)
+		ln -s "libn${f}w.$suf" "$based/lib/lib${f}.$suf"
+		ln -s "libn${f}w.a" "$based/lib/lib${f}.a"
+		ln -s "n${f}w.pc" "$based/lib/pkgconfig/${f}.pc"
 	done
 	ln -s "libncurses.$sufm" $based/lib/libtermcap.$suf
 	ln -s "ncursesw${major}-config" "$based/bin/ncurses${major}-config"
