@@ -325,9 +325,10 @@ staging_pre() {
 staging() {
 	local envs="${MAKE_ENVS%\\*}"
 	local vars="${MAKE_VARS%\\*}"
+	local args="${MAKE_ARGS%\\*}"
 
 	cd "$PKG_BUILD_DIR"
-	eval "$envs" $MAKEJ $MAKE_ARGS install DESTDIR="$PKG_STAGING_DIR" ${PKG_CMAKE:+VERBOSE=1} $vars
+	eval "$envs" $MAKEJ "$args" install DESTDIR="$PKG_STAGING_DIR" ${PKG_CMAKE:+VERBOSE=1} $vars
 }
 
 staging_post() {
