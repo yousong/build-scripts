@@ -14,10 +14,11 @@
 # 7.3 is the release version.
 # 547 is the number of applied patches provided by vim.org.
 PKG_NAME=vim
-PKG_VERSION="7.4"
+PKG_VERSION=7.4
 PKG_SOURCE="vim-${PKG_VERSION}.tar.bz2"
 PKG_SOURCE_URL="ftp://ftp.vim.org/pub/vim/unix/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM="607e135c559be642f210094ad023dc65"
+PKG_SOURCE_MD5SUM=607e135c559be642f210094ad023dc65
+PKG_DEPENDS='libiconv LuaJIT ncurses python2'
 
 . "$PWD/env.sh"
 VER_ND="$(echo $PKG_VERSION | tr -d .)"
@@ -32,13 +33,15 @@ CONFIGURE_ARGS='				\
 	--enable-rubyinterp			\
 	--enable-cscope				\
 	--enable-multibyte			\
+	--disable-gui				\
+	--disable-gtktest			\
+	--disable-xim				\
+	--without-x					\
+	--disable-netbeans			\
+	--with-luajit				\
+	--with-tlib=ncurses			\
 	--with-features=big			\
 '
-if os_is_darwin; then
-	CONFIGURE_ARGS="$CONFIGURE_ARGS			\\
-		--with-lua-prefix=$MACPORTS_PREFIX	\\
-"
-fi
 
 patches_all_fetched() {
 	if [ -s "MD5SUMS" ] && md5sum --status -c MD5SUMS; then
@@ -99,22 +102,7 @@ apply_patches() {
 	touch .patched
 }
 
-show_build_dep() {
-	local pkg="$1"
-
-	apt-cache showsrc "$pkg" | sed -e '/Build-Depends:/!d;s/Build-Depends: \| |\|,\|([^)]*),*\|\[[^]]*\]//g'
-	apt-cache showsrc "$pkg" | sed -e '/Build-Depends-Indep:/!d;s/Build-Depends-Indep: \| |\|,\|([^)]*),*\|\[[^]]*\]//g'
-}
-
-remove_build_dep() {
-	local build_dep_vim_nox="$(show_build_dep vim-nox)"
-
-	sudo aptitude markauto $build_dep_vim_nox
-	sudo apt-get autoremove
-}
-
 do_patch() {
 	fetch_patches
 	apply_patches
 }
-
