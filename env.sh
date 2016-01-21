@@ -258,12 +258,15 @@ prepare() {
 }
 
 build_configure_default() {
-	cd "$PKG_BUILD_DIR"
+	CONFIGURE_PATH="${CONFIGURE_PATH:-$PKG_BUILD_DIR}"
+	CONFIGURE_CMD="${CONFIGURE_CMD:-./configure}"
+
+	cd "$CONFIGURE_PATH"
 	eval CPPFLAGS="'$EXTRA_CPPFLAGS'"	\
 		CFLAGS="'$EXTRA_CFLAGS'"		\
 		LDFLAGS="'$EXTRA_LDFLAGS'"		\
 		"$CONFIGURE_VARS"				\
-		"$PKG_BUILD_DIR/configure"		\
+		"$CONFIGURE_CMD"		\
 			--prefix="$INSTALL_PREFIX"	\
 			"$CONFIGURE_ARGS"
 }
