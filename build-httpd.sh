@@ -15,7 +15,7 @@ PKG_VERSION=2.4.18
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.bz2"
 PKG_SOURCE_URL="http://www.us.apache.org/dist//httpd/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=3690b3cc991b7dfd22aea9e1264a11b9
-PKG_DEPENDS='apr apr-util nghttp2 openssl'
+PKG_DEPENDS='apr apr-util libiconv nghttp2 openssl pcre'
 
 . "$PWD/env.sh"
 

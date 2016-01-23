@@ -8,7 +8,7 @@ PKG_SOURCE_VERSION=18448721678b2169a4e3cc03c048f8fb85ee7776
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION-$PKG_SOURCE_VERSION.tar.gz"
 PKG_SOURCE_URL="http://tartarus.org/~simon-git/gitweb/?p=tweak.git;a=snapshot;h=$PKG_SOURCE_VERSION;sf=tgz"
 PKG_SOURCE_UNTAR_FIXUP=1
-PKG_DEPENDS='halibut'
+PKG_DEPENDS='halibut ncurses'
 
 . "$PWD/env.sh"
 
