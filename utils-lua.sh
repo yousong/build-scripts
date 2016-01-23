@@ -3,6 +3,14 @@ PKG_STAGING_DIR="$BASE_DESTDIR/lua-$PKG_VERSION-install"
 PKG_DEPENDS='readline ncurses'
 LUA_DEFAULT_VERSION=5.1
 
+do_patch() {
+	cd "$PKG_BUILD_DIR"
+
+	# LUA_PATH_DEFAULT and LUA_CPATH_DEFAULT has './?.so' at the front for lua5.1
+	# while at the end for lua5.2 and lua5.3
+	sed -i'' -e 's:^\(#define LUA_ROOT	\).*$:\1"'"$INSTALL_PREFIX/"'":' src/luaconf.h
+}
+
 configure() {
 	true
 }
