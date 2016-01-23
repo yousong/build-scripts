@@ -11,8 +11,10 @@ PKG_SOURCE_MD5SUM=00b516f4704d4a7cb50a1d97e6e8e15b
 do_patch() {
 	cd "$PKG_BUILD_DIR"
 
-	# 1. build both shared and static library
-	# 2. 
+	# 0. Allow CFLAGS and LDFLAGS from environment variable
+	# 1. Build both shared and static library in one Makefile
+	# 2. Allow specifying mandir= on command line
+	# 3. Symlink in a relative path way
 	patch -p0 <<"EOF"
 --- Makefile.orig	2016-01-21 20:29:09.977960018 +0800
 +++ Makefile	2016-01-21 20:32:57.682029995 +0800
