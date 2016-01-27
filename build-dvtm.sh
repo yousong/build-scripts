@@ -28,4 +28,8 @@ do_patch() {
 EOF
 }
 
+configure() {
+	true
+}
+
 MAKE_VARS="PREFIX='$INSTALL_PREFIX'"
