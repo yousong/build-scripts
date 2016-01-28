@@ -282,7 +282,8 @@ build_configure_cmake() {
 		-DCMAKE_C_FLAGS="'$EXTRA_CFLAGS'"					\
 		-DCMAKE_BUILD_WITH_INSTALL_RPATH=on					\
 		-DCMAKE_MACOSX_RPATH=on								\
-		$CMAKE_ARGS
+		"$CMAKE_ARGS"										\
+		.
 }
 
 compile() {
