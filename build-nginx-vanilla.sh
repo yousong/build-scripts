@@ -8,12 +8,6 @@
 # NGINX does not support autotools configure style out of tree build, because
 # it's already out of src/ tree...
 #
-# HTTP/2 spec does not require the use of encryption.  "some implementations
-# have stated that they will only support HTTP/2 when it is used over an
-# encrypted connection, and currently no browser supports HTTP/2 unencrypted."
-#
-# - HTTP2 FAQ, https://http2.github.io/faq
-#
 # To use "reuseport" in "listen" directive, Linux kernel of version at least
 # 3.9 is required.
 #
