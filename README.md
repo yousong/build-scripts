@@ -13,6 +13,7 @@ Scripts for quickly building/installing specified versions of projects from sour
 
 	GNU wget
 	GNU tar, command line option --transform support
+	GNU gzip, BSD gunzip of at least El Capitan will exit with 1 when the archive was compressed with padded zeros
 	patch
 	uudecode, can be provided by debian package sharutils
 	md5sum
@@ -20,6 +21,8 @@ Scripts for quickly building/installing specified versions of projects from sour
 	make
 	cmake
 	autoconf, there are times we need to patch configure.ac and regenerate configure script with autoreconf
+
+- gzip complains with trailing garbage ignored, http://www.gzip.org/#faq8
 
 ## How to use this
 
