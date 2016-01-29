@@ -22,7 +22,7 @@ do_patch() {
  
  	# set up program path
 -	local prog_vars="${0%/*}/vars"
-+	local prog_vars="/Users/yousong/.usr/share/easy-rsa"
++	local prog_vars="PREFIX/share/easy-rsa"
  
  	# command-line path:
  	if [ -f "$EASYRSA_VARS_FILE" ]; then
@@ -31,7 +31,7 @@ do_patch() {
  	
  	# Set defaults, preferring existing env-vars if present
 -	set_var EASYRSA		"$PWD"
-+	set_var EASYRSA		"/Users/yousong/.usr/share/easy-rsa"
++	set_var EASYRSA		"PREFIX/share/easy-rsa"
  	set_var EASYRSA_OPENSSL	openssl
 -	set_var EASYRSA_PKI	"$EASYRSA/pki"
 +	set_var EASYRSA_PKI	"$PWD/pki"
@@ -45,7 +45,7 @@ do_patch() {
  # this is taken to be the directory you are currently in.
  
 -#set_var EASYRSA	"$PWD"
-+#set_var EASYRSA	"/Users/yousong/.usr/share/easy-rsa"
++#set_var EASYRSA	"PREFIX/share/easy-rsa"
  
  # If your OpenSSL command is not in the system PATH, you will need to define the
  # path to it here. Normally this means a full path to the executable, otherwise
