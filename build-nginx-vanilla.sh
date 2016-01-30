@@ -25,6 +25,7 @@ PKG_VERSION=1.9.9
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://nginx.org/download/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=50fdfa08e93ead7a111cba5a5f5735af
+PKG_INSTALL_DIR_BASENAME="nginx/$PKG_NAME-$PKG_VERSION"
 PKG_DEPENDS='openssl pcre'
 
 . "$PWD/env.sh"
@@ -43,7 +44,7 @@ nginx_init_lua_conf() {
 	local lua_lib="$(pkg-config --libs-only-L luajit 2>/dev/null | sed 's/-L//')"
 	local lua_inc="$(pkg-config --cflags-only-I luajit 2>/dev/null | sed 's/-I//')"
 
-	CONFIGURE_VARS="					\\
+	CONFIGURE_VARS="$CONFIGURE_VARS		\\
 		LUAJIT_LIB='$lua_lib'			\\
 		LUAJIT_INC='$lua_inc'			\\
 	"

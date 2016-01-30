@@ -82,6 +82,6 @@ EOF
 EOF
 }
 
-CONFIGURE_ARGS='		\
-	--enable-cross		\
-'
+CONFIGURE_ARGS="$CONFIGURE_ARGS	\\
+	--enable-cross				\\
+"

@@ -8,6 +8,7 @@ BASE_BUILD_DIR="${BASE_BUILD_DIR:-$TOPDIR/build_dir}"
 BASE_DESTDIR="${BASE_DESTDIR:-$TOPDIR/dest_dir}"
 # where to do the final install
 INSTALL_PREFIX="${INSTALL_PREFIX:-$HOME/.usr}"
+INSTALL_PREFIX="${INSTALL_PREFIX}${PKG_INSTALL_DIR_BASENAME:+/$PKG_INSTALL_DIR_BASENAME}"
 # where to put repos and files for Makefile
 TMP_DIR="${TMP_DIR:-$TOPDIR/tmp}"
 # where to put stamp files for Makefile
@@ -84,6 +85,9 @@ _init
 
 _init_pkg() {
 	local proto
+	local dirbn
+	local confarg="--prefix='$INSTALL_PREFIX'		\\
+"
 
 	if [ -z "$PKG_SCRIPT_NAME" ]; then
 		PKG_SCRIPT_NAME="$0"
@@ -103,12 +107,18 @@ _init_pkg() {
 	fi
 	if [ "$PKG_SOURCE_PROTO" = git ]; then
 		PKG_SOURCE="$PKG_NAME-$PKG_VERSION-$PKG_SOURCE_VERSION.tar.gz"
-		PKG_BUILD_DIR="$BASE_BUILD_DIR/${PKG_SOURCE%.tar.gz}"
-		PKG_STAGING_DIR="$BASE_DESTDIR/${PKG_SOURCE%.tar.gz}-install"
+		dirbn="${PKG_BUILD_DIR_BASENAME:-${PKG_SOURCE%.tar.gz}}"
+		PKG_BUILD_DIR="$BASE_BUILD_DIR/$dirbn"
+		PKG_STAGING_DIR="$BASE_DESTDIR/$dirbn-install"
 	else
-		PKG_BUILD_DIR="$BASE_BUILD_DIR/$PKG_NAME-$PKG_VERSION"
-		PKG_STAGING_DIR="$BASE_DESTDIR/$PKG_NAME-$PKG_VERSION-install"
+		dirbn="${PKG_BUILD_DIR_BASENAME:-$PKG_NAME-$PKG_VERSION}"
+		PKG_BUILD_DIR="$BASE_BUILD_DIR/$dirbn"
+		PKG_STAGING_DIR="$BASE_DESTDIR/$dirbn-install"
 	fi
+
+	CONFIGURE_PATH="${CONFIGURE_PATH:-$PKG_BUILD_DIR}"
+	CONFIGURE_CMD="${CONFIGURE_CMD:-./configure}"
+	CONFIGURE_ARGS="${CONFIGURE_ARGS:-$confarg}"
 }
 _init_pkg
 
@@ -258,17 +268,13 @@ prepare() {
 }
 
 build_configure_default() {
-	CONFIGURE_PATH="${CONFIGURE_PATH:-$PKG_BUILD_DIR}"
-	CONFIGURE_CMD="${CONFIGURE_CMD:-./configure}"
-
 	cd "$CONFIGURE_PATH"
 	eval CPPFLAGS="'$EXTRA_CPPFLAGS'"	\
 		CFLAGS="'$EXTRA_CFLAGS'"		\
 		LDFLAGS="'$EXTRA_LDFLAGS'"		\
 		"$CONFIGURE_VARS"				\
-		"$CONFIGURE_CMD"		\
-			--prefix="$INSTALL_PREFIX"	\
-			"$CONFIGURE_ARGS"
+		"$CONFIGURE_CMD"				\
+		"$CONFIGURE_ARGS"
 }
 
 build_configure_cmake() {
@@ -345,7 +351,7 @@ install_pre() {
 
 install() {
 	mkdir -p "$INSTALL_PREFIX"
-	cp "$PKG_STAGING_DIR/$INSTALL_PREFIX" "$INSTALL_PREFIX"
+	cp "$PKG_STAGING_DIR$INSTALL_PREFIX" "$INSTALL_PREFIX"
 }
 
 install_post() {

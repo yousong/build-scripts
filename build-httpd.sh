@@ -38,6 +38,6 @@ do_patch() {
 EOF
 }
 
-CONFIGURE_ARGS='			\
-	--enable-layout=GNU		\
-'
+CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
+	--enable-layout=GNU				\\
+"

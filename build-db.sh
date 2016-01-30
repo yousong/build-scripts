@@ -11,12 +11,12 @@ PKG_SOURCE_MD5SUM=b99454564d5b4479750567031d66fe24
 CONFIGURE_PATH="$PKG_BUILD_DIR/build_unix"
 CONFIGURE_CMD="../dist/configure"
 # --enable-dbm, is for python module dbm
-CONFIGURE_ARGS='			\
-	--disable-tcl			\
-	--disable-java			\
-	--enable-compat185		\
-	--enable-dbm			\
-'
+CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
+	--disable-tcl					\\
+	--disable-java					\\
+	--enable-compat185				\\
+	--enable-dbm					\\
+"
 
 MAKE_ARGS="							\\
 	-C '$PKG_BUILD_DIR/build_unix'	\\

@@ -93,7 +93,7 @@ configure_pre() {
 # time, but at build time with Makefile
 #
 # - http://modperlbook.org/html/3-9-1-Installing-Perl-Modules-into-a-Nonstandard-Directory.html
-CONFIGURE_ARGS="									\\
+CONFIGURE_ARGS="$CONFIGURE_ARGS						\\
 	--with-defaults									\\
 	--with-openssl=yes								\\
 	--with-perl-modules='PREFIX=$INSTALL_PREFIX'	\\

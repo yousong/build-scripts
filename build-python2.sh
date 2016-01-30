@@ -5,15 +5,10 @@ PKG_VERSION=2.7.10
 PKG_SOURCE="Python-${PKG_VERSION}.tar.xz"
 PKG_SOURCE_URL="https://www.python.org/ftp/python/$PKG_VERSION/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=c685ef0b8e9f27b5e3db5db12b268ac6
+PKG_BUILD_DIR_BASENAME="Python-$PKG_VERSION"
 PKG_DEPENDS='bzip2 db openssl ncurses readline sqlite zlib'
 
 . "$PWD/env.sh"
-PKG_BUILD_DIR="$BASE_BUILD_DIR/Python-$PKG_VERSION"
-PKG_STAGING_DIR="$BASE_DESTDIR/Python-$PKG_VERSION-install"
-CONFIGURE_ARGS='				\
-	--enable-unicode=ucs4		\
-	--with-ensurepip=upgrade	\
-'
 
 do_patch() {
 	if ! os_is_darwin; then
@@ -55,3 +50,8 @@ So do it this way, as it was before. Needs some realignment later.
  #endif
 EOF
 }
+
+CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
+	--enable-unicode=ucs4			\\
+	--with-ensurepip=upgrade		\\
+"

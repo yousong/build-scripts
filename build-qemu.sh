@@ -18,16 +18,9 @@ fi
 # Others targets can be found in text for `--target-list` option from output of
 # `./configure --help`
 TARGETS="i386-softmmu x86_64-softmmu mipsel-softmmu mips-softmmu arm-softmmu"
-CONFIGURE_ARGS="--target-list='$TARGETS'"
-
-# If we have git repo present, extract sources from there
-# rather than downloading them over the network.
-#
-#	repo=qemu/
-#	tag=v2.3.0
-#   cd "$DIR_REPO"
-#   mkdir -p "$BUILD_DIR"
-#   git archive --format=tar "$tag" | tar -C "$BUILD_DIR" -x
+CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
+	--target-list='$TARGETS'		\\
+"
 
 install_post() {
 	cat <<EOF

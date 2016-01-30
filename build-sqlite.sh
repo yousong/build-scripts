@@ -10,7 +10,7 @@ PKG_DEPENDS=ncurses
 . "$PWD/env.sh"
 
 # it's tgetent() or readline() it wants, not the libreadline library
-CONFIGURE_ARGS='			\
-	--enable-readline		\
-	--enable-json1			\
-'
+CONFIGURE_ARGS="$CONFIGURE_ARGS	\\
+	--enable-readline			\\
+	--enable-json1				\\
+"

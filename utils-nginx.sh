@@ -1,13 +1,10 @@
-INSTALL_PREFIX="$INSTALL_PREFIX/nginx/$PKG_NAME-$PKG_VERSION"
 NGINX_MODS_DIR="$PKG_BUILD_DIR/_mods"
-CONFIGURE_ARGS='					\
-	--sbin-path=nginx				\
-	--conf-path=nginx.conf			\
-	--pid-path=nginx.pid			\
-	--error-log-path=error.log		\
-	--http-log-path=access.log		\
-'
 CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
+	--sbin-path=nginx				\\
+	--conf-path=nginx.conf			\\
+	--pid-path=nginx.pid			\\
+	--error-log-path=error.log		\\
+	--http-log-path=access.log		\\
 	--with-cc-opt='$EXTRA_CFLAGS'	\\
 	--with-ld-opt='$EXTRA_LDFLAGS'	\\
 "

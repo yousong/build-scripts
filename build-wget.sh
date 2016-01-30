@@ -10,6 +10,6 @@ PKG_DEPENDS='libiconv openssl pcre zlib'
 . "$PWD/env.sh"
 
 # Wget defaults to GNU TLS but that requires too many dependencies
-CONFIGURE_ARGS='		\
-	--with-ssl=openssl	\
-'
+CONFIGURE_ARGS="$CONFIGURE_ARGS	\\
+	--with-ssl=openssl			\\
+"

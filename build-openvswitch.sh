@@ -39,7 +39,7 @@ PKG_PLATFORM=linux
 
 . "$PWD/env.sh"
 
-CONFIGURE_ARGS="					\\
+CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
 	--enable-shared					\\
 	--enable-ndebug					\\
 "

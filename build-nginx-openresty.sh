@@ -5,11 +5,11 @@ PKG_VERSION=1.9.7.2
 PKG_SOURCE="ngx_openresty-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://openresty.org/download/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=78a263de11ff43c95e847f208cce0899
+PKG_SOURCE_UNTAR_FIXUP=1
+PKG_INSTALL_DIR_BASENAME="nginx/$PKG_NAME-$PKG_VERSION"
 PKG_DEPENDS='openssl pcre'
 
 . "$PWD/env.sh"
-PKG_BUILD_DIR="$BASE_BUILD_DIR/ngx_openresty-$PKG_VERSION"
-
 . "$PWD/utils-nginx.sh"
 
 do_patch() {

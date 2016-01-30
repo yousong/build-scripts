@@ -18,30 +18,12 @@ PKG_VERSION=7.4
 PKG_SOURCE="vim-${PKG_VERSION}.tar.bz2"
 PKG_SOURCE_URL="ftp://ftp.vim.org/pub/vim/unix/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=607e135c559be642f210094ad023dc65
+PKG_SOURCE_UNTAR_FIXUP=1
 PKG_DEPENDS='libiconv LuaJIT ncurses python2'
 
 . "$PWD/env.sh"
 VER_ND="$(echo $PKG_VERSION | tr -d .)"
-PKG_BUILD_DIR="$BASE_BUILD_DIR/vim$VER_ND"
 PATCH_DIR="$BASE_DL_DIR/vim$VER_ND-patches"
-
-CONFIGURE_ARGS='				\
-	--enable-fail-if-missing    \
-	--enable-luainterp			\
-	--enable-perlinterp			\
-	--enable-pythoninterp		\
-	--enable-rubyinterp			\
-	--enable-cscope				\
-	--enable-multibyte			\
-	--disable-gui				\
-	--disable-gtktest			\
-	--disable-xim				\
-	--without-x					\
-	--disable-netbeans			\
-	--with-luajit				\
-	--with-tlib=ncurses			\
-	--with-features=big			\
-'
 
 patches_all_fetched() {
 	if [ -s "MD5SUMS" ] && md5sum --status -c MD5SUMS; then
@@ -106,3 +88,21 @@ do_patch() {
 	fetch_patches
 	apply_patches
 }
+
+CONFIGURE_ARGS="$CONFIGURE_ARGS	\\
+	--enable-fail-if-missing	\\
+	--enable-luainterp			\\
+	--enable-perlinterp			\\
+	--enable-pythoninterp		\\
+	--enable-rubyinterp			\\
+	--enable-cscope				\\
+	--enable-multibyte			\\
+	--disable-gui				\\
+	--disable-gtktest			\\
+	--disable-xim				\\
+	--without-x					\\
+	--disable-netbeans			\\
+	--with-luajit				\\
+	--with-tlib=ncurses			\\
+	--with-features=big			\\
+"

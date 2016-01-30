@@ -13,7 +13,7 @@ if os_is_linux; then
 	PKG_DEPENDS="$PKG_DEPENDS libaio"
 fi
 
-CONFIGURE_ARGS="										\\
+CONFIGURE_ARGS="$CONFIGURE_ARGS							\\
 	--extra-cflags='$EXTRA_CFLAGS $EXTRA_LDFLAGS'		\\
 "
 

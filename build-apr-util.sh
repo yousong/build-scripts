@@ -35,6 +35,6 @@ configure_pre() {
 	autoconf_fixup
 }
 
-CONFIGURE_ARGS='			\
-	--enable-layout=GNU		\
-'
+CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
+	--enable-layout=GNU				\\
+"

@@ -91,8 +91,8 @@ do_patch() {
 EOF
 }
 
-CONFIGURE_ARGS='						\
-	--enable-shared						\
-	--enable-multibyte					\
-	--with-curses						\
-'
+CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
+	--enable-shared					\\
+	--enable-multibyte				\\
+	--with-curses					\\
+"

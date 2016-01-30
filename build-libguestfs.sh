@@ -24,20 +24,6 @@ PKG_DEPENDS='supermin augeas qemu'
 
 . "$PWD/env.sh"
 
-# ocaml and perl bindings need to be enabled for OCaml and Perl based virt
-# tools, e.g. virt-sparsify is part of ocaml support
-CONFIGURE_ARGS='			\
-	--disable-nls			\
-	--disable-python		\
-	--disable-ruby			\
-	--disable-haskell		\
-	--disable-php			\
-	--disable-erlang		\
-	--disable-lua			\
-	--disable-golang		\
-	--disable-gobject		\
-'
-
 do_patch() {
     cd "$PKG_BUILD_DIR"
 
@@ -105,3 +91,16 @@ configure_pre() {
 	autoconf_fixup
 }
 
+# ocaml and perl bindings need to be enabled for OCaml and Perl based virt
+# tools, e.g. virt-sparsify is part of ocaml support
+CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
+	--disable-nls					\\
+	--disable-python				\\
+	--disable-ruby					\\
+	--disable-haskell				\\
+	--disable-php					\\
+	--disable-erlang				\\
+	--disable-lua					\\
+	--disable-golang				\\
+	--disable-gobject				\\
+"

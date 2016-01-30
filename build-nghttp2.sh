@@ -51,6 +51,6 @@ configure_pre() {
 	autoconf_fixup
 }
 
-CONFIGURE_ARGS='				\
-	--disable-silent-rules		\
-'
+CONFIGURE_ARGS="$CONFIGURE_ARGS	\\
+	--disable-silent-rules		\\
+"

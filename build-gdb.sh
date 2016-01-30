@@ -25,6 +25,6 @@ configure_pre() {
 	find "$PKG_BUILD_DIR" -name 'config.cache' | xargs rm -vf
 }
 
-CONFIGURE_ARGS='			\
-	--with-python			\
-'
+CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
+	--with-python					\\
+"

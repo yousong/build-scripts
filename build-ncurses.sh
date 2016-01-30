@@ -51,7 +51,7 @@ EXTRA_LDFLAGS="-L$INSTALL_PREFIX/lib -Wl,-rpath,$INSTALL_PREFIX/lib"
 # - --enable-overwrite,
 # - compile in termcap fallback support
 # - compile with SIGWINCH handler
-CONFIGURE_ARGS="						\\
+CONFIGURE_ARGS="$CONFIGURE_ARGS			\\
 	--with-shared						\\
 	--with-cxx-shared					\\
 	--with-normal						\\
