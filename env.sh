@@ -8,7 +8,6 @@ BASE_BUILD_DIR="${BASE_BUILD_DIR:-$TOPDIR/build_dir}"
 BASE_DESTDIR="${BASE_DESTDIR:-$TOPDIR/dest_dir}"
 # where to do the final install
 INSTALL_PREFIX="${INSTALL_PREFIX:-$HOME/.usr}"
-INSTALL_PREFIX="${INSTALL_PREFIX}${PKG_INSTALL_DIR_BASENAME:+/$PKG_INSTALL_DIR_BASENAME}"
 # where to put repos and files for Makefile
 TMP_DIR="${TMP_DIR:-$TOPDIR/tmp}"
 # where to put stamp files for Makefile
@@ -86,8 +85,6 @@ _init
 _init_pkg() {
 	local proto
 	local dirbn
-	local confarg="--prefix='$INSTALL_PREFIX'		\\
-"
 
 	if [ -z "$PKG_SCRIPT_NAME" ]; then
 		PKG_SCRIPT_NAME="$0"
@@ -118,7 +115,8 @@ _init_pkg() {
 
 	CONFIGURE_PATH="${CONFIGURE_PATH:-$PKG_BUILD_DIR}"
 	CONFIGURE_CMD="${CONFIGURE_CMD:-./configure}"
-	CONFIGURE_ARGS="${CONFIGURE_ARGS:-$confarg}"
+	CONFIGURE_ARGS="--prefix='$INSTALL_PREFIX'		\\
+"
 }
 _init_pkg
 
