@@ -8,6 +8,34 @@ PKG_SOURCE_MD5SUM=b99454564d5b4479750567031d66fe24
 
 . "$PWD/env.sh"
 
+do_patch() {
+	cd "$PKG_BUILD_DIR"
+
+	# taken from macports db53
+	patch -p0 <<"EOF"
+--- src/dbinc/atomic.h.orig	2012-02-29 19:48:38.000000000 +0100
++++ src/dbinc/atomic.h	2012-05-04 22:39:32.000000000 +0200
+@@ -144,7 +144,7 @@ typedef LONG volatile *interlocked_val;
+ #define	atomic_inc(env, p)	__atomic_inc(p)
+ #define	atomic_dec(env, p)	__atomic_dec(p)
+ #define	atomic_compare_exchange(env, p, o, n)	\
+-	__atomic_compare_exchange((p), (o), (n))
++	__atomic_compare_exchange_db((p), (o), (n))
+ static inline int __atomic_inc(db_atomic_t *p)
+ {
+ 	int	temp;
+@@ -176,7 +176,7 @@ static inline int __atomic_dec(db_atomic
+  * http://gcc.gnu.org/onlinedocs/gcc-4.1.0/gcc/Atomic-Builtins.html
+  * which configure could be changed to use.
+  */
+-static inline int __atomic_compare_exchange(
++static inline int __atomic_compare_exchange_db(
+ 	db_atomic_t *p, atomic_value_t oldval, atomic_value_t newval)
+ {
+ 	atomic_value_t was;
+EOF
+}
+
 CONFIGURE_PATH="$PKG_BUILD_DIR/build_unix"
 CONFIGURE_CMD="../dist/configure"
 # --enable-dbm, is for python module dbm
