@@ -32,4 +32,9 @@ configure() {
 	true
 }
 
+if os_is_darwin; then
+	# necessary for SIGWINCH signo definition in /usr/include/sys/signal.h
+	# see "man 5 compat" for details
+	EXTRA_CFLAGS="$EXTRA_CFLAGS -D_DARWIN_C_SOURCE"
+fi
 MAKE_VARS="PREFIX='$INSTALL_PREFIX'"
