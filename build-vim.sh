@@ -87,6 +87,83 @@ apply_patches() {
 do_patch() {
 	fetch_patches
 	apply_patches
+
+	# our python was not configured with --enable-framework=xxx
+	patch -p0 <<"EOF"
+--- src/configure.in.orig	2015-05-29 22:32:15.000000000 +0200
++++ src/configure.in	2015-05-29 22:34:23.000000000 +0200
+@@ -1133,13 +1137,6 @@
+ 	    dnl -- delete the lines from make about Entering/Leaving directory
+ 	    eval "`cd ${PYTHON_CONFDIR} && make -f "${tmp_mkf}" __ | sed '/ directory /d'`"
+ 	    rm -f -- "${tmp_mkf}"
+-	    if test "x$MACOSX" = "xyes" && ${vi_cv_path_python} -c \
+-		"import sys; sys.exit(${vi_cv_var_python_version} < 2.3)"; then
+-	      vi_cv_path_python_plibs="-framework Python"
+-	      if test "x${vi_cv_path_python}" != "x/usr/bin/python" && test -n "${python_PYTHONFRAMEWORKPREFIX}"; then
+-		  vi_cv_path_python_plibs="-F${python_PYTHONFRAMEWORKPREFIX} -framework Python"
+-	      fi
+-	    else
+ 	      if test "${vi_cv_var_python_version}" = "1.4"; then
+ 		  vi_cv_path_python_plibs="${PYTHON_CONFDIR}/libModules.a ${PYTHON_CONFDIR}/libPython.a ${PYTHON_CONFDIR}/libObjects.a ${PYTHON_CONFDIR}/libParser.a"
+ 	      else
+@@ -1167,7 +1164,6 @@
+ 	      vi_cv_path_python_plibs="${vi_cv_path_python_plibs} ${python_BASEMODLIBS} ${python_LIBS} ${python_SYSLIBS} ${python_LINKFORSHARED}"
+ 	      dnl remove -ltermcap, it can conflict with an earlier -lncurses
+ 	      vi_cv_path_python_plibs=`echo $vi_cv_path_python_plibs | sed s/-ltermcap//`
+-	    fi
+ 	])
+ 	AC_CACHE_VAL(vi_cv_dll_name_python,
+ 	[
+EOF
+
+	# Include those from INSTALL_PREFIX first
+	patch -p0 <<"EOF"
+--- src/Makefile.orig	2016-01-31 22:54:08.000000000 +0800
++++ src/Makefile	2016-01-31 22:56:43.000000000 +0800
+@@ -2670,33 +2670,33 @@ objects/if_xcmdsrv.o: if_xcmdsrv.c
+ 	$(CCC) -o $@ if_xcmdsrv.c
+ 
+ objects/if_lua.o: if_lua.c
+-	$(CCC) $(LUA_CFLAGS) -o $@ if_lua.c
++	$(CC) -c -I$(srcdir) $(LUA_CFLAGS) $(ALL_CFLAGS) -o $@ if_lua.c
+ 
+ objects/if_mzsch.o: if_mzsch.c $(MZSCHEME_EXTRA)
+-	$(CCC) -o $@ $(MZSCHEME_CFLAGS_EXTRA) if_mzsch.c
++	$(CC) -c -I$(srcdir) -o $@ $(MZSCHEME_CFLAGS_EXTRA) $(ALL_CFLAGS) if_mzsch.c
+  
+ mzscheme_base.c:
+ 	$(MZSCHEME_MZC) --c-mods mzscheme_base.c ++lib scheme/base
+ 
+ objects/if_perl.o: auto/if_perl.c
+-	$(CCC) $(PERL_CFLAGS) -o $@ auto/if_perl.c
++	$(CC) -c -I$(srcdir) $(PERL_CFLAGS) $(ALL_CFLAGS) -o $@ auto/if_perl.c
+ 
+ objects/if_perlsfio.o: if_perlsfio.c
+-	$(CCC) $(PERL_CFLAGS) -o $@ if_perlsfio.c
++	$(CC) -c -I$(srcdir) $(PERL_CFLAGS) $(ALL_CFLAGS) -o $@ if_perlsfio.c
+ 
+ objects/py_getpath.o: $(PYTHON_CONFDIR)/getpath.c
+-	$(CCC) $(PYTHON_CFLAGS) -o $@ $(PYTHON_CONFDIR)/getpath.c \
++	$(CC) -c -I$(srcdir) $(PYTHON_CFLAGS) -o $@ $(PYTHON_CONFDIR)/getpath.c \
+ 		-I$(PYTHON_CONFDIR) -DHAVE_CONFIG_H -DNO_MAIN \
+-		$(PYTHON_GETPATH_CFLAGS)
++		$(PYTHON_GETPATH_CFLAGS) $(ALL_CFLAGS)
+ 
+ objects/if_python.o: if_python.c if_py_both.h
+-	$(CCC) $(PYTHON_CFLAGS) $(PYTHON_CFLAGS_EXTRA) -o $@ if_python.c
++	$(CC) -c -I$(srcdir) $(PYTHON_CFLAGS) $(PYTHON_CFLAGS_EXTRA) $(ALL_CFLAGS) -o $@ if_python.c
+ 
+ objects/if_python3.o: if_python3.c if_py_both.h
+-	$(CCC) $(PYTHON3_CFLAGS) $(PYTHON3_CFLAGS_EXTRA) -o $@ if_python3.c
++	$(CC) -c -I$(srcdir) $(PYTHON3_CFLAGS) $(PYTHON3_CFLAGS_EXTRA) $(ALL_CFLAGS) -o $@ if_python3.c
+ 
+ objects/if_ruby.o: if_ruby.c
+-	$(CCC) $(RUBY_CFLAGS) -o $@ if_ruby.c
++	$(CC) -c -I$(srcdir) $(RUBY_CFLAGS) $(ALL_CFLAGS) -o $@ if_ruby.c
+ 
+ objects/if_sniff.o: if_sniff.c
+ 	$(CCC) -o $@ if_sniff.c
+EOF
 }
 
 CONFIGURE_ARGS="$CONFIGURE_ARGS	\\
@@ -103,6 +180,12 @@ CONFIGURE_ARGS="$CONFIGURE_ARGS	\\
 	--without-x					\\
 	--disable-netbeans			\\
 	--with-luajit				\\
+	--with-lua-prefix='$INSTALL_PREFIX'	\\
 	--with-tlib=ncurses			\\
 	--with-features=big			\\
 "
+
+configure_pre() {
+	cd "$PKG_BUILD_DIR/src"
+	$MAKEJ autoconf
+}
