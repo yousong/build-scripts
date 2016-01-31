@@ -50,7 +50,7 @@ do_patch() {
  	fi
  
 +bzip2-shared: $(OBJS_PIC)
-+	$(CC) -shared -Wl,-soname -Wl,libbz2.so.1.0 -o libbz2.so.1.0.6 $(OBJS_PIC) $(LDFLAGS)
++	$(CC) -shared -Wl,$(if $(shell "ld -v 2>&1 | grep -i 'GNU ld'"),-soname,-install_name) -Wl,libbz2.so.1.0 -o libbz2.so.1.0.6 $(OBJS_PIC) $(LDFLAGS)
 +	$(CC) $(CFLAGS) -o bzip2-shared bzip2.c libbz2.so.1.0.6 $(LDFLAGS)
 +
 +libbz2_so_install: bzip2-shared
