@@ -29,5 +29,27 @@ do_patch() {
  
  ngx_feature_inc_path=
  
+--- bundle/lua-rds-parser-0.06/Makefile.orig	2016-02-01 00:34:36.000000000 +0800
++++ bundle/lua-rds-parser-0.06/Makefile	2016-02-01 00:35:28.000000000 +0800
+@@ -21,7 +21,7 @@ LUA_LIB_DIR ?=     $(PREFIX)/lib/lua/$(L
+ 
+ #CFLAGS ?=          -g -Wall -pedantic -fno-inline
+ CFLAGS ?=          -g -O -Wall
+-override CFLAGS += -fpic -I$(LUA_INCLUDE_DIR)
++override CFLAGS := -fpic -I$(LUA_INCLUDE_DIR) $(CFLAGS)
+ 
+ INSTALL ?= install
+ 
+--- bundle/lua-redis-parser-0.12/Makefile.orig	2016-02-01 00:32:18.000000000 +0800
++++ bundle/lua-redis-parser-0.12/Makefile	2016-02-01 00:33:01.000000000 +0800
+@@ -21,7 +21,7 @@ LUA_LIB_DIR ?=     $(PREFIX)/lib/lua/$(L
+ 
+ #CFLAGS ?=          -g -Wall -pedantic -fno-inline
+ CFLAGS ?=          -g -O -Wall
+-override CFLAGS += -fpic -I$(LUA_INCLUDE_DIR)
++override CFLAGS := -fpic -I$(LUA_INCLUDE_DIR) $(CFLAGS)
+ 
+ INSTALL ?= install
+ 
 EOF
 }
