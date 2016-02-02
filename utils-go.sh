@@ -10,9 +10,11 @@ compile() {
 	cd "$PKG_BUILD_DIR"
 
 	cd src/
+	# --no-clean is for avoiding passing -a option to `go tool dist bootstrap`
+	# to avoid "rebuild all"
 	GOROOT_FINAL="$GOROOT_FINAL" \
 		GOROOT_BOOTSTRAP="$GOROOT_BOOTSTRAP" \
-		./all.bash
+		./all.bash --no-clean
 }
 
 staging() {
@@ -139,11 +141,31 @@ index fed4560..2d9c24d 100644
 EOF
 }
 
+do_patch_go15() {
+	# close fd 10 inherited from parent processes before doing testp2
+	patch -p0 <<"EOF"
+--- misc/cgo/testcshared/test.bash.orig	2016-02-02 11:10:51.044000085 +0800
++++ misc/cgo/testcshared/test.bash	2016-02-02 11:11:08.220000099 +0800
+@@ -110,6 +110,7 @@ if [ "$goos" == "darwin" ]; then
+ fi
+ $(go env CC) $(go env GOGCCFLAGS) -o testp2 main2.c $linkflags libgo2.$libext
+ binpush testp2
++exec 10>&-
+ output=$(run LD_LIBRARY_PATH=. ./testp2)
+ if [ "$output" != "PASS" ]; then
+ 	echo "FAIL test2 got ${output}"
+EOF
+}
+
 do_patch() {
+	local ver="${PKG_VERSION%.*}"
+
 	cd "$PKG_BUILD_DIR"
 
 	do_patch_common
-	if [ "$PKG_NAME" = "go1.4" ]; then
+	if [ "$ver" = "1.4" ]; then
 		do_patch_go14
+	elif [ "$ver" = "1.5" ]; then
+		do_patch_go15
 	fi
 }
