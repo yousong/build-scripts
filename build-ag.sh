@@ -20,5 +20,6 @@ PKG_SOURCE="the_silver_searcher-${PKG_VERSION}.tar.gz"
 PKG_SOURCE_URL="http://geoff.greer.fm/ag/releases/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=6a4275e0191e7fe2f834f7ec00eabbbe
 PKG_SOURCE_UNTAR_FIXUP=1
+PKG_DEPENDS=xz
 
 . "$PWD/env.sh"
