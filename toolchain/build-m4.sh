@@ -1,0 +1,9 @@
+#!/bin/sh -e
+
+PKG_NAME=m4
+PKG_VERSION=1.4.17
+PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.xz"
+PKG_SOURCE_URL="http://ftp.gnu.org/gnu/m4/$PKG_SOURCE"
+PKG_SOURCE_MD5SUM=12a3c829301a4fd6586a57d3fcf196dc
+
+. "$PWD/env.sh"
