@@ -18,15 +18,6 @@ do_patch() {
 	patch -p0 <<"EOF"
 --- unix/Makefile.orig	2016-01-06 16:16:35.895581987 +0800
 +++ unix/Makefile	2016-01-06 16:19:23.015635295 +0800
-@@ -42,7 +42,7 @@ else
- # Use gcc syntax for map file
- LDFLAGS_ARCH = -Wl,-Map=$@.map,--cref
- endif
--LDFLAGS = $(LDFLAGS_MOD) $(LDFLAGS_ARCH) -lm $(LDFLAGS_EXTRA)
-+LDFLAGS += $(LDFLAGS_MOD) $(LDFLAGS_ARCH) -lm $(LDFLAGS_EXTRA)
- 
- ifeq ($(MICROPY_FORCE_32BIT),1)
- # Note: you may need to install i386 versions of dependency packages,
 @@ -149,14 +149,14 @@ test: $(PROG) ../tests/run-tests
  
  # install micropython in /usr/local/bin
@@ -52,5 +43,9 @@ configure() {
 	true
 }
 
+MAKE_ENVS="												\\
+	CFLAGS_EXTRA='$EXTRA_CFLAGS -fno-strict-aliasing'	\\
+	LDFLAGS_EXTRA='$EXTRA_LDFLAGS'						\\
+"
 MAKE_ARGS="-C unix"
 MAKE_VARS="V=1 PREFIX=$INSTALL_PREFIX"
