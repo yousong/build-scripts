@@ -1,5 +1,7 @@
 #!/bin/sh -e
-
+#
+# ruby 1.9 is required, yet by default only 1.8 is provided by CentOS 6
+#
 PKG_NAME=h2o
 PKG_VERSION=1.6.3
 PKG_SOURCE="h2o-${PKG_VERSION}.tar.gz"
