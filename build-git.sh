@@ -2,8 +2,8 @@
 
 # Extra packages has to be installed to support http,https transport (git-http-backend, etc.)
 #
-#   sudo apt-get install -y libcurl4-openssl-dev libssl-dev
-#   sudo yum install -y curl-devel openssl-devel
+#   sudo apt-get install -y libcurl4-openssl-dev libssl-dev libexpat-dev
+#   sudo yum install -y curl-devel openssl-devel expat-devel
 #
 #   yum -y groupinstall "Development Tools"
 #   yum-builddep git-email
