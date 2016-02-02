@@ -15,6 +15,12 @@
 # - virt-sparsify depends on lvm2 (see appliance/packagelist.in)
 # - virt-sysprep depends on parted (see appliance/packagelist.in)
 #
+# libguestfs does not work on CentOS 6 at the moment because supermin fails to
+# detect RPM and installing rpm-devel with yum will fail the supermin build
+#
+# - CentOS 6.4: Supermin fails to detect RPM based distro, https://bugzilla.redhat.com/show_bug.cgi?id=1082044
+# - You are not authorized to access bug #1286432, https://bugzilla.redhat.com/show_bug.cgi?id=1286432
+#
 PKG_NAME=libguestfs
 PKG_VERSION=1.30.2
 PKG_SOURCE="${PKG_NAME}-${PKG_VERSION}.tar.gz"
