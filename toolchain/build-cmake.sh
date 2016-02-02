@@ -1,0 +1,9 @@
+#!/bin/sh -e
+
+PKG_NAME=cmake
+PKG_VERSION=3.4.3
+PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
+PKG_SOURCE_URL="https://cmake.org/files/v${PKG_VERSION%.*}/$PKG_SOURCE"
+PKG_SOURCE_MD5SUM=4cb3ff35b2472aae70f542116d616e63
+
+. "$PWD/env.sh"
