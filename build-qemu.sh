@@ -21,6 +21,7 @@ TARGETS="i386-softmmu x86_64-softmmu mipsel-softmmu mips-softmmu arm-softmmu"
 CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
 	--target-list='$TARGETS'		\\
 "
+MAKE_VARS="V=s"
 
 install_post() {
 	cat <<EOF
