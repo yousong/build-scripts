@@ -20,9 +20,42 @@ Scripts for quickly building/installing specified versions of projects from sour
 	git
 	make
 	cmake
-	autoconf, there are times we need to patch configure.ac and regenerate configure script with autoreconf
+	autoconf
+		- there are times we need to patch configure.ac and regenerate configure script with autoreconf
+		- json-c requires at least autoconf 2.68
+	texinfo
+		- gdb requires makeinfo to build info pages
 
 - gzip complains with trailing garbage ignored, http://www.gzip.org/#faq8
+
+For RHEL/CentOS 6, the issue is that the default toolchain provided is too old for building packages of current version.
+
+1. Anonymous struct/union support of c11 standard is required from gcc to build luajit bundled with wrk.  GCC 4.4 does not work.
+2. ruby of at least version 1.9 is required to build mruby bundled with h2o
+3. Some packages requires newer versions of autoconf and pkg.m4 from pkg-config
+4. QEMU 2.5 requires g++ with flag `-fstack-protector-strong` which is not available in the 4.4 line
+
+The solution is to use newer toolchain from [Software Collections](https://www.softwarecollections.org/) service at the moment before we build toolchains by ourself
+
+	# Install base packages
+	yum install scl-utils
+	yum install centos-release-scl-rh
+
+	# GCC 4.9 from devtoolset, - https://www.softwarecollections.org/en/scls/rhscl/devtoolset-3/
+	#
+	# search what's available
+	#
+	#	yum search devtoolset-3
+	yum install devtoolset-3-gcc devtoolset-3-gcc-c++ devtoolset-3-binutils
+
+	# Ruby 2.2, https://www.softwarecollections.org/en/scls/rhscl/rh-ruby22/
+	yum install rh-ruby22
+
+	# Autotools
+	# Try using Autotools in SCL at the moment, https://www.softwarecollections.org/en/scls/praiskup/autotools/
+
+	# Use them within a shell
+	scl enable devtoolset-3 rh-ruby22 autotools-latest zsh
 
 ## How to use this
 
