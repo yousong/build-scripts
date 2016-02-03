@@ -6,14 +6,15 @@
 # download or maintained since Apple no longer maintains that version of the
 # operating system.
 #
+# - Release History, https://golang.org/doc/devel/release.html
 # - Go 1.5 Release Notes, https://golang.org/doc/go1.5
 #
 PKG_NAME=go
-PKG_VERSION=1.5.2
+PKG_VERSION=1.5.3
 PKG_SOURCE="$PKG_NAME$PKG_VERSION.src.tar.gz"
-PKG_SOURCE_URL="https://storage.googleapis.com/golang/go1.5.2.src.tar.gz"
-PKG_SOURCE_MD5SUM=38fed22e7b80672291e7cba7fb9c3475
-PKG_DEPENDS='go1.4'
+PKG_SOURCE_URL="https://storage.googleapis.com/golang/$PKG_SOURCE"
+PKG_SOURCE_MD5SUM=80a0eac7ab750b01b3f7096a1d4667b8
+PKG_DEPENDS=go1.4
 
 . "$PWD/env.sh"
 . "$PWD/utils-go.sh"
