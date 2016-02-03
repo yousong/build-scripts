@@ -43,13 +43,16 @@ ncpus() {
 	fi
 }
 
-_init() {
+cpdir() {
+	cp -a -T "$@"
+}
+
+env_init() {
 	mkdir -p "$BASE_DL_DIR"
 	mkdir -p "$BASE_BUILD_DIR"
 	mkdir -p "$BASE_DESTDIR"
 	mkdir -p "$INSTALL_PREFIX"
 
-	alias cp="cp -a -T"
 	PKG_CONFIG_PATH="$INSTALL_PREFIX/lib/pkgconfig:$INSTALL_PREFIX/share/pkgconfig"
 	EXTRA_CPPFLAGS="-I$INSTALL_PREFIX/include"
 	EXTRA_CFLAGS="-I$INSTALL_PREFIX/include"
@@ -80,9 +83,8 @@ _init() {
 		MAKEJ=make
 	fi
 }
-_init
 
-_init_pkg() {
+env_init_pkg() {
 	local proto
 	local dirbn
 
@@ -118,9 +120,8 @@ _init_pkg() {
 	CONFIGURE_ARGS="--prefix='$INSTALL_PREFIX'		\\
 "
 }
-_init_pkg
 
-_csum_check() {
+env_csum_check() {
 	local file="$1"
 	local xcsum="$2"
 	local csum
@@ -149,7 +150,7 @@ download_http() {
 
 	# expecting set -e will abort if anything bad happens
 	if [ -f "$file" ]; then
-		if _csum_check "$file" "$csum"; then
+		if env_csum_check "$file" "$csum"; then
 			return 0
 		else
 			return 1
@@ -157,7 +158,7 @@ download_http() {
 	fi
 	wget -c -O "$tmp" "$url"
 	mv "$tmp" "$file"
-	_csum_check "$file" "$csum"
+	env_csum_check "$file" "$csum"
 }
 
 download_git() {
@@ -349,7 +350,7 @@ install_pre() {
 
 install() {
 	mkdir -p "$INSTALL_PREFIX"
-	cp "$PKG_STAGING_DIR$INSTALL_PREFIX" "$INSTALL_PREFIX"
+	cpdir "$PKG_STAGING_DIR$INSTALL_PREFIX" "$INSTALL_PREFIX"
 }
 
 install_post() {
@@ -502,6 +503,8 @@ till() {
 	done
 }
 
+env_init
+env_init_pkg
 if [ "$#" -eq 0 ]; then
 	set -- till _end
 fi

@@ -18,12 +18,12 @@ compile() {
 }
 
 staging() {
-	cp "$PKG_BUILD_DIR" "$PKG_STAGING_DIR"
+	cpdir "$PKG_BUILD_DIR" "$PKG_STAGING_DIR"
 }
 
 install() {
 	mkdir -p "$GOROOT_FINAL"
-	cp "$PKG_STAGING_DIR" "$GOROOT_FINAL"
+	cpdir "$PKG_STAGING_DIR" "$GOROOT_FINAL"
 }
 
 do_patch_common() {
