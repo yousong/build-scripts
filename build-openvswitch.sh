@@ -46,13 +46,24 @@ CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
 
 # build only userspace tools by default
 #
-#	1.11.x		2.6.18 to 3.8
-#	2.3.x		2.6.32 to 3.14
-#	2.4.x		2.6.32 to 4.0
-#	2.5.x		2.6.32 to 4.3
+# the Linux kernel versions against which the given versions of the Open
+# vSwitch kernel module will successfully build.
+#
+#    1.11.x        2.6.18 to 3.8
+#    2.3.x         2.6.32 to 3.14
+#    2.4.x         2.6.32 to 4.0
+#    2.5.x         2.6.32 to 4.3
+#
+# the datapath supported features from an Open vSwitch user's perspective
+#
+#    Feature                    Linux upstream    Linux OVS tree
+#    Connection tracking        4.3               3.10
+#    Tunnel - VXLAN             3.12              YES
 #
 # - What Linux kernel versions does each Open vSwitch release work with?
 #   https://github.com/openvswitch/ovs/blob/master/FAQ.md#q-what-linux-kernel-versions-does-each-open-vswitch-release-work-with
+# - Are all features available with all datapaths?
+#	https://github.com/openvswitch/ovs/blob/master/FAQ.md#q-are-all-features-available-with-all-datapaths
 if false; then
 	KBUILD_DIR="/lib/modules/$(uname -r)/build"
 	# --with-linux, the Linux kernel build directory
