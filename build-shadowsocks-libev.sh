@@ -11,6 +11,7 @@ PKG_DEPENDS='libev openssl zlib'
 . "$PWD/env.sh"
 
 CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
+	--with-pic						\\
 	--enable-shared					\\
 	--enable-static					\\
 	--disable-silent-rules			\\
