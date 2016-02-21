@@ -116,16 +116,23 @@ env_init_pkg() {
 	if [ "$PKG_SOURCE_PROTO" = git ]; then
 		PKG_SOURCE="$PKG_NAME-$PKG_VERSION-$PKG_SOURCE_VERSION.tar.gz"
 		dirbn="${PKG_BUILD_DIR_BASENAME:-${PKG_SOURCE%.tar.gz}}"
-		PKG_BUILD_DIR="$BASE_BUILD_DIR/$dirbn"
+		PKG_SOURCE_DIR="$BASE_BUILD_DIR/$dirbn"
 		PKG_STAGING_DIR="$BASE_DESTDIR/$dirbn-install"
 	else
 		dirbn="${PKG_BUILD_DIR_BASENAME:-$PKG_NAME-$PKG_VERSION}"
-		PKG_BUILD_DIR="$BASE_BUILD_DIR/$dirbn"
+		PKG_SOURCE_DIR="$BASE_BUILD_DIR/$dirbn"
 		PKG_STAGING_DIR="$BASE_DESTDIR/$dirbn-install"
+	fi
+	if [ -z "$PKG_BUILD_DIR" ]; then
+		if [ -n "$PKG_CMAKE" ]; then
+			PKG_BUILD_DIR="$PKG_SOURCE_DIR/build"
+		else
+			PKG_BUILD_DIR="$PKG_SOURCE_DIR"
+		fi
 	fi
 
 	CONFIGURE_PATH="${CONFIGURE_PATH:-$PKG_BUILD_DIR}"
-	CONFIGURE_CMD="${CONFIGURE_CMD:-./configure}"
+	CONFIGURE_CMD="${CONFIGURE_CMD:-$PKG_SOURCE_DIR/configure}"
 	CONFIGURE_ARGS="--prefix='$INSTALL_PREFIX'		\\
 "
 }
@@ -250,7 +257,7 @@ prepare_source() {
 	local trans_exp
 
 	if [ -n "$PKG_SOURCE_UNTAR_FIXUP" ]; then
-		dir="$(basename $PKG_BUILD_DIR)"
+		dir="$(basename $PKG_SOURCE_DIR)"
 		trans_exp="s:^[^/]\\+:$dir:"
 	fi
 	untar "$BASE_DL_DIR/$PKG_SOURCE" "$BASE_BUILD_DIR" "$trans_exp"
@@ -265,10 +272,10 @@ do_patch() {
 }
 
 prepare() {
-	if [ -d "$PKG_BUILD_DIR" ]; then
-		__errmsg "$PKG_BUILD_DIR already exists, skip preparing."
+	if [ -d "$PKG_SOURCE_DIR" ]; then
+		__errmsg "$PKG_SOURCE_DIR already exists, skip preparing."
 	else
-		rm -rf "$PKG_BUILD_DIR"
+		rm -rf "$PKG_SOURCE_DIR"
 		prepare_source
 		prepare_extra
 		do_patch
@@ -276,6 +283,7 @@ prepare() {
 }
 
 build_configure_default() {
+	mkdir -p "$CONFIGURE_PATH"
 	cd "$CONFIGURE_PATH"
 	eval CPPFLAGS="'$EXTRA_CPPFLAGS'"	\
 		CFLAGS="'$EXTRA_CFLAGS'"		\
@@ -286,8 +294,8 @@ build_configure_default() {
 }
 
 build_configure_cmake() {
+	mkdir -p "$PKG_BUILD_DIR"
 	cd "$PKG_BUILD_DIR"
-
 	eval cmake												\
 		-DCMAKE_BUILD_TYPE=Release							\
 		-DCMAKE_INSTALL_PREFIX="'$INSTALL_PREFIX'"			\
@@ -297,7 +305,7 @@ build_configure_cmake() {
 		-DCMAKE_BUILD_WITH_INSTALL_RPATH=on					\
 		-DCMAKE_MACOSX_RPATH=on								\
 		"$CMAKE_ARGS"										\
-		.
+		"$PKG_SOURCE_DIR"
 }
 
 compile() {
@@ -372,6 +380,9 @@ archive() {
 
 clean() {
 	rm -rf "$PKG_BUILD_DIR"
+	if [ "$PKG_SOURCE_DIR" != "$PKG_BUILD_DIR" ]; then
+		rm -rf "$PKG_SOURCE_DIR"
+	fi
 }
 
 uninstall() {

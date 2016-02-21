@@ -14,7 +14,7 @@ if os_is_linux; then
 fi
 
 do_patch() {
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 
 	# It's a mess in configure.d
 	patch -p0 <<"EOF"
@@ -84,7 +84,7 @@ EOF
 }
 
 configure_pre() {
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 	autoconf_fixup
 }
 

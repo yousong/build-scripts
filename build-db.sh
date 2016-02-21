@@ -9,7 +9,7 @@ PKG_SOURCE_MD5SUM=b99454564d5b4479750567031d66fe24
 . "$PWD/env.sh"
 
 do_patch() {
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 
 	# taken from macports db53
 	patch -p0 <<"EOF"
@@ -36,8 +36,8 @@ do_patch() {
 EOF
 }
 
-CONFIGURE_PATH="$PKG_BUILD_DIR/build_unix"
-CONFIGURE_CMD="../dist/configure"
+CONFIGURE_PATH="$PKG_SOURCE_DIR/build_unix"
+CONFIGURE_CMD="$PKG_SOURCE_DIR/dist/configure"
 # --enable-dbm, is for python module dbm
 CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
 	--disable-tcl					\\
@@ -47,7 +47,7 @@ CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
 "
 
 MAKE_ARGS="							\\
-	-C '$PKG_BUILD_DIR/build_unix'	\\
+	-C '$PKG_SOURCE_DIR/build_unix'	\\
 "
 MAKE_VARS="												\\
 	docdir='$INSTALL_PREFIX/share/db-$PKG_VERSION/docs'	\\

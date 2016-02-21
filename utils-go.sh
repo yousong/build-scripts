@@ -7,7 +7,7 @@ configure() {
 }
 
 compile() {
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 
 	cd src/
 	# --no-clean is for avoiding passing -a option to `go tool dist bootstrap`
@@ -18,7 +18,7 @@ compile() {
 }
 
 staging() {
-	cpdir "$PKG_BUILD_DIR" "$PKG_STAGING_DIR"
+	cpdir "$PKG_SOURCE_DIR" "$PKG_STAGING_DIR"
 }
 
 install() {
@@ -160,7 +160,7 @@ EOF
 do_patch() {
 	local ver="${PKG_VERSION%.*}"
 
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 
 	do_patch_common
 	if [ "$ver" = "1.4" ]; then

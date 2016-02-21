@@ -9,7 +9,7 @@ PKG_SOURCE_MD5SUM=ce8e4821f5f53d4ebff4195038e38673
 . "$PWD/env.sh"
 
 do_patch() {
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 
 	# install-libs for installing static libraries and .pc files
 	patch -p0 <<"EOF"

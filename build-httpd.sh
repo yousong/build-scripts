@@ -20,7 +20,7 @@ PKG_DEPENDS='apr apr-util libiconv nghttp2 openssl pcre'
 . "$PWD/env.sh"
 
 do_patch() {
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 
 	# use a libexec/apache2/ for apache modules
 	patch -p0 <<"EOF"

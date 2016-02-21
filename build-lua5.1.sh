@@ -11,7 +11,7 @@ PKG_BUILD_DIR_BASENAME="lua-$PKG_VERSION"
 . "$PWD/utils-lua.sh"
 
 lua_do_patch() {
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 	# Use SYSCFLAGS for internal submake and reserve MYCFLAGS for command line
 	# configuration.  The idea is used by lua5.2 and later versions of Lua
 	patch -p0 <<"EOF"

@@ -24,7 +24,7 @@ do_patch() {
 		return 0
 	fi
 
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 
 	# for building pyexpat module
 	# taken from: https://github.com/LibreOffice/core/blob/master/external/python3/python-3.3.5-pyexpat-symbols.patch.1

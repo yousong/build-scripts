@@ -11,7 +11,7 @@ PKG_PLATFORM=linux
 . "$PWD/env.sh"
 
 do_patch() {
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 
 	patch -p0 <<"EOF"
 --- Makefile.orig	2016-01-15 16:47:34.815544002 +0800

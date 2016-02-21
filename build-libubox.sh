@@ -18,7 +18,7 @@ PKG_CMAKE=1
 . "$PWD/env.sh"
 
 do_patch() {
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 
 	patch -p0 <<"EOF"
 --- lua/CMakeLists.txt.orig	2016-01-23 12:14:59.000000000 +0800

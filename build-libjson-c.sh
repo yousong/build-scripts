@@ -9,7 +9,7 @@ PKG_SOURCE_MD5SUM=3ca4bbb881dfc4017e8021b5e0a8c491
 . "$PWD/env.sh"
 
 do_patch() {
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 
 	# json_tokener.c:355:6: error: variable ‘size’ set but not used [-Werror=unused-but-set-variable]
 	patch -p0 <<"EOF"

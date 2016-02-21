@@ -19,7 +19,7 @@ configure() {
 MAKE_VARS="LFLAGS='$EXTRA_LDFLAGS' PREFIX='$PKG_STAGING_DIR$INSTALL_PREFIX'"
 
 do_patch() {
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 	patch -p1 <<"EOF"
 --- a/Makefile.orig	2015-12-14 11:13:57.000000000 +0800
 +++ b/Makefile	2015-12-14 11:17:00.000000000 +0800

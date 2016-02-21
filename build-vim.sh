@@ -186,6 +186,6 @@ CONFIGURE_ARGS="$CONFIGURE_ARGS	\\
 "
 
 configure_pre() {
-	cd "$PKG_BUILD_DIR/src"
+	cd "$PKG_SOURCE_DIR/src"
 	$MAKEJ autoconf
 }

@@ -9,7 +9,7 @@ PKG_SOURCE_MD5SUM=00b516f4704d4a7cb50a1d97e6e8e15b
 . "$PWD/env.sh"
 
 do_patch() {
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 
 	# 0. Allow CFLAGS and LDFLAGS from environment variable
 	# 1. Build both shared and static library in one Makefile

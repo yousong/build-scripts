@@ -11,7 +11,7 @@ PKG_DEPENDS=pcre
 . "$PWD/env.sh"
 
 configure_pre() {
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 	# privoxy does not bundle a configure script
 	autoconf_fixup
 }

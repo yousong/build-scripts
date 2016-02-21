@@ -11,7 +11,7 @@ PKG_DEPENDS=openssl
 . "$PWD/env.sh"
 
 do_patch() {
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 
 	# This was partially borrowed from MacPorts
 	patch -p0 <<"EOF"

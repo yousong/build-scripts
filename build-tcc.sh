@@ -22,7 +22,7 @@ PKG_SOURCE_MD5SUM=5fb28e4abc830c46a7f54c1f637fb25d
 . "$PWD/env.sh"
 
 do_patch() {
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 
 	patch -p1 <<"EOF"
 From daec3e743fc7346c49d240b0dc0f917077012309 Mon Sep 17 00:00:00 2001

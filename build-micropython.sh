@@ -13,7 +13,7 @@ PKG_DEPENDS='libffi'
 . "$PWD/env.sh"
 
 do_patch() {
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 
 	patch -p0 <<"EOF"
 --- unix/Makefile.orig	2016-01-06 16:16:35.895581987 +0800

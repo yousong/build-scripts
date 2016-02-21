@@ -6,7 +6,7 @@ lua_do_patch() {
 }
 
 do_patch() {
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 
 	lua_do_patch
 	# LUA_PATH_DEFAULT and LUA_CPATH_DEFAULT has './?.so' at the front for lua5.1

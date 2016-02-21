@@ -11,7 +11,7 @@ PKG_DEPENDS='openssl'
 . "$PWD/env.sh"
 
 do_patch() {
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 
 	patch -p0 <<"EOF"
 --- Makefile.orig	2016-01-04 01:30:30.640813279 +0800

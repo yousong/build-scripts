@@ -16,7 +16,7 @@ PKG_DEPENDS='openssl'
 . "$PWD/env.sh"
 
 do_patch() {
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 
 	# $3 (implicit-install-check) for APR_FIND_APR should be set to 1
 	patch -p0 <<"EOF"

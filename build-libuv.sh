@@ -10,6 +10,6 @@ PKG_SOURCE_UNTAR_FIXUP=1
 . "$PWD/env.sh"
 
 configure_pre() {
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 	sh -e autogen.sh
 }

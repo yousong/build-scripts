@@ -12,7 +12,7 @@ PKG_DEPENDS='openssl pcre'
 . "$PWD/utils-nginx.sh"
 
 do_patch() {
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 
 	# NOTE: NGINX version ${PKG_VERSION%.*} was bundled
 	patch -p0 <<"EOF"

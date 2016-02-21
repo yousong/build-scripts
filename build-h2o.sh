@@ -13,7 +13,7 @@ PKG_DEPENDS='libuv openssl wslay zlib'
 . "$PWD/env.sh"
 
 do_patch() {
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 
 	# CMake 2.8.11 is too new for Debian Wheezy
 	patch <<"EOF"

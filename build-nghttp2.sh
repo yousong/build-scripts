@@ -15,7 +15,7 @@ PKG_DEPENDS='Cython libevent'
 . "$PWD/env.sh"
 
 do_patch() {
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 
 	# The bundled ax_python_devel.m4 misses -lm ld option
 	#
@@ -47,7 +47,7 @@ EOF
 }
 
 configure_pre() {
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 	autoconf_fixup
 }
 

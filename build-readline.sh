@@ -55,10 +55,10 @@ fetch_patches() {
 apply_patches() {
 	local f
 
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 
 	if [ -f ".patched" ]; then
-		__errmsg "$PKG_BUILD_DIR/.patched exists, skip patching."
+		__errmsg "$PKG_SOURCE_DIR/.patched exists, skip patching."
 		return 0
 	fi
 
@@ -71,7 +71,7 @@ apply_patches() {
 }
 
 do_patch() {
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 
 	fetch_patches
 	apply_patches

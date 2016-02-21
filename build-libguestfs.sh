@@ -31,7 +31,7 @@ PKG_DEPENDS='supermin augeas qemu'
 . "$PWD/env.sh"
 
 do_patch() {
-    cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 
 	patch -p1 <<EOF
 --- a/appliance/hostfiles.in.orig 2015-12-12 15:36:10.002586624 +0800
@@ -93,7 +93,7 @@ EOF
 }
 
 configure_pre() {
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 	autoconf_fixup
 }
 

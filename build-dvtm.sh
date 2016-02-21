@@ -10,7 +10,7 @@ PKG_DEPENDS=ncurses
 . "$PWD/env.sh"
 
 do_patch() {
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 
 	# fix for parallel build
 	patch -p0 <<"EOF"

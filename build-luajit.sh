@@ -9,7 +9,7 @@ PKG_SOURCE_MD5SUM=dd9c38307f2223a504cbfb96e477eca0
 . "$PWD/env.sh"
 
 do_patch() {
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 
 	# Despite the code comments there, /usr/local still should not be in
 	# package.cpath when PREFIX is something like $HOME/.usr.

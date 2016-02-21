@@ -11,7 +11,7 @@ PKG_PLATFORM=linux
 . "$PWD/env.sh"
 
 do_patch() {
-	cd "$PKG_BUILD_DIR"
+	cd "$PKG_SOURCE_DIR"
 	# use libiconv instead of the one from libc.  This is required because
 	# 1. 'additional_includedir=${prefix}/include' from config/lib-prefix.m4
 	#    was appended to CPPFLAGS when searching for liblzma
