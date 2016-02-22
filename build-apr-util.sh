@@ -7,6 +7,7 @@ PKG_VERSION=1.5.4
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.bz2"
 PKG_SOURCE_URL="http://www.us.apache.org/dist//apr/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=2202b18f269ad606d70e1864857ed93c
+PKG_AUTOCONF_FIXUP=1
 PKG_DEPENDS='apr'
 
 . "$PWD/env.sh"
@@ -28,11 +29,6 @@ do_patch() {
      AC_MSG_ERROR(APR could not be located. Please use the --with-apr option.)
    fi
 EOF
-}
-
-configure_pre() {
-	cd "$PKG_SOURCE_DIR"
-	autoconf_fixup
 }
 
 CONFIGURE_ARGS="$CONFIGURE_ARGS		\\

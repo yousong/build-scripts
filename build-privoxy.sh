@@ -8,10 +8,7 @@ PKG_SOURCE_MD5SUM=bbe47d5ff1a54d9f9fc93a160532697f
 PKG_SOURCE_UNTAR_FIXUP=1
 PKG_DEPENDS=pcre
 
-. "$PWD/env.sh"
+# privoxy does not bundle a configure script
+PKG_AUTOCONF_FIXUP=1
 
-configure_pre() {
-	cd "$PKG_SOURCE_DIR"
-	# privoxy does not bundle a configure script
-	autoconf_fixup
-}
+. "$PWD/env.sh"

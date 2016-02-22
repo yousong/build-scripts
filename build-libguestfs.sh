@@ -26,6 +26,7 @@ PKG_VERSION=1.30.2
 PKG_SOURCE="${PKG_NAME}-${PKG_VERSION}.tar.gz"
 PKG_SOURCE_URL="http://libguestfs.org/download/${PKG_VERSION%.*}-stable/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=6c5632779d13c0bf4a88724af71c6bc8
+PKG_AUTOCONF_FIXUP=1
 PKG_DEPENDS='supermin augeas qemu'
 
 . "$PWD/env.sh"
@@ -90,11 +91,6 @@ EOF
  CLEANFILES += $(noinst_DATA)
  
 EOF
-}
-
-configure_pre() {
-	cd "$PKG_SOURCE_DIR"
-	autoconf_fixup
 }
 
 # ocaml and perl bindings need to be enabled for OCaml and Perl based virt

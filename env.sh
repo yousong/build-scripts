@@ -330,7 +330,10 @@ autoconf_fixup() {
 }
 
 configure_pre() {
-	true
+	if [ -n "$PKG_AUTOCONF_FIXUP" ]; then
+		cd "$PKG_SOURCE_DIR"
+		autoconf_fixup
+	fi
 }
 
 configure() {
