@@ -44,6 +44,22 @@ do_patch() {
  
  uninstall-local:
  	rm -f $(DESTDIR)$(libdir)/python*/site-packages/nghttp2.so
+--- src/util.cc.orig	2016-02-22 21:16:47.980201859 +0800
++++ src/util.cc	2016-02-22 21:17:40.588218627 +0800
+@@ -1245,8 +1245,13 @@ int read_mime_types(std::map<std::string
+         break;
+       }
+       ext_end = std::find_if(ext_start, std::end(line), delim_pred);
++#ifdef HAVE_STD_MAP_EMPLACE
+       res.emplace(std::string(ext_start, ext_end),
+                   std::string(std::begin(line), type_end));
++#else
++      res.insert(std::make_pair(std::string(ext_start, ext_end),
++                  std::string(std::begin(line), type_end)));
++#endif
+     }
+   }
+ 
 EOF
 }
 
