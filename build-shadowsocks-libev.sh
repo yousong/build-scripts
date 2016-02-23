@@ -82,5 +82,6 @@ CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
 	--enable-system-shared-lib		\\
 	--disable-static				\\
 	--enable-shared					\\
+	--disable-zlib					\\
 	--disable-silent-rules			\\
 "
