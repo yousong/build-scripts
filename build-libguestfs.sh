@@ -35,6 +35,14 @@ do_patch() {
 	cd "$PKG_SOURCE_DIR"
 
 	patch -p1 <<EOF
+--- a/ocaml-link.sh.orig	2016-02-23 19:56:25.993736144 +0800
++++ b/ocaml-link.sh	2016-02-23 19:57:50.853760838 +0800
+@@ -40,4 +40,4 @@ while true ; do
+   esac
+ done
+ 
+-exec "\$@" -linkpkg -cclib "\${cclib}"
++exec "\$@" -linkpkg -ccopt '${EXTRA_LDFLAGS}' -cclib "\${cclib}"
 --- a/appliance/hostfiles.in.orig 2015-12-12 15:36:10.002586624 +0800
 +++ b/appliance/hostfiles.in      2015-12-12 15:36:42.770595842 +0800
 @@ -15,3 +15,6 @@ dnl   MAGEIA=1     For Mageia.
