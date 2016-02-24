@@ -44,16 +44,7 @@ ncpus() {
 }
 
 cpdir() {
-	local sf tf
-	local dir="$PKG_STAGING_DIR/$INSTALL_PREFIX"
-
-	# remove non-wriable file already present in $INSTALL_PREFIX
-	for sf in $(find "$dir" -type f -a ! -perm +222); do
-		tf="${sf#$dir/}"
-		tf="$INSTALL_PREFIX/$tf"
-		rm -f $tf
-	done
-	cp -a -T "$@"
+	cp -f -a -T "$@"
 }
 
 env_init() {
