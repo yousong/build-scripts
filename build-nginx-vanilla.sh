@@ -25,7 +25,7 @@ PKG_VERSION=1.9.9
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://nginx.org/download/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=50fdfa08e93ead7a111cba5a5f5735af
-PKG_DEPENDS='openssl pcre'
+PKG_DEPENDS='openssl pcre zlib'
 
 . "$PWD/env.sh"
 . "$PWD/utils-nginx.sh"

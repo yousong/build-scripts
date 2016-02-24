@@ -6,7 +6,7 @@ PKG_SOURCE="ngx_openresty-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://openresty.org/download/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=78a263de11ff43c95e847f208cce0899
 PKG_SOURCE_UNTAR_FIXUP=1
-PKG_DEPENDS='openssl pcre'
+PKG_DEPENDS='openssl pcre zlib'
 
 . "$PWD/env.sh"
 . "$PWD/utils-nginx.sh"

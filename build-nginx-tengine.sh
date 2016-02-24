@@ -5,7 +5,7 @@ PKG_VERSION=2.1.2
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://tengine.taobao.org/download/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=76af6a4969e7179c2ff4512d31d9e12d
-PKG_DEPENDS='openssl pcre'
+PKG_DEPENDS='openssl pcre zlib'
 
 . "$PWD/env.sh"
 . "$PWD/utils-nginx.sh"
