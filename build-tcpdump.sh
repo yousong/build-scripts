@@ -11,3 +11,7 @@ PKG_DEPENDS='libpcap openssl'
 if os_is_linux; then
 	PKG_DEPENDS="libnl3 $PKG_DEPENDS"
 fi
+
+CONFIGURE_ARGS="$CONFIGURE_ARGS	\\
+	--with-system-libpcap		\\
+"
