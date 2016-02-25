@@ -3,7 +3,7 @@
 PKG_NAME=net-snmp
 PKG_VERSION=5.7.3
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
-PKG_SOURCE_URL="https://sourceforge.net/projects/net-snmp/files/net-snmp/$PKG_VERSION/$PKG_SOURCE"
+PKG_SOURCE_URL="https://downloads.sourceforge.net/net-snmp/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=d4a3459e1577d0efa8d96ca70a885e53
 PKG_AUTOCONF_FIXUP=1
 PKG_DEPENDS=openssl
