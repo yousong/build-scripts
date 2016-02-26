@@ -62,6 +62,11 @@ EOF
 configure_pre() {
 	cd "$PKG_SOURCE_DIR"
 	# the ACL_LBL_XXX there may not be available on current host
+	if [ ! -f "aclocal.m4.orig" ]; then
+		cp aclocal.m4 aclocal.m4.orig
+	else
+		cp aclocal.m4.orig aclocal.m4
+	fi
 	aclocal --output=- >>aclocal.m4
 	autoconf_fixup
 }
