@@ -27,7 +27,7 @@ PKG_SOURCE="${PKG_NAME}-${PKG_VERSION}.tar.gz"
 PKG_SOURCE_URL="http://libguestfs.org/download/${PKG_VERSION%.*}-stable/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=6c5632779d13c0bf4a88724af71c6bc8
 PKG_AUTOCONF_FIXUP=1
-PKG_DEPENDS='supermin augeas qemu'
+PKG_DEPENDS='supermin augeas pcre qemu'
 
 . "$PWD/env.sh"
 
@@ -45,12 +45,13 @@ do_patch() {
 +exec "\$@" -linkpkg -ccopt '${EXTRA_LDFLAGS}' -cclib "\${cclib}"
 --- a/appliance/hostfiles.in.orig 2015-12-12 15:36:10.002586624 +0800
 +++ b/appliance/hostfiles.in      2015-12-12 15:36:42.770595842 +0800
-@@ -15,3 +15,6 @@ dnl   MAGEIA=1     For Mageia.
+@@ -15,3 +15,7 @@ dnl   MAGEIA=1     For Mageia.
 
  /lib/lsb/*
  /usr/share/augeas/lenses/*.aug
 +$INSTALL_PREFIX/lib/libaugeas.*
 +$INSTALL_PREFIX/lib/libfa.*
++$INSTALL_PREFIX/lib/libpcre.*
 +$INSTALL_PREFIX/share/augeas/lenses/dist/*
 --- a/builder/paths.ml.orig	2015-12-14 11:57:27.104578901 +0800
 +++ b/builder/paths.ml	2015-12-14 11:57:48.788586611 +0800
