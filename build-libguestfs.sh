@@ -34,6 +34,19 @@ PKG_DEPENDS='supermin augeas pcre qemu'
 do_patch() {
 	cd "$PKG_SOURCE_DIR"
 
+	# Those added files in hostfiles.in are needed as they are built by
+	# ourselves and are not covered by packages listed in packages.in
+	#
+	# Specifically, that libpcre.* is there even though we have libpcre3 in
+	# packages.in is because Debian's libpcre3 provides libpcre.so.3.x.x
+	# instead of libpcre.so.1.x.y needed by sbin/guestfsd
+	#
+	# Also note that these included files will have identical path as how they
+	# are specified, that is $INSTALL_PREFIX will be reconstructured in the
+	# result appliance
+	#
+	# Another option would be to disable supermin altogether and used a
+	# downloaded appliance
 	patch -p1 <<EOF
 --- a/ocaml-link.sh.orig	2016-02-23 19:56:25.993736144 +0800
 +++ b/ocaml-link.sh	2016-02-23 19:57:50.853760838 +0800
