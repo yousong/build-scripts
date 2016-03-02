@@ -1,5 +1,8 @@
 #!/bin/sh -e
-
+#
+# unbound is required for compiling libdane contained within gnutls
+#
+# unbound-1.5.7 cannot compile with nettle-3.2 as the ssl library.
 PKG_NAME=unbound
 PKG_VERSION=1.5.7
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
