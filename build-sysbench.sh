@@ -1,5 +1,10 @@
 #!/bin/sh -e
-
+#
+# See usage text for "Compiled-in tests"
+#
+#		./sysbench/sysbench --test=cpu help
+#		./sysbench/sysbench --test=cpu run
+#
 PKG_NAME=sysbench
 PKG_VERSION=0.5
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
