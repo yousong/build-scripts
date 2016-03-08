@@ -1,0 +1,12 @@
+#!/bin/sh -e
+
+PKG_NAME=utdnsd
+PKG_VERSION=2016-03-08
+PKG_SOURCE_VERSION=17cb30b30e4196a37b9171c0cccc9b75dbb019a3
+PKG_SOURCE="$PKG_NAME-$PKG_VERSION-$PKG_SOURCE_VERSION.tar.gz"
+PKG_SOURCE_URL="https://github.com/yousong/utdnsd/archive/$PKG_SOURCE_VERSION.tar.gz"
+PKG_SOURCE_UNTAR_FIXUP=1
+PKG_CMAKE=1
+PKG_DEPENDS='libubox'
+
+. "$PWD/env.sh"
