@@ -1,5 +1,10 @@
 #!/bin/sh -e
 #
+# Copyright 2015-2016 (c) Yousong Zhou
+#
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
 # Build a kernel with embedded initramfs for trying various kernel features
 #
 # Initramfs will be constructed with busybox so build it statically first

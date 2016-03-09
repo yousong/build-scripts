@@ -1,5 +1,10 @@
 #!/bin/sh -e
 #
+# Copyright 2015-2016 (c) Yousong Zhou
+#
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
 # On building kernel module
 #
 #  - Build on CentOS 7 will not work.  CentOS 7 already ships a

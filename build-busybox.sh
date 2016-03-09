@@ -1,5 +1,10 @@
 #!/bin/sh -e
 #
+# Copyright 2015-2016 (c) Yousong Zhou
+#
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
 # Install a statically linked busybox binary to $INSTALL_PREFIX/bin
 #
 # Static busybox needs static library dependencies and on CentOS6 we need

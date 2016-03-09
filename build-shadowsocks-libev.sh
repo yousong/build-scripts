@@ -1,5 +1,10 @@
 #!/bin/sh -e
-
+#
+# Copyright 2016 (c) Yousong Zhou
+#
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
 PKG_NAME=shadowsocks-libev
 PKG_VERSION=2.4.5
 PKG_SOURCE_VERSION=v2.4.5

@@ -1,5 +1,10 @@
 #!/bin/sh -e
 #
+# Copyright 2016 (c) Yousong Zhou
+#
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
 PKG_NAME=lua5.3
 PKG_VERSION=5.3.2
 PKG_SOURCE="lua-$PKG_VERSION.tar.gz"

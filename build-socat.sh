@@ -1,5 +1,10 @@
 #!/bin/sh -e
 #
+# Copyright 2015-2016 (c) Yousong Zhou
+#
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
 # socat on Debian Wheezy 7 has version 1.7.1.3 and lacking readline support
 #
 PKG_NAME=socat

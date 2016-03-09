@@ -1,3 +1,6 @@
+#
+# Copyright 2015-2016 (c) Yousong Zhou
+#
 TOPDIR:=${CURDIR}
 TMP_DIR?=$(TOPDIR)/tmp
 STAMP_DIR?=$(TMP_DIR)/stamp

@@ -1,5 +1,10 @@
 #!/bin/sh -e
 #
+# Copyright 2015-2016 (c) Yousong Zhou
+#
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
 # With GCC version prior to 4.5 (like the case with CentOS 6, the build log
 # will be flooded with the following warning messages which should be okay to
 # live with

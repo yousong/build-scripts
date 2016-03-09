@@ -1,5 +1,10 @@
 #!/bin/sh -e
 #
+# Copyright 2016 (c) Yousong Zhou
+#
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
 # Requires Apache Portable Runtime @apr
 # Requires Apache Portable Runtime utility @apr-util
 # @nghttp2 for HTTP/2 support

@@ -1,5 +1,10 @@
 #!/bin/sh -e
 #
+# Copyright 2015-2016 (c) Yousong Zhou
+#
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
 # mosh requires protobuf to build, but the version provided by Debian Wheezy might be too old
 #
 # - Debian provides 'protobuf-c-compiler' and 'libprotobuf-dev'

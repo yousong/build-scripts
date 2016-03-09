@@ -1,5 +1,10 @@
 #!/bin/sh -e
-
+#
+# Copyright 2015-2016 (c) Yousong Zhou
+#
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
 PKG_NAME=gdb
 PKG_VERSION=7.10.1
 PKG_SOURCE="${PKG_NAME}-${PKG_VERSION}.tar.xz"

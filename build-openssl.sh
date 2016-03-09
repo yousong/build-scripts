@@ -1,5 +1,10 @@
 #!/bin/sh -e
 #
+# Copyright 2015-2016 (c) Yousong Zhou
+#
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
 # - Instructions of compilation and installation, https://wiki.openssl.org/index.php/Compilation_and_Installation
 # - Changelog of 1.0.2, https://www.openssl.org/news/cl102.txt
 #

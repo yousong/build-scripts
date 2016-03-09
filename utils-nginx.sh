@@ -1,3 +1,9 @@
+#
+# Copyright 2015-2016 (c) Yousong Zhou
+#
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
 NGINX_PREFIX="$INSTALL_PREFIX/nginx/$PKG_NAME-$PKG_VERSION"
 NGINX_MODS_DIR="$PKG_BUILD_DIR/_mods"
 CONFIGURE_ARGS="					\\

@@ -1,5 +1,10 @@
 #!/bin/sh -e
 #
+# Copyright 2016 (c) Yousong Zhou
+#
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
 PKG_NAME=sqlite
 PKG_VERSION=autoconf-3100100
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"

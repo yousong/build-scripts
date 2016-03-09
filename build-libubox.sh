@@ -1,5 +1,10 @@
 #!/bin/sh -e
-
+#
+# Copyright 2015-2016 (c) Yousong Zhou
+#
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
 # libubox on CentOS requires package json-c-devel
 #
 #	sudo yum install -y json-c-devel

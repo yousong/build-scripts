@@ -1,3 +1,9 @@
+#
+# Copyright 2015-2016 (c) Yousong Zhou
+#
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
 set_option() {
 	local opt="$1"
 	local val="$2"

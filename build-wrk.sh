@@ -1,5 +1,10 @@
 #!/bin/sh -e
 #
+# Copyright 2016 (c) Yousong Zhou
+#
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
 PKG_NAME=wrk
 PKG_VERSION=2015-11-04
 PKG_SOURCE_VERSION=03dc368674402f4b26a862f941f29887d06fd564

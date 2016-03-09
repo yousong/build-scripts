@@ -1,7 +1,12 @@
 #!/bin/sh -e
 #
+# Copyright 2015-2016 (c) Yousong Zhou
+#
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
 # This is mainly for tmux-2.x on CentOS 6.6
-
+#
 PKG_NAME=libevent
 PKG_VERSION=2.0.22
 PKG_SOURCE="$PKG_NAME-${PKG_VERSION}-stable.tar.gz"

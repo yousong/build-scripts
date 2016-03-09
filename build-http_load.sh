@@ -1,5 +1,10 @@
 #!/bin/sh -e
 #
+# Copyright 2016 (c) Yousong Zhou
+#
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
 # Example run
 #
 #	http_load -parallel 10 -seconds 5 <(echo https://localhost:8080/hello)

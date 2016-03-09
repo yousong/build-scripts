@@ -1,5 +1,10 @@
 #!/bin/sh -e
-
+#
+# Copyright 2015-2016 (c) Yousong Zhou
+#
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
 PKG_NAME=openresty
 PKG_VERSION=1.9.7.2
 PKG_SOURCE="ngx_openresty-$PKG_VERSION.tar.gz"

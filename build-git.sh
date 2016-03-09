@@ -1,5 +1,10 @@
 #!/bin/sh -e
-
+#
+# Copyright 2015-2016 (c) Yousong Zhou
+#
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
 # Extra packages has to be installed to support http,https transport (git-http-backend, etc.)
 #
 #   sudo apt-get install -y libcurl4-openssl-dev libssl-dev libexpat-dev

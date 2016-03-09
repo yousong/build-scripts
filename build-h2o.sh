@@ -1,5 +1,10 @@
 #!/bin/sh -e
 #
+# Copyright 2016 (c) Yousong Zhou
+#
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
 # ruby 1.9 is required, yet by default only 1.8 is provided by CentOS 6
 #
 PKG_NAME=h2o

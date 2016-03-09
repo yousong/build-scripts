@@ -1,3 +1,9 @@
+#
+# Copyright 2015-2016 (c) Yousong Zhou
+#
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
 GOROOT_FINAL="$INSTALL_PREFIX/go/goroot-$PKG_VERSION"
 # tarballs of golang are prefixed with go/ without version information
 PKG_SOURCE_UNTAR_FIXUP=1

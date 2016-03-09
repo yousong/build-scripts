@@ -1,5 +1,10 @@
 #!/bin/sh -e
 #
+# Copyright 2015-2016 (c) Yousong Zhou
+#
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
 # rtmpdump 2.4 is still in the git repo and contains a lot of features and
 # bugfixes not available in 2.3 which was released at 2010-06-30
 PKG_NAME=rtmpdump

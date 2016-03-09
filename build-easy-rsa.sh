@@ -1,5 +1,10 @@
 #!/bin/sh -e
-
+#
+# Copyright 2016 (c) Yousong Zhou
+#
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
 PKG_NAME=easy-rsa
 PKG_VERSION=3.0.1
 PKG_SOURCE="EasyRSA-$PKG_VERSION.tgz"

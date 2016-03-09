@@ -1,3 +1,9 @@
+#
+# Copyright 2016 (c) Yousong Zhou
+#
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
 PKG_DEPENDS='readline ncurses'
 LUA_DEFAULT_VERSION=5.1
 

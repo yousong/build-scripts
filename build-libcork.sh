@@ -1,5 +1,10 @@
 #!/bin/sh -e
-
+#
+# Copyright 2016 (c) Yousong Zhou
+#
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
 PKG_NAME=libcork
 PKG_VERSION=0.15.0
 PKG_SOURCE_VERSION=0.15.0

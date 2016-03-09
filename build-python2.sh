@@ -1,5 +1,10 @@
 #!/bin/sh -e
 #
+# Copyright 2015-2016 (c) Yousong Zhou
+#
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
 PKG_NAME=python2
 PKG_VERSION=2.7.10
 PKG_SOURCE="Python-${PKG_VERSION}.tar.xz"
