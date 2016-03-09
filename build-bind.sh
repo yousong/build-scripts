@@ -8,3 +8,7 @@ PKG_SOURCE_MD5SUM=30b9bf88a78eee783d3fef5257445788
 PKG_DEPENDS='openssl zlib'
 
 . "$PWD/env.sh"
+
+CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
+	--with-openssl=$INSTALL_PREFIX	\\
+"
