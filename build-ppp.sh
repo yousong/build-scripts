@@ -5,7 +5,8 @@ PKG_VERSION=2.4.7
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="https://download.samba.org/pub/ppp/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=78818f40e6d33a1d1de68a1551f6595a
-PKG_DEPENDS='libpcap'
+PKG_DEPENDS=libpcap
+PKG_PLATFORM=linux
 
 . "$PWD/env.sh"
 
