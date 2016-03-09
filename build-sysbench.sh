@@ -9,7 +9,6 @@ PKG_NAME=sysbench
 PKG_VERSION=0.5
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="https://github.com/akopytov/sysbench/archive/$PKG_VERSION.tar.gz"
-PKG_DEPENDS=lua
 
 . "$PWD/env.sh"
 if os_is_linux; then
