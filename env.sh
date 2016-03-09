@@ -123,6 +123,10 @@ env_init_pkg() {
 	fi
 
 	CONFIGURE_PATH="${CONFIGURE_PATH:-$PKG_BUILD_DIR}"
+	CONFIGURE_VARS='CPPFLAGS="$EXTRA_CPPFLAGS"		\
+					CFLAGS="$EXTRA_CFLAGS"			\
+					LDFLAGS="$EXTRA_LDFLAGS"		\
+	'
 	CONFIGURE_CMD="${CONFIGURE_CMD:-$PKG_SOURCE_DIR/configure}"
 	CONFIGURE_ARGS="--prefix='$INSTALL_PREFIX'		\\
 "
@@ -276,10 +280,7 @@ prepare() {
 build_configure_default() {
 	mkdir -p "$CONFIGURE_PATH"
 	cd "$CONFIGURE_PATH"
-	eval CPPFLAGS="'$EXTRA_CPPFLAGS'"	\
-		CFLAGS="'$EXTRA_CFLAGS'"		\
-		LDFLAGS="'$EXTRA_LDFLAGS'"		\
-		"$CONFIGURE_VARS"				\
+	eval "$CONFIGURE_VARS"				\
 		"$CONFIGURE_CMD"				\
 		"$CONFIGURE_ARGS"
 }
