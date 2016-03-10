@@ -2,6 +2,9 @@
 #
 # Copyright 2016 (c) Yousong Zhou
 #
+# This is free software, licensed under the GNU General Public License v2.
+# See /LICENSE for more information.
+#
 PKG_NAME=netifd
 PKG_VERSION=2016-03-07
 PKG_SOURCE_VERSION=bd1ee3efb46ae013d81b1aec51668e7595274e69
