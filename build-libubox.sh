@@ -12,8 +12,8 @@
 # It's libjson0-dev on Debian Wheezy
 #
 PKG_NAME=libubox
-PKG_VERSION=2015-11-09
-PKG_SOURCE_VERSION=10429bccd0dc5d204635e110a7a8fae7b80d16cb
+PKG_VERSION=2016-03-06
+PKG_SOURCE_VERSION=dfe446e2a981eaa83cb41df3840ca7c649dc7527
 PKG_SOURCE="$PKG_NAME-${PKG_VERSION}-${PKG_SOURCE_VERSION}.tar.gz"
 PKG_SOURCE_URL="http://git.openwrt.org/?p=project/libubox.git;a=snapshot;h=$PKG_SOURCE_VERSION;sf=tgz"
 PKG_SOURCE_UNTAR_FIXUP=1
