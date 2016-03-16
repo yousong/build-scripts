@@ -276,7 +276,6 @@ prepare() {
 	if [ -d "$PKG_SOURCE_DIR" ]; then
 		__errmsg "$PKG_SOURCE_DIR already exists, skip preparing."
 	else
-		rm -rf "$PKG_SOURCE_DIR"
 		prepare_source
 		prepare_extra
 		do_patch
