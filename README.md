@@ -28,7 +28,9 @@ Scripts for quickly building/installing specified versions of projects from sour
 
 - gzip complains with trailing garbage ignored, http://www.gzip.org/#faq8
 
-For RHEL/CentOS 6, the issue is that the default toolchain provided is too old for building packages of current version.
+### RHEL/CentOS 6
+
+On RHEL/CentOS 6, the default toolchain is too old for building many packages of newest version.
 
 1. Anonymous struct/union support of c11 standard is required from gcc to build luajit bundled with wrk.  GCC 4.4 does not work.
 2. ruby of at least version 1.9 is required to build mruby bundled with h2o
@@ -59,13 +61,21 @@ The solution is to use newer toolchain from [Software Collections](https://www.s
 
 ## How to use this
 
+Packages built will be installed to `$INSTALL_PREFIX` by default, which is
+`$HOME/.usr/` at the moment.  Directory locations can be customized by editing
+`env.sh`
+
+Just setting `PATH` should work.  These packages are to be compiled with
+`-rpath` support.  That means there is no need to set `LD_LIBRARY_PATH` or
+`DYLD_LIBRARY_PATH`.
+
 Compile one by one and handle dependencies by mind
 
 	# download, prepare, configure, compile, staging
 	./build-nginx-vanilla.sh till staging
 
 	# single action configure
-	./build-nginx-vanilla.sh till configure
+	./build-nginx-vanilla.sh configure
 
 	# remove build_dir/nginx-1.9.9
 	./build-nginx-vanilla.sh clean
@@ -78,7 +88,7 @@ Compile with `Makefile`
 	# download, prepare, configure, compile, staging
 	make nginx/staging
 
-	# same but only happens in tests_dir/
+	# same but happens in tests_dir/
 	make nginx/staging/test
 
 	# do them all
@@ -88,14 +98,7 @@ Compile with `Makefile`
 
 ## Tips
 
-On CentOS 6.6, manpages installed manually cannot be found by `man` command by default.  To solve this
-
-	# Try adding something like the following to `/etc/man.config`
-	MANPATH_MAP	/home/yousong/.usr/bin	/home/yousong/.usr/share/man
-	# Or, setting MANPATH variable as such
-	MANPATH="$INSTALL_PREFIX/share/man:$(manpath)"
-
-Many of the times packages depend on the installation of other packages to be successfully built and run.  Currently we just use the distribution's package manager to install those dependencies for us.
+Many of the times packages depend on the installation of other packages to be successfully built and run.  Currently we can depend on distribution's package manager to install those dependencies for us.
 
 	apt-get install build-essential
 	apt-get build-dep openvpn
@@ -104,9 +107,28 @@ Many of the times packages depend on the installation of other packages to be su
 	yum -y groupinstall "Development Tools"
 	yum-builddep openvpn
 
-When dependencies cannot be satisfied by system package manager, we build the required version ourself.
+When dependencies cannot be satisfied by system package manager, we can build the required version ourself.
 
-## Versioned symbols
+## FAQ
+
+### Steps to setup environment variables to use the built binaries
+
+	# Use installed binaries
+	export PATH=$INSTALL_PREFIX/bin:$INSTALL_PREFIX/sbin:$PATH
+
+	# Use installed manpages
+	MANPATH="$INSTALL_PREFIX/share/man:$(manpath)"
+
+### `sudo: flowtop: command not found`
+
+Most of the time `sudo` will use a predefined `PATH` for its child process,
+thus the ones not in that directory list cannot be found.
+
+Using absolute path to the binary can workaround this
+
+	sudo `which flowtop` -h
+
+### Versioned symbols
 
 On Debian, Warning messages like the follow can be emitted by dynamic loader
 
