@@ -67,8 +67,8 @@ do_patch() {
 -AM_CFLAGS += -I$(top_srcdir)/libcork/include
  
 -SS_COMMON_LIBS = $(top_builddir)/libipset/libipset.la \
-+SS_COMMON_LIBS = $(top_builddir)/libipset/libssipset.la \
 -                 $(top_builddir)/libcork/libcork.la \
++SS_COMMON_LIBS = $(top_builddir)/libipset/libssipset.la \
                   $(INET_NTOP_LIB)
  if USE_SYSTEM_SHARED_LIB
 -SS_COMMON_LIBS += -lev -lsodium -lm
