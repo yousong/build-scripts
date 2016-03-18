@@ -19,6 +19,14 @@ do_patch() {
 	patch -p0 <<"EOF"
 --- Makefile.orig	2016-03-18 11:20:12.921054841 +0800
 +++ Makefile	2016-03-18 11:20:33.129060321 +0800
+@@ -300,7 +300,6 @@ ifeq ($(TARGET),osx)
+   USE_POLL       = implicit
+   USE_KQUEUE     = implicit
+   USE_TPROXY     = implicit
+-  USE_LIBCRYPT   = implicit
+ else
+ ifeq ($(TARGET),openbsd)
+   # This is for OpenBSD >= 3.0
 @@ -705,7 +705,7 @@ endif
  #### Global link options
  # These options are added at the end of the "ld" command line. Use LDFLAGS to
@@ -41,6 +49,7 @@ elif os_is_darwin; then
 	"
 fi
 MAKE_VARS="$MAKE_VARS		\\
+	PREFIX=$INSTALL_PREFIX	\\
 	USE_PCRE=1				\\
 	USE_PCRE_JIT=1			\\
 	USE_REGPARM=1			\\
