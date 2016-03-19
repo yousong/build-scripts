@@ -26,10 +26,10 @@
 # - Benchmark results across accept_mutex, reuseport, https://www.nginx.com/blog/socket-sharding-nginx-release-1-9-1/
 #
 PKG_NAME=nginx
-PKG_VERSION=1.9.9
+PKG_VERSION=1.9.12
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://nginx.org/download/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=50fdfa08e93ead7a111cba5a5f5735af
+PKG_SOURCE_MD5SUM=0afe4a7e589a0de43b7b54aa055a4351
 PKG_DEPENDS='openssl pcre zlib'
 
 . "$PWD/env.sh"
@@ -58,7 +58,7 @@ nginx_init_lua_conf
 
 # master:agentzh/dns-nginx-module cannot build with NGINX 1.9.6 because of API change
 MODS='
-	master:chaoslawful/lua-nginx-module
+	v0.10.2:openresty/lua-nginx-module
 	master:simpl/ngx_devel_kit
 	master:agentzh/array-var-nginx-module
 	master:agentzh/echo-nginx-module
