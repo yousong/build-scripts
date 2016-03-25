@@ -30,6 +30,7 @@ $(TMP_DIR)/include:
 	INSTALL_PREFIX="$(TESTS_DIR)/install" \
 	BASE_DESTDIR="$(TESTS_DIR)/dest_dir" \
 	BASE_BUILD_DIR="$(TESTS_DIR)/build_dir" \
+	OLDPATH="$(PATH)" \
 	PATH="$(TESTS_DIR)/install/bin:$(TESTS_DIR)/install/sbin:$(PATH)" \
 	$(MAKE) $*
 
@@ -42,3 +43,6 @@ endif
 
 .PHONY: genmake
 .PHONY: download staging archive install
+
+#toolchain/%:
+#	$(MAKE) -C toolchain $*
