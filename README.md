@@ -1,12 +1,12 @@
-Scripts for quickly building/installing specified versions of projects from source code to specified locations.
+Scripts for quickly building/installing specified version of open source projects from source code to specified location.
 
-- Edit `env.sh` settings before building
-- Not trying to be foolproof
+- Edit settings in `env.sh` before using this
+- These scripts are not trying to be foolproof
 
-	Previously experience with the target project and some shell scripting experience is expected
+	Previously experience with target projects and some shell scripting experience is expected
 
 - Scripts are executed with `/bin/sh -e`
-- Try to be reentrant
+- Scripts are written in a way trying to be "reentrant"
 - Use absolute path
 
 ## Prerequisites
@@ -37,7 +37,7 @@ On RHEL/CentOS 6, the default toolchain is too old for building many packages of
 3. Some packages requires newer versions of autoconf and pkg.m4 from pkg-config
 4. QEMU 2.5 requires g++ with flag `-fstack-protector-strong` which is not available in the 4.4 line
 
-The solution is to use newer toolchain from [Software Collections](https://www.softwarecollections.org/) service at the moment before we build toolchains by ourself
+The solution at the moment is to use newer toolchain from [Software Collections](https://www.softwarecollections.org/) service before we can build toolchains by ourself
 
 	# Install base packages
 	yum install scl-utils
@@ -61,13 +61,20 @@ The solution is to use newer toolchain from [Software Collections](https://www.s
 
 ## How to use this
 
-Packages built will be installed to `$INSTALL_PREFIX` by default, which is
-`$HOME/.usr/` at the moment.  Directory locations can be customized by editing
-`env.sh`
+Packages built will be installed to `$INSTALL_PREFIX`, which is `$HOME/.usr/`
+at the moment.  Directory locations can be customized by editing `env.sh`
 
-Just setting `PATH` should work.  These packages are to be compiled with
-`-rpath` support.  That means there is no need to set `LD_LIBRARY_PATH` or
-`DYLD_LIBRARY_PATH`.
+Just setting `PATH` should be enough to use the built binaries as these
+packages are to be compiled with `-rpath` support which means that there is no
+need to set `LD_LIBRARY_PATH` or `DYLD_LIBRARY_PATH`.
+
+Steps to setup environment variables to use the built binaries
+
+	# Use installed binaries
+	export PATH=$INSTALL_PREFIX/bin:$INSTALL_PREFIX/sbin:$PATH
+
+	# Use installed manpages
+	MANPATH="$INSTALL_PREFIX/share/man:$(manpath)"
 
 Compile one by one and handle dependencies by mind
 
@@ -98,7 +105,9 @@ Compile with `Makefile`
 
 ## Tips
 
-Many of the times packages depend on the installation of other packages to be successfully built and run.  Currently we can depend on distribution's package manager to install those dependencies for us.
+Packages can depend on the installation of other packages to be successfully
+built and run.  We can use system's package manager to help us for packages not
+provided here.
 
 	apt-get install build-essential
 	apt-get build-dep openvpn
@@ -107,30 +116,20 @@ Many of the times packages depend on the installation of other packages to be su
 	yum -y groupinstall "Development Tools"
 	yum-builddep openvpn
 
-When dependencies cannot be satisfied by system package manager, we can build the required version ourself.
-
 ## FAQ
-
-### Steps to setup environment variables to use the built binaries
-
-	# Use installed binaries
-	export PATH=$INSTALL_PREFIX/bin:$INSTALL_PREFIX/sbin:$PATH
-
-	# Use installed manpages
-	MANPATH="$INSTALL_PREFIX/share/man:$(manpath)"
 
 ### `sudo: flowtop: command not found`
 
-Most of the time `sudo` will use a predefined `PATH` for its child process,
-thus the ones not in that directory list cannot be found.
+Most of the time `sudo` will use a predefined `PATH` for its child processes,
+so binaries not in that directory list cannot be found.
 
-Using absolute path to the binary can workaround this
+We can workaround this by using absolute path
 
 	sudo `which flowtop` -h
 
 ### Versioned symbols
 
-On Debian, Warning messages like the follow can be emitted by dynamic loader
+On Debian, Warning messages like the following can be emitted by dynamic linker
 
 	/usr/bin/curl: /home/yousong/.usr/lib/libcurl.so.4: no version information available (required by /usr/bin/curl)
 	/home/yousong/.usr/sbin/openvpn: /home/yousong/.usr/lib/libssl.so.1.0.0: no version information available (required by /home/yousong/.usr/sbin/openvpn)
@@ -167,22 +166,21 @@ Background information while debugging this
 
 ## Background
 
-There are times when we want to build packages from source for reasons like
+I want to build packages from source for reasons like
 
-1. The one provided by the distribution is old, has bugs, lacks the features.
+1. The one provided by the distribution is old, has bugs, lacks the features we want.
 	- QEMU, Vim, tmux, nginx, protobuf, openvswitch belong to this category
-2. Or the distribution in concern does not provide it at all
+2. Or the distribution does not provide it at all
 	- ag (the_silver_searcher), crosstool-ng, mausezahn, libcli, mosh, openrestry, tengine are of this type
-3. We want the process of `wget`, `configure`, `make`, `make install` to be automatic or at least semi-automatic.
-	- Just specify the package name, version, url location, and optionally the MD5SUM of the source code, then viola.
-4. We need to do customizations and want to make the process easily repeatable/reproducible at a later time
+3. I want the process of `wget`, `tar xzf`, patching, `configure`, `make`, `make install` to be automatic or at least semi-automatic.
+	- We can make it a "viola" thing when we need to do it again
+4. I want to do customizations and want to make the process easily repeatable/reproducible at a later time
 	- QEMU, nginx, vim are of this type
 5. We want the effect/result of the build to be local without requiring root privileges or polutting the system directories
-	- These packages will by default install to `$HOME/.usr` (the `--prefix` option)
+	- No, `/usr/local` is not an option
 
-The idea is not new, yet the result is rewarding.
-
-Build scripts here uses the naming convention from OpenWrt package `Makefile`.
+The idea is not new, yet the result is rewarding.  Scripts here uses the naming
+convention from OpenWrt package `Makefile`.
 
 ## TODO
 
@@ -196,4 +194,3 @@ Build scripts here uses the naming convention from OpenWrt package `Makefile`.
 ## Backup Mirror
 
 - https://distfiles.macports.org/$PKG_NAME
-
