@@ -12,7 +12,7 @@ PKG_VERSION=2.5.0
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.bz2"
 PKG_SOURCE_URL="http://wiki.qemu-project.org/download/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=f469f2330bbe76e3e39db10e9ac4f8db
-PKG_DEPENDS='zlib curl ncurses'
+PKG_DEPENDS='curl gnutls ncurses zlib'
 
 . "$PWD/env.sh"
 
@@ -23,7 +23,11 @@ fi
 # Others targets can be found in text for `--target-list` option from output of
 # `./configure --help`
 TARGETS="i386-softmmu x86_64-softmmu mipsel-softmmu mips-softmmu arm-softmmu"
+
+#
+# GNUTLS is required for vnc through websocket
 CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
+	--enable-gnutls					\\
 	--target-list='$TARGETS'		\\
 "
 MAKE_VARS="V=s"
