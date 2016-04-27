@@ -6,6 +6,22 @@
 # See /LICENSE for more information.
 #
 # @curl is required for curl block driver
+# @gnutls is required for vnc through websocket
+#
+# When building on debian, the following additional packages may also be required.
+#
+#	pkg-config - manage compile and link flags for libraries
+#	libglib2.0-dev - Development files for the GLib library
+#	libpixman-1-dev - pixel-manipulation library for X and cairo (development files)
+#
+# We can specify make target manually
+#
+#	make qemu-img
+#	make subdir-mips-softmmu
+#
+# If build errors caused by header files occur, just check if the order of
+# `-Idir` is correct and we do not incorrectly include header files from sys
+# directories first
 #
 PKG_NAME=qemu
 PKG_VERSION=2.5.0
@@ -20,12 +36,12 @@ if os_is_linux; then
 	PKG_DEPENDS="$PKG_DEPENDS libaio"
 fi
 
-# Others targets can be found in text for `--target-list` option from output of
-# `./configure --help`
+#
+# Others targets can be found in help text for `--target-list` option from
+# output of `./configure --help`
+#
 TARGETS="i386-softmmu x86_64-softmmu mipsel-softmmu mips-softmmu arm-softmmu"
 
-#
-# GNUTLS is required for vnc through websocket
 CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
 	--enable-gnutls					\\
 	--target-list='$TARGETS'		\\
