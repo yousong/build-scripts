@@ -171,6 +171,8 @@ EOF
 EOF
 }
 
+# +profile feature is only available through HUGE features set.  It cannot
+# enabled standalone through configure options
 CONFIGURE_ARGS="$CONFIGURE_ARGS	\\
 	--enable-fail-if-missing	\\
 	--enable-luainterp			\\
