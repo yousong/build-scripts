@@ -18,7 +18,7 @@ PKG_DEPENDS='libpcap sqlite'
 do_patch() {
 	cd "$PKG_SOURCE_DIR"
 
-	# taken from macports db53
+	# make the installation DESTDIR-aware
 	patch -p0 <<"EOF"
 --- src/Makefile.in.orig	2016-05-27 09:24:22.603830706 +0800
 +++ src/Makefile.in	2016-05-27 09:25:19.427850582 +0800

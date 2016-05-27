@@ -17,7 +17,7 @@ PKG_SOURCE_UNTAR_FIXUP=1
 do_patch() {
 	cd "$PKG_SOURCE_DIR"
 
-	# taken from macports db53
+	# make the installation DESTDIR-aware
 	patch -p0 <<"EOF"
 --- src/Makefile.orig	2016-05-27 09:51:24.636338745 +0800
 +++ src/Makefile	2016-05-27 09:51:51.752347399 +0800
