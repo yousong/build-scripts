@@ -60,14 +60,16 @@ do_patch() {
  
  #
  # primary rules
-@@ -139,6 +139,7 @@ install-ebin: $(DEST_ETAGS)
+@@ -139,7 +139,9 @@ install-ebin: $(DEST_ETAGS)
  install-lib: $(DEST_READ_LIB) $(DEST_READ_INC)
  
  $(DEST_CTAGS): $(CTAGS_EXEC) $(bindir) FORCE
 +	mkdir -p "`dirname $@`"
  	$(INSTALL_PROG) $(CTAGS_EXEC) $@  &&  chmod 755 $@
++	cd $(bindir) && $(SLINK) $(CTAGS_EXEC) $(CTAGS_PROG)-exuberant
  
  $(DEST_ETAGS):
+ 	- if [ -x $(DEST_CTAGS) ]; then \
 @@ -154,6 +155,7 @@ install-cman: $(DEST_CMAN)
  install-eman: $(DEST_EMAN)
  
