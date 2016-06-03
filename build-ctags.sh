@@ -27,6 +27,11 @@ do_patch() {
 	#
 	# Allow '/' to be valid lexcial element of identifier
 	#
+	# The ungetc() is needed for the following case when c is "M" after reading
+	# "override"
+	#
+	#		override MAKE:=123
+	#
 	patch -p0 <<"EOF"
 --- make.c.orig	2016-06-01 20:06:46.847104986 +0800
 +++ make.c	2016-06-01 20:07:02.839109892 +0800
@@ -39,8 +44,26 @@ do_patch() {
  }
  
  static void readIdentifier (const int first, vString *const id)
+@@ -193,6 +193,8 @@ static void findMakeTags (void)
+ 					in_rule = FALSE;
+ 					skipLine ();
+ 				}
++				else
++					fileUngetc (c);
+ 			}
+ 		}
+ 		else
 --- Makefile.in.orig	2016-06-01 20:09:20.911155981 +0800
 +++ Makefile.in	2016-06-01 20:09:29.703156974 +0800
+@@ -24,7 +24,7 @@
+ libdir	= @libdir@
+ incdir	= @includedir@
+ mandir	= @mandir@
+-SLINK	= @LN_S@
++SLINK	= @LN_S@ -f
+ STRIP	= @STRIP@
+ CC	= @CC@
+ DEFS	= @DEFS@
 @@ -85,12 +85,12 @@ EMAN	= $(ETAGS_PROG).$(manext)
  #
  CTAGS_EXEC	= $(CTAGS_PROG)$(EXEEXT)
