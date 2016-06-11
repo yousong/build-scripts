@@ -58,12 +58,18 @@ MAKE_VARS="$MAKE_VARS		\\
 	EXTRA_LDFLAGS='$EXTRA_LDFLAGS' \\
 "
 
-MAKE_VARS="$MAKE_VARS		\\
-	USE_LUA=1				\\
-	LUA_LIB_NAME=lua		\\
-	LUA_INC=$(pkg-config --cflags-only-I lua5.3 | sed -e 's/-I//g')	\\
-	LUA_LD_FLAGS='$(pkg-config --libs lua5.3)'	\\
-"
+haproxy_use_lua() {
+	local inc="$(pkg-config --cflags-only-I lua5.3 | sed -e 's/-I//g' || true)"
+	local lib="$(pkg-config --libs lua5.3)"
+
+	MAKE_VARS="$MAKE_VARS		\\
+		USE_LUA=1				\\
+		LUA_LIB_NAME=lua		\\
+		LUA_INC=$inc			\\
+		LUA_LD_FLAGS='$lib'		\\
+	"
+}
+haproxy_use_lua
 
 configure() {
 	true
