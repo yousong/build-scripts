@@ -145,6 +145,121 @@ index fed4560..2d9c24d 100644
 -- 
 2.6.4
 EOF
+	patch -p1 <<"EOF"
+From 082a2374fbe0d41e500158270e1ddc321c09a9e4 Mon Sep 17 00:00:00 2001
+From: Brad Fitzpatrick <bradfitz@golang.org>
+Date: Fri, 12 Dec 2014 15:54:24 +1100
+Subject: [PATCH] cmd/api: update the API checker to Go 1.4 and git
+
+Still using the ancient go/types API. Updating that to the modern API
+should be a separate effort in a separate change.
+
+Change-Id: Ic1c5ae3c13711d34fe757507ecfc00ee883810bf
+Reviewed-on: https://go-review.googlesource.com/1404
+Reviewed-by: David Symonds <dsymonds@golang.org>
+---
+ src/cmd/api/run.go | 33 ++++++++++++++++++---------------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
+
+diff --git a/src/cmd/api/run.go b/src/cmd/api/run.go
+index ed5613e..c2c6650 100644
+--- a/src/cmd/api/run.go
++++ b/src/cmd/api/run.go
+@@ -25,10 +25,10 @@ import (
+ 	"strings"
+ )
+ 
+-// goToolsVersion is the hg revision of the go.tools subrepo we need
++// goToolsVersion is the git revision of the x/tools subrepo we need
+ // to build cmd/api.  This only needs to be updated whenever a go/types
+ // bug fix is needed by the cmd/api tool.
+-const goToolsVersion = "6698ca2900e2"
++const goToolsVersion = "875ff2496f865e" // aka hg 6698ca2900e2
+ 
+ var goroot string
+ 
+@@ -38,9 +38,9 @@ func main() {
+ 	if goroot == "" {
+ 		log.Fatal("No $GOROOT set.")
+ 	}
+-	_, err := exec.LookPath("hg")
++	_, err := exec.LookPath("git")
+ 	if err != nil {
+-		fmt.Println("Skipping cmd/api checks; hg not available")
++		fmt.Println("Skipping cmd/api checks; git not available")
+ 		return
+ 	}
+ 
+@@ -108,7 +108,7 @@ func prepGoPath() string {
+ 	// The GOPATH we'll return
+ 	gopath := filepath.Join(os.TempDir(), "gopath-api-"+cleanUsername(username)+"-"+cleanUsername(strings.Fields(runtime.Version())[0]), goToolsVersion)
+ 
+-	// cloneDir is where we run "hg clone".
++	// cloneDir is where we run "git clone".
+ 	cloneDir := filepath.Join(gopath, "src", "code.google.com", "p")
+ 
+ 	// The dir we clone into. We only atomically rename it to finalDir on
+@@ -127,10 +127,7 @@ func prepGoPath() string {
+ 	if err := os.MkdirAll(cloneDir, 0700); err != nil {
+ 		log.Fatal(err)
+ 	}
+-	cmd := exec.Command("hg",
+-		"clone", "--rev="+goToolsVersion,
+-		"https://code.google.com/p/go.tools",
+-		tempBase)
++	cmd := exec.Command("git", "clone", "https://go.googlesource.com/tools", tempBase)
+ 	cmd.Dir = cloneDir
+ 	out, err := cmd.CombinedOutput()
+ 	if err != nil {
+@@ -138,8 +135,15 @@ func prepGoPath() string {
+ 			log.Printf("# Skipping API check; network appears to be unavailable")
+ 			os.Exit(0)
+ 		}
+-		log.Fatalf("Error running hg clone on go.tools: %v\n%s", err, out)
++		log.Fatalf("Error running git clone on x/tools: %v\n%s", err, out)
+ 	}
++	cmd = exec.Command("git", "reset", "--hard", goToolsVersion)
++	cmd.Dir = tmpDir
++	out, err = cmd.CombinedOutput()
++	if err != nil {
++		log.Fatalf("Error updating x/tools in %v to %v: %v, %s", tmpDir, goToolsVersion, err, out)
++	}
++
+ 	if err := os.Rename(tmpDir, finalDir); err != nil {
+ 		log.Fatal(err)
+ 	}
+@@ -163,23 +167,22 @@ func goToolsCheckoutGood(dir string) bool {
+ 		return false
+ 	}
+ 
+-	cmd := exec.Command("hg", "id", "--id")
++	cmd := exec.Command("git", "rev-parse", "HEAD")
+ 	cmd.Dir = dir
+ 	out, err := cmd.Output()
+ 	if err != nil {
+ 		return false
+ 	}
+ 	id := strings.TrimSpace(string(out))
+-	if id != goToolsVersion {
++	if !strings.HasPrefix(id, goToolsVersion) {
+ 		return false
+ 	}
+ 
+-	cmd = exec.Command("hg", "status")
++	cmd = exec.Command("git", "status", "--porcelain")
+ 	cmd.Dir = dir
+ 	out, err = cmd.Output()
+-	if err != nil || len(out) > 0 {
++	if err != nil || strings.TrimSpace(string(out)) != "" {
+ 		return false
+ 	}
+-
+ 	return true
+ }
+-- 
+2.6.4
+
+EOF
 }
 
 do_patch_go15() {
