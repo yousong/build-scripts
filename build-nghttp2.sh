@@ -66,6 +66,30 @@ do_patch() {
    }
  
 EOF
+
+	# Including both event.h and event2/event.h will cause redefinition error.
+	patch -p0 <<"EOF"
+--- examples/libevent-client.c.orig	2016-06-11 18:59:02.552256366 +0800
++++ examples/libevent-client.c	2016-06-11 18:59:06.132256875 +0800
+@@ -58,7 +58,6 @@ char *strndup(const char *s, size_t size
+ #include <openssl/err.h>
+ #include <openssl/conf.h>
+ 
+-#include <event.h>
+ #include <event2/event.h>
+ #include <event2/bufferevent_ssl.h>
+ #include <event2/dns.h>
+--- examples/libevent-server.c.orig	2016-06-11 19:00:04.736274948 +0800
++++ examples/libevent-server.c	2016-06-11 19:00:09.164276603 +0800
+@@ -66,7 +66,6 @@
+ #include <openssl/err.h>
+ #include <openssl/conf.h>
+ 
+-#include <event.h>
+ #include <event2/event.h>
+ #include <event2/bufferevent_ssl.h>
+ #include <event2/listener.h>
+EOF
 }
 
 CONFIGURE_ARGS="$CONFIGURE_ARGS	\\
