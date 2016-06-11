@@ -24,10 +24,10 @@
 # directories first
 #
 PKG_NAME=qemu
-PKG_VERSION=2.5.0
+PKG_VERSION=2.5.1.1
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.bz2"
 PKG_SOURCE_URL="http://wiki.qemu-project.org/download/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=f469f2330bbe76e3e39db10e9ac4f8db
+PKG_SOURCE_MD5SUM=f5ff0e71398b9e428b4f177001ba4285
 PKG_DEPENDS='curl gnutls ncurses zlib'
 
 . "$PWD/env.sh"
