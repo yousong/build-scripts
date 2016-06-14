@@ -59,7 +59,7 @@ MAKE_VARS="$MAKE_VARS		\\
 "
 
 haproxy_use_lua() {
-	local inc="$(pkg-config --cflags-only-I lua5.3 | sed -e 's/-I//g' || true)"
+	local inc="$(pkg-config --cflags-only-I lua5.3 | sed -e 's/-I//g')"
 	local lib="$(pkg-config --libs lua5.3)"
 
 	MAKE_VARS="$MAKE_VARS		\\
