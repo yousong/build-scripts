@@ -94,4 +94,32 @@ lua_do_patch() {
  # list targets that do not create files (but not all makes understand .PHONY)
  .PHONY: all $(PLATS) default o a clean depend echo none
 EOF
+
+	# a patch taken from http://lua-users.org/lists/lua-l/2010-03/msg00374.html
+	patch -p1 <<"EOF"
+--- lua-5.1.4.orig/src/lauxlib.c    2008-01-21 06:20:51.000000000 -0700
++++ lua-5.1.4/src/lauxlib.c 2010-03-12 05:48:39.000000000 -0700
+@@ -434,8 +434,19 @@
+ 
+ 
+ LUALIB_API void luaL_addlstring (luaL_Buffer *B, const char *s, size_t l) {
+-  while (l--)
+-    luaL_addchar(B, *s++);
++  while (l) {
++    size_t min;
++    size_t avail = bufffree(B);
++    if (!avail) {
++      luaL_prepbuffer(B);
++      avail = bufffree(B);
++    }
++    min = avail <= l ? avail : l;
++    memcpy(B->p, s, min);
++    B->p += min;
++    s += min;
++    l -= min;
++  }
+ }
+ 
+ 
+EOF
 }
