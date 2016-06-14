@@ -26,10 +26,10 @@
 # - Benchmark results across accept_mutex, reuseport, https://www.nginx.com/blog/socket-sharding-nginx-release-1-9-1/
 #
 PKG_NAME=nginx
-PKG_VERSION=1.9.12
+PKG_VERSION=1.10.1
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://nginx.org/download/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=0afe4a7e589a0de43b7b54aa055a4351
+PKG_SOURCE_MD5SUM=088292d9caf6059ef328aa7dda332e44
 PKG_DEPENDS='openssl pcre zlib'
 
 . "$PWD/env.sh"
