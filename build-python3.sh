@@ -19,7 +19,6 @@ PKG_VERSION=3.5.0
 PKG_SOURCE="Python-${PKG_VERSION}.tar.xz"
 PKG_SOURCE_URL="https://www.python.org/ftp/python/$PKG_VERSION/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=d149d2812f10cbe04c042232e7964171
-PKG_BUILD_DIR_BASENAME="Python-$PKG_VERSION"
 PKG_DEPENDS='bzip2 db openssl ncurses readline sqlite zlib'
 
 . "$PWD/env.sh"

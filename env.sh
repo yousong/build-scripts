@@ -116,9 +116,12 @@ env_init_pkg() {
 		PKG_SOURCE_DIR="$BASE_BUILD_DIR/$dirbn"
 		PKG_STAGING_DIR="$BASE_DESTDIR/$dirbn-install"
 	else
-		dirbn="${PKG_BUILD_DIR_BASENAME:-$PKG_NAME-$PKG_VERSION}"
-		PKG_SOURCE_DIR="$BASE_BUILD_DIR/$dirbn"
-		PKG_STAGING_DIR="$BASE_DESTDIR/$dirbn-install"
+		if [ -n "$PKG_BUILD_DIR_BASENAME" ]; then
+			PKG_SOURCE_DIR="$BASE_BUILD_DIR/$PKG_BUILD_DIR_BASENAME"
+		else
+			PKG_SOURCE_DIR="$BASE_BUILD_DIR/${PKG_SOURCE%%.tar*}"
+		fi
+		PKG_STAGING_DIR="$BASE_DESTDIR/$PKG_NAME-$PKG_VERSION-install"
 	fi
 	if [ -z "$PKG_BUILD_DIR" ]; then
 		if [ -n "$PKG_CMAKE" ]; then
