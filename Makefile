@@ -17,11 +17,8 @@ $(TMP_DIR)/Makefile: $(patsubst %,$(TMP_DIR)/include/Makefile.%.mk,$(names))
 	done
 
 $(TMP_DIR)/include/Makefile.%.mk: $(TOPDIR)/build-%.sh | $(TMP_DIR)/include
-	b="$(TOPDIR)/build-$*.sh";					\
-	name=`basename $$b`;						\
-	name=$${name#*-};						\
-	name=$${name%.sh};						\
-	$$b genmake >$(TMP_DIR)/include/Makefile.$$name.mk;		\
+	"$(TOPDIR)/build-$*.sh" genmake >"$@.tmp"
+	mv "$@.tmp" "$@"
 
 $(TMP_DIR)/include:
 	mkdir -p "$@"
