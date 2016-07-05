@@ -6,10 +6,10 @@
 # See /LICENSE for more information.
 #
 PKG_NAME=openresty
-PKG_VERSION=1.9.7.2
+PKG_VERSION=1.9.15.1
 PKG_SOURCE="ngx_openresty-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://openresty.org/download/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=78a263de11ff43c95e847f208cce0899
+PKG_SOURCE_MD5SUM=833831b76386d73f1bf6be9fe09adaca
 PKG_SOURCE_UNTAR_FIXUP=1
 PKG_DEPENDS='openssl pcre zlib'
 
@@ -21,8 +21,8 @@ do_patch() {
 
 	# NOTE: NGINX version ${PKG_VERSION%.*} was bundled
 	patch -p0 <<"EOF"
---- bundle/nginx-1.9.7/auto/feature.orig	2015-12-22 20:52:59.000000000 +0800
-+++ bundle/nginx-1.9.7/auto/feature	2015-12-22 20:53:37.000000000 +0800
+--- bundle/nginx-1.9.15/auto/feature.orig	2015-12-22 20:52:59.000000000 +0800
++++ bundle/nginx-1.9.15/auto/feature	2015-12-22 20:53:37.000000000 +0800
 @@ -39,8 +39,8 @@ int main() {
  END
  
