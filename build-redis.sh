@@ -6,10 +6,10 @@
 # See /LICENSE for more information.
 #
 PKG_NAME=redis
-PKG_VERSION=3.0.6
+PKG_VERSION=3.2.1
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://download.redis.io/releases/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=9a44ea6bff987d2113caea7761730376
+PKG_SOURCE_MD5SUM=b311d4332326f1e6f86a461b4025636d
 
 . "$PWD/env.sh"
 
