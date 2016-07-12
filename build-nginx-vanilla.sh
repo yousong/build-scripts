@@ -36,6 +36,7 @@ PKG_DEPENDS='openssl pcre zlib'
 . "$PWD/utils-nginx.sh"
 
 CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
+	--with-http_realip_module		\\
 	--with-http_ssl_module			\\
 	--with-http_mp4_module			\\
 	--with-stream					\\
