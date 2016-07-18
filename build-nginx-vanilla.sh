@@ -58,6 +58,11 @@ nginx_init_lua_conf() {
 nginx_init_lua_conf
 
 # master:agentzh/dns-nginx-module cannot build with NGINX 1.9.6 because of API change
+#
+# Module list
+#
+#	v1.1.8:arut/nginx-rtmp-module
+#
 MODS='
 	v0.10.2:openresty/lua-nginx-module
 	master:simpl/ngx_devel_kit
