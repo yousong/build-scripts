@@ -123,12 +123,13 @@ env_init_pkg() {
 		fi
 		PKG_STAGING_DIR="$BASE_DESTDIR/$PKG_NAME-$PKG_VERSION-install"
 	fi
-	if [ -z "$PKG_BUILD_DIR" ]; then
-		if [ -n "$PKG_CMAKE" ]; then
-			PKG_BUILD_DIR="$PKG_SOURCE_DIR/build"
-		else
-			PKG_BUILD_DIR="$PKG_SOURCE_DIR"
+	if [ -n "$PKG_CMAKE" ]; then
+		if [ -z "$PKG_CMAKE_BUILD_SUBDIR" ]; then
+			PKG_CMAKE_BUILD_SUBDIR=build
 		fi
+		PKG_BUILD_DIR="$PKG_SOURCE_DIR/$PKG_CMAKE_BUILD_SUBDIR"
+	else
+		PKG_BUILD_DIR="$PKG_SOURCE_DIR"
 	fi
 
 	CONFIGURE_PATH="${CONFIGURE_PATH:-$PKG_BUILD_DIR}"
@@ -305,7 +306,7 @@ build_configure_cmake() {
 		-DCMAKE_BUILD_WITH_INSTALL_RPATH=on					\
 		-DCMAKE_MACOSX_RPATH=on								\
 		"$CMAKE_ARGS"										\
-		"$PKG_SOURCE_DIR"
+		"$PKG_SOURCE_DIR/$PKG_CMAKE_SOURCE_SUBDIR"
 }
 
 compile() {
