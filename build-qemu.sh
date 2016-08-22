@@ -24,10 +24,10 @@
 # directories first
 #
 PKG_NAME=qemu
-PKG_VERSION=2.5.1.1
+PKG_VERSION=2.6.1
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.bz2"
 PKG_SOURCE_URL="http://wiki.qemu-project.org/download/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=f5ff0e71398b9e428b4f177001ba4285
+PKG_SOURCE_MD5SUM=6a183b192018192943b6781e1bb9b72f
 PKG_DEPENDS='curl gnutls ncurses zlib'
 
 . "$PWD/env.sh"
@@ -40,7 +40,7 @@ fi
 # Others targets can be found in help text for `--target-list` option from
 # output of `./configure --help`
 #
-TARGETS="i386-softmmu x86_64-softmmu mipsel-softmmu mips-softmmu arm-softmmu"
+TARGETS="i386-softmmu x86_64-softmmu mipsel-softmmu mips-softmmu mips64el-softmmu mips64-softmmu arm-softmmu"
 
 CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
 	--enable-gnutls					\\
