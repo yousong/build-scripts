@@ -26,10 +26,10 @@
 # - Benchmark results across accept_mutex, reuseport, https://www.nginx.com/blog/socket-sharding-nginx-release-1-9-1/
 #
 PKG_NAME=nginx
-PKG_VERSION=1.10.1
+PKG_VERSION=1.11.3
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://nginx.org/download/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=088292d9caf6059ef328aa7dda332e44
+PKG_SOURCE_MD5SUM=18275c1daa39c5fac12e56c34907d45b
 PKG_DEPENDS='openssl pcre zlib'
 
 . "$PWD/env.sh"
@@ -63,8 +63,12 @@ nginx_init_lua_conf
 #
 #	v1.1.8:arut/nginx-rtmp-module
 #
+# Try the following command to re-download master tarballs
+#
+#	rm -v dl/*master*
+#
 MODS='
-	v0.10.2:openresty/lua-nginx-module
+	master:openresty/lua-nginx-module
 	master:simpl/ngx_devel_kit
 	master:agentzh/array-var-nginx-module
 	master:agentzh/echo-nginx-module
