@@ -15,10 +15,10 @@
 # - Go 1.5 Release Notes, https://golang.org/doc/go1.5
 #
 PKG_NAME=go
-PKG_VERSION=1.5.4
+PKG_VERSION=1.7
 PKG_SOURCE="$PKG_NAME$PKG_VERSION.src.tar.gz"
 PKG_SOURCE_URL="https://storage.googleapis.com/golang/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=a04d570515c46e4935c63605cbd3a04e
+PKG_SOURCE_MD5SUM=a30c3bd1a7fcc6a48acfb74936a19b4c
 PKG_DEPENDS=go1.4
 
 . "$PWD/env.sh"
