@@ -28,7 +28,7 @@ PKG_VERSION=2.6.1
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.bz2"
 PKG_SOURCE_URL="http://wiki.qemu-project.org/download/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=6a183b192018192943b6781e1bb9b72f
-PKG_DEPENDS='curl gnutls ncurses zlib'
+PKG_DEPENDS='bzip2 curl gnutls libjpeg-turbo libpng lzo ncurses nettle zlib'
 
 . "$PWD/env.sh"
 
@@ -42,8 +42,18 @@ fi
 #
 TARGETS="i386-softmmu x86_64-softmmu mipsel-softmmu mips-softmmu mips64el-softmmu mips64-softmmu arm-softmmu"
 
+CONFIGURE_VARS="$CONFIGURE_VARS		\\
+	QEMU_CFLAGS='$EXTRA_CFLAGS'		\\
+"
 CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
 	--enable-gnutls					\\
+	--enable-nettle					\\
+	--enable-curses					\\
+	--enable-lzo					\\
+	--enable-bzip2					\\
+	--enable-vnc					\\
+	--enable-vnc-jpeg				\\
+	--enable-vnc-png				\\
 	--target-list='$TARGETS'		\\
 "
 MAKE_VARS="V=s"
