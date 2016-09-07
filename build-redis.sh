@@ -5,6 +5,46 @@
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
 #
+# Test
+#
+#	./runtest --help
+#	./runtest --list-tests
+#	./runtest --single unit/printver
+#
+# Speed regression when within code repo (patch needed)
+#
+#	( cd utils; ./speed-regression.tcl --help )
+#	( cd utils; ./speed-regression.tcl )
+#
+# Cluster
+#
+#	( cd ./utils/create-cluster; ./create-cluster help )
+#	( cd ./utils/create-cluster; ./create-cluster start )
+#	( cd ./utils/create-cluster; ./create-cluster create )
+#	( cd ./utils/create-cluster; ./create-cluster stop )
+#	( cd ./utils/create-cluster; ./create-cluster clean )
+#
+# Test requires tclsh version of at least 8.5.
+#
+# Tests are run by firstly starting a single test server which in turn will
+# spawn (--clients) <num> test clients.  Test server waits for connections from
+# test clients, then distribute tests to clients and collect test results.
+# Test clients may start redis servers with ports selected from a range
+# prepared by test server before spawning test client.
+#
+# There is a Tcl implementation of redis client at tests/support/redis.tcl
+#
+# Speed regression evaluation is performed by
+#
+# 0. git checkout branch and build src/redis-benchmark
+# 1. git checkout branch
+# 2. build src/redis-server
+# 3. redis-benchmark against it
+# 4. combine benchmark result and present it in units of request per second
+#
+# The shell script create-cluster depends on src/redis-trib.rb which requires
+# Ruby implementation of redis client
+#
 PKG_NAME=redis
 PKG_VERSION=3.2.1
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
