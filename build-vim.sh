@@ -16,19 +16,28 @@
 #	# or use the following method if you are on CentOS 6.5
 #	sudo yum install -y lua-devel ruby-devel python-devel ncurses-devel perl-devel perl-ExtUtils-Embed
 #
+# Delete dl/patches-$VER_ND/MD5SUMS to check for new patches
+#
+# Patch 1425 of vim 7.4 seems malformed at the moment (2016-09-14) when
+# patching csdpmi4b.zip
+#
 # 7.3 is the release version.
 # 547 is the number of applied patches provided by vim.org.
 PKG_NAME=vim
-PKG_VERSION=7.4
+PKG_VERSION=8.0
 PKG_SOURCE="vim-${PKG_VERSION}.tar.bz2"
 PKG_SOURCE_URL="ftp://ftp.vim.org/pub/vim/unix/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=607e135c559be642f210094ad023dc65
+PKG_SOURCE_MD5SUM=808d2ebdab521e18bc5e0eaede0db867
 PKG_SOURCE_UNTAR_FIXUP=1
 PKG_DEPENDS='libiconv LuaJIT ncurses python2'
 
 . "$PWD/env.sh"
+
+# version without dot
 VER_ND="$(echo $PKG_VERSION | tr -d .)"
 PATCH_DIR="$BASE_DL_DIR/vim$VER_ND-patches"
+# vim-8.0.tar.bz2 at the moment already has patch 0001 and 0002 applied
+VIM_NEXT_PATCH=3
 
 patches_all_fetched() {
 	if [ -s "MD5SUMS" ] && md5sum --status -c MD5SUMS; then
@@ -57,9 +66,9 @@ fetch_patches() {
 	wget -c "$baseurl/MD5SUMS"
 	num_patches="$(wc -l MD5SUMS | cut -f1 -d' ')"
 	num_process="$(($num_patches / 100))"
-	for i in $(seq 0 $num_process); do
+	for i in $(seq 1 100 $num_patches); do
 		# Each wget fetches at most 100 patches.
-		grep "$PKG_VERSION\\.$i[0-9]\\+$" MD5SUMS | \
+		sed -n "$i,$(($i+99))p" MD5SUMS | \
 			while read l; do echo "$l" | md5sum --status -c || echo "$baseurl/${l##* }"; done | \
 			wget --no-verbose -c -i - &
 	done
@@ -81,7 +90,7 @@ apply_patches() {
 		return 0
 	fi
 
-	for f in $(ls "$PATCH_DIR/$PKG_VERSION."*); do
+	for f in $(ls "$PATCH_DIR/$PKG_VERSION."* | sort --version-sort | tail -n "+$VIM_NEXT_PATCH"); do
 		__errmsg "applying patch $f"
 		patch -p0 -i "$f"
 		__errmsg
@@ -95,13 +104,13 @@ do_patch() {
 
 	# our python was not configured with --enable-framework=xxx
 	patch -p0 <<"EOF"
---- src/configure.in.orig	2015-05-29 22:32:15.000000000 +0200
-+++ src/configure.in	2015-05-29 22:34:23.000000000 +0200
-@@ -1133,13 +1137,6 @@
+--- src/configure.in.orig	2016-09-18 16:05:20.586169511 +0800
++++ src/configure.in	2016-09-18 16:05:29.082172169 +0800
+@@ -1193,13 +1193,6 @@ eof
  	    dnl -- delete the lines from make about Entering/Leaving directory
  	    eval "`cd ${PYTHON_CONFDIR} && make -f "${tmp_mkf}" __ | sed '/ directory /d'`"
  	    rm -f -- "${tmp_mkf}"
--	    if test "x$MACOSX" = "xyes" && ${vi_cv_path_python} -c \
+-	    if test "x$MACOSX" = "xyes" && test -n "${python_PYTHONFRAMEWORK}" && ${vi_cv_path_python} -c \
 -		"import sys; sys.exit(${vi_cv_var_python_version} < 2.3)"; then
 -	      vi_cv_path_python_plibs="-framework Python"
 -	      if test "x${vi_cv_path_python}" != "x/usr/bin/python" && test -n "${python_PYTHONFRAMEWORKPREFIX}"; then
@@ -111,63 +120,75 @@ do_patch() {
  	      if test "${vi_cv_var_python_version}" = "1.4"; then
  		  vi_cv_path_python_plibs="${PYTHON_CONFDIR}/libModules.a ${PYTHON_CONFDIR}/libPython.a ${PYTHON_CONFDIR}/libObjects.a ${PYTHON_CONFDIR}/libParser.a"
  	      else
-@@ -1167,7 +1164,6 @@
+@@ -1227,7 +1220,6 @@ eof
  	      vi_cv_path_python_plibs="${vi_cv_path_python_plibs} ${python_BASEMODLIBS} ${python_LIBS} ${python_SYSLIBS} ${python_LINKFORSHARED}"
  	      dnl remove -ltermcap, it can conflict with an earlier -lncurses
  	      vi_cv_path_python_plibs=`echo $vi_cv_path_python_plibs | sed s/-ltermcap//`
 -	    fi
  	])
- 	AC_CACHE_VAL(vi_cv_dll_name_python,
+ 	AC_CACHE_CHECK(Python's dll name,vi_cv_dll_name_python,
  	[
 EOF
 
 	# Include those from INSTALL_PREFIX first
 	patch -p0 <<"EOF"
---- src/Makefile.orig	2016-01-31 22:54:08.000000000 +0800
-+++ src/Makefile	2016-01-31 22:56:43.000000000 +0800
-@@ -2670,33 +2670,33 @@ objects/if_xcmdsrv.o: if_xcmdsrv.c
+--- src/Makefile.orig	2016-09-18 16:06:43.122195344 +0800
++++ src/Makefile	2016-09-18 17:20:17.143576880 +0800
+@@ -1858,7 +1858,7 @@ myself:
+ 
+ 
+ # The normal command to compile a .c file to its .o file.
+-CCC = $(CC) -c -I$(srcdir) $(ALL_CFLAGS)
++CCC = $(CC) -c -I$(srcdir) $(1) $(ALL_CFLAGS)
+ 
+ 
+ # Link the target for normal use or debugging.
+@@ -2971,36 +2971,36 @@ objects/if_xcmdsrv.o: if_xcmdsrv.c
  	$(CCC) -o $@ if_xcmdsrv.c
  
  objects/if_lua.o: if_lua.c
 -	$(CCC) $(LUA_CFLAGS) -o $@ if_lua.c
-+	$(CC) -c -I$(srcdir) $(LUA_CFLAGS) $(ALL_CFLAGS) -o $@ if_lua.c
++	$(call CCC,$(LUA_CFLAGS)) -o $@ if_lua.c
  
  objects/if_mzsch.o: if_mzsch.c $(MZSCHEME_EXTRA)
 -	$(CCC) -o $@ $(MZSCHEME_CFLAGS_EXTRA) if_mzsch.c
-+	$(CC) -c -I$(srcdir) -o $@ $(MZSCHEME_CFLAGS_EXTRA) $(ALL_CFLAGS) if_mzsch.c
-  
++	$(call CCC,$(MZSCHEME_CFLAGS_EXTRA)) -o $@ if_mzsch.c
+ 
  mzscheme_base.c:
  	$(MZSCHEME_MZC) --c-mods mzscheme_base.c ++lib scheme/base
  
  objects/if_perl.o: auto/if_perl.c
 -	$(CCC) $(PERL_CFLAGS) -o $@ auto/if_perl.c
-+	$(CC) -c -I$(srcdir) $(PERL_CFLAGS) $(ALL_CFLAGS) -o $@ auto/if_perl.c
++	$(call CCC,$(PERL_CFLAGS)) -o $@ auto/if_perl.c
  
  objects/if_perlsfio.o: if_perlsfio.c
 -	$(CCC) $(PERL_CFLAGS) -o $@ if_perlsfio.c
-+	$(CC) -c -I$(srcdir) $(PERL_CFLAGS) $(ALL_CFLAGS) -o $@ if_perlsfio.c
++	$(call CCC,$(PERL_CFLAGS)) -o $@ if_perlsfio.c
  
  objects/py_getpath.o: $(PYTHON_CONFDIR)/getpath.c
 -	$(CCC) $(PYTHON_CFLAGS) -o $@ $(PYTHON_CONFDIR)/getpath.c \
-+	$(CC) -c -I$(srcdir) $(PYTHON_CFLAGS) -o $@ $(PYTHON_CONFDIR)/getpath.c \
++	$(call CCC,$(PYTHON_CFLAGS)) -o $@ $(PYTHON_CONFDIR)/getpath.c \
  		-I$(PYTHON_CONFDIR) -DHAVE_CONFIG_H -DNO_MAIN \
--		$(PYTHON_GETPATH_CFLAGS)
-+		$(PYTHON_GETPATH_CFLAGS) $(ALL_CFLAGS)
+ 		$(PYTHON_GETPATH_CFLAGS)
  
  objects/if_python.o: if_python.c if_py_both.h
 -	$(CCC) $(PYTHON_CFLAGS) $(PYTHON_CFLAGS_EXTRA) -o $@ if_python.c
-+	$(CC) -c -I$(srcdir) $(PYTHON_CFLAGS) $(PYTHON_CFLAGS_EXTRA) $(ALL_CFLAGS) -o $@ if_python.c
++	$(call CCC,$(PYTHON_CFLAGS)) $(PYTHON_CFLAGS_EXTRA) -o $@ if_python.c
  
  objects/if_python3.o: if_python3.c if_py_both.h
 -	$(CCC) $(PYTHON3_CFLAGS) $(PYTHON3_CFLAGS_EXTRA) -o $@ if_python3.c
-+	$(CC) -c -I$(srcdir) $(PYTHON3_CFLAGS) $(PYTHON3_CFLAGS_EXTRA) $(ALL_CFLAGS) -o $@ if_python3.c
++	$(call CCC,$(PYTHON3_CFLAGS)) $(PYTHON3_CFLAGS_EXTRA) -o $@ if_python3.c
  
  objects/if_ruby.o: if_ruby.c
 -	$(CCC) $(RUBY_CFLAGS) -o $@ if_ruby.c
-+	$(CC) -c -I$(srcdir) $(RUBY_CFLAGS) $(ALL_CFLAGS) -o $@ if_ruby.c
++	$(call CCC,$(RUBY_CFLAGS)) -o $@ if_ruby.c
  
- objects/if_sniff.o: if_sniff.c
- 	$(CCC) -o $@ if_sniff.c
+ objects/if_tcl.o: if_tcl.c
+-	$(CCC) $(TCL_CFLAGS) -o $@ if_tcl.c
++	$(call CCC,$(TCL_CFLAGS)) -o $@ if_tcl.c
+ 
+ objects/integration.o: integration.c
+ 	$(CCC) -o $@ integration.c
 EOF
 }
 
