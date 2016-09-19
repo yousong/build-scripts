@@ -102,34 +102,6 @@ do_patch() {
 	fetch_patches
 	apply_patches
 
-	# our python was not configured with --enable-framework=xxx
-	patch -p0 <<"EOF"
---- src/configure.in.orig	2016-09-18 16:05:20.586169511 +0800
-+++ src/configure.in	2016-09-18 16:05:29.082172169 +0800
-@@ -1193,13 +1193,6 @@ eof
- 	    dnl -- delete the lines from make about Entering/Leaving directory
- 	    eval "`cd ${PYTHON_CONFDIR} && make -f "${tmp_mkf}" __ | sed '/ directory /d'`"
- 	    rm -f -- "${tmp_mkf}"
--	    if test "x$MACOSX" = "xyes" && test -n "${python_PYTHONFRAMEWORK}" && ${vi_cv_path_python} -c \
--		"import sys; sys.exit(${vi_cv_var_python_version} < 2.3)"; then
--	      vi_cv_path_python_plibs="-framework Python"
--	      if test "x${vi_cv_path_python}" != "x/usr/bin/python" && test -n "${python_PYTHONFRAMEWORKPREFIX}"; then
--		  vi_cv_path_python_plibs="-F${python_PYTHONFRAMEWORKPREFIX} -framework Python"
--	      fi
--	    else
- 	      if test "${vi_cv_var_python_version}" = "1.4"; then
- 		  vi_cv_path_python_plibs="${PYTHON_CONFDIR}/libModules.a ${PYTHON_CONFDIR}/libPython.a ${PYTHON_CONFDIR}/libObjects.a ${PYTHON_CONFDIR}/libParser.a"
- 	      else
-@@ -1227,7 +1220,6 @@ eof
- 	      vi_cv_path_python_plibs="${vi_cv_path_python_plibs} ${python_BASEMODLIBS} ${python_LIBS} ${python_SYSLIBS} ${python_LINKFORSHARED}"
- 	      dnl remove -ltermcap, it can conflict with an earlier -lncurses
- 	      vi_cv_path_python_plibs=`echo $vi_cv_path_python_plibs | sed s/-ltermcap//`
--	    fi
- 	])
- 	AC_CACHE_CHECK(Python's dll name,vi_cv_dll_name_python,
- 	[
-EOF
-
 	# Include those from INSTALL_PREFIX first
 	patch -p0 <<"EOF"
 --- src/Makefile.orig	2016-09-18 16:06:43.122195344 +0800
