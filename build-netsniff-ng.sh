@@ -11,10 +11,10 @@
 # This package provides mz (mausezahn), flowtop, iftop, etc.
 #
 PKG_NAME=netsniff-ng
-PKG_VERSION=0.6.0
+PKG_VERSION=0.6.1
 PKG_SOURCE=$PKG_NAME-$PKG_VERSION.tar.xz
 PKG_SOURCE_URL="http://pub.netsniff-ng.org/netsniff-ng/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=5bc28fc75e0e7fe41e2ec077fc527f8c
+PKG_SOURCE_MD5SUM=9f9e80d97723effa2e8a575b8ab44adc
 PKG_DEPENDS='ncurses libcli libnet libnl3 libpcap liburcu'
 PKG_PLATFORM=linux
 
@@ -23,11 +23,26 @@ PKG_PLATFORM=linux
 do_patch() {
 	cd "$PKG_SOURCE_DIR"
 
-	# bash -c 'which gcc -i' may hang configure process on CentOS with which
-	# reading stdin (a tty device)
-	patch -p0 <<"EOF"
---- configure.orig	2016-09-27 14:38:30.267918354 +0800
-+++ configure	2016-09-27 14:43:19.624008919 +0800
+	patch -p1 <<"EOF"
+From 68d5c16530edda781327172ca456a78092a746dc Mon Sep 17 00:00:00 2001
+From: Yousong Zhou <yszhou4tech@gmail.com>
+Date: Tue, 27 Sep 2016 15:01:59 +0800
+Subject: [PATCH 1/2] build: configure: fix checking CC containing -i option
+
+On CentOS 6, the configure process may hang there reading stdin if the
+we have CC='gcc -isystem'.  This can be reproduced with
+
+    bash -c 'which gcc -i'
+
+Signed-off-by: Yousong Zhou <yszhou4tech@gmail.com>
+---
+ configure | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
+
+diff --git a/configure b/configure
+index 5055654..3fb0c18 100755
+--- a/configure
++++ b/configure
 @@ -50,6 +50,13 @@ tools_remove()
  	TOOLS_NOBUILD=${TOOLS_NOBUILD# }
  }
@@ -87,13 +102,30 @@ do_patch() {
  		echo "[NO]"
  		MISSING_DEFS=1
  		tools_remove "trafgen"
-EOF
+-- 
+2.6.4
 
-	# many features are not available on CentOS
-	patch -p0 <<"EOF"
---- dev.c.orig	2016-09-27 13:10:33.278266718 +0800
-+++ dev.c	2016-09-27 13:10:37.578268064 +0800
-@@ -360,8 +360,10 @@ const char *device_type2str(uint16_t typ
+EOF
+	patch -p1 <<"EOF"
+From 9e6e63262a2f449e94ebacd73e1be9dac46afe29 Mon Sep 17 00:00:00 2001
+From: Yousong Zhou <yszhou4tech@gmail.com>
+Date: Tue, 27 Sep 2016 15:04:41 +0800
+Subject: [PATCH 2/2] build: fix build on CentOS 6 by checking presence of
+ several macros
+
+Signed-off-by: Yousong Zhou <yszhou4tech@gmail.com>
+---
+ dev.c         | 2 ++
+ proto_nlmsg.c | 4 ++++
+ ring.h        | 6 +++++-
+ ring_rx.c     | 4 ++++
+ 4 files changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/dev.c b/dev.c
+index 5a43643..2960976 100644
+--- a/dev.c
++++ b/dev.c
+@@ -385,8 +385,10 @@ const char *device_type2str(uint16_t type)
  		return "phonet";
  	case ARPHRD_PHONET_PIPE:
  		return "phonet_pipe";
@@ -104,9 +136,11 @@ EOF
  	case ARPHRD_IP6GRE:
  		return "ip6gre";
  	case ARPHRD_NETLINK:
---- proto_nlmsg.c.orig	2016-09-27 13:09:07.802239966 +0800
-+++ proto_nlmsg.c	2016-09-27 14:21:19.911595865 +0800
-@@ -98,7 +98,9 @@ static const char *nlmsg_family2str(uint
+diff --git a/proto_nlmsg.c b/proto_nlmsg.c
+index 6b43335..f8993e7 100644
+--- a/proto_nlmsg.c
++++ b/proto_nlmsg.c
+@@ -159,7 +159,9 @@ static const char *nlmsg_family2str(uint16_t family)
  	case NETLINK_SCSITRANSPORT:	return "SCSI transports";
  	case NETLINK_ECRYPTFS:		return "ecryptfs";
  	case NETLINK_RDMA:		return "RDMA";
@@ -116,21 +150,23 @@ EOF
  	default:			return "Unknown";
  	}
  }
-@@ -543,9 +545,11 @@ static void rtnl_print_route(struct nlms
- 			attr_fmt(attr, "Pref Src %s", addr2str(rtm->rtm_family,
+@@ -630,9 +632,11 @@ static void rtnl_print_route(struct nlmsghdr *hdr)
+ 			rta_fmt(attr, "Pref Src %s", addr2str(rtm->rtm_family,
  				RTA_DATA(attr), addr_str, sizeof(addr_str)));
  			break;
 +#if defined(RTA_MARK)
  		case RTA_MARK:
- 			attr_fmt(attr, "Mark 0x%x", RTA_UINT(attr));
+ 			rta_fmt(attr, "Mark 0x%x", RTA_UINT(attr));
  			break;
 +#endif
  		case RTA_FLOW:
- 			attr_fmt(attr, "Flow 0x%x", RTA_UINT(attr));
+ 			rta_fmt(attr, "Flow 0x%x", RTA_UINT(attr));
  			break;
---- ring.h.orig	2016-09-27 13:06:54.278198174 +0800
-+++ ring.h	2016-09-27 13:07:17.970205590 +0800
-@@ -68,7 +68,11 @@ static inline uint16_t tpacket_uhdr_vlan
+diff --git a/ring.h b/ring.h
+index 4153b9c..6a50f60 100644
+--- a/ring.h
++++ b/ring.h
+@@ -68,7 +68,11 @@ static inline uint16_t tpacket_uhdr_vlan_proto(union tpacket_uhdr *hdr, bool v3)
  
  static inline bool tpacket_has_vlan_info(union tpacket_uhdr *hdr)
  {
@@ -143,9 +179,11 @@ EOF
  
  #ifdef TP_STATUS_VLAN_TPID_VALID
  	valid |= TP_STATUS_VLAN_TPID_VALID;
---- ring_rx.c.orig	2016-09-27 13:13:51.198328665 +0800
-+++ ring_rx.c	2016-09-27 13:14:22.766338545 +0800
-@@ -202,12 +202,15 @@ void join_fanout_group(int sock, uint32_
+diff --git a/ring_rx.c b/ring_rx.c
+index f40ad2f..b6dd82d 100644
+--- a/ring_rx.c
++++ b/ring_rx.c
+@@ -202,12 +202,16 @@ static void join_fanout_group(int sock, uint32_t fanout_group, uint32_t fanout_t
  	if (fanout_group == 0)
  		return;
  
@@ -155,12 +193,16 @@ EOF
  	ret = setsockopt(sock, SOL_PACKET, PACKET_FANOUT, &fanout_opt,
  			 sizeof(fanout_opt));
  	if (ret < 0)
-+#endif
  		panic("Cannot set fanout ring mode!\n");
-+	
++#else
++	panic("fanout ring mode is not available!\n");
++#endif
  }
  
  void ring_rx_setup(struct ring *ring, int sock, size_t size, int ifindex,
+-- 
+2.6.4
+
 EOF
 }
 
