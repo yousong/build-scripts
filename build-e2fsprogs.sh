@@ -5,6 +5,10 @@
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
 #
+# e2fsprogs provides libuuid library which is usually provided by util-linux.
+# But util-linux is linux-specific so that libuuid should better be provided by
+# e2fsprogs
+#
 PKG_NAME=e2fsprogs
 PKG_VERSION=1.42.13
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.xz"
