@@ -12,6 +12,20 @@
 #
 # netdata serves http client on port 19999 by default
 #
+# - Use /netdata.conf to fetch a complete config
+# - Data stores in subdirs of var/cache/netdata
+# - Access, error, debug logs are at var/log/netdata
+# - Registry is at var/lib/netdata/registry
+#
+# Things to consider
+#
+# - History archive to preserve
+# - Size limit of Log files
+# - Proxy pass with NGINX
+#
+# - https://github.com/firehol/netdata/wiki/Memory-Requirements
+# - https://github.com/firehol/netdata/wiki/Log-Files
+#
 PKG_NAME=netdata
 PKG_VERSION=1.3.0
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.bz2"
