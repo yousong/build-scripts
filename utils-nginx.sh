@@ -17,36 +17,52 @@ CONFIGURE_ARGS="					\\
 	--with-ld-opt='$EXTRA_LDFLAGS'	\\
 "
 
+nginx_get_mod_info() {
+	local what="$1"
+	local desc="$2"
+	local ref="${desc%%:*}"
+	local repo="${desc#*:}"
+	local subdir
+	local fn source source_url
+
+	if [ "${repo%:*}" != "$repo" ]; then
+		subdir="${repo#*:}"
+		repo="${repo%:*}"
+	fi
+	fn="${repo#*/}-$ref"
+	source="$fn.tar.gz"
+	source_url="https://github.com/$repo/archive/$ref.tar.gz"
+
+	case "$what" in
+		source)
+			echo "$source"
+			;;
+		source_url)
+			echo "$source_url"
+			;;
+		fn)
+			echo "$fn"
+			;;
+		mod_dir)
+			echo "$NGINX_MODS_DIR/$fn${subdir:+/$subdir}"
+			;;
+		*)
+			__errmsg "unknown what to provide: $what"
+			return 1
+			;;
+	esac
+}
+
 download_extra() {
 	local m
 	local fn source source_url
 
 	for m in $MODS; do
-		fn="$(nginx_get_mod_dirname "$m")"
-		source="$fn.tar.gz"
-		source_url="$(nginx_get_mod_source_url "$m")"
+		source="$(nginx_get_mod_info source "$m")"
+		source_url="$(nginx_get_mod_info source_url "$m")"
 
 		download_http "$source" "$source_url"
 	done
-}
-
-nginx_get_mod_dirname() {
-	local desc="$1"
-	local ref="${desc%:*}"
-	local repo="${desc#*:}"
-	local fn="${repo#*/}-$ref"
-
-	echo "$fn"
-}
-
-nginx_get_mod_source_url() {
-	local desc="$1"
-	local ref="${desc%:*}"
-	local repo="${desc#*:}"
-	local fn="${repo#*/}-$ref"
-	local source_url="https://github.com/$repo/archive/$ref.tar.gz"
-
-	echo "$source_url"
 }
 
 prepare_extra() {
@@ -55,8 +71,9 @@ prepare_extra() {
 
 	mkdir -p "$NGINX_MODS_DIR"
 	for m in $MODS; do
-		fn="$(nginx_get_mod_dirname "$m")"
-		tarball="$BASE_DL_DIR/$fn.tar.gz"
+		fn="$(nginx_get_mod_info fn "$m")"
+		source="$(nginx_get_mod_info source "$m")"
+		tarball="$BASE_DL_DIR/$source"
 
 		untar "$tarball" "$NGINX_MODS_DIR" "s:^[^/]\\+:$fn:"
 	done
@@ -64,12 +81,12 @@ prepare_extra() {
 
 nginx_add_modules() {
 	local m
-	local fn
+	local mod_dir
 	local arg
 
 	for m in $MODS; do
-		fn="$(nginx_get_mod_dirname "$m")"
-		arg="	--add-module=$NGINX_MODS_DIR/$fn"
+		mod_dir="$(nginx_get_mod_info mod_dir "$m")"
+		arg="	--add-module=$mod_dir"
 		CONFIGURE_ARGS="${CONFIGURE_ARGS}${arg}"
 	done
 }
