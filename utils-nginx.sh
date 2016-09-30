@@ -19,15 +19,12 @@ CONFIGURE_ARGS="					\\
 
 download_extra() {
 	local m
-	local ref repo
 	local fn source source_url
 
 	for m in $MODS; do
-		ref="${m%:*}"
-		repo="${m#*:}"
-		fn="${repo#*/}-$ref"
+		fn="$(nginx_get_mod_dirname "$m")"
 		source="$fn.tar.gz"
-		source_url="https://github.com/$repo/archive/$ref.tar.gz"
+		source_url="$(nginx_get_mod_source_url "$m")"
 
 		download_http "$source" "$source_url"
 	done
@@ -40,6 +37,16 @@ nginx_get_mod_dirname() {
 	local fn="${repo#*/}-$ref"
 
 	echo "$fn"
+}
+
+nginx_get_mod_source_url() {
+	local desc="$1"
+	local ref="${desc%:*}"
+	local repo="${desc#*:}"
+	local fn="${repo#*/}-$ref"
+	local source_url="https://github.com/$repo/archive/$ref.tar.gz"
+
+	echo "$source_url"
 }
 
 prepare_extra() {
