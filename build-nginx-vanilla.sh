@@ -26,10 +26,10 @@
 # - Benchmark results across accept_mutex, reuseport, https://www.nginx.com/blog/socket-sharding-nginx-release-1-9-1/
 #
 PKG_NAME=nginx
-PKG_VERSION=1.11.3
+PKG_VERSION=1.11.4
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://nginx.org/download/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=18275c1daa39c5fac12e56c34907d45b
+PKG_SOURCE_MD5SUM=92666d60410f429ddbdb10060369a480
 PKG_DEPENDS='openssl pcre zlib'
 
 . "$PWD/env.sh"
@@ -80,4 +80,10 @@ MODS='
 	master:agentzh/set-misc-nginx-module
 	master:agentzh/xss-nginx-module
 '
+#
+# master njs requires master nginx
+#
+#MODS="$MODS master:nginx/njs:nginx
+#"
+
 nginx_add_modules
