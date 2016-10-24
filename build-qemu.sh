@@ -24,10 +24,10 @@
 # directories first
 #
 PKG_NAME=qemu
-PKG_VERSION=2.6.1
+PKG_VERSION=2.6.2
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.bz2"
 PKG_SOURCE_URL="http://wiki.qemu-project.org/download/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=6a183b192018192943b6781e1bb9b72f
+PKG_SOURCE_MD5SUM=bdf1f3d0c177ebeb35a079a4bc3fc74e
 PKG_DEPENDS='bzip2 curl gnutls libjpeg-turbo libpng lzo ncurses nettle zlib'
 
 . "$PWD/env.sh"
