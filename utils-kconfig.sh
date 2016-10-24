@@ -3,8 +3,9 @@
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
-#
-set_option() {
+
+# This function is also available in Linux kernel code as scripts/config
+kconfig_set_option() {
 	local opt="$1"
 	local val="$2"
 	local dotc="${3:-.config}"

@@ -37,10 +37,10 @@ configure() {
 	# 1. link statically
 	# 2. syncfs() for fancy sync is not available in debian wheezy 3.2.0 kernel, so disable it
 	make defconfig
-	set_option CONFIG_STATIC y
-	set_option CONFIG_FEATURE_SYNC_FANCY n
-	set_option CONFIG_INSTALL_APPLET_SYMLINKS n
-	set_option CONFIG_INSTALL_APPLET_DONT y
-	set_option CONFIG_PREFIX "\"$PKG_STAGING_DIR/$INSTALL_PREFIX\""
+	kconfig_set_option CONFIG_STATIC y
+	kconfig_set_option CONFIG_FEATURE_SYNC_FANCY n
+	kconfig_set_option CONFIG_INSTALL_APPLET_SYMLINKS n
+	kconfig_set_option CONFIG_INSTALL_APPLET_DONT y
+	kconfig_set_option CONFIG_PREFIX "\"$PKG_STAGING_DIR/$INSTALL_PREFIX\""
 }
 
