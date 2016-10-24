@@ -89,7 +89,9 @@ install_post() {
 	local deb
 
 	__errmsg "List of packages"
-	for deb in $(ls "$PKG_BUILD_DIR/"*.deb); do
-		__errmsg "	sudo dpkg -i $deb"
+	for deb in "$PKG_BUILD_DIR/"*.deb; do
+		if [ -f "$deb" ]; then
+			__errmsg "	sudo dpkg -i $deb"
+		fi
 	done
 }
