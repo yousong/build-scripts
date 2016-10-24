@@ -7,7 +7,9 @@
 #
 # Prerequisites
 #
-#	apt-get build-dep kernel
+#	yum groupinstall "Development Tools"
+#	yum install ncurses-devel
+#	yum install hmaccalc zlib-devel binutils-devel elfutils-libelf-devel
 #
 PKG_NAME=linux-rpm
 PKG_VERSION=4.8.4
