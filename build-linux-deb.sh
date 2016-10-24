@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Copyright 2015-2016 (c) Yousong Zhou
+# Copyright 2016 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -16,7 +16,7 @@
 # - 8.10. Compiling a Kernel, The Debian Administrator's Handbook,
 #   https://debian-handbook.info/browse/stable/sect.kernel-compilation.html
 #
-PKG_NAME=debian-kernel
+PKG_NAME=linux-deb
 PKG_VERSION=4.8.4
 PKG_SOURCE="linux-${PKG_VERSION}.tar.xz"
 PKG_SOURCE_URL="https://cdn.kernel.org/pub/linux/kernel/v${PKG_VERSION%.*}.x/$PKG_SOURCE"
