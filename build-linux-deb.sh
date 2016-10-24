@@ -19,7 +19,7 @@
 PKG_NAME=linux-deb
 PKG_VERSION=4.8.4
 PKG_SOURCE="linux-${PKG_VERSION}.tar.xz"
-PKG_SOURCE_URL="https://cdn.kernel.org/pub/linux/kernel/v${PKG_VERSION%.*}.x/$PKG_SOURCE"
+PKG_SOURCE_URL="https://cdn.kernel.org/pub/linux/kernel/v${PKG_VERSION%%.*}.x/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=6a382a6b4fd6fd1695ac9a51a353ef41
 PKG_BUILD_DIR_BASENAME="$PKG_NAME-$PKG_VERSION"
 PKG_SOURCE_UNTAR_FIXUP=1
