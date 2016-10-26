@@ -14,11 +14,7 @@ PKG_PLATFORM=linux
 
 . "$PWD/env.sh"
 . "$PWD/utils-toolchain.sh"
-toolchain_init
-
-prepare_extra() {
-	toolchain_prepare_extra
-}
+toolchain_init_vars_build_cross
 
 configure() {
 	true

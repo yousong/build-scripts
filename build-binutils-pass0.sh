@@ -5,22 +5,13 @@
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
 #
-PKG_NAME=binutils-native
-PKG_VERSION=2.26
-PKG_SOURCE="binutils-$PKG_VERSION.tar.bz2"
-PKG_SOURCE_URL="http://ftp.gnu.org/gnu/binutils/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=64146a0faa3b411ba774f47d41de239f
-PKG_DEPENDS="glibc-native"
+# binutils-pass0 is for preparing binutils source code for later passes
+#
+. "$PWD/utils-toolchain.sh"
+toolchain_init_pkg binutils
+PKG_NAME=binutils-pass0
 
 . "$PWD/env.sh"
-
-if [ "$PKG_NAME" != "${PKG_SOURCE%%-*}" ]; then
-	PKG_BUILD_DIR="$BASE_BUILD_DIR/$PKG_NAME"
-fi
-
-EXTRA_LDFLAGS="$EXTRA_LDFLAGS  -Wl,--dynamic-linker=$INSTALL_PREFIX/lib/ld-linux-x86-64.so.2"
-CONFIGURE_PATH="$PKG_BUILD_DIR"
-CONFIGURE_CMD="$PKG_SOURCE_DIR/configure"
 
 do_patch() {
 	cd "$PKG_SOURCE_DIR"
@@ -53,31 +44,18 @@ do_patch() {
 EOF
 }
 
-clean() {
-	rm -rf "$PKG_BUILD_DIR"
+configure() {
+	true
 }
 
-
-configure_pre() {
-	mkdir -p "$PKG_BUILD_DIR"
+compile() {
+	true
 }
 
-# --with-sysroot is needed for quashing the error message "this linker was not
-# configured to use sysroots"
-CONFIGURE_ARGS="$CONFIGURE_ARGS			\\
-	--enable-plugins					\\
-	--disable-multilib					\\
-	--disable-werror					\\
-	--disable-nls						\\
-	--disable-sim						\\
-	--disable-gdb						\\
-"
+staging() {
+	true
+}
 
-staging_post() {
-	local base="$PKG_STAGING_DIR$INSTALL_PREFIX"
-
-	mkdir -p "$base/usr/include"
-	ln -sf 'lib' "$base/lib64"
-	ln -sf '../lib' "$base/$TRI_TARGET/lib64"
-	ln -sf '../lib' "$base/$TRI_TARGET/lib"
+install() {
+	true
 }

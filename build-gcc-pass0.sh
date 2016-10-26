@@ -7,15 +7,11 @@
 #
 # gcc-pass0 is for preparing GCC source code for later passes
 #
+. "$PWD/utils-toolchain.sh"
+toolchain_init_pkg gcc
 PKG_NAME=gcc-pass0
-PKG_VERSION=6.1.0
-PKG_SOURCE="gcc-$PKG_VERSION.tar.bz2"
-PKG_SOURCE_URL="http://ftpmirror.gnu.org/gcc/gcc-$PKG_VERSION/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=8fb6cb98b8459f5863328380fbf06bd1
 
 . "$PWD/env.sh"
-. "$PWD/utils-toolchain.sh"
-toolchain_init
 
 TOOLCHAIN_GCC_SUPPORT_LIBS='mpfr gmp mpc'
 
@@ -56,8 +52,6 @@ prepare_extra() {
 	done
 
 	sed -i'' -e 's,gcc_no_link=yes,gcc_no_link=no,' "$PKG_SOURCE_DIR/libstdc++-v3/configure"
-
-	toolchain_prepare_extra
 }
 
 configure() {

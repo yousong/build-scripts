@@ -5,32 +5,13 @@
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
 #
-PKG_NAME=gcc-pass2
-PKG_VERSION=6.1.0
-PKG_SOURCE="gcc-$PKG_VERSION.tar.bz2"
-PKG_SOURCE_URL="http://ftpmirror.gnu.org/gcc/gcc-$PKG_VERSION/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=8fb6cb98b8459f5863328380fbf06bd1
-PKG_DEPENDS="glibc-final"
+. "$PWD/utils-toolchain.sh"
+toolchain_init_pkg gcc
+PKG_NAME=gcc-cross-pass2
+PKG_DEPENDS="glibc-cross"
 
 . "$PWD/env.sh"
-. "$PWD/utils-toolchain.sh"
-toolchain_init
-
-download() {
-	true
-}
-
-prepare() {
-	true
-}
-
-clean() {
-	rm -rf "$PKG_BUILD_DIR"
-}
-
-configure_pre() {
-	toolchain_configure_pre
-}
+toolchain_init_vars_build_cross "$PKG_NAME"
 
 CONFIGURE_ARGS="$CONFIGURE_ARGS				\\
 	--build='$TRI_BUILD'					\\
