@@ -6,27 +6,76 @@
 #
 # All packages in toolchain supports out of source tree build
 #
+# TODO
+#
+# 4. mconf support
+# 5. strip toolchain
+#
+PKG_gcc_VERSION=6.2.0
+PKG_gcc_SOURCE="gcc-$PKG_gcc_VERSION.tar.bz2"
+PKG_gcc_SOURCE_MD5SUM=9768625159663b300ae4de2f4745fcc4
+PKG_gcc_SOURCE_URL="http://ftpmirror.gnu.org/gcc/gcc-$PKG_gcc_VERSION/$PKG_gcc_SOURCE"
+
+PKG_glibc_VERSION=2.24
+PKG_glibc_SOURCE="glibc-$PKG_glibc_VERSION.tar.xz"
+PKG_glibc_SOURCE_MD5SUM=97dc5517f92016f3d70d83e3162ad318
+PKG_glibc_SOURCE_URL="http://ftpmirror.gnu.org/glibc/$PKG_glibc_SOURCE"
+
+PKG_binutils_VERSION=2.27
+PKG_binutils_SOURCE="binutils-$PKG_binutils_VERSION.tar.bz2"
+PKG_binutils_SOURCE_MD5SUM=2869c9bf3e60ee97c74ac2a6bf4e9d68
+PKG_binutils_SOURCE_URL="http://ftpmirror.gnu.org/binutils/$PKG_binutils_SOURCE"
+
+PKG_linux_VERSION=4.4.27
+PKG_linux_SOURCE="linux-${PKG_linux_VERSION}.tar.xz"
+PKG_linux_SOURCE_URL="https://cdn.kernel.org/pub/linux/kernel/v${PKG_linux_VERSION%%.*}.x/$PKG_linux_SOURCE"
+PKG_linux_SOURCE_MD5SUM=3d45ce46c2c6b260feee53bae94aca0d
+
+#
+# check config.sub and gcc/config.gcc for available target combinations
+#
+# compile-tested targets:
+#
+#	i686-*-linux-gnu
+#	x86_64-*-linux-gnu
+#
+#	mips-*-linux-gnu
+#	mipsel-*-linux-gnu
+#	mips64-*-linux-gnu
+#	mips64el-*-linux-gnu
+#
+#	arm-*-linux-gnueabi
+#	arm-*-linux-gnueabihf
+#	armeb-*-linux-gnueabi
+#	armeb-*-linux-gnueabihf
+#	aarch64-*-linux-gnu
+#	aarch64_be-*-linux-gnu
+#
+# arm kernel header with aarch64 toolchain does not work because assembler will
+# complain "immediate cannot be moved by a single instruction" in "mov x8,
+# ((__NR_SYSCALL_BASE+37))" when compiling glibc where __NR_SYSCALL_BASE will
+# be defined as 0x900000 (__NR_OABI_SYSCALL_BASE) in include/asm/unistd.h
+#
+TRI_ARCH="${TRI_ARCH:-x86_64}"
+TRI_OPSYS="${TRI_OPSYS:-linux-gnu}"
+TRI_BUILD="$(gcc -dumpmachine)"
+TRI_HOST="$TRI_BUILD"
+TRI_TARGET="$TRI_ARCH-bs-$TRI_OPSYS"
+
+TOOLCHAIN_NAME="$TRI_TARGET"
+TOOLCHAIN_NAME="${TOOLCHAIN_NAME}_gcc-${PKG_gcc_VERSION}"
+TOOLCHAIN_NAME="${TOOLCHAIN_NAME}_glibc-${PKG_glibc_VERSION}"
+TOOLCHAIN_NAME="${TOOLCHAIN_NAME}_binutils-${PKG_binutils_VERSION}"
+
 toolchain_init_pkg() {
 	local pkg="$1"
 
 	case "$pkg" in
-		gcc)
-			PKG_VERSION=6.2.0
-			PKG_SOURCE_MD5SUM=9768625159663b300ae4de2f4745fcc4
-			PKG_SOURCE="$pkg-$PKG_VERSION.tar.bz2"
-			PKG_SOURCE_URL="http://ftpmirror.gnu.org/gcc/gcc-$PKG_VERSION/$PKG_SOURCE"
-			;;
-		binutils)
-			PKG_VERSION=2.27
-			PKG_SOURCE_MD5SUM=2869c9bf3e60ee97c74ac2a6bf4e9d68
-			PKG_SOURCE="$pkg-$PKG_VERSION.tar.bz2"
-			PKG_SOURCE_URL="http://ftpmirror.gnu.org/binutils/$PKG_SOURCE"
-			;;
-		glibc)
-			PKG_VERSION=2.24
-			PKG_SOURCE_MD5SUM=97dc5517f92016f3d70d83e3162ad318
-			PKG_SOURCE="$pkg-$PKG_VERSION.tar.xz"
-			PKG_SOURCE_URL="http://ftpmirror.gnu.org/glibc/$PKG_SOURCE"
+		gcc|glibc|binutils|linux)
+			eval "PKG_VERSION=\$PKG_${pkg}_VERSION"
+			eval "PKG_SOURCE=\$PKG_${pkg}_SOURCE"
+			eval "PKG_SOURCE_MD5SUM=\$PKG_${pkg}_SOURCE_MD5SUM"
+			eval "PKG_SOURCE_URL=\$PKG_${pkg}_SOURCE_URL"
 			;;
 		*)
 			echo "unknown package %s" >&2
@@ -46,21 +95,20 @@ toolchain_clean() {
 toolchain_init_vars_build_cross() {
 	local pkgname="$1"
 
+	# stripping host/target toolchain can be tricky, leave it alone for now
+	unset STRIP
 	if [ "$PKG_NAME" != "${PKG_SOURCE%%-*}" ]; then
-		PKG_BUILD_DIR="$BASE_BUILD_DIR/$PKG_NAME"
+		PKG_BUILD_DIR="$BASE_BUILD_DIR/$TOOLCHAIN_NAME/$PKG_NAME"
+		BASE_DESTDIR="$BASE_DESTDIR/$TOOLCHAIN_NAME"
 	fi
 	CONFIGURE_PATH="$PKG_BUILD_DIR"
 	CONFIGURE_CMD="$PKG_SOURCE_DIR/configure"
-
-	TRI_BUILD=x86_64-pc-linux-gnu
-	TRI_HOST=x86_64-pc-linux-gnu
-	TRI_TARGET=x86_64-bs-linux-gnu
 
 	EXTRA_CPPFLAGS=
 	EXTRA_CFLAGS=
 	EXTRA_LDFLAGS=
 	TOOLCHAIN_DIR_BASE="$INSTALL_PREFIX/toolchain"
-	TOOLCHAIN_DIR="$INSTALL_PREFIX/toolchain/$TRI_TARGET"
+	TOOLCHAIN_DIR="$INSTALL_PREFIX/toolchain/$TOOLCHAIN_NAME"
 
 	export PATH="$TOOLCHAIN_DIR/bin:$PATH"
 	CONFIGURE_ARGS="--prefix='$TOOLCHAIN_DIR'		\\
@@ -87,79 +135,6 @@ toolchain_init_vars_build_cross() {
 		glibc-cross)
 			configure_pre() {
 				toolchain_configure_pre
-			}
-			;;
-	esac
-}
-
-toolchain_init_vars_build_native() {
-	local pkgname="$1"
-	local binutils_pass1_inst="$INSTALL_PREFIX/binutils-pass1"
-
-	if [ "$PKG_NAME" != "${PKG_SOURCE%%-*}" ]; then
-		PKG_BUILD_DIR="$BASE_BUILD_DIR/$PKG_NAME"
-	fi
-	CONFIGURE_PATH="$PKG_BUILD_DIR"
-	CONFIGURE_CMD="$PKG_SOURCE_DIR/configure"
-
-	case "$pkgname" in
-		binutils-native-pass1)
-			CONFIGURE_ARGS="--prefix=$binutils_pass1_inst"
-			;;
-		glibc-native)
-			# ld-x86_64.so.2 does not like RPATH: will choke with
-			#
-			#	Inconsistency detected by ld.so: dl-lookup.c: 867: _dl_setup_hash: Assertion `(bitmask_nwords & (bitmask_nwords - 1)) == 0' failed!
-			#
-			EXTRA_CPPFLAGS=''
-			EXTRA_CFLAGS="$EXTRA_CFLAGS -O2"
-			EXTRA_LDFLAGS=''
-			CONFIGURE_ARGS="$CONFIGURE_ARGS					\\
-				--enable-kernel=2.6.32						\\
-				--disable-werror							\\
-			"
-			if [ "${PKG_DEPENDS%*binutils-native-pass1}" != "$PKG_DEPENDS" ]; then
-				export PATH="$binutils_pass1_inst/bin:$PATH"
-				install_post() {
-					# local var binutils_pass1_inst cannot be used here
-					rm -rf "$INSTALL_PREFIX/binutils-pass1"
-				}
-			fi
-			;;
-		*)
-			EXTRA_LDFLAGS="$EXTRA_LDFLAGS -Wl,--dynamic-linker=$INSTALL_PREFIX/lib/ld-linux-x86-64.so.2"
-			;;
-	esac
-
-	case "$pkgname" in
-		binutils-native-*)
-			CONFIGURE_ARGS="$CONFIGURE_ARGS			\\
-				--enable-plugins					\\
-				--disable-multilib					\\
-				--disable-werror					\\
-				--disable-nls						\\
-				--disable-sim						\\
-				--disable-gdb						\\
-			"
-			;;
-	esac
-
-	case "$pkgname" in
-		binutils-native-*|gcc-native)
-			download() {
-				true
-			}
-
-			prepare() {
-				true
-			}
-
-			configure_pre() {
-				toolchain_configure_pre
-			}
-
-			clean() {
-				toolchain_clean
 			}
 			;;
 	esac

@@ -13,6 +13,13 @@ PKG_DEPENDS="glibc-cross"
 . "$PWD/env.sh"
 toolchain_init_vars_build_cross "$PKG_NAME"
 
+# libssp can be disabled here because we expect it to be provided by libc which
+# is true with musl, bionic and glibc since 2.4.  See LIBC_PROVIDES_SSP in
+# gcc/configure.ac and gcc/gcc.c for details.  When ssp is not provided by
+# libc, the link step will link against libssp.a and libssp_noshared.a which
+# can be provided by libssp/ provided by GCC.  However libssp is a target
+# library depending on presence of libc and as such cannot be enabled on gcc
+# pass1
 CONFIGURE_ARGS="$CONFIGURE_ARGS				\\
 	--build='$TRI_BUILD'					\\
 	--host='$TRI_HOST'						\\
@@ -25,7 +32,6 @@ CONFIGURE_ARGS="$CONFIGURE_ARGS				\\
 	--enable-threads						\\
 	--disable-libgomp						\\
 	--disable-libmudflap					\\
-	--disable-libssp						\\
 "
 
 compile() {

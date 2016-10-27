@@ -11,7 +11,7 @@ PKG_NAME=gcc-cross-pass1
 PKG_DEPENDS="gcc-pass0 binutils-cross"
 
 . "$PWD/env.sh"
-toolchain_init_vars_build_cross
+toolchain_init_vars_build_cross "$PKG_NAME"
 
 CONFIGURE_ARGS="$CONFIGURE_ARGS				\\
 	--build='$TRI_BUILD'					\\
