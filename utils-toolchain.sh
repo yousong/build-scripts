@@ -10,6 +10,45 @@
 #
 # 4. mconf support
 # 5. strip toolchain
+# 7. test build, with qemu user mode emulation at least
+# 11. gcc enable-gold=default, enable-ld
+#
+# -L, -I, -Wl,--dynamic-linker=xxx.
+#
+# - For native toolchain, should search the directory relative to where the
+#	driver was invoked first.
+# - For cross, if we intend to run the built binaries in target machine, then
+#	they should contain no host directory info.  Otherwise, for qemu-linux-user
+#	emulation, it should
+#
+# Refs,
+#
+# - See gcc/config/i386/gnu-user.h for how LINK_SPEC is defined
+# - See gcc/config/linux.h for definition of GNU_USER_DYNAMIC_LINKER
+#
+# multiarch and multilib
+#
+# 9. endian
+# 13. lib64 dir
+# 14. softfloat, hardfloat:
+#     - binutils, --with-float=soft
+#     - glibc, --with-fp, --without-fp
+#     - gcc, --with-float
+#     - https://gcc.gnu.org/wiki/Software_floating_point
+#     - https://sourceware.org/ml/crossgcc/2011-11/msg00040.html
+# 15. mips16 and o32, n32, n64
+# 16, thumb
+#
+# - https://wiki.debian.org/Multiarch/TheCaseForMultiarch#Proposed_Solution
+# - https://err.no/debian/amd64-multiarch-3
+#
+#   /lib64/ld-linux-x86-64.so.2 is the only file in /lib64 and it is a symbolic
+#   link to /lib/x86_64-linux-gnu/ld-2.13.so
+#
+#	> lib64 is a wart on history and should never have been allowed to grow up
+#
+# setarch utility from util-linux allows to prepare an environ where uname
+# output is customized
 #
 PKG_gcc_VERSION=6.2.0
 PKG_gcc_SOURCE="gcc-$PKG_gcc_VERSION.tar.bz2"
