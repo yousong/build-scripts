@@ -40,7 +40,35 @@ fi
 # Others targets can be found in help text for `--target-list` option from
 # output of `./configure --help`
 #
-TARGETS="i386-softmmu x86_64-softmmu mipsel-softmmu mips-softmmu mips64el-softmmu mips64-softmmu arm-softmmu"
+TARGETS=
+TARGETS="$TARGETS i386-softmmu x86_64-softmmu"
+TARGETS="$TARGETS mips-softmmu mipsel-softmmu mips64-softmmu mips64el-softmmu"
+TARGETS="$TARGETS arm-softmmu"
+#
+# Things to keep in mind when using user mode emulation with dynamically linked
+# binaries
+#
+#  - Where to find the dynamic linker (elf interpreter).  Check the default
+#    path with `readelf -l <bin>` and use -L to add path prefix
+#  - Where to find dynamic libraries.  If no rpath is set, try setting
+#    LD_LIBRARY_PATH with -E option
+#
+# Example
+#
+#	prefix=$HOME/mips-bs-linux-gnu_gcc-6.2.0_glibc-2.24_binutils-2.27
+#	qemu-mips -L "$prefix" -E LD_LIBRARY_PATH="$prefix' a.out
+#
+# Refs
+#
+#  - https://wiki.debian.org/QemuUserEmulation
+#  - https://github.com/qemu/qemu/blob/master/scripts/qemu-binfmt-conf.sh
+#
+# qemu-mipsn32 is buggy and is also confirmed by
+# https://lists.gnu.org/archive/html/qemu-devel/2016-10/msg01939.html
+#
+TARGETS="$TARGETS i386-linux-user"
+TARGETS="$TARGETS mips-linux-user mipsn32-linux-user mips64-linux-user"
+TARGETS="$TARGETS arm-linux-user aarch64-linux-user"
 
 CONFIGURE_VARS="$CONFIGURE_VARS		\\
 	QEMU_CFLAGS='$EXTRA_CFLAGS'		\\
