@@ -54,6 +54,66 @@ prepare_extra() {
 	sed -i'' -e 's,gcc_no_link=yes,gcc_no_link=no,' "$PKG_SOURCE_DIR/libstdc++-v3/configure"
 }
 
+do_patch() {
+	cd "$PKG_SOURCE_DIR"
+
+	# gccgo will link with libgo.so which depends on libgcc_s.so.1 and the
+	# linker will complain it cannot find it.  That's because shared libgcc is
+	# not present in the install directory yet.  libgo.so was made without
+	# problem because gcc will emit -lgcc_s when compiled with -shared option.
+	# When gotools were made, it was supplied with -static-libgcc thus no link
+	# option was provided.  Check LIBGO in gcc/go/gcc-spec.c for how gccgo make
+	# a builtin spec for linking with libgo.so
+	#
+	# - GccgoCrossCompilation, https://github.com/golang/go/wiki/GccgoCrossCompilation
+	# - Cross-building instructions, http://www.eglibc.org/archives/patches/msg00078.html
+	#
+	# When 3-pass GCC compilation is used, shared libgcc runtime libraries will
+	# be available at after gcc pass2 completed and will meet the gotools link
+	# requirement at gcc pass3
+	patch -p0 <<"EOF"
+--- gotools/Makefile.am.orig	2016-11-01 23:04:22.255894433 +0800
++++ gotools/Makefile.am	2016-11-01 23:05:08.483908905 +0800
+@@ -26,6 +26,7 @@ PWD_COMMAND = $${PWDCMD-pwd}
+ STAMP = echo timestamp >
+ 
+ libgodir = ../$(target_noncanonical)/libgo
++libgccdir = ../$(target_noncanonical)/libgcc
+ LIBGODEP = $(libgodir)/libgo.la
+ 
+ if NATIVE
+@@ -38,7 +39,8 @@ endif
+ GOCFLAGS = $(CFLAGS_FOR_TARGET)
+ GOCOMPILE = $(GOCOMPILER) $(GOCFLAGS)
+ 
+-AM_LDFLAGS = -L $(libgodir) -L $(libgodir)/.libs
++AM_LDFLAGS = -L $(libgodir) -L $(libgodir)/.libs \
++	-L $(libgccdir) -L $(libgccdir)/.libs -lgcc_s
+ GOLINK = $(GOCOMPILER) $(GOCFLAGS) $(AM_GOCFLAGS) $(LDFLAGS) $(AM_LDFLAGS) -o $@
+ 
+ cmdsrcdir = $(srcdir)/../libgo/go/cmd
+--- gotools/Makefile.in.orig	2016-11-01 23:47:17.352700410 +0800
++++ gotools/Makefile.in	2016-11-01 23:48:08.560716438 +0800
+@@ -252,13 +252,15 @@ mkinstalldirs = $(SHELL) $(toplevel_srcd
+ PWD_COMMAND = $${PWDCMD-pwd}
+ STAMP = echo timestamp >
+ libgodir = ../$(target_noncanonical)/libgo
++libgccdir = ../$(target_noncanonical)/libgcc
+ LIBGODEP = $(libgodir)/libgo.la
+ @NATIVE_FALSE@GOCOMPILER = $(GOC)
+ 
+ # Use the compiler we just built.
+ @NATIVE_TRUE@GOCOMPILER = $(GOC_FOR_TARGET) $(XGCC_FLAGS_FOR_TARGET)
+ GOCOMPILE = $(GOCOMPILER) $(GOCFLAGS)
+-AM_LDFLAGS = -L $(libgodir) -L $(libgodir)/.libs
++AM_LDFLAGS = -L $(libgodir) -L $(libgodir)/.libs \
++	-L $(libgccdir) -L $(libgccdir)/.libs -lgcc_s
+ GOLINK = $(GOCOMPILER) $(GOCFLAGS) $(AM_GOCFLAGS) $(LDFLAGS) $(AM_LDFLAGS) -o $@
+ cmdsrcdir = $(srcdir)/../libgo/go/cmd
+ go_cmd_go_files = \
+EOF
+}
+
 configure() {
 	true
 }

@@ -7,6 +7,8 @@
 #
 # - http://stackoverflow.com/questions/22107616/static-library-built-for-archive-which-is-not-the-architecture-being-linked-x86
 #
+# To debug GNU linker from GCC, try adding option `-v -Wl,--trace`
+#
 . "$PWD/utils-toolchain.sh"
 toolchain_init_pkg binutils
 PKG_NAME=binutils-cross
