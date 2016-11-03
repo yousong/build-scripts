@@ -35,6 +35,8 @@ CONFIGURE_ARGS="$CONFIGURE_ARGS			\\
 	--host='$TRI_HOST'					\\
 	--target='$TRI_TARGET'				\\
 	--enable-plugins					\\
+	--enable-gold=yes					\\
+	--enable-ld=default					\\
 	--disable-multilib					\\
 	--disable-werror					\\
 	--disable-nls						\\
