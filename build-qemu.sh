@@ -23,11 +23,13 @@
 # `-Idir` is correct and we do not incorrectly include header files from sys
 # directories first
 #
+# - The QEMU build system architecture, docs/build-system.txt
+#
 PKG_NAME=qemu
-PKG_VERSION=2.6.2
+PKG_VERSION=2.7.0
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.bz2"
 PKG_SOURCE_URL="http://wiki.qemu-project.org/download/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=bdf1f3d0c177ebeb35a079a4bc3fc74e
+PKG_SOURCE_MD5SUM=08d4d06d1cb598efecd796137f4844ab
 PKG_DEPENDS='bzip2 curl gnutls libjpeg-turbo libpng lzo ncurses nettle zlib'
 
 . "$PWD/env.sh"
@@ -65,6 +67,13 @@ TARGETS="$TARGETS arm-softmmu"
 #
 # qemu-mipsn32 is buggy and is also confirmed by
 # https://lists.gnu.org/archive/html/qemu-devel/2016-10/msg01939.html
+#
+# TODO
+#
+# 1. Play with linux-user docker targets.
+#
+#    See Changelog/2.7 for how to use it.  See tests/docker/Makefile.include
+#    for details of implementation and available targets
 #
 TARGETS="$TARGETS i386-linux-user"
 TARGETS="$TARGETS mips-linux-user mipsn32-linux-user mips64-linux-user"
