@@ -35,10 +35,10 @@
 #     /usr/local/share/openvswitch/scripts/ovs-ctl force-reload-kmod --system-id=random
 #
 PKG_NAME=openvswitch
-PKG_VERSION=2.3.2
+PKG_VERSION=2.6.1
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://openvswitch.org/releases/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=5a5739ed82f1accac1c2d8d7553dc88f
+PKG_SOURCE_MD5SUM=59216437f24ce9bf2d643b760f1f692a
 PKG_DEPENDS=openssl
 PKG_PLATFORM=linux
 
@@ -58,6 +58,7 @@ CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
 #    2.3.x         2.6.32 to 3.14
 #    2.4.x         2.6.32 to 4.0
 #    2.5.x         2.6.32 to 4.3
+#    2.6.x         3.10 to 4.7
 #
 # the datapath supported features from an Open vSwitch user's perspective
 #
@@ -66,9 +67,9 @@ CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
 #    Tunnel - VXLAN             3.12              YES
 #
 # - What Linux kernel versions does each Open vSwitch release work with?
-#   https://github.com/openvswitch/ovs/blob/master/FAQ.md#q-what-linux-kernel-versions-does-each-open-vswitch-release-work-with
+#   https://github.com/openvswitch/ovs/blob/master/FAQ.rst
 # - Are all features available with all datapaths?
-#	https://github.com/openvswitch/ovs/blob/master/FAQ.md#q-are-all-features-available-with-all-datapaths
+#	https://github.com/openvswitch/ovs/blob/master/FAQ.rst
 if false; then
 	KBUILD_DIR="/lib/modules/$(uname -r)/build"
 	# --with-linux, the Linux kernel build directory
