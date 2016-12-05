@@ -11,11 +11,21 @@ kconfig_set_option() {
 	local dotc="${3:-.config}"
 	local repl
 
-	if [ -z "$val" -o "$val" = "n" ]; then
-		repl="# $opt is not set"
+	# whether $opt is present in $dotc
+	if grep -q '^\(\# *\)\?\<'"$opt"'\>.*' "$dotc"; then
+		if [ -z "$val" -o "$val" = "n" ]; then
+			repl="# $opt is not set"
+		else
+			# Some sh doesn't support ${var/pattern/repl}
+			repl="$opt=$(echo $val | sed 's/:/\:/g')"
+		fi
+		sed -i'' -e 's:^\(\# *\)\?\<'"$opt"'\>.*:'"$repl"':' "$dotc"
 	else
-		# Some sh doesn't support ${var/pattern/repl}
-		repl="$opt=$(echo $val | sed 's/:/\:/g')"
+		if [ -z "$val" -o "$val" = "n" ]; then
+			repl="# $opt is not set"
+		else
+			repl="$opt=$val"
+		fi
+		echo "$repl" >>"$dotc"
 	fi
-	sed -i'' -e 's:^\(\# *\)\?\<'"$opt"'\>.*:'"$repl"':' "$dotc"
 }
