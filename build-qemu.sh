@@ -14,6 +14,13 @@
 #	libglib2.0-dev - Development files for the GLib library
 #	libpixman-1-dev - pixel-manipulation library for X and cairo (development files)
 #
+# VirtFS support is only available on linux and libcap is required by
+# fsdev/virtfs-proxy-helper) and {get,set}xattr provided either by libc or
+# libxattr are also required
+#
+#	libcap-dev - development libraries and header files for libcap2
+#	libattr1-dev - Extended attribute static libraries and headers
+#
 # We can specify make target manually
 #
 #	make qemu-img
@@ -34,8 +41,12 @@ PKG_DEPENDS='bzip2 curl gnutls libjpeg-turbo libpng lzo ncurses nettle zlib'
 
 . "$PWD/env.sh"
 
+# libcap-ng is an optional dependency for qemu-bridge-helper to drop privileges
+# but preserving CAP_NET_ADMIN
+#
+# libcap is required by fsdev-proxy-helper
 if os_is_linux; then
-	PKG_DEPENDS="$PKG_DEPENDS libaio"
+	PKG_DEPENDS="$PKG_DEPENDS libaio libcap libcap-ng"
 fi
 
 #
