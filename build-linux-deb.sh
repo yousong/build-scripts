@@ -17,10 +17,10 @@
 #   https://debian-handbook.info/browse/stable/sect.kernel-compilation.html
 #
 PKG_NAME=linux-deb
-PKG_VERSION=4.8.4
+PKG_VERSION=4.8.12
 PKG_SOURCE="linux-${PKG_VERSION}.tar.xz"
 PKG_SOURCE_URL="https://cdn.kernel.org/pub/linux/kernel/v${PKG_VERSION%%.*}.x/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=6a382a6b4fd6fd1695ac9a51a353ef41
+PKG_SOURCE_MD5SUM=df78d00a183d76eee6b445cb74e6c764
 PKG_BUILD_DIR_BASENAME="$PKG_NAME-$PKG_VERSION"
 PKG_SOURCE_UNTAR_FIXUP=1
 PKG_PLATFORM=no
@@ -44,12 +44,23 @@ prepare_extra() {
 }
 
 configure() {
+	local rev
+	local dotconfig
+
 	cd "$PKG_BUILD_DIR/src"
 	if [ -s ".config" ]; then
 		mv ".config" ".config.old"
 	fi
-	if [ -f "/boot/config-$(uname -r)" ]; then
-		cp "/boot/config-$(uname -r)" .config
+	if [ -n "$rev" ]; then
+		dotconfig="/boot/config-$rev"
+	else
+		dotconfig="/boot/config-$(uname -r)"
+	fi
+	if [ -f "$dotconfig" ]; then
+		cp "$dotconfig" .config
+	else
+		__errmsg "[ -f \"$dotconfig\" ] failed"
+		return 1
 	fi
 	# .version will be incremented by scripts/link-vmlinux.sh and read by scripts/package/builddeb
 	rm -f .version
@@ -59,6 +70,9 @@ configure() {
 	kconfig_set_option CONFIG_CPU_FREQ_STAT y
 	kconfig_set_option CONFIG_RXKAD y
 	kconfig_set_option CONFIG_SCSI_DH y
+	# CONFIG_NF_IP_NAT will enable 'nat' table in iptables and is not available
+	# in 3.16 but reappeared in 4.8.
+	kconfig_set_option CONFIG_IP_NF_NAT m
 	$MAKEJ ARCH=x86_64 olddefconfig
 }
 

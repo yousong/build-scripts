@@ -12,10 +12,10 @@
 #	yum install hmaccalc zlib-devel binutils-devel elfutils-libelf-devel
 #
 PKG_NAME=linux-rpm
-PKG_VERSION=4.8.4
+PKG_VERSION=4.8.12
 PKG_SOURCE="linux-${PKG_VERSION}.tar.xz"
 PKG_SOURCE_URL="https://cdn.kernel.org/pub/linux/kernel/v${PKG_VERSION%%.*}.x/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=6a382a6b4fd6fd1695ac9a51a353ef41
+PKG_SOURCE_MD5SUM=df78d00a183d76eee6b445cb74e6c764
 PKG_BUILD_DIR_BASENAME="$PKG_NAME-$PKG_VERSION"
 PKG_SOURCE_UNTAR_FIXUP=1
 PKG_PLATFORM=no
@@ -66,6 +66,9 @@ configure() {
 			; do
 		kconfig_set_option "CONFIG_$opt" y
 	done
+	# CONFIG_NF_IP_NAT will enable 'nat' table in iptables and is not available
+	# in 3.16 but reappeared in 4.8.
+	kconfig_set_option CONFIG_IP_NF_NAT m
 	$MAKEJ ARCH=x86_64 olddefconfig
 }
 
