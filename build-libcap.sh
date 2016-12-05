@@ -13,6 +13,26 @@ PKG_SOURCE_MD5SUM=6666b839e5d46c2ad33fc8aa2ceb5f77
 
 . "$PWD/env.sh"
 
+do_patch() {
+	cd "$PKG_SOURCE_DIR"
+
+	patch -p0 <<"EOF"
+--- libcap/cap_file.c.orig	2016-12-05 18:16:32.644000925 +0800
++++ libcap/cap_file.c	2016-12-05 18:17:34.067001292 +0800
+@@ -9,6 +9,10 @@
+ #include <sys/stat.h>
+ #include <unistd.h>
+ #include <linux/xattr.h>
++#ifndef XATTR_NAME_CAPS
++// linux/capability.h is the old path but will be preceded over by the copy bundled with libcap
++#define XATTR_NAME_CAPS "security." "capability"
++#endif
+ 
+ /*
+  * We hardcode the prototypes for the Linux system calls here since
+EOF
+}
+
 configure() {
 	true
 }
