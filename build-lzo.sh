@@ -12,3 +12,7 @@ PKG_SOURCE_URL="http://www.oberhumer.com/opensource/lzo/download/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=c7ffc9a103afe2d1bba0b015e7aa887f
 
 . "$PWD/env.sh"
+
+CONFIGURE_ARGS="$CONFIGURE_ARGS	\\
+	--enable-shared				\\
+"
