@@ -15,11 +15,19 @@ toolchain_init_vars_build_cross "$PKG_NAME"
 
 # libssp can be disabled here because we expect it to be provided by libc which
 # is true with musl, bionic and glibc since 2.4.  See LIBC_PROVIDES_SSP in
-# gcc/configure.ac and gcc/gcc.c for details.  When ssp is not provided by
-# libc, the link step will link against libssp.a and libssp_noshared.a which
-# can be provided by libssp/ provided by GCC.  However libssp is a target
-# library depending on presence of libc and as such cannot be enabled on gcc
-# pass1
+# gcc/configure.ac and gcc/gcc.c for details.
+#
+# When ssp is not provided by libc, the link step will link against libssp.a
+# and libssp_nonshared.a which can be provided by libssp/ provided by GCC.
+# However libssp is a target library depending on presence of libc and as such
+# cannot be enabled on gcc pass1
+#
+# libssp_nonshared.a is expected to contain visibility("hidden") function
+# __stack_chk_fail_local().  This function is used so that the generated code
+# does not need to setup GP register (PIC/PIE).  At the moment this
+# optimization is only applied to x86_32 and powerpc 32 target.  Details can be
+# found by searching for caller of default_hidden_stack_protect_fail in
+# gcc/targhooks.c.
 #
 # LTO is not a language but will be enabled by default because
 # --enabled-default is the default.  We enable it explicitly just in case
