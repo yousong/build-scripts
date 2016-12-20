@@ -165,7 +165,8 @@ EOF
 }
 
 # +profile feature is only available through HUGE features set.  It cannot
-# enabled standalone through configure options
+# enabled standalone through configure options.  See how FEAT_PROFILE was
+# defined in src/feature.h
 CONFIGURE_ARGS="$CONFIGURE_ARGS	\\
 	--enable-fail-if-missing	\\
 	--enable-luainterp			\\
@@ -182,7 +183,7 @@ CONFIGURE_ARGS="$CONFIGURE_ARGS	\\
 	--with-luajit				\\
 	--with-lua-prefix='$INSTALL_PREFIX'	\\
 	--with-tlib=ncurses			\\
-	--with-features=big			\\
+	--with-features=huge		\\
 "
 
 configure_pre() {
