@@ -535,6 +535,14 @@ platform_check() {
 	done
 }
 
+genmake_stampdir() {
+	echo "\$(STAMP_DIR)"
+}
+
+genmake_logdir() {
+	echo "\$(LOG_DIR)"
+}
+
 genmake() {
 	local d mdepends
 	# description format: target:<actions#separated#by#HASH:prerequisite
@@ -547,16 +555,23 @@ genmake() {
 		archive:archive:staging
 		install:install_pre#install#install_post:staging
 	'
+	local stampdir="$(genmake_stampdir)"
+	local logdir="$(genmake_logdir)"
 
 	for d in $dep_desc; do
 		local phasel="${d%%:*}"
 		local phaser="${d##*:}"
+		local stampl="$stampdir/stamp.$PKG_NAME.$phasel"
+		local stampr="$stampdir/stamp.$PKG_NAME.$phaser"
+		local logl="$logdir/log.$PKG_NAME.$phasel"
 		local action actions
 
 		cat <<EOF
-\$(STAMP_DIR)/stamp.$PKG_NAME.$phasel: | \$(STAMP_DIR) \$(LOG_DIR)
-	@+$PKG_SCRIPT_NAME platform_check >\$(LOG_DIR)/log.$PKG_NAME.$phasel 2>&1 || \\
-		{ touch "\$(STAMP_DIR)/stamp.$PKG_NAME.skipped"; exit 0; }; \\
+\$(eval \$(call rule_mkdir,$stampdir))
+\$(eval \$(call rule_mkdir,$logdir))
+$stampl: | $stampdir $logdir
+	@+$PKG_SCRIPT_NAME platform_check >$logl 2>&1 || \\
+		{ touch "$stampdir/stamp.$PKG_NAME.skipped"; exit 0; }; \\
 EOF
 		actions="${d#*:}"
 		actions="${actions%:*}"
@@ -564,28 +579,28 @@ EOF
 		cat <<EOF
 	for action in $actions; do \\
 		echo "${PKG_SCRIPT_NAME##*/} \$\$action"; \\
-		$PKG_SCRIPT_NAME \$\$action >>\$(LOG_DIR)/log.$PKG_NAME.$phasel 2>&1 || \\
-			{ echo "${PKG_SCRIPT_NAME##*/} \$\$action failed;  see \$(LOG_DIR)/log.$PKG_NAME.$phasel for details"; exit 1; }; \\
+		$PKG_SCRIPT_NAME \$\$action >>$logl 2>&1 || \\
+			{ echo "${PKG_SCRIPT_NAME##*/} \$\$action failed;  see $logl for details"; exit 1; }; \\
 	done
 EOF
 
 		cat <<EOF
-	@touch \$@
-$PKG_NAME/$phasel: \$(STAMP_DIR)/stamp.$PKG_NAME.$phasel
+	@touch $stampl
+$PKG_NAME/$phasel: $stampl
 .PHONY: $PKG_NAME/$phasel
-$phasel: \$(STAMP_DIR)/stamp.$PKG_NAME.$phasel
+$phasel: $stampl
 
 EOF
 		if [ -n "$phaser" ]; then
 			cat <<EOF
-\$(STAMP_DIR)/stamp.$PKG_NAME.$phasel: \$(STAMP_DIR)/stamp.$PKG_NAME.$phaser
+$stampl: $stampr
 
 EOF
 		fi
 	done
 
 	for d in $PKG_DEPENDS; do
-		mdepends="\$(STAMP_DIR)/stamp.$d.install $mdepends"
+		mdepends="$stampdir/stamp.$d.install $mdepends"
 	done
 	mdepends="${mdepends% }"
 
@@ -593,11 +608,11 @@ EOF
 	cat <<EOF
 $PKG_SCRIPT_NAME: $TOPDIR/env.sh
 	touch $PKG_SCRIPT_NAME
-\$(STAMP_DIR)/stamp.$PKG_NAME.download: $PKG_SCRIPT_NAME
-\$(STAMP_DIR)/stamp.$PKG_NAME.configure: $mdepends
+$stampdir/stamp.$PKG_NAME.download: $PKG_SCRIPT_NAME
+$stampdir/stamp.$PKG_NAME.configure: $mdepends
 $PKG_NAME/clean:
 	$PKG_SCRIPT_NAME clean
-	rm -v \$(STAMP_DIR)/stamp.$PKG_NAME.* || true
+	rm -v $stampdir/stamp.$PKG_NAME.* || true
 
 $PKG_NAME/uninstall:
 	$PKG_SCRIPT_NAME uninstall

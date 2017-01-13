@@ -26,8 +26,8 @@ $(TMP_DIR)/include:
 	@mkdir -p "$@"
 
 %/test: export TMP_DIR=$(TESTS_DIR)/tmp
-%/test: export LOG_DIR="$(TMP_DIR)/log"
-%/test: export STAMP_DIR="$(TMP_DIR)/stamp"
+%/test: export LOG_DIR=$(TMP_DIR)/log
+%/test: export STAMP_DIR=$(TMP_DIR)/stamp
 %/test:
 	+@INSTALL_PREFIX="$(TESTS_DIR)/install" \
 	BASE_DESTDIR="$(TESTS_DIR)/dest_dir" \
@@ -35,18 +35,6 @@ $(TMP_DIR)/include:
 	OLDPATH="$(PATH)" \
 	PATH="$(TESTS_DIR)/install/bin:$(TESTS_DIR)/install/sbin:$(PATH)" \
 	$(NO_TRACE_MAKE) $*
-
-TOOLCHAIN_TARGETS= \
-	kernel-headers/% \
-	binutils-cross/% \
-	gcc-cross-pass1/% \
-	glibc-cross/% \
-	gcc-cross-pass2/% \
-
-TOOLCHAIN_LOG_DIR=$(TMP_DIR)/log/$(shell . $(TOPDIR)/utils-toolchain.sh; echo $$TOOLCHAIN_NAME)
-TOOLCHAIN_STAMP_DIR=$(TMP_DIR)/stamp/$(shell . $(TOPDIR)/utils-toolchain.sh; echo $$TOOLCHAIN_NAME)
-$(TOOLCHAIN_TARGETS): export LOG_DIR=$(TOOLCHAIN_LOG_DIR)
-$(TOOLCHAIN_TARGETS): export STAMP_DIR=$(TOOLCHAIN_STAMP_DIR)
 
 toolchain/test:
 	+@for arch in	i686 x86_64 \
@@ -66,9 +54,15 @@ toolchain/test:
 .PHONY: genmake
 .PHONY: download staging archive install
 
-ifeq ($(filter genmake %/test,$(MAKECMDGOALS)),)
-$(STAMP_DIR) $(LOG_DIR):
-	@mkdir -p $@
+bs_DIRS :=
+define rule_mkdir
+  ifeq ($(filter $(bs_DIRS),$(1)),)
+    $(1):
+	@mkdir -p $(1)
+    bs_DIRS += $(1)
+  endif
+endef
 
+ifeq ($(filter genmake %/test,$(MAKECMDGOALS)),)
 -include $(TMP_DIR)/Makefile
 endif

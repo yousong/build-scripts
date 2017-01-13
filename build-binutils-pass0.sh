@@ -12,6 +12,7 @@ toolchain_init_pkg binutils
 PKG_NAME=binutils-pass0
 
 . "$PWD/env.sh"
+toolchain_init_genmake_func
 
 do_patch() {
 	cd "$PKG_SOURCE_DIR"

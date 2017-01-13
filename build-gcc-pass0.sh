@@ -12,6 +12,7 @@ toolchain_init_pkg gcc
 PKG_NAME=gcc-pass0
 
 . "$PWD/env.sh"
+toolchain_init_genmake_func
 
 TOOLCHAIN_GCC_SUPPORT_LIBS='mpfr gmp mpc'
 

@@ -199,4 +199,14 @@ toolchain_init_vars_build_cross() {
 			}
 			;;
 	esac
+	toolchain_init_genmake_func
+}
+
+toolchain_init_genmake_func() {
+	genmake_stampdir() {
+		echo "\$(STAMP_DIR)/$GNU_TOOLCHAIN_NAME"
+	}
+	genmake_logdir() {
+		echo "\$(LOG_DIR)/$GNU_TOOLCHAIN_NAME"
+	}
 }
