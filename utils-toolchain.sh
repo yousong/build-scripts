@@ -50,9 +50,9 @@
 # setarch utility from util-linux allows to prepare an environ where uname
 # output is customized
 #
-PKG_gcc_VERSION=6.2.0
+PKG_gcc_VERSION=6.3.0
 PKG_gcc_SOURCE="gcc-$PKG_gcc_VERSION.tar.bz2"
-PKG_gcc_SOURCE_MD5SUM=9768625159663b300ae4de2f4745fcc4
+PKG_gcc_SOURCE_MD5SUM=677a7623c7ef6ab99881bc4e048debb6
 PKG_gcc_SOURCE_URL="http://ftpmirror.gnu.org/gcc/gcc-$PKG_gcc_VERSION/$PKG_gcc_SOURCE"
 
 PKG_glibc_VERSION=2.24
@@ -65,10 +65,10 @@ PKG_binutils_SOURCE="binutils-$PKG_binutils_VERSION.tar.bz2"
 PKG_binutils_SOURCE_MD5SUM=2869c9bf3e60ee97c74ac2a6bf4e9d68
 PKG_binutils_SOURCE_URL="http://ftpmirror.gnu.org/binutils/$PKG_binutils_SOURCE"
 
-PKG_linux_VERSION=4.4.27
+PKG_linux_VERSION=4.4.42
 PKG_linux_SOURCE="linux-${PKG_linux_VERSION}.tar.xz"
+PKG_linux_SOURCE_MD5SUM=fdf645578183b9904703c7327f89720f
 PKG_linux_SOURCE_URL="https://cdn.kernel.org/pub/linux/kernel/v${PKG_linux_VERSION%%.*}.x/$PKG_linux_SOURCE"
-PKG_linux_SOURCE_MD5SUM=3d45ce46c2c6b260feee53bae94aca0d
 
 #
 # check config.sub and gcc/config.gcc for available target combinations
