@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Copyright 2015-2016 (c) Yousong Zhou
+# Copyright 2015-2017 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -16,57 +16,79 @@
 #	# or use the following method if you are on CentOS 6.5
 #	sudo yum install -y lua-devel ruby-devel python-devel ncurses-devel perl-devel perl-ExtUtils-Embed
 #
-# Delete dl/patches-$VER_ND/MD5SUMS to check for new patches
-#
-# Patch 1425 of vim 7.4 seems malformed at the moment (2016-09-14) when
-# patching csdpmi4b.zip
-#
 # 7.3 is the release version.
 # 547 is the number of applied patches provided by vim.org.
 PKG_NAME=vim
-PKG_VERSION=8.0
-PKG_SOURCE="vim-${PKG_VERSION}.tar.bz2"
-PKG_SOURCE_URL="ftp://ftp.vim.org/pub/vim/unix/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=808d2ebdab521e18bc5e0eaede0db867
+PKG_VERSION=8.0.0208
+PKG_SOURCE="vim-${PKG_VERSION}.tar.gz"
+PKG_SOURCE_URL="https://github.com/vim/vim/archive/v$PKG_VERSION.tar.gz"
+PKG_SOURCE_MD5SUM=390afb789a97389c45f68f10a1d7f884
 PKG_SOURCE_UNTAR_FIXUP=1
 PKG_DEPENDS='libiconv LuaJIT ncurses python2'
 
 . "$PWD/env.sh"
 
-# version without dot
-VER_ND="$(echo $PKG_VERSION | tr -d .)"
-PATCH_DIR="$BASE_DL_DIR/vim$VER_ND-patches"
-# vim-8.0.tar.bz2 at the moment already has patch 0001 and 0002 applied
-VIM_NEXT_PATCH=3
+VIM_VER_MAJ="$(echo $PKG_VERSION | cut -d. -f1-2)"
+VIM_PATCH_DIR="$BASE_DL_DIR/vim$VIM_VER_MAJ-patches"
 
-patches_all_fetched() {
-	if [ -s "MD5SUMS" ] && md5sum --status -c MD5SUMS; then
+# vim starting with 8.0 now offers patched tar.bz2, then we can set range
+# additional patches to apply.
+#
+# The problem was that those patches were not generated properly and failed to
+# apply for various (sometimes unknown) reasons
+#
+#  - Patch 1425 of vim 7.4 seems malformed at the moment (2016-09-14) when
+#    patching csdpmi4b.zip
+#  - vim-8.0.tar.bz2 at the moment already has patch 0001 and 0002 applied
+#  - applying testxx.in often fails with "Already applied, reverse?"
+#
+VIM_PATCH_START="$(echo "$PKG_VERSION" | cut -d. -f3)"
+VIM_PATCH_START="${VIM_PATCH_START#000}"
+VIM_PATCH_START="${VIM_PATCH_START#00}"
+VIM_PATCH_START="${VIM_PATCH_START#0}"
+VIM_PATCH_START="$(($VIM_PATCH_START + 1))"
+VIM_PATCH_END=9999
+
+vim_patches_all_fetched() {
+	if sed -n "${VIM_PATCH_START},${VIM_PATCH_END}p" MD5SUMS | md5sum --status -c; then
 		return 0
 	else
 		return 1
 	fi
 }
 
+vim_init_patch_num() {
+	VIM_PATCH_TOTAL="$(wc -l MD5SUMS | cut -f1 -d' ')"
+	if [ -z "$VIM_PATCH_START" ]; then
+		VIM_PATCH_START=1
+	fi
+	if [ -z "$VIM_PATCH_END" -o "$VIM_PATCH_END" -gt "$VIM_PATCH_TOTAL" ]; then
+		VIM_PATCH_END="$VIM_PATCH_TOTAL"
+	fi
+}
+
 fetch_patches() {
 	local ver="$PKG_VERSION"
-	local baseurl="ftp://ftp.vim.org/pub/vim/patches/$PKG_VERSION"
-	local num_patches
+	local baseurl="ftp://ftp.vim.org/pub/vim/patches/$VIM_VER_MAJ"
+	local ttl_patches dl_patches
 	local num_process
 	local i l
 
-	mkdir -p "$PATCH_DIR"
-	cd "$PATCH_DIR"
+	mkdir -p "$VIM_PATCH_DIR"
+	cd "$VIM_PATCH_DIR"
 
-	if patches_all_fetched; then
-		__errmsg "All fetched, skip fetching patches"
-		return 0
+	if [ -s "MD5SUMS" ]; then
+		vim_init_patch_num
+		if vim_patches_all_fetched; then
+			__errmsg "All fetched, skip fetching patches"
+			return 0
+		fi
 	fi
 
 	# delete MD5SUMS to check for new patches
 	wget -c "$baseurl/MD5SUMS"
-	num_patches="$(wc -l MD5SUMS | cut -f1 -d' ')"
-	num_process="$(($num_patches / 100))"
-	for i in $(seq 1 100 $num_patches); do
+	vim_init_patch_num
+	for i in $(seq "$VIM_PATCH_START" 100 "$VIM_PATCH_END"); do
 		# Each wget fetches at most 100 patches.
 		sed -n "$i,$(($i+99))p" MD5SUMS | \
 			while read l; do echo "$l" | md5sum --status -c || echo "$baseurl/${l##* }"; done | \
@@ -74,7 +96,7 @@ fetch_patches() {
 	done
 	wait
 
-	if ! patches_all_fetched; then
+	if ! vim_patches_all_fetched; then
 		__errmsg "Some patches were missing"
 		return 1
 	fi
@@ -82,6 +104,8 @@ fetch_patches() {
 
 apply_patches() {
 	local f
+	local re_start="^.*\\/$VIM_VER_MAJ.0*$VIM_PATCH_START\$"
+	local re_end="^.*\\/$VIM_VER_MAJ.0*$VIM_PATCH_END\$"
 
 	cd "$PKG_BUILD_DIR"
 
@@ -90,7 +114,7 @@ apply_patches() {
 		return 0
 	fi
 
-	for f in $(ls "$PATCH_DIR/$PKG_VERSION."* | sort --version-sort | tail -n "+$VIM_NEXT_PATCH"); do
+	for f in $(ls "$VIM_PATCH_DIR/$VIM_VER_MAJ."* | sort --version-sort | sed -n "/$re_start/,/$re_end/p"); do
 		__errmsg "applying patch $f"
 		patch -p0 -i "$f"
 		__errmsg
@@ -99,69 +123,15 @@ apply_patches() {
 }
 
 do_patch() {
-	fetch_patches
-	apply_patches
-
-	# Include those from INSTALL_PREFIX first
-	patch -p0 <<"EOF"
---- src/Makefile.orig	2016-09-18 16:06:43.122195344 +0800
-+++ src/Makefile	2016-09-18 17:20:17.143576880 +0800
-@@ -1858,7 +1858,7 @@ myself:
- 
- 
- # The normal command to compile a .c file to its .o file.
--CCC = $(CC) -c -I$(srcdir) $(ALL_CFLAGS)
-+CCC = $(CC) -c -I$(srcdir) $(1) $(ALL_CFLAGS)
- 
- 
- # Link the target for normal use or debugging.
-@@ -2971,36 +2971,36 @@ objects/if_xcmdsrv.o: if_xcmdsrv.c
- 	$(CCC) -o $@ if_xcmdsrv.c
- 
- objects/if_lua.o: if_lua.c
--	$(CCC) $(LUA_CFLAGS) -o $@ if_lua.c
-+	$(call CCC,$(LUA_CFLAGS)) -o $@ if_lua.c
- 
- objects/if_mzsch.o: if_mzsch.c $(MZSCHEME_EXTRA)
--	$(CCC) -o $@ $(MZSCHEME_CFLAGS_EXTRA) if_mzsch.c
-+	$(call CCC,$(MZSCHEME_CFLAGS_EXTRA)) -o $@ if_mzsch.c
- 
- mzscheme_base.c:
- 	$(MZSCHEME_MZC) --c-mods mzscheme_base.c ++lib scheme/base
- 
- objects/if_perl.o: auto/if_perl.c
--	$(CCC) $(PERL_CFLAGS) -o $@ auto/if_perl.c
-+	$(call CCC,$(PERL_CFLAGS)) -o $@ auto/if_perl.c
- 
- objects/if_perlsfio.o: if_perlsfio.c
--	$(CCC) $(PERL_CFLAGS) -o $@ if_perlsfio.c
-+	$(call CCC,$(PERL_CFLAGS)) -o $@ if_perlsfio.c
- 
- objects/py_getpath.o: $(PYTHON_CONFDIR)/getpath.c
--	$(CCC) $(PYTHON_CFLAGS) -o $@ $(PYTHON_CONFDIR)/getpath.c \
-+	$(call CCC,$(PYTHON_CFLAGS)) -o $@ $(PYTHON_CONFDIR)/getpath.c \
- 		-I$(PYTHON_CONFDIR) -DHAVE_CONFIG_H -DNO_MAIN \
- 		$(PYTHON_GETPATH_CFLAGS)
- 
- objects/if_python.o: if_python.c if_py_both.h
--	$(CCC) $(PYTHON_CFLAGS) $(PYTHON_CFLAGS_EXTRA) -o $@ if_python.c
-+	$(call CCC,$(PYTHON_CFLAGS)) $(PYTHON_CFLAGS_EXTRA) -o $@ if_python.c
- 
- objects/if_python3.o: if_python3.c if_py_both.h
--	$(CCC) $(PYTHON3_CFLAGS) $(PYTHON3_CFLAGS_EXTRA) -o $@ if_python3.c
-+	$(call CCC,$(PYTHON3_CFLAGS)) $(PYTHON3_CFLAGS_EXTRA) -o $@ if_python3.c
- 
- objects/if_ruby.o: if_ruby.c
--	$(CCC) $(RUBY_CFLAGS) -o $@ if_ruby.c
-+	$(call CCC,$(RUBY_CFLAGS)) -o $@ if_ruby.c
- 
- objects/if_tcl.o: if_tcl.c
--	$(CCC) $(TCL_CFLAGS) -o $@ if_tcl.c
-+	$(call CCC,$(TCL_CFLAGS)) -o $@ if_tcl.c
- 
- objects/integration.o: integration.c
- 	$(CCC) -o $@ integration.c
-EOF
+	# "patch 8.0.0203: order of complication flags is sometimes wrong" is
+	# required to make the build system prefer libraries from $INSTALL_PREFIX
+	#
+	# commented out for now as applying patches manually do not work as
+	# expected at the moment (2017.01.21)
+	#
+	#fetch_patches
+	#apply_patches
+	true
 }
 
 # +profile feature is only available through HUGE features set.  It cannot
