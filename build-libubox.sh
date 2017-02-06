@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Copyright 2015-2016 (c) Yousong Zhou
+# Copyright 2015-2017 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -12,14 +12,12 @@
 # It's libjson0-dev on Debian Wheezy
 #
 PKG_NAME=libubox
-PKG_VERSION=2016-03-06
-PKG_SOURCE_VERSION=dfe446e2a981eaa83cb41df3840ca7c649dc7527
-PKG_SOURCE="$PKG_NAME-${PKG_VERSION}-${PKG_SOURCE_VERSION}.tar.gz"
-PKG_SOURCE_URL="http://git.openwrt.org/?p=project/libubox.git;a=snapshot;h=$PKG_SOURCE_VERSION;sf=tgz"
-PKG_SOURCE_UNTAR_FIXUP=1
+PKG_VERSION=2017-02-03
+PKG_SOURCE_VERSION=de3f14b643f09c799845073eaf3577a334d0726d
 PKG_DEPENDS='json-c lua5.1'
 PKG_CMAKE=1
 
+. "$PWD/utils-lede.sh"
 . "$PWD/env.sh"
 
 do_patch() {
