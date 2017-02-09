@@ -16,5 +16,6 @@ PKG_DEPENDS='libiconv openssl pcre zlib'
 
 # Wget defaults to GNU TLS but that requires too many dependencies
 CONFIGURE_ARGS="$CONFIGURE_ARGS	\\
+	--disable-silent-rules		\\
 	--with-ssl=openssl			\\
 "
