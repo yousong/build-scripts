@@ -36,6 +36,18 @@ do_patch() {
  AC_PROG_CC
  AM_PROG_CC_C_O
  AC_AIX
+--- src/Makefile.am.orig	2017-02-09 12:00:01.376985054 +0800
++++ src/Makefile.am	2017-02-09 12:00:03.616985755 +0800
+@@ -88,8 +88,7 @@ version.c:  $(wget_SOURCES) ../lib/libgn
+ 	echo 'const char *version_string = "@VERSION@";' >> $@
+ 	echo 'const char *compilation_string = "'$(COMPILE)'";' \
+ 	    | $(ESCAPEQUOTE) >> $@
+-	echo 'const char *link_string = "'$(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+-	$(AM_LDFLAGS) $(LDFLAGS) $(LIBS) $(wget_LDADD)'";' \
++	echo 'const char *link_string = "'$(LINK) $(wget_OBJECTS) $(wget_LDADD) $(LIBS)'";' \
+ 	    | $(ESCAPEQUOTE) >> $@
+ 
+ css.c: $(srcdir)/css.l
 EOF
 	# To workaround po/Makefile.in.in version check
 	#
