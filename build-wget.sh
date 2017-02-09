@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Copyright 2016 (c) Yousong Zhou
+# Copyright 2016-2017 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -19,12 +19,16 @@ PKG_AUTOCONF_FIXUP=1
 do_patch() {
 	cd "$PKG_SOURCE_DIR"
 
-	# See https://savannah.gnu.org/bugs/?50260
-	#
 	# The problem is that I build my own copy of wget and its dependencies and
 	# install them into a non-standard location. The build system of wget
 	# incorrectly thought that libtool was used and specified the library
 	# location with -R which gcc did not understand and erred. 
+	#
+	# See
+	#  - Link failed caused by bad linker option -R,
+	#    https://savannah.gnu.org/bugs/?50260
+	#  - 5.4.1 The LT_INIT macro, libtool manual
+	#
 	patch -p0 <<"EOF"
 --- configure.ac.orig	2017-02-09 11:22:32.868281297 +0800
 +++ configure.ac	2017-02-09 11:22:34.620281846 +0800
@@ -32,7 +36,7 @@ do_patch() {
  test -z "$CFLAGS"  && CFLAGS= auto_cflags=1
  test -z "$CC" && cc_specified=yes
  
-+AC_PROG_LIBTOOL
++LT_INIT
  AC_PROG_CC
  AM_PROG_CC_C_O
  AC_AIX
