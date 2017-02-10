@@ -24,35 +24,28 @@ do_patch() {
 	# incorrectly thought that libtool was used and specified the library
 	# location with -R which gcc did not understand and erred. 
 	#
+	# Use LIB<NAME> instead of LTLIB when LT_INIT is not used in configure.ac
+	#
 	# See
 	#  - Link failed caused by bad linker option -R,
 	#    https://savannah.gnu.org/bugs/?50260
-	#  - 5.4.1 The LT_INIT macro, libtool manual
+	#  - 13.11 Searching for Libraries,
+	#    https://www.gnu.org/software/gnulib/manual/html_node/Searching-for-Libraries.html
 	#
 	patch -p0 <<"EOF"
---- configure.ac.orig	2017-02-09 11:22:32.868281297 +0800
-+++ configure.ac	2017-02-09 11:22:34.620281846 +0800
-@@ -168,6 +168,7 @@ dnl We want these before the checks, so
- test -z "$CFLAGS"  && CFLAGS= auto_cflags=1
- test -z "$CC" && cc_specified=yes
- 
-+LT_INIT
- AC_PROG_CC
- AM_PROG_CC_C_O
- AC_AIX
---- src/Makefile.am.orig	2017-02-09 12:00:01.376985054 +0800
-+++ src/Makefile.am	2017-02-09 12:00:03.616985755 +0800
-@@ -88,8 +88,7 @@ version.c:  $(wget_SOURCES) ../lib/libgn
- 	echo 'const char *version_string = "@VERSION@";' >> $@
- 	echo 'const char *compilation_string = "'$(COMPILE)'";' \
- 	    | $(ESCAPEQUOTE) >> $@
--	echo 'const char *link_string = "'$(CCLD) $(AM_CFLAGS) $(CFLAGS) \
--	$(AM_LDFLAGS) $(LDFLAGS) $(LIBS) $(wget_LDADD)'";' \
-+	echo 'const char *link_string = "'$(LINK) $(wget_OBJECTS) $(wget_LDADD) $(LIBS)'";' \
- 	    | $(ESCAPEQUOTE) >> $@
- 
- css.c: $(srcdir)/css.l
+--- src/Makefile.am.orig	2017-02-10 19:16:33.024224909 +0800
++++ src/Makefile.am	2017-02-10 19:19:25.620278930 +0800
+@@ -65,8 +65,8 @@ nodist_wget_SOURCES = version.c
+ EXTRA_wget_SOURCES = iri.c
+ LDADD = $(LIBOBJS) ../lib/libgnu.a $(GETADDRINFO_LIB) $(HOSTENT_LIB)\
+  $(INET_NTOP_LIB) $(LIBSOCKET) $(LIB_CLOCK_GETTIME) $(LIB_CRYPTO)\
+- $(LIB_NANOSLEEP) $(LIB_POSIX_SPAWN) $(LIB_SELECT) $(LTLIBICONV) $(LTLIBINTL)\
+- $(LTLIBTHREAD) $(LTLIBUNISTRING) $(SERVENT_LIB)
++ $(LIB_NANOSLEEP) $(LIB_POSIX_SPAWN) $(LIB_SELECT) $(LIBICONV) $(LIBINTL)\
++ $(LIBTHREAD) $(LIBUNISTRING) $(SERVENT_LIB)
+ AM_CPPFLAGS = -I$(top_builddir)/lib -I$(top_srcdir)/lib
 EOF
+
 	# To workaround po/Makefile.in.in version check
 	#
 	# See autopoint func_compare for the comparison for copy decision was done
