@@ -1,15 +1,15 @@
 #!/bin/sh -e
 #
-# Copyright 2016 (c) Yousong Zhou
+# Copyright 2016-2017 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
 #
 PKG_NAME=riscvemu
-PKG_VERSION=2017-01-07
+PKG_VERSION=2017-01-12
 PKG_SOURCE="$PKG_NAME-${PKG_VERSION}.tar.gz"
 PKG_SOURCE_URL="http://bellard.org/riscvemu/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=1144f6627e1b7264796acbdf3dc1d91e
+PKG_SOURCE_MD5SUM=94e1173749d42e65370c6a44bc51ddf8
 PKG_DEPENDS='curl'
 
 . "$PWD/env.sh"
