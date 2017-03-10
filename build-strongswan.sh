@@ -15,3 +15,7 @@ PKG_SOURCE_MD5SUM=4eba9474f7dc6c8c8d7037261358e68d
 PKG_DEPENDS='gmp'
 
 . "$PWD/env.sh"
+
+CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
+	--enable-ha						\\
+"
