@@ -1,21 +1,21 @@
 #!/bin/sh -e
 #
-# Copyright 2016 (c) Yousong Zhou
+# Copyright 2016-2017 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
 #
 # Prerequisites
 #
-#	yum groupinstall "Development Tools"
-#	yum install ncurses-devel
-#	yum install hmaccalc zlib-devel binutils-devel elfutils-libelf-devel
+#	yum groupinstall -y "Development Tools"
+#	yum install -y ncurses-devel openssl-devel bc
+#	yum install -y hmaccalc zlib-devel binutils-devel elfutils-libelf-devel
 #
 PKG_NAME=linux-rpm
-PKG_VERSION=4.8.12
+PKG_VERSION=4.4.52
 PKG_SOURCE="linux-${PKG_VERSION}.tar.xz"
 PKG_SOURCE_URL="https://cdn.kernel.org/pub/linux/kernel/v${PKG_VERSION%%.*}.x/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=df78d00a183d76eee6b445cb74e6c764
+PKG_SOURCE_MD5SUM=2b221f84f8686655bcb476fadafcd09d
 PKG_BUILD_DIR_BASENAME="$PKG_NAME-$PKG_VERSION"
 PKG_SOURCE_UNTAR_FIXUP=1
 PKG_PLATFORM=no
@@ -28,6 +28,16 @@ EXTRA_CPPFLAGS=
 EXTRA_LDFLAGS=
 MAKE_VARS="V=1"
 
+
+STRONGSWAN_PATCH_URL_BASENAME="ha-${PKG_VERSION%.*}-abicompat.patch.bz2"
+STRONGSWAN_PATCH_URL="https://download.strongswan.org/testing/$STRONGSWAN_PATCH_URL_BASENAME"
+STRONGSWAN_PATCH="strongswan-$STRONGSWAN_PATCH_URL_BASENAME"
+STRONGSWAN_PATCH_MD5SUM=599b6e7fcd36388479250c4439b867c1
+
+download_extra() {
+	download_http "$STRONGSWAN_PATCH" "$STRONGSWAN_PATCH_URL" "$STRONGSWAN_PATCH_MD5SUM"
+}
+
 prepare_extra() {
 	local f fs
 
@@ -36,6 +46,11 @@ prepare_extra() {
 	for f in $fs; do
 		mv "$PKG_SOURCE_DIR/$f" "$PKG_BUILD_DIR/src"
 	done
+}
+
+do_patch() {
+	cd "$PKG_SOURCE_DIR/src"
+	bzcat "$BASE_DL_DIR/$STRONGSWAN_PATCH" | patch -p1
 }
 
 configure() {
