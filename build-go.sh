@@ -17,6 +17,7 @@
 # Additional tools
 #
 #	go get golang.org/x/tour/gotour
+#	go get golang.org/x/tools/cmd/godoc
 #
 PKG_NAME=go
 PKG_VERSION=1.7.5
