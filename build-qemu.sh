@@ -33,10 +33,10 @@
 # - The QEMU build system architecture, docs/build-system.txt
 #
 PKG_NAME=qemu
-PKG_VERSION=2.7.0
+PKG_VERSION=2.8.1
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.bz2"
 PKG_SOURCE_URL="http://wiki.qemu-project.org/download/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=08d4d06d1cb598efecd796137f4844ab
+PKG_SOURCE_MD5SUM=606cccba9ce7de7567a50f0277ced02a
 PKG_DEPENDS='bzip2 curl gnutls libjpeg-turbo libpng lzo ncurses nettle zlib'
 
 . "$PWD/env.sh"
