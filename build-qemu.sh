@@ -119,12 +119,16 @@ CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
 MAKE_VARS="V=s"
 
 install_post() {
-	cat <<EOF
+	local helper="$INSTALL_PREFIX/libexec/qemu-bridge-helper"
+
+	if [ -x "$helper" ]; then
+		cat <<EOF
 
 To use qemu-bridge-helper, appropriate permission bits need to be set
 
-	sudo chown root:root $INSTALL_PREFIX/libexec/qemu-bridge-helper
-	sudo chmod u+s $INSTALL_PREFIX/libexec/qemu-bridge-helper
+	sudo chown root:root $helper
+	sudo chmod u+s $helper
 
 EOF
+	fi
 }
