@@ -56,7 +56,7 @@ fi
 TARGETS=
 TARGETS="$TARGETS i386-softmmu x86_64-softmmu"
 TARGETS="$TARGETS mips-softmmu mipsel-softmmu mips64-softmmu mips64el-softmmu"
-TARGETS="$TARGETS arm-softmmu"
+TARGETS="$TARGETS arm-softmmu aarch64-softmmu"
 #
 # Things to keep in mind when using user mode emulation with dynamically linked
 # binaries
