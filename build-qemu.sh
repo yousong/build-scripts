@@ -86,10 +86,22 @@ TARGETS="$TARGETS arm-softmmu aarch64-softmmu"
 #    See Changelog/2.7 for how to use it.  See tests/docker/Makefile.include
 #    for details of implementation and available targets
 #
-TARGETS="$TARGETS i386-linux-user"
-TARGETS="$TARGETS mips-linux-user mipsn32-linux-user mips64-linux-user"
-TARGETS="$TARGETS arm-linux-user aarch64-linux-user"
+if os_is_linux; then
+	TARGETS="$TARGETS i386-linux-user"
+	TARGETS="$TARGETS mips-linux-user mipsn32-linux-user mips64-linux-user"
+	TARGETS="$TARGETS arm-linux-user aarch64-linux-user"
+fi
 
+if os_is_darwin; then
+	# - _XOPEN_SOURCE: required to enable NCURSES_WIDECHAR
+	# - _DARWIN_C_SOURCE: required to make SIGIO availabe (see
+	#   /usr/include/sys/signal.h)
+	#
+	# Setting MACOSX_DEPLOYMENT_TARGET to version >=10.5 as said in compat(5)
+	# is not enough.
+	EXTRA_CPPFLAGS="-D_DARWIN_C_SOURCE -D_XOPEN_SOURCE=600 $EXTRA_CPPFLAGS"
+	EXTRA_CFLAGS="-D_DARWIN_C_SOURCE -D_XOPEN_SOURCE=600 $EXTRA_CFLAGS"
+fi
 CONFIGURE_VARS="$CONFIGURE_VARS		\\
 	QEMU_CFLAGS='$EXTRA_CFLAGS'		\\
 "
