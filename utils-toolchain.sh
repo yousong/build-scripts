@@ -50,24 +50,24 @@
 # setarch utility from util-linux allows to prepare an environ where uname
 # output is customized
 #
-PKG_gcc_VERSION=6.3.0
+PKG_gcc_VERSION=7.1.0
 PKG_gcc_SOURCE="gcc-$PKG_gcc_VERSION.tar.bz2"
-PKG_gcc_SOURCE_MD5SUM=677a7623c7ef6ab99881bc4e048debb6
+PKG_gcc_SOURCE_MD5SUM=6bf56a2bca9dac9dbbf8e8d1036964a8
 PKG_gcc_SOURCE_URL="http://ftpmirror.gnu.org/gcc/gcc-$PKG_gcc_VERSION/$PKG_gcc_SOURCE"
 
-PKG_glibc_VERSION=2.24
+PKG_glibc_VERSION=2.25
 PKG_glibc_SOURCE="glibc-$PKG_glibc_VERSION.tar.xz"
-PKG_glibc_SOURCE_MD5SUM=97dc5517f92016f3d70d83e3162ad318
+PKG_glibc_SOURCE_MD5SUM=1496c3bf41adf9db0ebd0af01f202eed
 PKG_glibc_SOURCE_URL="http://ftpmirror.gnu.org/glibc/$PKG_glibc_SOURCE"
 
-PKG_binutils_VERSION=2.27
+PKG_binutils_VERSION=2.28
 PKG_binutils_SOURCE="binutils-$PKG_binutils_VERSION.tar.bz2"
-PKG_binutils_SOURCE_MD5SUM=2869c9bf3e60ee97c74ac2a6bf4e9d68
+PKG_binutils_SOURCE_MD5SUM=9e8340c96626b469a603c15c9d843727
 PKG_binutils_SOURCE_URL="http://ftpmirror.gnu.org/binutils/$PKG_binutils_SOURCE"
 
-PKG_linux_VERSION=4.4.42
+PKG_linux_VERSION=4.9.26
 PKG_linux_SOURCE="linux-${PKG_linux_VERSION}.tar.xz"
-PKG_linux_SOURCE_MD5SUM=fdf645578183b9904703c7327f89720f
+PKG_linux_SOURCE_MD5SUM=fbf42a254cc36d4afd5b663ebc563948
 PKG_linux_SOURCE_URL="https://cdn.kernel.org/pub/linux/kernel/v${PKG_linux_VERSION%%.*}.x/$PKG_linux_SOURCE"
 
 #
