@@ -13,6 +13,20 @@ PKG_PLATFORM=linux
 . "$PWD/env.sh"
 toolchain_init_vars_build_cross "$PKG_NAME"
 
+RISCV_KERNEL_VERSION="9079be6167aec516a4625b7dcf20efbf384277b4"
+RISCV_KERNEL_URL="https://github.com/riscv/riscv-linux/archive/$RISCV_KERNEL_VERSION.tar.gz"
+RISCV_KERNEL_SOURCE="riscv-linux-$RISCV_KERNEL_VERSION.tar.gz"
+
+download_extra() {
+	local csum
+
+	download_http "$RISCV_KERNEL_SOURCE" "$RISCV_KERNEL_URL" "$csum"
+}
+
+prepare_extra() {
+	untar "$BASE_DL_DIR/$RISCV_KERNEL_SOURCE" "$PKG_SOURCE_DIR" "s:^[^/]\\+::"
+}
+
 configure() {
 	true
 }
@@ -36,6 +50,9 @@ staging() {
 			;;
 		i686|x86_64)
 			arch=x86
+			;;
+		riscv32|riscv64)
+			arch=riscv
 			;;
 		*)
 			__errmsg "unknown TRI_ARCH: $TRI_ARCH"

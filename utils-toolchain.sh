@@ -90,6 +90,9 @@ PKG_linux_SOURCE_URL="https://cdn.kernel.org/pub/linux/kernel/v${PKG_linux_VERSI
 #	aarch64-*-linux-gnu
 #	aarch64_be-*-linux-gnu
 #
+#	riscv32-*-linux-gnu
+#	riscv64-*-linux-gnu
+#
 # arm kernel header with aarch64 toolchain does not work because assembler will
 # complain "immediate cannot be moved by a single instruction" in "mov x8,
 # ((__NR_SYSCALL_BASE+37))" when compiling glibc where __NR_SYSCALL_BASE will
