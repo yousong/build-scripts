@@ -15,13 +15,13 @@
 #    - Hardware/software requirements
 #    - Installation howto
 
-LLVM_VERSION=3.9.1
+LLVM_VERSION=4.0.0
 
 PKG_NAME=llvm
 PKG_VERSION=$LLVM_VERSION
 PKG_SOURCE="$PKG_NAME-${PKG_VERSION}.src.tar.xz"
 PKG_SOURCE_URL="http://llvm.org/releases/$PKG_VERSION/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=3259018a7437e157f3642df80f1983ea
+PKG_SOURCE_MD5SUM=ea9139a604be702454f6acf160b4f3a2
 PKG_DEPENDS='cmake zlib'
 PKG_CMAKE=1
 
@@ -29,7 +29,7 @@ PKG_clang_NAME=clang
 PKG_clang_VERSION=$LLVM_VERSION
 PKG_clang_SOURCE="cfe-$PKG_clang_VERSION.src.tar.xz"
 PKG_clang_SOURCE_URL="http://llvm.org/releases/$PKG_clang_VERSION/$PKG_clang_SOURCE"
-PKG_clang_SOURCE_MD5SUM=45713ec5c417ed9cad614cd283d786a1
+PKG_clang_SOURCE_MD5SUM=756e17349fdc708c62974b883bf72d37
 
 # "compiler-rt" runtime libraries, http://compiler-rt.llvm.org/index.html
 #
@@ -41,19 +41,19 @@ PKG_compiler_rt_NAME=compiler-rt
 PKG_compiler_rt_VERSION=$LLVM_VERSION
 PKG_compiler_rt_SOURCE="compiler-rt-$PKG_compiler_rt_VERSION.src.tar.xz"
 PKG_compiler_rt_SOURCE_URL="http://llvm.org/releases/$PKG_compiler_rt_VERSION/$PKG_compiler_rt_SOURCE"
-PKG_compiler_rt_SOURCE_MD5SUM=aadc76e7e180fafb10fb729444e287a3
+PKG_compiler_rt_SOURCE_MD5SUM=2ec11fb7df827b086341131c5d7f1814
 
 PKG_libcxx_NAME=libcxx
 PKG_libcxx_VERSION=$LLVM_VERSION
 PKG_libcxx_SOURCE="libcxx-$PKG_libcxx_VERSION.src.tar.xz"
 PKG_libcxx_SOURCE_URL="http://llvm.org/releases/$PKG_libcxx_VERSION/$PKG_libcxx_SOURCE"
-PKG_libcxx_SOURCE_MD5SUM=75a3214224301fc543fa6a38bdf7efe0
+PKG_libcxx_SOURCE_MD5SUM=4cf7df466e6f803ec4611ee410ff6781
 
 PKG_libcxxabi_NAME=libcxxabi
 PKG_libcxxabi_VERSION=$LLVM_VERSION
 PKG_libcxxabi_SOURCE="libcxxabi-$PKG_libcxxabi_VERSION.src.tar.xz"
 PKG_libcxxabi_SOURCE_URL="http://llvm.org/releases/$PKG_libcxxabi_VERSION/$PKG_libcxxabi_SOURCE"
-PKG_libcxxabi_SOURCE_MD5SUM=62fd584b38cc502172c2ffab041b5fcc
+PKG_libcxxabi_SOURCE_MD5SUM=8b5d7b9bfcf7dec2dc901c8a6746f97c
 
 # test-suite too big: about 113MB as of version 3.9.1
 PKG_test_suite_NAME=test-suite
