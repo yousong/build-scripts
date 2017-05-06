@@ -123,9 +123,16 @@ provided here.
 Most of the time `sudo` will use a predefined `PATH` for its child processes,
 so binaries not in that directory list cannot be found.
 
-We can workaround this by using absolute path
+There are a few methods to work around this
+
+1. Use absolute path
 
 	sudo `which flowtop` -h
+
+2. Edit `sudoers` setting with `visudo`
+
+        # keep PATH for user yousong
+        Defaults: yousong env_keep += "PATH"
 
 ### Versioned symbols
 
