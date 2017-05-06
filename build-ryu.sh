@@ -10,6 +10,10 @@
 #
 #	pip install -r tools/pip-requires
 #	pip install -r tools/optional-requires
+#
+# Examples
+#
+#	ryu-manager --verbose ryu.app.simple_switch_13
 # 
 PKG_NAME=ryu
 PKG_VERSION=4.13
