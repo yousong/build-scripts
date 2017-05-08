@@ -69,6 +69,7 @@
 # - Compile with -ffunction-sections and -fdata-sections, then compare the difference
 # - Find in the patched code where references to other parts functions and data
 # - Resolve them and write the result to memory
+# - libbfd, libelf can be useful on this task
 #
 # Threading must be taken into consideration when patching code
 #
