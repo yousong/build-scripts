@@ -143,6 +143,42 @@ env_init_pkg() {
 	CONFIGURE_CMD="${CONFIGURE_CMD:-$PKG_SOURCE_DIR/configure}"
 	CONFIGURE_ARGS="--prefix='$INSTALL_PREFIX'		\\
 "
+	env_init_pkg_afl_
+}
+
+env_init_pkg_afl_() {
+	local afl_cc afl_cxx
+
+	if [ -z "$ENABLE_AFL_FUZZ" -o "$ENABLE_AFL_FUZZ" = 0 ]; then
+		return 0
+	fi
+
+	afl_cc="$(which afl-gcc)"
+	if [ -z "$afl_cc" ]; then
+		__errmsg "cannot find afl-gcc"
+		return 1
+	fi
+
+	afl_cxx="$(which afl-g++)"
+	if [ -z "$afl_cc" ]; then
+		__errmsg "cannot find afl-g++"
+		return 1
+	fi
+
+	CONFIGURE_VARS="$CONFIGURE_VARS		\\
+		CC="$afl_cc"					\\
+		CXX="$afl_cxx"					\\
+	"
+	# AFL_HARDEN will enable gcc option -fstack-protector-all
+	#
+	# Check getenv() call in afl source code for more knobs in the environment
+	MAKE_ENVS="$MAKE_ENVS				\\
+		AFL_HARDEN=1					\\
+	"
+	MAKE_ARGS="$MAKE_ARGS				\\
+		CC="$afl_cc"					\\
+		CXX="$afl_cxx"					\\
+	"
 }
 
 env_csum_check() {
