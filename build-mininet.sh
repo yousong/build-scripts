@@ -68,6 +68,10 @@ index a5ead63..f8ee3ab 100644
 EOF
 }
 
+configure() {
+	true
+}
+
 MAKE_VARS="$MAKE_VARS			\\
 	PREFIX='$INSTALL_PREFIX'	\\
 "
