@@ -20,6 +20,7 @@
 #
 # Examples
 #
+#	# this requires a remote controller like ryu
 #	sudo mn --topo linear,k=3,n=4 --mac --controller remote --switch ovsk,protocols=OpenFlow13
 #	sudo mn --topo tree,depth=2,fanout=2 --mac --controller remote --switch ovsk,protocols=OpenFlow13
 #
