@@ -127,12 +127,13 @@ There are a few methods to work around this
 
 1. Use absolute path
 
-	sudo `which flowtop` -h
+		sudo `which flowtop` -h
 
-2. Edit `sudoers` setting with `visudo`
+2. Edit `sudoers` setting with `visudo`.  See sudoers manual for syntax details
 
-        # keep PATH for user yousong
-        Defaults: yousong env_keep += "PATH"
+		# keep PATH for user yousong
+		Defaults:  yousong env_keep += "PATH"
+		Defaults: !yousong secure_path = /sbin:/bin:/usr/sbin:/usr/bin
 
 ### Versioned symbols
 
