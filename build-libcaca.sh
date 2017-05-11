@@ -10,6 +10,9 @@
 #	CACA_DRIVER=raw cacaclock -f /usr/share/figlet/lean.flf | cacaserver
 #	CACA_DRIVER=raw cacafire | cacaserver
 #
+#	# view captcha pic on terminal
+#	cacaview /tmp/tmpocrws_v5.png
+#
 # Links
 #
 # - homepage, http://caca.zoy.org/wiki/libcaca
