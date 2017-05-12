@@ -50,12 +50,15 @@ do_patch() {
  
  bzip2: libbz2.a bzip2.o
  	$(CC) $(CFLAGS) $(LDFLAGS) -o bzip2 bzip2.o -L. -lbz2
-@@ -52,6 +54,19 @@ libbz2.a: $(OBJS)
+@@ -52,6 +54,22 @@ libbz2.a: $(OBJS)
  		$(RANLIB) libbz2.a ; \
  	fi
  
++ld_name_gnuld:=-Wl,-soname       -Wl,libbz2.so.1.0
++ld_name_bsdld:=-Wl,-install_name -Wl,@rpath/libbz2.so.1.0
++ld_name:=$(if $(shell ld -v 2>&1 | grep -i 'GNU ld'),$(ld_name_gnuld),$(ld_name_bsdld))
 +bzip2-shared: $(OBJS_PIC)
-+	$(CC) -shared -Wl,$(if $(shell ld -v 2>&1 | grep -i 'GNU ld'),-soname,-install_name) -Wl,libbz2.so.1.0 -o libbz2.so.1.0.6 $(OBJS_PIC) $(LDFLAGS)
++	$(CC) -shared $(ld_name) -o libbz2.so.1.0.6 $(OBJS_PIC) $(LDFLAGS)
 +	$(CC) $(CFLAGS) -o bzip2-shared bzip2.c libbz2.so.1.0.6 $(LDFLAGS)
 +
 +libbz2_so_install: bzip2-shared
