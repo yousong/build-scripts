@@ -11,7 +11,7 @@ PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="https://github.com/shadowsocks/$PKG_NAME/releases/download/v$PKG_VERSION/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=2db5ac11e70e166575a07faa1d0478e4
 PKG_AUTOCONF_FIXUP=1
-PKG_DEPENDS='libcork libev libsodium mbedtls udns zlib'
+PKG_DEPENDS='libcork libev libsodium mbedtls pcre udns'
 
 . "$PWD/env.sh"
 
