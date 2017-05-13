@@ -428,20 +428,35 @@ clean() {
 	fi
 }
 
-uninstall() {
+uninstall_one_from_another() {
+	local one="$1"
+	local another="$2"
 	local sf tf
-	local dir="$PKG_STAGING_DIR/$INSTALL_PREFIX"
+	local r=0
 
-	for sf in $(find "$dir" -mindepth 1 -depth); do
-		tf="${sf#$dir/}"
-		tf="$INSTALL_PREFIX/$tf"
+	# $one should not end with slash
+	for sf in $(find "$one" -mindepth 1 -depth); do
+		tf="${sf#$one/}"
+		tf="$another/$tf"
 		# remove regular file and symbolic link
 		if [ -f "$tf" -o -L "$tf" ]; then
 			rm -vf $tf
 		elif [ -d "$tf" ]; then
 			rmdir -v --parents --ignore-fail-on-non-empty "$tf"
+		elif [ -e "$tf" ]; then
+			__errmsg "what is this: $tf"
+			r=1
 		fi
 	done
+
+	return "$r"
+}
+
+uninstall() {
+	local one="$PKG_STAGING_DIR/$INSTALL_PREFIX"
+	local another="$INSTALL_PREFIX"
+
+	uninstall_one_from_another "$one" "$another"
 }
 
 platform_check() {
