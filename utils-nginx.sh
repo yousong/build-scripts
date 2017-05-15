@@ -20,15 +20,15 @@ CONFIGURE_ARGS="					\\
 nginx_get_mod_info() {
 	local what="$1"
 	local desc="$2"
-	local ref="${desc%%:*}"
-	local repo="${desc#*:}"
-	local subdir
+	local oIFS
+	local ref repo subdir
 	local fn source source_url
 
-	if [ "${repo%:*}" != "$repo" ]; then
-		subdir="${repo#*:}"
-		repo="${repo%:*}"
-	fi
+	oIFS="$IFS"; IFS=:; set -- $desc; IFS="$oIFS"
+	ref="$1"
+	repo="$2"
+	subdir="$3"
+
 	fn="${repo#*/}-$ref"
 	source="$fn.tar.gz"
 	source_url="https://github.com/$repo/archive/$ref.tar.gz"
