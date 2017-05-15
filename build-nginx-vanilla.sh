@@ -62,6 +62,7 @@ nginx_init_lua_conf
 # Module list
 #
 #	v1.1.8:arut/nginx-rtmp-module
+#	master:nbs-system/naxsi:naxsi_src
 #
 # Try the following command to re-download master tarballs
 #
