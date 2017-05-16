@@ -14,15 +14,29 @@
 #	topo.py			How topologies are represented
 #	topolib.py		Additional topos like tree, 2-d torus
 #
+# Network hosts are emulated by spawning bash processes in separate network namespaces
+#
+#	bash --norc -is mininet:hN
+#
 # The namespace thing etc. are handled by mnexec.c.  Note that mininet uses
 # nameless namespaces and as such 'ip netns list-id' command will be needed to
 # identify them
 #
 # Examples
 #
+#	# 1 switch with 3 hosts
+#	sudo mn --topo single,k=3 --mac --controller none --switch ovsk,failMode=standalone,protocols=OpenFlow10
+#
 #	# this requires a remote controller like ryu
 #	sudo mn --topo linear,k=3,n=4 --mac --controller remote --switch ovsk,protocols=OpenFlow13
 #	sudo mn --topo tree,depth=2,fanout=2 --mac --controller remote --switch ovsk,protocols=OpenFlow13
+#
+# To use mnexec
+#
+#	- use 'dump' command from mininet console to find out pid of bash process of each host
+#	- attach to pid's network and mount namespaces
+#
+#		sudo mnexec -a 22617 bash
 #
 PKG_NAME=mininet
 PKG_VERSION=2.2.1
