@@ -38,6 +38,7 @@ configure() {
 # - to drop unneeded capability requires libcap
 #
 MAKE_VARS="$MAKE_VARS				\\
+	PREFIX=$INSTALL_PREFIX			\\
 	CONFIG_ALFRED_CAPABILITIES=n	\\
 	CONFIG_ALFRED_GPSD=n			\\
 	CONFIG_ALFRED_VIS=y				\\
