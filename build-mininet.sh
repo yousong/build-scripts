@@ -31,12 +31,28 @@
 #	sudo mn --topo linear,k=3,n=4 --mac --controller remote --switch ovsk,protocols=OpenFlow13
 #	sudo mn --topo tree,depth=2,fanout=2 --mac --controller remote --switch ovsk,protocols=OpenFlow13
 #
+#	# custom topo
+#	sudo mn --custom topo.py --topo 2hostNintf,n=3 --mac --controller none --switch ovsk,failMode=standalone,protocols=OpenFlow10
+#
 # To use mnexec
 #
 #	- use 'dump' command from mininet console to find out pid of bash process of each host
 #	- attach to pid's network and mount namespaces
 #
 #		sudo mnexec -a 22617 bash
+#
+# mn should be enough for most tasks with options
+#
+#	--custom file1.py,file2.py
+#	--pre cli.batch.file
+#
+# and py (eval) and px (exec) commands.  --custom will use execfile instead.
+#
+# - Mininet system-level tests, benchmarks, and performance monitoring,
+#   https://github.com/mininet/mininet-tests.git
+#
+#   Old repo and may need modification to work with current version of mininet.
+#   Can be useful for inspirations
 #
 PKG_NAME=mininet
 PKG_VERSION=2.2.1
