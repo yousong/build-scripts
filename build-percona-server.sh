@@ -36,14 +36,14 @@ EOF
 }
 
 percona_share="$INSTALL_PREFIX/share/$PKG_NAME"
-CMAKE_ARGS="$CMAKE_ARGS			\
-	-DCMAKE_INSTALL_LAYOUT=RPM	\
-	-DINSTALL_INFODIR=$INSTALL_PREFIX/share/info			\
-	-DINSTALL_DOCDIR=$percona_share							\
-	-DINSTALL_DOCREADMEDIR=$percona_share					\
-	-DINSTALL_MYSQLSHAREDIR=$percona_share					\
-	-DINSTALL_MYSQLTESTDIR=$percona_share/mysql-test		\
-	-DINSTALL_SUPPORTFILESDIR=$percona_share/support-files	\
+CMAKE_ARGS="$CMAKE_ARGS			\\
+	-DCMAKE_INSTALL_LAYOUT=RPM	\\
+	-DINSTALL_INFODIR=$INSTALL_PREFIX/share/info			\\
+	-DINSTALL_DOCDIR=$percona_share							\\
+	-DINSTALL_DOCREADMEDIR=$percona_share					\\
+	-DINSTALL_MYSQLSHAREDIR=$percona_share					\\
+	-DINSTALL_MYSQLTESTDIR=$percona_share/mysql-test		\\
+	-DINSTALL_SUPPORTFILESDIR=$percona_share/support-files	\\
 "
 
 boost1_59_lib="$INSTALL_PREFIX/lib/boost-1.59"
@@ -53,7 +53,7 @@ if [ -d "$boost1_59_lib" -a -d $boost1_59_inc ]; then
 		-L'$boost1_59_lib'			\
 		-Wl,-rpath,'$boost1_59_lib'	\
 	"
-	CMAKE_ARGS="$CMAKE_ARGS						\
-		-DBOOST_INCLUDE_DIR='$boost1_59_inc'	\
+	CMAKE_ARGS="$CMAKE_ARGS						\\
+		-DBOOST_INCLUDE_DIR='$boost1_59_inc'	\\
 	"
 fi
