@@ -1,6 +1,6 @@
 #!/bin/sh -e
 #
-# Copyright 2016 (c) Yousong Zhou
+# Copyright 2017 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -26,6 +26,8 @@ boost_b2() {
 	#
 	# See Boost.Build doc for details, http://www.boost.org/build/doc/html/bbv2/overview/invocation.html
 	#
+	# NJOBS can be undefined if running_in_make
+	#
 	$PKG_SOURCE_DIR/b2 \
 		--prefix="$prefix" \
 		--libdir="$libdir" \
@@ -33,7 +35,7 @@ boost_b2() {
 		--stagedir="$PKG_BUILD_DIR/stage" \
 		--build-dir="$PKG_BUILD_DIR/build" \
 		--layout=system \
-		-j "$NJOBS" \
+		${NJOBS:+-j "$NJOBS"} \
 		-q \
 		variant=release \
 		cflags="$EXTRA_CFLAGS" \
