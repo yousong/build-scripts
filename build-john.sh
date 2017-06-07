@@ -18,6 +18,16 @@ configure() {
 	true
 }
 
+# Makefile of john does not provide install target at the moment.  See variable
+# PROG in src/Makefile for details
+staging() {
+	true
+}
+
+install() {
+	true
+}
+
 if os_is_linux; then
 	JOHN_SYSTEM=linux-x86-64-avx
 elif os_is_darwin; then
