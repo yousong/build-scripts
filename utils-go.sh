@@ -260,6 +260,69 @@ index ed5613e..c2c6650 100644
 2.6.4
 
 EOF
+
+	patch -p1 <<"EOF"
+From efe42509a20fca96d865dc525ecf55658b566662 Mon Sep 17 00:00:00 2001
+From: Yousong Zhou <yszhou4tech@gmail.com>
+Date: Wed, 7 Jun 2017 21:19:03 +0800
+Subject: [PATCH] net: TestDialTimeout: skip if
+ tcp_{syncookies,abort_on_overflow} enabled
+
+---
+ src/net/dial_test.go | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+
+diff --git a/src/net/dial_test.go b/src/net/dial_test.go
+index 42898d669f..3e15ba50fd 100644
+--- a/src/net/dial_test.go
++++ b/src/net/dial_test.go
+@@ -15,6 +15,7 @@ import (
+ 	"regexp"
+ 	"runtime"
+ 	"strconv"
++	"strings"
+ 	"sync"
+ 	"testing"
+ 	"time"
+@@ -31,7 +32,34 @@ func newLocalListener(t *testing.T) Listener {
+ 	return ln
+ }
+ 
++func sysctl(varname string) (int64, error) {
++	out, err := exec.Command("sysctl", "-n", varname).Output()
++	if err != nil {
++		return 0, err
++	}
++	valstr := string(out)
++	valstr = strings.TrimSpace(valstr)
++	val, err := strconv.ParseInt(valstr, 10, 8)
++	return val, err
++}
++
+ func TestDialTimeout(t *testing.T) {
++	if runtime.GOOS == "linux" {
++		enabled_syncookies, err := sysctl("net.ipv4.tcp_syncookies")
++		if err != nil {
++			t.Skipf("sysctl net.ipv4.tcp_syncookies failed: %v", err)
++		}
++		if enabled_syncookies != 0 {
++			t.Skipf("net.ipv4.tcp_syncookies = %v", enabled_syncookies)
++		}
++		enabled_abort_on_overflow, err := sysctl("net.ipv4.tcp_abort_on_overflow")
++		if err != nil {
++			t.Skipf("sysctl net.ipv4.tcp_abort_on_overflow failed: %v", err)
++		}
++		if enabled_abort_on_overflow != 0 {
++			t.Skipf("net.ipv4.tcp_abort_on_overflow = %v", enabled_abort_on_overflow)
++		}
++	}
+ 	origBacklog := listenerBacklog
+ 	defer func() {
+ 		listenerBacklog = origBacklog
+-- 
+2.12.2
+
+EOF
 }
 
 do_patch() {
