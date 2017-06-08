@@ -46,6 +46,22 @@ CMAKE_ARGS="$CMAKE_ARGS			\\
 	-DINSTALL_SUPPORTFILESDIR=$percona_share/support-files	\\
 "
 
+# The following command
+#
+#	COMMAND ${ETAGS} -o TAGS ${all_srcs} ${all_hdrs}
+#
+# will cause
+#
+#	make[4]: execvp: /bin/sh: Argument list too long
+#
+CMAKE_ARGS="$CMAKE_ARGS		\\
+	-DUSE_CTAGS=OFF			\\
+	-DUSE_ETAGS=OFF			\\
+	-DUSE_GTAGS=OFF			\\
+	-DUSE_CSCOPE=OFF		\\
+	-DUSE_MKID=OFF			\\
+"
+
 boost1_59_lib="$INSTALL_PREFIX/lib/boost-1.59"
 boost1_59_inc="$INSTALL_PREFIX/include/boost-1.59"
 if [ -d "$boost1_59_lib" -a -d $boost1_59_inc ]; then
