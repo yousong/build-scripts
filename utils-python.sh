@@ -7,6 +7,9 @@
 utils_python_init() {
 	local ver
 
+	# The setuptools bundled with Python2.7 has bugs, e.g.
+	# setuptools.compat.configparser is missing...
+	PKG_DEPENDS="$PKG_DEPENDS python-setuptools"
 	for ver in $PKG_PYTHON_VERSIONS; do
 		PKG_DEPENDS="$PKG_DEPENDS python$ver"
 	done
