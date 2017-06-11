@@ -5,6 +5,12 @@
 # See /LICENSE for more information.
 #
 GOROOT_FINAL="$INSTALL_PREFIX/go/goroot-$PKG_VERSION"
+# most files in go are not compiled by GNU tools...  It may happen that
+#
+#	strip: Unable to recognise the format of the input file
+#
+# even though `file` utility recognizes them
+STRIP=()
 # tarballs of golang are prefixed with go/ without version information
 PKG_SOURCE_UNTAR_FIXUP=1
 

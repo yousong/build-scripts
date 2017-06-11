@@ -36,6 +36,9 @@ PKG_DEPENDS='e2fsprogs zlib'
 . "$PWD/env.sh"
 
 staging_post() {
+	local based="$PKG_STAGING_DIR$INSTALL_PREFIX"
+
 	# touch an empty netdata.conf
-	touch "$PKG_STAGING_DIR$INSTALL_PREFIX/etc/netdata/netdata.conf"
+	touch "$based/etc/netdata/netdata.conf"
+	staging_post_strip "$based"
 }

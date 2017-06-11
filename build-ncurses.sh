@@ -79,7 +79,7 @@ CONFIGURE_ARGS+=(
 
 staging_post() {
 	local major="${PKG_VERSION%%.*}"
-	local f based="$PKG_STAGING_DIR/$INSTALL_PREFIX"
+	local f based="$PKG_STAGING_DIR$INSTALL_PREFIX"
 	local suf sufm
 
 	if os_is_linux; then
@@ -107,4 +107,5 @@ staging_post() {
 	done
 	ln -s "libncurses.$sufm" $based/lib/libtermcap.$suf
 	ln -s "ncursesw${major}-config" "$based/bin/ncurses${major}-config"
+	staging_post_strip "$based"
 }

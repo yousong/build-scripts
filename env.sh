@@ -59,6 +59,7 @@ env_init() {
 	mkdir -p "$BASE_DESTDIR"
 	mkdir -p "$INSTALL_PREFIX"
 
+	STRIP=( strip --strip-all )
 	PKG_CONFIG_PATH="$INSTALL_PREFIX/lib/pkgconfig:$INSTALL_PREFIX/share/pkgconfig"
 	EXTRA_CPPFLAGS+=( -isystem "$INSTALL_PREFIX/include" )
 	EXTRA_CFLAGS+=( -isystem "$INSTALL_PREFIX/include" )
@@ -419,8 +420,26 @@ staging() {
 	build_staging 'install'
 }
 
+staging_post_strip() {
+	local d="$1"
+	local f t
+
+	# strip is binary format dependent: elf, mach-o, x86_64, x86, powerpc, etc.
+	if [ "${#STRIP[@]}" -eq 0 ]; then
+		return 0
+	fi
+	find "$d" -type f -exec file {} \; | \
+		sed -n -e 's/^\(.*\):.*ELF.*\(executable\|relocatable\|shared object\).*,.* stripped/\1 \2/p' | \
+			while read f t; do
+				if [ -w "$f" ]; then
+					"${STRIP[@]}" "$f"
+				fi
+			done
+}
+
 staging_post() {
 	staging_check_default
+	staging_post_strip "$PKG_STAGING_DIR$INSTALL_PREFIX"
 }
 
 install_pre() {

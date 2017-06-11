@@ -53,11 +53,11 @@ staging() {
 }
 
 staging_post() {
-	local prefix="$PKG_STAGING_DIR$INSTALL_PREFIX"
+	local based="$PKG_STAGING_DIR$INSTALL_PREFIX"
 	local ver="${PKG_VERSION%.*}"
 
-	mkdir -p "$prefix/lib/pkgconfig"
-	cat >"$prefix/lib/pkgconfig/$PKG_NAME.pc" <<EOF
+	mkdir -p "$based/lib/pkgconfig"
+	cat >"$based/lib/pkgconfig/$PKG_NAME.pc" <<EOF
 Name: Lua
 Description: An Extensible Extension Language
 Version: $PKG_VERSION
@@ -67,16 +67,17 @@ Cflags: -I${INSTALL_PREFIX}/include/$PKG_NAME
 EOF
 
 	# Provide versioned suffix for binaries and manuals
-	mv "$prefix/bin/lua" "$prefix/bin/lua$ver"
-	mv "$prefix/bin/luac" "$prefix/bin/luac$ver"
-	mv "$prefix/share/man/man1/lua.1" "$prefix/share/man/man1/lua$ver.1"
-	mv "$prefix/share/man/man1/luac.1" "$prefix/share/man/man1/luac$ver.1"
+	mv "$based/bin/lua" "$based/bin/lua$ver"
+	mv "$based/bin/luac" "$based/bin/luac$ver"
+	mv "$based/share/man/man1/lua.1" "$based/share/man/man1/lua$ver.1"
+	mv "$based/share/man/man1/luac.1" "$based/share/man/man1/luac$ver.1"
 	# Create symbolic links for the default version
 	if [ "$ver" = "$LUA_DEFAULT_VERSION" ]; then
-		ln -s "lua$ver" "$prefix/bin/lua"
-		ln -s "luac$ver" "$prefix/bin/luac"
-		ln -s "$PKG_NAME.pc" "$prefix/lib/pkgconfig/lua.pc"
-		ln -s "lua$ver.1" "$prefix/share/man/man1/lua.1"
-		ln -s "luac$ver.1" "$prefix/share/man/man1/luac.1"
+		ln -s "lua$ver" "$based/bin/lua"
+		ln -s "luac$ver" "$based/bin/luac"
+		ln -s "$PKG_NAME.pc" "$based/lib/pkgconfig/lua.pc"
+		ln -s "lua$ver.1" "$based/share/man/man1/lua.1"
+		ln -s "luac$ver.1" "$based/share/man/man1/luac.1"
 	fi
+	staging_post_strip "$based"
 }

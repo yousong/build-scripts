@@ -41,6 +41,9 @@ PKG_DEPENDS='bzip2 curl gnutls libjpeg-turbo libpng lzo ncurses nettle zlib'
 
 . "$PWD/env.sh"
 
+# build system of qemu knows how to strip those compiled components
+STRIP=()
+
 # libcap-ng is an optional dependency for qemu-bridge-helper to drop privileges
 # but preserving CAP_NET_ADMIN
 #
