@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # GNU ar provided by binutils is different from BSD ar (/usr/bin/ar) present in
 # Mac OS X.  From the output of `/usr/bin/ar -vt lib/libncursesw.a' where
@@ -29,21 +29,21 @@ toolchain_init_vars_build_cross "$PKG_NAME"
 #
 # [1] Make --enable-initfini-array the default,
 #     https://sourceware.org/ml/binutils-cvs/2015-12/msg00016.html
-CONFIGURE_ARGS="$CONFIGURE_ARGS			\\
-	--with-sysroot='$TOOLCHAIN_DIR'		\\
-	--build='$TRI_BUILD'				\\
-	--host='$TRI_HOST'					\\
-	--target='$TRI_TARGET'				\\
-	--enable-plugins					\\
-	--enable-gold=yes					\\
-	--enable-ld=default					\\
-	--disable-multilib					\\
-	--disable-werror					\\
-	--disable-nls						\\
-	--disable-sim						\\
-	--disable-gdb						\\
-	--disable-initfini-array			\\
-"
+CONFIGURE_ARGS+=(
+	--with-sysroot="$TOOLCHAIN_DIR"
+	--build="$TRI_BUILD"
+	--host="$TRI_HOST"
+	--target="$TRI_TARGET"
+	--enable-plugins
+	--enable-gold=yes
+	--enable-ld=default
+	--disable-multilib
+	--disable-werror
+	--disable-nls
+	--disable-sim
+	--disable-gdb
+	--disable-initfini-array
+)
 
 staging_post() {
 	local base="$PKG_STAGING_DIR$TOOLCHAIN_DIR"

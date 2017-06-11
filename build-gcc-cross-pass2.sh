@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2015-2016 (c) Yousong Zhou
 #
@@ -31,20 +31,20 @@ toolchain_init_vars_build_cross "$PKG_NAME"
 #
 # LTO is not a language but will be enabled by default because
 # --enabled-default is the default.  We enable it explicitly just in case
-CONFIGURE_ARGS="$CONFIGURE_ARGS				\\
-	--build='$TRI_BUILD'					\\
-	--host='$TRI_HOST'						\\
-	--target='$TRI_TARGET'					\\
-	--with-headers='$TOOLCHAIN_DIR/include'	\\
-	--enable-languages=c,c++,go				\\
-	--disable-multilib						\\
-	--disable-nls							\\
-	--enable-shared							\\
-	--enable-threads						\\
-	--enable-lto							\\
-	--disable-libgomp						\\
-	--disable-libmudflap					\\
-"
+CONFIGURE_ARGS+=(
+	--build="$TRI_BUILD"
+	--host="$TRI_HOST"
+	--target="$TRI_TARGET"
+	--with-headers="$TOOLCHAIN_DIR/include"
+	--enable-languages=c,c++,go
+	--disable-multilib
+	--disable-nls
+	--enable-shared
+	--enable-threads
+	--enable-lto
+	--disable-libgomp
+	--disable-libmudflap
+)
 
 compile() {
 	build_compile_make 'all'

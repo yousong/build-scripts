@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2015-2016 (c) Yousong Zhou
 #
@@ -13,30 +13,30 @@ PKG_DEPENDS="gcc-pass0 binutils-cross"
 . "$PWD/env.sh"
 toolchain_init_vars_build_cross "$PKG_NAME"
 
-CONFIGURE_ARGS="$CONFIGURE_ARGS				\\
-	--build='$TRI_BUILD'					\\
-	--host='$TRI_HOST'						\\
-	--target='$TRI_TARGET'					\\
-	--with-newlib							\\
-	--without-headers						\\
-	--without-isl							\\
-	--without-cloog							\\
-	--enable-languages=c					\\
-	--disable-multilib						\\
-	--disable-nls							\\
-	--disable-shared						\\
-	--disable-decimal-float					\\
-	--disable-threads						\\
-	--disable-libatomic						\\
-	--disable-libgomp						\\
-	--disable-libmpx						\\
-	--disable-libmudflap					\\
-	--disable-libquadmath					\\
-	--disable-libsanitizer					\\
-	--disable-libssp						\\
-	--disable-libstdcxx						\\
-	--disable-libvtv						\\
-"
+CONFIGURE_ARGS+=(
+	--build="$TRI_BUILD"
+	--host="$TRI_HOST"
+	--target="$TRI_TARGET"
+	--with-newlib
+	--without-headers
+	--without-isl
+	--without-cloog
+	--enable-languages=c
+	--disable-multilib
+	--disable-nls
+	--disable-shared
+	--disable-decimal-float
+	--disable-threads
+	--disable-libatomic
+	--disable-libgomp
+	--disable-libmpx
+	--disable-libmudflap
+	--disable-libquadmath
+	--disable-libsanitizer
+	--disable-libssp
+	--disable-libstdcxx
+	--disable-libvtv
+)
 
 compile() {
 	# looks like all-target-libgcc depends on all-gcc to

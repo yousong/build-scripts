@@ -146,15 +146,16 @@ toolchain_init_vars_build_cross() {
 	CONFIGURE_PATH="$PKG_BUILD_DIR"
 	CONFIGURE_CMD="$PKG_SOURCE_DIR/configure"
 
-	EXTRA_CPPFLAGS=
-	EXTRA_CFLAGS=
-	EXTRA_LDFLAGS=
+	EXTRA_CPPFLAGS=()
+	EXTRA_CFLAGS=()
+	EXTRA_LDFLAGS=()
 	TOOLCHAIN_DIR_BASE="$INSTALL_PREFIX/toolchain"
 	TOOLCHAIN_DIR="$INSTALL_PREFIX/toolchain/$GNU_TOOLCHAIN_NAME"
 
 	export PATH="$TOOLCHAIN_DIR/bin:$PATH"
-	CONFIGURE_ARGS="--prefix='$TOOLCHAIN_DIR'		\\
-	"
+	CONFIGURE_ARGS=(
+		--prefix="$TOOLCHAIN_DIR"
+	)
 
 	case "$pkgname" in
 		gcc-cross-pass1|gcc-cross-pass2)
@@ -170,10 +171,10 @@ toolchain_init_vars_build_cross() {
 			# installing libgo.so to lib32/ directory where the symbolic link
 			# creation happened before mkdir lib32/
 			if [ "$TRI_ARCH" = "mips64" -o "$TRI_ARCH" = "mips64el" ]; then
-				CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
-					--with-arch=mips64				\\
-					--with-abi=64					\\
-				"
+				CONFIGURE_ARGS+=(
+					--with-arch=mips64
+					--with-abi=64
+				)
 			fi
 			;;
 	esac

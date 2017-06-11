@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -44,7 +44,10 @@ toolchain_init_vars_build_cross "$PKG_NAME"
 # required to let GCC do function inlining for linker startup code where
 # function call is not allowed.  See glibc FAQ for details on this
 #
-EXTRA_CFLAGS="$EXTRA_CFLAGS -O2"
+EXTRA_CFLAGS+=( -O2 )
+CONFIGURE_VARS+=(
+	CFLAGS="${EXTRA_CFLAGS[*]}"
+)
 #
 # XXX: gcc-cross-pass1 is built with --disable-libssp so it does not provide
 # stack_chk_guard at the moment, yet the compiler does not fail when supplied
@@ -54,26 +57,27 @@ EXTRA_CFLAGS="$EXTRA_CFLAGS -O2"
 # Patch from Thomas Petazzoni to buildroot has a good description on this topic
 # http://lists.busybox.net/pipermail/buildroot/2014-September/106070.html
 #
-CONFIGURE_VARS="$CONFIGURE_VARS			\\
-	libc_cv_forced_unwind=yes			\\
-	libc_cv_ctors_header=yes			\\
-	libc_cv_c_cleanup=yes				\\
-	libc_cv_ssp=no						\\
-	libc_cv_ssp_strong=no				\\
-	use_ldconfig=no						\\
-"
+CONFIGURE_VARS+=(
+	libc_cv_forced_unwind=yes
+	libc_cv_ctors_header=yes
+	libc_cv_c_cleanup=yes
+	libc_cv_ssp=no
+	libc_cv_ssp_strong=no
+	use_ldconfig=no
+)
 
 # Makerules will use prefix when making lib/libc.so, etc. which are ldscripts
 # with prefix prepended to referred library names.  When ld was invoked by gcc
 # with --sysroot option, it will fail because there is no
 # $TOOLCHAIN_DIR/$TOOLCHAIN_DIR/libc.so.6 etc.
-CONFIGURE_ARGS="--prefix=						\\
-	--build='$TRI_BUILD'						\\
-	--host='$TRI_TARGET'						\\
-	--with-headers='$TOOLCHAIN_DIR/include'		\\
-	--enable-kernel=2.6.32						\\
-	--disable-werror							\\
-"
+CONFIGURE_ARGS=(
+	--prefix=
+	--build="$TRI_BUILD"
+	--host="$TRI_TARGET"
+	--with-headers="$TOOLCHAIN_DIR/include"
+	--enable-kernel=2.6.32
+	--disable-werror
+)
 
 staging() {
 	local based="$PKG_STAGING_DIR$TOOLCHAIN_DIR"
