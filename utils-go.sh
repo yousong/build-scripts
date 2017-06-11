@@ -24,12 +24,17 @@ compile() {
 }
 
 staging() {
-	cpdir "$PKG_SOURCE_DIR" "$PKG_STAGING_DIR"
+	local d="$PKG_STAGING_DIR$GOROOT_FINAL"
+
+	mkdir -p "$d"
+	cpdir "$PKG_SOURCE_DIR" "$d"
 }
 
 install() {
+	local d="$PKG_STAGING_DIR$GOROOT_FINAL"
+
 	mkdir -p "$GOROOT_FINAL"
-	cpdir "$PKG_STAGING_DIR" "$GOROOT_FINAL"
+	cpdir "$d" "$GOROOT_FINAL"
 }
 
 do_patch_common() {
