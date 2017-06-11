@@ -400,8 +400,18 @@ staging() {
 			"${MAKE_VARS[@]}"
 }
 
+staging_check_default() {
+	local nsubdir
+
+	nsubdir="$(ls "$PKG_STAGING_DIR" | wc -l )"
+	if [ "$nsubdir" -ge 2 ]; then
+		__errmsg "$PKG_STAGING_DIR has $nsubdir subdirs"
+		return 1
+	fi
+}
+
 staging_post() {
-	true
+	staging_check_default
 }
 
 install_pre() {
