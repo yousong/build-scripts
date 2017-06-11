@@ -635,7 +635,8 @@ EOF
 	# TODO: track utils-.sh
 	cat <<EOF
 $PKG_SCRIPT_NAME: $TOPDIR/env.sh
-	touch $PKG_SCRIPT_NAME
+	@[ -x "$PKG_SCRIPT_NAME" ] && touch "$PKG_SCRIPT_NAME"
+
 $stampdir/stamp.$PKG_NAME.download: $PKG_SCRIPT_NAME
 $stampdir/stamp.$PKG_NAME.configure: $mdepends
 $PKG_NAME/clean:
