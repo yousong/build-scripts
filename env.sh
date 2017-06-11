@@ -186,6 +186,34 @@ env_init_pkg_afl_() {
 	)
 }
 
+env_init_gnu_toolchain() {
+	. $PWD/utils-toolchain.sh
+
+	local TOOLCHAIN_DIR_BASE="$INSTALL_PREFIX/toolchain"
+	local GNU_TOOLCHAIN_DIR="$TOOLCHAIN_DIR_BASE/$GNU_TOOLCHAIN_NAME"
+	local GNU_TOOLCHAIN_DIR_BIN="$GNU_TOOLCHAIN_DIR/bin"
+	local GNU_TOOLCHAIN_DIR_LIB="$GNU_TOOLCHAIN_DIR/lib"
+	local GNU_TOOLCHAIN_CC="$GNU_TOOLCHAIN_DIR_BIN/$TRI_TARGET-gcc"
+	local GNU_TOOLCHAIN_CXX="$GNU_TOOLCHAIN_DIR_BIN/$TRI_TARGET-g++"
+
+	if ! [ -x "$GNU_TOOLCHAIN_CC" -a -x "$GNU_TOOLCHAIN_CXX" ]; then
+		__errmsg "cannot find executable $GNU_TOOLCHAIN_CC, or $GNU_TOOLCHAIN_CXX"
+		return 1
+	fi
+	EXTRA_LDFLAGS+=( -Wl,--dynamic-linker="$GNU_TOOLCHAIN_DIR_LIB/ld-linux-x86-64.so.2" )
+	EXTRA_LDFLAGS+=( -Wl,-rpath "$GNU_TOOLCHAIN_DIR_LIB" )
+	EXTRA_LDFLAGS+=( -L "$GNU_TOOLCHAIN_DIR_LIB" )
+
+	MAKE_ARGS+=(
+		CC="$GNU_TOOLCHAIN_CC"
+		CXX="$GNU_TOOLCHAIN_CXX"
+	)
+	CMAKE_ARGS+=(
+		-DCMAKE_C_COMPILER="$GNU_TOOLCHAIN_CC"
+		-DCMAKE_CXX_COMPILER="$GNU_TOOLCHAIN_CXX"
+	)
+}
+
 env_csum_check() {
 	local file="$1"
 	local xcsum="$2"
