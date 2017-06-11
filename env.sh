@@ -372,6 +372,7 @@ build_configure_cmake() {
 	env "${CMAKE_ENVS[@]}"									\
 		cmake												\
 		-DCMAKE_BUILD_TYPE=Release							\
+		-DCMAKE_PREFIX_PATH="$INSTALL_PREFIX"				\
 		-DCMAKE_INSTALL_PREFIX="$INSTALL_PREFIX"			\
 		-DCMAKE_EXE_LINKER_FLAGS="${EXTRA_LDFLAGS[*]}"		\
 		-DCMAKE_SHARED_LINKER_FLAGS="${EXTRA_LDFLAGS[*]}"	\
