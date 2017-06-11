@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2015-2017 (c) Yousong Zhou
 #
@@ -268,24 +268,24 @@ EOF
 # +profile feature is only available through HUGE features set.  It cannot
 # enabled standalone through configure options.  See how FEAT_PROFILE was
 # defined in src/feature.h
-CONFIGURE_ARGS="$CONFIGURE_ARGS	\\
-	--enable-fail-if-missing	\\
-	--enable-luainterp			\\
-	--enable-perlinterp			\\
-	--enable-pythoninterp		\\
-	--enable-rubyinterp			\\
-	--enable-cscope				\\
-	--enable-multibyte			\\
-	--disable-gui				\\
-	--disable-gtktest			\\
-	--disable-xim				\\
-	--without-x					\\
-	--disable-netbeans			\\
-	--with-luajit				\\
-	--with-lua-prefix='$INSTALL_PREFIX'	\\
-	--with-tlib=ncurses			\\
-	--with-features=huge		\\
-"
+CONFIGURE_ARGS+=(
+	--enable-fail-if-missing
+	--enable-luainterp
+	--enable-perlinterp
+	--enable-pythoninterp
+	--enable-rubyinterp
+	--enable-cscope
+	--enable-multibyte
+	--disable-gui
+	--disable-gtktest
+	--disable-xim
+	--without-x
+	--disable-netbeans
+	--with-luajit
+	--with-lua-prefix="$INSTALL_PREFIX"
+	--with-tlib=ncurses
+	--with-features=huge
+)
 
 configure_pre() {
 	cd "$PKG_SOURCE_DIR/src"

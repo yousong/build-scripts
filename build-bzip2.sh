@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -170,6 +170,6 @@ configure() {
 	true
 }
 
-MAKE_VARS="										\\
-	PREFIX='$PKG_STAGING_DIR$INSTALL_PREFIX'	\\
-"
+MAKE_VARS=(
+	PREFIX="$PKG_STAGING_DIR$INSTALL_PREFIX"
+)

@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2015-2017 (c) Yousong Zhou
 #
@@ -35,24 +35,24 @@ PKG_DEPENDS='openssl pcre zlib'
 . "$PWD/env.sh"
 . "$PWD/utils-nginx.sh"
 
-CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
-	--with-http_realip_module		\\
-	--with-http_ssl_module			\\
-	--with-http_mp4_module			\\
-	--with-stream					\\
-	--with-stream_ssl_module		\\
-	--with-http_v2_module			\\
-"
+CONFIGURE_ARGS+=(
+	--with-http_realip_module
+	--with-http_ssl_module
+	--with-http_mp4_module
+	--with-stream
+	--with-stream_ssl_module
+	--with-http_v2_module
+)
 
 # nginx-lua depends on LuaJIT or Lua 5.1
 nginx_init_lua_conf() {
 	local lua_lib="$(pkg-config --libs-only-L luajit 2>/dev/null | sed 's/-L//')"
 	local lua_inc="$(pkg-config --cflags-only-I luajit 2>/dev/null | sed 's/-I//')"
 
-	CONFIGURE_VARS="$CONFIGURE_VARS		\\
-		LUAJIT_LIB='$lua_lib'			\\
-		LUAJIT_INC='$lua_inc'			\\
-	"
+	CONFIGURE_VARS+=(
+		LUAJIT_LIB="$lua_lib"
+		LUAJIT_INC="$lua_inc"
+	)
 	PKG_DEPENDS="$PKG_DEPENDS LuaJIT"
 }
 nginx_init_lua_conf
@@ -84,7 +84,8 @@ MODS='
 #
 # master njs requires master nginx
 #
-#MODS="$MODS master:nginx/njs:nginx
-#"
+#MODS += (
+#	master:nginx/njs:nginx
+#)
 
 nginx_add_modules

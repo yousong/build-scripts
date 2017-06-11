@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2015-2016 (c) Yousong Zhou
 #
@@ -44,10 +44,10 @@ PKG_PLATFORM=linux
 
 . "$PWD/env.sh"
 
-CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
-	--enable-shared					\\
-	--enable-ndebug					\\
-"
+CONFIGURE_ARGS+=(
+	--enable-shared
+	--enable-ndebug
+)
 
 # build only userspace tools by default
 #
@@ -77,9 +77,9 @@ if [ "$OVS_INSTALL_LINUX_MODULES" -gt 0 ]; then
 	# --with-linux, the Linux kernel build directory
 	# --with-linux-source, the Linux kernel source directory
 	# --with-dpdk, the DPDK build directory
-	CONFIGURE_ARGS="$CONFIGURE_ARGS			\\
-		--with-linux="$KBUILD_DIR"			\\
-	"
+	CONFIGURE_ARGS+=(
+		--with-linux="$KBUILD_DIR"
+	)
 fi
 
 install_post() {

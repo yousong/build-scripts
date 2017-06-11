@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2015-2016 (c) Yousong Zhou
 #
@@ -12,12 +12,6 @@ PKG_SOURCE_URL="http://www.chiark.greenend.org.uk/~sgtatham/halibut/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=bd2821b7a124b4b9aa356e12f09c4cb2
 
 . "$PWD/env.sh"
-
-configure() {
-	true
-}
-
-MAKE_VARS="LFLAGS='$EXTRA_LDFLAGS' prefix='$INSTALL_PREFIX'"
 
 do_patch() {
 	cd "$PKG_SOURCE_DIR"
@@ -82,3 +76,11 @@ do_patch() {
 EOF
 }
 
+configure() {
+	true
+}
+
+MAKE_VARS+=(
+	prefix="$INSTALL_PREFIX"
+	LFLAGS="${EXTRA_LDFLAGS[*]}"
+)

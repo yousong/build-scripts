@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2015-2016 (c) Yousong Zhou
 #
@@ -25,8 +25,8 @@ PKG_PLATFORM=linux
 # - To prevent false "Recursive detection" failing out
 # - To solve -Idir missing when building kconfig/
 # - libncurses.a requries -ldl
-MAKE_VARS="					\\
-	MAKELEVEL=0				\\
-	EXTRA_CFLAGS='$EXTRA_CFLAGS'		\\
-	EXTRA_LDFLAGS='$EXTRA_LDFLAGS -ldl'	\\
-"
+MAKE_VARS+=(
+	MAKELEVEL=0
+	EXTRA_CFLAGS="${EXTRA_CFLAGS[*]}"
+	EXTRA_LDFLAGS="${EXTRA_LDFLAGS[*]} -ldl"
+)

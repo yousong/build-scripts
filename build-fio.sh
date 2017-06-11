@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -15,7 +15,7 @@ PKG_DEPENDS=zlib
 . "$PWD/env.sh"
 
 if os_is_linux; then
-	PKG_DEPENDS="$PKG_DEPENDS libaio"
+	PKG_DEPENDS+=( libaio)
 fi
 
 do_patch() {
@@ -46,12 +46,12 @@ Fixes compiling error
 EOF
 }
 
-CONFIGURE_ARGS="$CONFIGURE_ARGS							\\
-	--extra-cflags='$EXTRA_CFLAGS $EXTRA_LDFLAGS'		\\
-"
+CONFIGURE_ARGS+=(
+	--extra-cflags="${EXTRA_CFLAGS[*]} ${EXTRA_LDFLAGS[*]}"
+)
 
-MAKE_VARS="												\\
-	V=s													\\
-	mandir='$INSTALL_PREFIX/share/man'					\\
-	sharedir='$INSTALL_PREFIX/share/fio'				\\
-"
+MAKE_VARS+=(
+	V=s
+	mandir="$INSTALL_PREFIX/share/man"
+	sharedir="$INSTALL_PREFIX/share/fio"
+)

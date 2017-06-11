@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -13,6 +13,6 @@ PKG_SOURCE_MD5SUM=3bce82e73eff372942d5a7972951f7f4
 
 . "$PWD/env.sh"
 
-CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
-	--enable-shared					\\
-"
+CONFIGURE_ARGS+=(
+	--enable-shared
+)

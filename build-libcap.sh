@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -45,7 +45,7 @@ configure() {
 #
 #    make RAISE_SETFCAP=no install
 #
-MAKE_VARS="$MAKE_VARS			\\
-	prefix='$INSTALL_PREFIX'	\\
-	RAISE_SETFCAP=no			\\
-"
+MAKE_VARS+=(
+	prefix="$INSTALL_PREFIX"
+	RAISE_SETFCAP=no
+)

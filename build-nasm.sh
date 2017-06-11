@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -13,6 +13,6 @@ PKG_SOURCE_MD5SUM=d15843c3fb7db39af80571ee27ec6fad
 
 . "$PWD/env.sh"
 
-MAKE_VARS="$MAKE_VARS				\\
-	INSTALLROOT=$PKG_STAGING_DIR	\\
-"
+MAKE_VARS+=(
+	INSTALLROOT="$PKG_STAGING_DIR"
+)

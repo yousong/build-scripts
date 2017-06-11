@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2015-2016 (c) Yousong Zhou
 #
@@ -15,8 +15,8 @@ PKG_DEPENDS='openssl pcre zlib'
 . "$PWD/env.sh"
 . "$PWD/utils-nginx.sh"
 
-CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
-	--with-http_ssl_module			\\
-	--with-http_mp4_module			\\
-	--with-http_v2_module			\\
-"
+CONFIGURE_ARGS+=(
+	--with-http_ssl_module
+	--with-http_mp4_module
+	--with-http_v2_module
+)

@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016-2017 (c) Yousong Zhou
 #
@@ -45,7 +45,7 @@ install() {
 	true
 }
 
-MAKE_VARS="$MAKE_VARS				\\
-	EXTRA_CFLAGS='$EXTRA_CFLAGS'	\\
-	EXTRA_LDFLAGS='$EXTRA_LDFLAGS'	\\
-"
+MAKE_VARS+=(
+	EXTRA_CFLAGS="${EXTRA_CFLAGS[*]}"
+	EXTRA_LDFLAGS="${EXTRA_LDFLAGS[*]}"
+)

@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2017 (c) Yousong Zhou
 #
@@ -37,9 +37,9 @@ configure() {
 # - alfred-gpsd, requires libgps
 # - to drop unneeded capability requires libcap
 #
-MAKE_VARS="$MAKE_VARS				\\
-	PREFIX=$INSTALL_PREFIX			\\
-	CONFIG_ALFRED_CAPABILITIES=n	\\
-	CONFIG_ALFRED_GPSD=n			\\
-	CONFIG_ALFRED_VIS=y				\\
-"
+MAKE_VARS+=(
+	PREFIX=$INSTALL_PREFIX
+	CONFIG_ALFRED_CAPABILITIES=n
+	CONFIG_ALFRED_GPSD=n
+	CONFIG_ALFRED_VIS=y
+)

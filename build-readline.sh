@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -96,8 +96,8 @@ do_patch() {
 EOF
 }
 
-CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
-	--enable-shared					\\
-	--enable-multibyte				\\
-	--with-curses					\\
-"
+CONFIGURE_ARGS+=(
+	--enable-shared
+	--enable-multibyte
+	--with-curses
+)

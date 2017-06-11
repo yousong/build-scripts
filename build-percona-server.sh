@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -36,15 +36,15 @@ EOF
 }
 
 percona_share="$INSTALL_PREFIX/share/$PKG_NAME"
-CMAKE_ARGS="$CMAKE_ARGS			\\
-	-DCMAKE_INSTALL_LAYOUT=RPM	\\
-	-DINSTALL_INFODIR=$INSTALL_PREFIX/share/info			\\
-	-DINSTALL_DOCDIR=$percona_share							\\
-	-DINSTALL_DOCREADMEDIR=$percona_share					\\
-	-DINSTALL_MYSQLSHAREDIR=$percona_share					\\
-	-DINSTALL_MYSQLTESTDIR=$percona_share/mysql-test		\\
-	-DINSTALL_SUPPORTFILESDIR=$percona_share/support-files	\\
-"
+CMAKE_ARGS+=(
+	-DCMAKE_INSTALL_LAYOUT=RPM
+	-DINSTALL_INFODIR="$INSTALL_PREFIX/share/info"
+	-DINSTALL_DOCDIR="$percona_share"
+	-DINSTALL_DOCREADMEDIR="$percona_share"
+	-DINSTALL_MYSQLSHAREDIR="$percona_share"
+	-DINSTALL_MYSQLTESTDIR="$percona_share/mysql-test"
+	-DINSTALL_SUPPORTFILESDIR="$percona_share/support-files"
+)
 
 # The following command
 #
@@ -54,22 +54,22 @@ CMAKE_ARGS="$CMAKE_ARGS			\\
 #
 #	make[4]: execvp: /bin/sh: Argument list too long
 #
-CMAKE_ARGS="$CMAKE_ARGS		\\
-	-DUSE_CTAGS=OFF			\\
-	-DUSE_ETAGS=OFF			\\
-	-DUSE_GTAGS=OFF			\\
-	-DUSE_CSCOPE=OFF		\\
-	-DUSE_MKID=OFF			\\
-"
+CMAKE_ARGS+=(
+	-DUSE_CTAGS=OFF
+	-DUSE_ETAGS=OFF
+	-DUSE_GTAGS=OFF
+	-DUSE_CSCOPE=OFF
+	-DUSE_MKID=OFF
+)
 
 boost1_59_lib="$INSTALL_PREFIX/lib/boost-1.59"
 boost1_59_inc="$INSTALL_PREFIX/include/boost-1.59"
 if [ -d "$boost1_59_lib" -a -d $boost1_59_inc ]; then
-	EXTRA_LDFLAGS="$EXTRA_LDFLAGS	\
-		-L'$boost1_59_lib'			\
-		-Wl,-rpath,'$boost1_59_lib'	\
-	"
-	CMAKE_ARGS="$CMAKE_ARGS						\\
-		-DBOOST_INCLUDE_DIR='$boost1_59_inc'	\\
-	"
+	EXTRA_LDFLAGS+=(
+		-L"$boost1_59_lib"
+		-Wl,-rpath,"$boost1_59_lib"
+	)
+	CMAKE_ARGS+=(
+		-DBOOST_INCLUDE_DIR="$boost1_59_inc"
+	)
 fi

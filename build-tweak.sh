@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2015-2016 (c) Yousong Zhou
 #
@@ -21,7 +21,10 @@ configure() {
 	true
 }
 
-MAKE_VARS="LFLAGS='$EXTRA_LDFLAGS' PREFIX='$PKG_STAGING_DIR$INSTALL_PREFIX'"
+MAKE_VARS+=(
+	LFLAGS="${EXTRA_LDFLAGS[*]}"
+	PREFIX="$PKG_STAGING_DIR$INSTALL_PREFIX"
+)
 
 do_patch() {
 	cd "$PKG_SOURCE_DIR"

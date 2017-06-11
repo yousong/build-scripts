@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -16,7 +16,7 @@ PKG_DEPENDS=openssl
 . "$PWD/env.sh"
 
 if os_is_linux; then
-	PKG_DEPENDS="$PKG_DEPENDS libnl3"
+	PKG_DEPENDS+=( libnl3)
 fi
 
 do_patch() {
@@ -94,8 +94,8 @@ EOF
 # time, but at build time with Makefile
 #
 # - http://modperlbook.org/html/3-9-1-Installing-Perl-Modules-into-a-Nonstandard-Directory.html
-CONFIGURE_ARGS="$CONFIGURE_ARGS						\\
-	--with-defaults									\\
-	--with-openssl=yes								\\
-	--with-perl-modules='PREFIX=$INSTALL_PREFIX'	\\
-"
+CONFIGURE_ARGS+=(
+	--with-defaults
+	--with-openssl=yes
+	--with-perl-modules="PREFIX=$INSTALL_PREFIX"
+)

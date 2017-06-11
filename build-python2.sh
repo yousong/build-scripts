@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2015-2016 (c) Yousong Zhou
 #
@@ -55,7 +55,7 @@ So do it this way, as it was before. Needs some realignment later.
 EOF
 }
 
-CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
-	--enable-unicode=ucs4			\\
-	--with-ensurepip=upgrade		\\
-"
+CONFIGURE_ARGS+=(
+	--enable-unicode=ucs4
+	--with-ensurepip=upgrade
+)

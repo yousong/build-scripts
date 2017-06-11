@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2017 (c) Yousong Zhou
 #
@@ -36,7 +36,7 @@ else
 	__errmsg "unknown system"
 fi
 
-MAKE_ARGS="					\\
-	-C '$PKG_BUILD_DIR/src'	\\
-	clean $JOHN_SYSTEM		\\
-"
+MAKE_ARGS+=(
+	-C "$PKG_BUILD_DIR/src"
+	clean $JOHN_SYSTEM
+)

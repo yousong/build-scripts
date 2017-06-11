@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -91,4 +91,6 @@ compile() {
 	true
 }
 
-MAKE_VARS="PREFIX='$INSTALL_PREFIX'"
+MAKE_VARS+=(
+	PREFIX="$INSTALL_PREFIX"
+)

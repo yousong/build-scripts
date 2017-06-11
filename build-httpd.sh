@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -43,6 +43,6 @@ do_patch() {
 EOF
 }
 
-CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
-	--enable-layout=GNU				\\
-"
+CONFIGURE_ARGS+=(
+	--enable-layout=GNU
+)

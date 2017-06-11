@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2017 (c) Yousong Zhou
 #
@@ -20,8 +20,8 @@ configure() {
 
 # we already set CFLAGS as environment variable which will be appended to by
 # the package Makefile, so there is no need to set EXTRA_CFLAGS
-MAKE_VARS="$MAKE_VARS			\\
-PREFIX='$INSTALL_PREFIX'		\\
-RELEASE=1						\\
-EXTRA_LFLAGS='$EXTRA_LDFLAGS'	\\
-"
+MAKE_VARS+=(
+	PREFIX="$INSTALL_PREFIX"
+	RELEASE=1
+	EXTRA_LFLAGS="${EXTRA_LDFLAGS[*]}"
+)

@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2017 (c) Yousong Zhou
 #
@@ -15,7 +15,7 @@ PKG_DEPENDS='openssl'
 . "$PWD/env.sh"
 
 # --parallel, bootstrap cmake in parallel
-CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
-	--verbose						\\
-	--parallel=$NJOBS				\\
-"
+CONFIGURE_ARGS+=(
+	--verbose
+	--parallel=$NJOBS
+)

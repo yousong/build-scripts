@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -17,6 +17,11 @@ configure() {
 	true
 }
 
-MAKE_VARS="PREFIX='$INSTALL_PREFIX'"
+MAKE_VARS+=(
+	PREFIX="$INSTALL_PREFIX"
+)
 # target 'all' includes binaries built with `-m32`
-MAKE_ARGS='lz4programs lib'
+MAKE_ARGS+=(
+	lz4programs
+	lib
+)

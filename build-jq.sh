@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2017 (c) Yousong Zhou
 #
@@ -21,6 +21,6 @@ PKG_SOURCE_MD5SUM=0933532b086bd8b6a41c1b162b1731f9
 . "$PWD/env.sh"
 
 # --disable-maintainer-mode, use pre-generated lexer and parser
-CONFIGURE_ARGS="$CONFIGURE_ARGS	\\
-	--disable-maintainer-mode	\\
-"
+CONFIGURE_ARGS+=(
+	--disable-maintainer-mode
+)

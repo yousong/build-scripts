@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016-2017 (c) Yousong Zhou
 #
@@ -114,9 +114,9 @@ do_patch() {
 EOF
 }
 
-CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
-	--enable-system-shared-lib		\\
-	--disable-static				\\
-	--enable-shared					\\
-	--disable-silent-rules			\\
-"
+CONFIGURE_ARGS+=(
+	--enable-system-shared-lib
+	--disable-static
+	--enable-shared
+	--disable-silent-rules
+)

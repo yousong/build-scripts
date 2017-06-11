@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -14,6 +14,6 @@ PKG_DEPENDS="fribidi yasm"
 
 . "$PWD/env.sh"
 
-CONFIGURE_ARGS="$CONFIGURE_ARGS				\\
-	--disable-require-system-font-provider	\\
-"
+CONFIGURE_ARGS+=(
+	--disable-require-system-font-provider
+)

@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2015-2016 (c) Yousong Zhou
 #
@@ -90,8 +90,8 @@ EOF
 # compiling py-objfile.c of python binding support.
 #
 # Remove reference to custom -I$INSTALL_PREFIX
-EXTRA_CFLAGS=
-EXTRA_CPPFLAGS=
+EXTRA_CFLAGS=()
+EXTRA_CPPFLAGS=()
 
 configure_pre() {
 	# config.cache under readline/ directory was not removed by make distclean
@@ -100,6 +100,6 @@ configure_pre() {
 	find "$PKG_BUILD_DIR" -name 'config.cache' | xargs rm -vf
 }
 
-CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
-	--with-python					\\
-"
+CONFIGURE_ARGS+=(
+	--with-python
+)

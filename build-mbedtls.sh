@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2017 (c) Yousong Zhou
 #
@@ -17,6 +17,6 @@ PKG_BUILD_DIR_BASENAME="$PKG_NAME-$PKG_VERSION"
 
 #	-DENABLE_TESTING:Bool=OFF \\
 #	-DENABLE_PROGRAMS:Bool=OFF \\
-CMAKE_ARGS="$CMAKE_ARGS		\\
-	-DUSE_SHARED_MBEDTLS_LIBRARY:Bool=ON \\
-"
+CMAKE_ARGS+=(
+	-DUSE_SHARED_MBEDTLS_LIBRARY:Bool=ON
+)

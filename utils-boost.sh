@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2017 (c) Yousong Zhou
 #
@@ -38,8 +38,8 @@ boost_b2() {
 		${NJOBS:+-j "$NJOBS"} \
 		-q \
 		variant=release \
-		cflags="$EXTRA_CFLAGS" \
-		linkflags="$EXTRA_LDFLAGS" \
+		cflags="${EXTRA_CFLAGS[*]}" \
+		linkflags="${EXTRA_LDFLAGS[*]}" \
 		"$target"
 }
 

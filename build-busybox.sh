@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2015-2016 (c) Yousong Zhou
 #
@@ -25,9 +25,9 @@ PKG_PLATFORM=linux
 . "$PWD/env.sh"
 . "$PWD/utils-kconfig.sh"
 
-EXTRA_CFLAGS=
-EXTRA_CPPFLAGS=
-EXTRA_LDFLAGS=
+EXTRA_CFLAGS=()
+EXTRA_CPPFLAGS=()
+EXTRA_LDFLAGS=()
 
 do_patch() {
 
@@ -111,6 +111,6 @@ configure() {
 	kconfig_set_option CONFIG_NSENTER n
 }
 
-#MAKE_VARS="$MAKE_VARS	\\
-#	V=1					\\
-#"
+#MAKE_VARS+=(
+#	V=1
+#)

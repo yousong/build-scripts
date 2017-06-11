@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -48,9 +48,14 @@ configure() {
 	true
 }
 
-MAKE_ENVS="												\\
-	CFLAGS_EXTRA='$EXTRA_CFLAGS -fno-strict-aliasing'	\\
-	LDFLAGS_EXTRA='$EXTRA_LDFLAGS'						\\
-"
-MAKE_ARGS="-C unix"
-MAKE_VARS="V=1 PREFIX=$INSTALL_PREFIX"
+MAKE_ENVS+=(
+	CFLAGS_EXTRA="${EXTRA_CFLAGS[*]} -fno-strict-aliasing"
+	LDFLAGS_EXTRA="${EXTRA_LDFLAGS[*]}"
+)
+MAKE_ARGS+=(
+	-C unix
+)
+MAKE_VARS+=(
+	V=1
+	PREFIX="$INSTALL_PREFIX"
+)

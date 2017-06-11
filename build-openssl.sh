@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2015-2016 (c) Yousong Zhou
 #
@@ -52,12 +52,12 @@ MAKE_VARS="								\\
 compile() {
 	cd "$PKG_BUILD_DIR"
 
-	eval $MAKEJ "$MAKE_VARS" all
+	$MAKEJ "${MAKE_VARS[@]}" all
 }
 
 staging() {
 	cd "$PKG_BUILD_DIR"
 
 	# OpenSSL use INSTALL_PREFIX instead of DESTDIR
-	eval $MAKEJ install INSTALL_PREFIX="$PKG_STAGING_DIR" "$MAKE_VARS"
+	$MAKEJ install INSTALL_PREFIX="$PKG_STAGING_DIR" "${MAKE_VARS[@]}"
 }

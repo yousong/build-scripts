@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016-2017 (c) Yousong Zhou
 #
@@ -17,6 +17,6 @@ if os_is_linux; then
 	PKG_DEPENDS="libnl3 $PKG_DEPENDS"
 fi
 
-CONFIGURE_ARGS="$CONFIGURE_ARGS	\\
-	--with-system-libpcap		\\
-"
+CONFIGURE_ARGS+=(
+	--with-system-libpcap
+)

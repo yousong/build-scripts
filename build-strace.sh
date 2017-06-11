@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -19,6 +19,6 @@ PKG_DEPENDS=libunwind
 #
 # we cannot use PKG_AUTOCONF_FIXUP because the AC_INIT refers to a utility
 # called ./git-version-gen which is not packaged in the relesae tarball
-CONFIGURE_ARGS="$CONFIGURE_ARGS	\\
-	--with-libunwind=yes		\\
-"
+CONFIGURE_ARGS+=(
+	--with-libunwind=yes
+)

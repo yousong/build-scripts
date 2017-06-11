@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -23,10 +23,12 @@ PKG_PLATFORM=no
 . "$PWD/env.sh"
 . "$PWD/utils-kconfig.sh"
 
-EXTRA_CFLAGS=
-EXTRA_CPPFLAGS=
-EXTRA_LDFLAGS=
-MAKE_VARS="V=1"
+EXTRA_CFLAGS=()
+EXTRA_CPPFLAGS=()
+EXTRA_LDFLAGS=()
+MAKE_VARS=(
+	V=1
+)
 
 prepare_extra() {
 	local f fs

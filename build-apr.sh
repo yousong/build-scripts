@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -15,6 +15,6 @@ PKG_SOURCE_MD5SUM=4e9769f3349fe11fc0a5e1b224c236aa
 
 . "$PWD/env.sh"
 
-CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
-	--enable-layout=GNU				\\
-"
+CONFIGURE_ARGS+=(
+	--enable-layout=GNU
+)

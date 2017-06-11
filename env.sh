@@ -60,12 +60,12 @@ env_init() {
 	mkdir -p "$INSTALL_PREFIX"
 
 	PKG_CONFIG_PATH="$INSTALL_PREFIX/lib/pkgconfig:$INSTALL_PREFIX/share/pkgconfig"
-	EXTRA_CPPFLAGS="-isystem $INSTALL_PREFIX/include"
-	EXTRA_CFLAGS="-isystem $INSTALL_PREFIX/include"
-	EXTRA_LDFLAGS="-L$INSTALL_PREFIX/lib -Wl,-rpath,$INSTALL_PREFIX/lib"
+	EXTRA_CPPFLAGS+=( -isystem "$INSTALL_PREFIX/include" )
+	EXTRA_CFLAGS+=( -isystem "$INSTALL_PREFIX/include" )
+	EXTRA_LDFLAGS+=( -L"$INSTALL_PREFIX/lib" -Wl,-rpath,"$INSTALL_PREFIX/lib" )
 	if [ -d "$INSTALL_PREFIX/lib64" ]; then
 		PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$INSTALL_PREFIX/lib64/pkgconfig"
-		EXTRA_LDFLAGS="$EXTRA_LDFLAGS -L$INSTALL_PREFIX/lib64 -Wl,-rpath,$INSTALL_PREFIX/lib64"
+		EXTRA_LDFLAGS+=( -L"$INSTALL_PREFIX/lib64" -Wl,-rpath,"$INSTALL_PREFIX/lib64")
 	fi
 	if os_is_darwin; then
 		# ld: -rpath can only be used when targeting Mac OS X 10.5 or later
@@ -77,9 +77,9 @@ env_init() {
 		MACPORTS_PREFIX="${MACPORTS_PREFIX:-/opt/local}"
 		PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$MACPORTS_PREFIX/lib/pkgconfig"
 		PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$MACPORTS_PREFIX/share/pkgconfig"
-		EXTRA_CPPFLAGS="$EXTRA_CPPFLAGS -isystem $MACPORTS_PREFIX/include"
-		EXTRA_CFLAGS="$EXTRA_CFLAGS -isystem $MACPORTS_PREFIX/include"
-		EXTRA_LDFLAGS="$EXTRA_LDFLAGS -L$MACPORTS_PREFIX/lib -Wl,-rpath,$MACPORTS_PREFIX/lib"
+		EXTRA_CPPFLAGS+=( -isystem "$MACPORTS_PREFIX/include")
+		EXTRA_CFLAGS+=( -isystem "$MACPORTS_PREFIX/include")
+		EXTRA_LDFLAGS+=( -L"$MACPORTS_PREFIX/lib" -Wl,-rpath,"$MACPORTS_PREFIX/lib")
 	fi
 	export PKG_CONFIG_PATH
 	if ! running_in_make || [ -n "$NJOBS" ]; then
@@ -136,13 +136,15 @@ env_init_pkg() {
 	fi
 
 	CONFIGURE_PATH="${CONFIGURE_PATH:-$PKG_BUILD_DIR}"
-	CONFIGURE_VARS='CPPFLAGS="$EXTRA_CPPFLAGS"		\
-					CFLAGS="$EXTRA_CFLAGS"			\
-					LDFLAGS="$EXTRA_LDFLAGS"		\
-	'
+	CONFIGURE_VARS+=(
+		CPPFLAGS="${EXTRA_CPPFLAGS[*]}"
+		CFLAGS="${EXTRA_CFLAGS[*]}"
+		LDFLAGS="${EXTRA_LDFLAGS[*]}"
+	)
 	CONFIGURE_CMD="${CONFIGURE_CMD:-$PKG_SOURCE_DIR/configure}"
-	CONFIGURE_ARGS="--prefix='$INSTALL_PREFIX'		\\
-"
+	CONFIGURE_ARGS+=(
+		--prefix="$INSTALL_PREFIX"
+	)
 	env_init_pkg_afl_
 }
 
@@ -165,20 +167,20 @@ env_init_pkg_afl_() {
 		return 1
 	fi
 
-	CONFIGURE_VARS="$CONFIGURE_VARS		\\
-		CC="$afl_cc"					\\
-		CXX="$afl_cxx"					\\
-	"
+	CONFIGURE_VARS+=(
+		CC="$afl_cc"
+		CXX="$afl_cxx"
+	)
 	# AFL_HARDEN will enable gcc option -fstack-protector-all
 	#
 	# Check getenv() call in afl source code for more knobs in the environment
-	MAKE_ENVS="$MAKE_ENVS				\\
-		AFL_HARDEN=1					\\
-	"
-	MAKE_ARGS="$MAKE_ARGS				\\
-		CC="$afl_cc"					\\
-		CXX="$afl_cxx"					\\
-	"
+	MAKE_ENVS+=(
+		AFL_HARDEN=1
+	)
+	MAKE_ARGS+=(
+		CC="$afl_cc"
+		CXX="$afl_cxx"
+	)
 }
 
 env_csum_check() {
@@ -328,37 +330,36 @@ prepare() {
 build_configure_default() {
 	mkdir -p "$CONFIGURE_PATH"
 	cd "$CONFIGURE_PATH"
-	eval "$CONFIGURE_VARS"				\
+	env "${CONFIGURE_VARS[@]}"			\
 		"$CONFIGURE_CMD"				\
-		"$CONFIGURE_ARGS"
+		"${CONFIGURE_ARGS[@]}"
 }
 
 build_configure_cmake() {
 	mkdir -p "$PKG_BUILD_DIR"
 	cd "$PKG_BUILD_DIR"
-	eval cmake												\
+	cmake													\
 		-DCMAKE_BUILD_TYPE=Release							\
-		-DCMAKE_INSTALL_PREFIX="'$INSTALL_PREFIX'"			\
-		-DCMAKE_EXE_LINKER_FLAGS="'$EXTRA_LDFLAGS'"			\
-		-DCMAKE_SHARED_LINKER_FLAGS="'$EXTRA_LDFLAGS'"		\
-		-DCMAKE_C_FLAGS="'$EXTRA_CFLAGS'"					\
+		-DCMAKE_INSTALL_PREFIX="$INSTALL_PREFIX"			\
+		-DCMAKE_EXE_LINKER_FLAGS="${EXTRA_LDFLAGS[*]}"		\
+		-DCMAKE_SHARED_LINKER_FLAGS="${EXTRA_LDFLAGS[*]}"	\
+		-DCMAKE_C_FLAGS="${EXTRA_CFLAGS[*]}"				\
 		-DCMAKE_BUILD_WITH_INSTALL_RPATH=on					\
 		-DCMAKE_MACOSX_RPATH=on								\
-		"$CMAKE_ARGS"										\
+		"${CMAKE_ARGS[@]}"									\
 		"$PKG_SOURCE_DIR/$PKG_CMAKE_SOURCE_SUBDIR"
 }
 
 compile() {
-	local envs="${MAKE_ENVS%\\*}"
-	local vars="${MAKE_VARS%\\*}"
-	local args="${MAKE_ARGS%\\*}"
-
 	cd "$PKG_BUILD_DIR"
-	eval CFLAGS="'$EXTRA_CFLAGS'" \
-		CPPFLAGS="'$EXTRA_CPPFLAGS'" \
-		LDFLAGS="'$EXTRA_LDFLAGS'" \
-		"$envs" \
-		$MAKEJ "$args" ${PKG_CMAKE:+VERBOSE=1} "$vars"
+	env CFLAGS="${EXTRA_CFLAGS[*]}"			\
+		CPPFLAGS="${EXTRA_CPPFLAGS[*]}"		\
+		LDFLAGS="${EXTRA_LDFLAGS[*]}"		\
+		"${MAKE_ENVS[@]}"					\
+		$MAKEJ								\
+			"${MAKE_ARGS[@]}"				\
+			${PKG_CMAKE:+VERBOSE=1}			\
+			"${MAKE_VARS[@]}"
 }
 
 autoconf_fixup() {
@@ -389,12 +390,14 @@ staging_pre() {
 }
 
 staging() {
-	local envs="${MAKE_ENVS%\\*}"
-	local vars="${MAKE_VARS%\\*}"
-	local args="${MAKE_ARGS%\\*}"
-
 	cd "$PKG_BUILD_DIR"
-	eval "$envs" $MAKEJ "$args" install DESTDIR="$PKG_STAGING_DIR" ${PKG_CMAKE:+VERBOSE=1} $vars
+	env "${MAKE_ENVS[@]}"				\
+		$MAKEJ							\
+			"${MAKE_ARGS[@]}"			\
+			install						\
+			DESTDIR="$PKG_STAGING_DIR"	\
+			${PKG_CMAKE:+VERBOSE=1}		\
+			"${MAKE_VARS[@]}"
 }
 
 staging_post() {

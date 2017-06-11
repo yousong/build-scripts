@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2017 (c) Yousong Zhou
 #
@@ -41,6 +41,6 @@ configure() {
 	true
 }
 
-MAKE_ARGS="$MAKE_ARGS			\\
-	PREFIX='$INSTALL_PREFIX'	\\
-"
+MAKE_ARGS+=(
+	PREFIX="$INSTALL_PREFIX"
+)

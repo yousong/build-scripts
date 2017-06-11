@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -71,12 +71,12 @@ configure() {
 	true
 }
 
-MAKE_ENVS="											\\
-	CFLAGS='$EXTRA_CFLAGS $EXTRA_LDFLAGS'			\\
-"
-MAKE_VARS="											\\
-	BUILD_ROOT='$PKG_STAGING_DIR/$INSTALL_PREFIX'	\\
-	MANDIR=share/man								\\
-	HAVE_NL=1										\\
-	POPT_LIB=-lpopt									\\
-"
+MAKE_ENVS+=(
+	CFLAGS="${EXTRA_CFLAGS[*]} ${EXTRA_LDFLAGS[*]}"
+)
+MAKE_VARS+=(
+	BUILD_ROOT="$PKG_STAGING_DIR/$INSTALL_PREFIX"
+	MANDIR=share/man
+	HAVE_NL=1
+	POPT_LIB=-lpopt
+)

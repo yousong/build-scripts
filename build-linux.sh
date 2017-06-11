@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2015-2016 (c) Yousong Zhou
 #
@@ -20,10 +20,12 @@ PKG_DEPENDS=busybox
 
 . "$PWD/env.sh"
 
-EXTRA_CFLAGS=
-EXTRA_CPPFLAGS=
-EXTRA_LDFLAGS=
-MAKE_VARS="V=1"
+EXTRA_CFLAGS=()
+EXTRA_CPPFLAGS=()
+EXTRA_LDFLAGS=()
+MAKE_VARS=(
+	V=1
+)
 
 # WiP
 #

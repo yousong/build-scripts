@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -46,9 +46,12 @@ do_patch() {
 }
 
 # We don't want to be affected by ncurses libraries of the build system
-EXTRA_CPPFLAGS=
-EXTRA_CFLAGS=
-EXTRA_LDFLAGS="-L$INSTALL_PREFIX/lib -Wl,-rpath,$INSTALL_PREFIX/lib"
+EXTRA_CPPFLAGS=()
+EXTRA_CFLAGS=()
+EXTRA_LDFLAGS=(
+	-L"$INSTALL_PREFIX/lib"
+	-Wl,-rpath,"$INSTALL_PREFIX/lib"
+)
 # - enable building shared libraries
 # - suppress check for ada95
 # - dont generate debug-libraries (those ending with _g)
@@ -56,21 +59,21 @@ EXTRA_LDFLAGS="-L$INSTALL_PREFIX/lib -Wl,-rpath,$INSTALL_PREFIX/lib"
 # - --enable-overwrite,
 # - compile in termcap fallback support
 # - compile with SIGWINCH handler
-CONFIGURE_ARGS="$CONFIGURE_ARGS			\\
-	--with-shared						\\
-	--with-cxx-shared					\\
-	--with-normal						\\
-	--with-manpage-format=normal		\\
-	--with-pkg-config-libdir='$INSTALL_PREFIX/lib/pkgconfig'	\\
-	--without-ada						\\
-	--without-debug						\\
-	--enable-widec						\\
-	--enable-overwrite					\\
-	--enable-termcap					\\
-	--enable-sigwinch					\\
-	--enable-pc-files					\\
-	--mandir=$INSTALL_PREFIX/share/man	\\
-"
+CONFIGURE_ARGS+=(
+	--with-shared
+	--with-cxx-shared
+	--with-normal
+	--with-manpage-format=normal
+	--without-ada
+	--without-debug
+	--enable-widec
+	--enable-overwrite
+	--enable-termcap
+	--enable-sigwinch
+	--enable-pc-files
+	--mandir="$INSTALL_PREFIX/share/man"
+	--with-pkg-config-libdir="$INSTALL_PREFIX/lib/pkgconfig"
+)
 # we cannot do autoreconf because AC_DIVERT_HELP may not be universally
 # available
 

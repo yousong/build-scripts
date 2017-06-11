@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -19,9 +19,9 @@ PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="https://github.com/kdlucas/byte-unixbench/archive/v$PKG_VERSION.tar.gz"
 
 . "$PWD/env.sh"
-MAKE_ARGS="			\\
-	-C UnixBench	\\
-"
+MAKE_ARGS+=(
+	-C UnixBench
+)
 
 configure() {
 	true

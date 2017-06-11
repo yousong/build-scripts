@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016-2017 (c) Yousong Zhou
 #
@@ -15,7 +15,7 @@ PKG_DEPENDS='libiconv openssl pcre zlib'
 . "$PWD/env.sh"
 
 # Wget defaults to GNU TLS but that requires too many dependencies
-CONFIGURE_ARGS="$CONFIGURE_ARGS	\\
-	--disable-silent-rules		\\
-	--with-ssl=openssl			\\
-"
+CONFIGURE_ARGS+=(
+	--disable-silent-rules
+	--with-ssl=openssl
+)

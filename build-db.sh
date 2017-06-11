@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -44,16 +44,16 @@ EOF
 CONFIGURE_PATH="$PKG_SOURCE_DIR/build_unix"
 CONFIGURE_CMD="$PKG_SOURCE_DIR/dist/configure"
 # --enable-dbm, is for python module dbm
-CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
-	--disable-tcl					\\
-	--disable-java					\\
-	--enable-compat185				\\
-	--enable-dbm					\\
-"
+CONFIGURE_ARGS+=(
+	--disable-tcl
+	--disable-java
+	--enable-compat185
+	--enable-dbm
+)
 
-MAKE_ARGS="							\\
-	-C '$PKG_SOURCE_DIR/build_unix'	\\
-"
-MAKE_VARS="												\\
-	docdir='$INSTALL_PREFIX/share/db-$PKG_VERSION/docs'	\\
-"
+MAKE_ARGS+=(
+	-C "$PKG_SOURCE_DIR/build_unix"
+)
+MAKE_VARS+=(
+	docdir="$INSTALL_PREFIX/share/db-$PKG_VERSION/docs"
+)

@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2017 (c) Yousong Zhou
 #
@@ -13,9 +13,9 @@ PKG_SOURCE_MD5SUM=4136d7b4c04df68b686570afa26988ac
 
 . "$PWD/env.sh"
 
-MAKE_VARS="$MAKE_VARS				\\
-	instroot='$PKG_STAGING_DIR'	\\
-"
+MAKE_VARS+=(
+	instroot="$PKG_STAGING_DIR"
+)
 
 do_patch() {
 	cd "$PKG_SOURCE_DIR"

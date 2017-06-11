@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2015-2016 (c) Yousong Zhou
 #
@@ -122,14 +122,14 @@ EOF
 
 # ocaml and perl bindings need to be enabled for OCaml and Perl based virt
 # tools, e.g. virt-sparsify is part of ocaml support
-CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
-	--disable-nls					\\
-	--disable-python				\\
-	--disable-ruby					\\
-	--disable-haskell				\\
-	--disable-php					\\
-	--disable-erlang				\\
-	--disable-lua					\\
-	--disable-golang				\\
-	--disable-gobject				\\
-"
+CONFIGURE_ARGS+=(
+	--disable-nls
+	--disable-python
+	--disable-ruby
+	--disable-haskell
+	--disable-php
+	--disable-erlang
+	--disable-lua
+	--disable-golang
+	--disable-gobject
+)

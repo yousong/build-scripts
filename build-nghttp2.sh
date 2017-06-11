@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2015-2016 (c) Yousong Zhou
 #
@@ -92,6 +92,6 @@ EOF
 EOF
 }
 
-CONFIGURE_ARGS="$CONFIGURE_ARGS	\\
-	--disable-silent-rules		\\
-"
+CONFIGURE_ARGS+=(
+	--disable-silent-rules
+)

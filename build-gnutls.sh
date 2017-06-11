@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -20,9 +20,9 @@ PKG_DEPENDS='gmp libtasn1 nettle p11-kit unbound'
 #
 # Enable local libopts in src/libopts because libopts25 available in Debian
 # Wheezy lacks optionAlias() and will cause build failure
-CONFIGURE_ARGS="$CONFIGURE_ARGS	\\
-	--with-unbound-root-key-file='$INSTALL_PREFIX/etc/unbound/root.key'	\\
-	--enable-local-libopts		\\
-	--disable-guile				\\
-	--disable-silent-rules		\\
-"
+CONFIGURE_ARGS+=(
+	--with-unbound-root-key-file="$INSTALL_PREFIX/etc/unbound/root.key"
+	--enable-local-libopts
+	--disable-guile
+	--disable-silent-rules
+)

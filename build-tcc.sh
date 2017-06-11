@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2015-2016 (c) Yousong Zhou
 #
@@ -87,6 +87,6 @@ EOF
 EOF
 }
 
-CONFIGURE_ARGS="$CONFIGURE_ARGS	\\
-	--enable-cross				\\
-"
+CONFIGURE_ARGS+=(
+	--enable-cross
+)

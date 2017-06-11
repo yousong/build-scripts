@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -40,34 +40,34 @@ EOF
 }
 
 if os_is_linux; then
-	MAKE_VARS="$MAKE_VARS	\\
-		TARGET=linux2628	\\
-	"
+	MAKE_VARS+=(
+		TARGET=linux2628
+	)
 elif os_is_darwin; then
-	MAKE_VARS="$MAKE_VARS	\\
-		TARGET=osx			\\
-	"
+	MAKE_VARS+=(
+		TARGET=osx
+	)
 fi
-MAKE_VARS="$MAKE_VARS		\\
-	PREFIX=$INSTALL_PREFIX	\\
-	USE_PCRE=1				\\
-	USE_PCRE_JIT=1			\\
-	USE_REGPARM=1			\\
-	USE_OPENSSL=1			\\
-	USE_ZLIB=1				\\
-	EXTRA_LDFLAGS='$EXTRA_LDFLAGS' \\
-"
+MAKE_VARS+=(
+	PREFIX="$INSTALL_PREFIX"
+	EXTRA_LDFLAGS="${EXTRA_LDFLAGS[*]}"
+	USE_PCRE=1
+	USE_PCRE_JIT=1
+	USE_REGPARM=1
+	USE_OPENSSL=1
+	USE_ZLIB=1
+)
 
 haproxy_use_lua() {
 	local inc="$(pkg-config --cflags-only-I lua5.3 | sed -e 's/-I//g')"
 	local lib="$(pkg-config --libs lua5.3)"
 
-	MAKE_VARS="$MAKE_VARS		\\
-		USE_LUA=1				\\
-		LUA_LIB_NAME=lua		\\
-		LUA_INC=$inc			\\
-		LUA_LD_FLAGS='$lib'		\\
-	"
+	MAKE_VARS+=(
+		USE_LUA=1
+		LUA_LIB_NAME=lua
+		LUA_INC="$inc"
+		LUA_LD_FLAGS="$lib"
+	)
 }
 haproxy_use_lua
 

@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -66,21 +66,21 @@ diff -rupN ffmpeg-3.1.1/libavcodec/libopenjpegenc.c ffmpeg-3.1.1-new/libavcodec/
 EOF
 }
 
-CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
-	--enable-shared					\\
-	--enable-gpl					\\
-	--enable-version3				\\
-	--enable-nonfree				\\
-	--enable-gnutls					\\
-	--enable-libfdk-aac				\\
-	--enable-libx264				\\
-	--enable-libx265				\\
-	--enable-libmp3lame				\\
-	--enable-libass					\\
-	--enable-libfribidi				\\
-	--enable-librtmp				\\
-	--enable-libopenjpeg			\\
-	--enable-libfreetype			\\
-	--enable-libcaca				\\
-	--enable-libxvid				\\
-"
+CONFIGURE_ARGS+=(
+	--enable-shared
+	--enable-gpl
+	--enable-version3
+	--enable-nonfree
+	--enable-gnutls
+	--enable-libfdk-aac
+	--enable-libx264
+	--enable-libx265
+	--enable-libmp3lame
+	--enable-libass
+	--enable-libfribidi
+	--enable-librtmp
+	--enable-libopenjpeg
+	--enable-libfreetype
+	--enable-libcaca
+	--enable-libxvid
+)

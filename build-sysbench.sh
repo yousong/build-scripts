@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -34,6 +34,6 @@ configure_pre() {
 #	checking whether to compile with Oracle support... (cached) no
 #	checking whether to compile with PostgreSQL support... (cached) no
 #
-CONFIGURE_ARGS="$CONFIGURE_ARGS	\\
-	--without-mysql				\\
-"
+CONFIGURE_ARGS+=(
+	--without-mysql
+)

@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -44,6 +44,6 @@ EOF
 CONFIGURE_PATH="$PKG_SOURCE_DIR/src"
 CONFIGURE_CMD="$PKG_SOURCE_DIR/src/configure"
 
-MAKE_ARGS="						\\
-	-C '$PKG_SOURCE_DIR/src'	\\
-"
+MAKE_ARGS+=(
+	-C "$PKG_SOURCE_DIR/src"
+)

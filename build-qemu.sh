@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2015-2016 (c) Yousong Zhou
 #
@@ -53,10 +53,9 @@ fi
 # Others targets can be found in help text for `--target-list` option from
 # output of `./configure --help`
 #
-TARGETS=
-TARGETS="$TARGETS i386-softmmu x86_64-softmmu"
-TARGETS="$TARGETS mips-softmmu mipsel-softmmu mips64-softmmu mips64el-softmmu"
-TARGETS="$TARGETS arm-softmmu aarch64-softmmu"
+TARGETS+=( i386-softmmu x86_64-softmmu)
+TARGETS+=( mips-softmmu mipsel-softmmu mips64-softmmu mips64el-softmmu)
+TARGETS+=( arm-softmmu aarch64-softmmu)
 #
 # Things to keep in mind when using user mode emulation with dynamically linked
 # binaries
@@ -87,9 +86,9 @@ TARGETS="$TARGETS arm-softmmu aarch64-softmmu"
 #    for details of implementation and available targets
 #
 if os_is_linux; then
-	TARGETS="$TARGETS i386-linux-user"
-	TARGETS="$TARGETS mips-linux-user mipsn32-linux-user mips64-linux-user"
-	TARGETS="$TARGETS arm-linux-user aarch64-linux-user"
+	TARGETS+=( i386-linux-user)
+	TARGETS+=( mips-linux-user mipsn32-linux-user mips64-linux-user)
+	TARGETS+=( arm-linux-user aarch64-linux-user)
 fi
 
 if os_is_darwin; then
@@ -99,24 +98,32 @@ if os_is_darwin; then
 	#
 	# Setting MACOSX_DEPLOYMENT_TARGET to version >=10.5 as said in compat(5)
 	# is not enough.
-	EXTRA_CPPFLAGS="-D_DARWIN_C_SOURCE -D_XOPEN_SOURCE=600 $EXTRA_CPPFLAGS"
-	EXTRA_CFLAGS="-D_DARWIN_C_SOURCE -D_XOPEN_SOURCE=600 $EXTRA_CFLAGS"
+	EXTRA_CPPFLAGS+=(
+		-D_DARWIN_C_SOURCE
+		-D_XOPEN_SOURCE=600
+	)
+	EXTRA_CFLAGS+=(
+		-D_DARWIN_C_SOURCE
+		-D_XOPEN_SOURCE=600
+	)
 fi
-CONFIGURE_VARS="$CONFIGURE_VARS		\\
-	QEMU_CFLAGS='$EXTRA_CFLAGS'		\\
-"
-CONFIGURE_ARGS="$CONFIGURE_ARGS		\\
-	--enable-gnutls					\\
-	--enable-nettle					\\
-	--enable-curses					\\
-	--enable-lzo					\\
-	--enable-bzip2					\\
-	--enable-vnc					\\
-	--enable-vnc-jpeg				\\
-	--enable-vnc-png				\\
-	--target-list='$TARGETS'		\\
-"
-MAKE_VARS="V=s"
+CONFIGURE_VARS+=(
+	QEMU_CFLAGS="${EXTRA_CFLAGS[*]}"
+)
+CONFIGURE_ARGS+=(
+	--enable-gnutls
+	--enable-nettle
+	--enable-curses
+	--enable-lzo
+	--enable-bzip2
+	--enable-vnc
+	--enable-vnc-jpeg
+	--enable-vnc-png
+	--target-list="${TARGETS[*]}"
+)
+MAKE_VARS+=(
+	V=s
+)
 
 install_post() {
 	local helper="$INSTALL_PREFIX/libexec/qemu-bridge-helper"

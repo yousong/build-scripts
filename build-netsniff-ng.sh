@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -207,13 +207,13 @@ EOF
 }
 
 # This is required for detection of libraries built by us, e.g. libcli etc.
-CONFIGURE_VARS="$CONFIGURE_VARS				\\
-	CC='gcc $EXTRA_CFLAGS $EXTRA_LDFLAGS'	\\
-	LD='gcc $EXTRA_LDFLAGS'					\\
-"
+CONFIGURE_VARS+=(
+	CC="gcc ${EXTRA_CFLAGS[*]} ${EXTRA_LDFLAGS[*]}"
+	LD="gcc ${EXTRA_LDFLAGS[*]}"
+)
 
-MAKE_VARS="$MAKE_VARS				\\
-	PREFIX='$INSTALL_PREFIX'		\\
-	ETCDIR='$INSTALL_PREFIX/etc'	\\
-	Q=	\\
-"
+MAKE_VARS+=(
+	PREFIX="$INSTALL_PREFIX"
+	ETCDIR="$INSTALL_PREFIX/etc"
+	Q=
+)

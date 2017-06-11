@@ -6,16 +6,16 @@
 #
 NGINX_PREFIX="$INSTALL_PREFIX/nginx/$PKG_NAME-$PKG_VERSION"
 NGINX_MODS_DIR="$PKG_BUILD_DIR/_mods"
-CONFIGURE_ARGS="					\\
-	--prefix="$NGINX_PREFIX"		\\
-	--sbin-path=nginx				\\
-	--conf-path=nginx.conf			\\
-	--pid-path=nginx.pid			\\
-	--error-log-path=error.log		\\
-	--http-log-path=access.log		\\
-	--with-cc-opt='$EXTRA_CFLAGS'	\\
-	--with-ld-opt='$EXTRA_LDFLAGS'	\\
-"
+CONFIGURE_ARGS=(
+	--prefix="$NGINX_PREFIX"
+	--sbin-path=nginx
+	--conf-path=nginx.conf
+	--pid-path=nginx.pid
+	--error-log-path=error.log
+	--http-log-path=access.log
+	--with-cc-opt="${EXTRA_CFLAGS[*]}"
+	--with-ld-opt="${EXTRA_LDFLAGS[*]}"
+)
 
 nginx_get_mod_info() {
 	local what="$1"
@@ -86,7 +86,8 @@ nginx_add_modules() {
 
 	for m in $MODS; do
 		mod_dir="$(nginx_get_mod_info mod_dir "$m")"
-		arg="	--add-module=$mod_dir"
-		CONFIGURE_ARGS="${CONFIGURE_ARGS}${arg}"
+		CONFIGURE_ARGS+=(
+			--add-module="$mod_dir"
+		)
 	done
 }

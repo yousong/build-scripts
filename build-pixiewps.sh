@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -56,7 +56,7 @@ configure() {
 	true
 }
 
-MAKE_ARGS="						\\
-	-C '$PKG_SOURCE_DIR/src'	\\
-	PREFIX='$INSTALL_PREFIX'	\\
-"
+MAKE_ARGS+=(
+	-C "$PKG_SOURCE_DIR/src"
+	PREFIX="$INSTALL_PREFIX"
+)

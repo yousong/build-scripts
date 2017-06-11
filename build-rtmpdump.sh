@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2015-2016 (c) Yousong Zhou
 #
@@ -64,11 +64,11 @@ rtmpdump_init() {
 	else
 		sys=posix
 	fi
-	MAKE_VARS="							\\
-		prefix=$INSTALL_PREFIX			\\
-		SYS=$sys						\\
-		XCFLAGS='$EXTRA_CFLAGS'			\\
-		XLDFLAGS='$EXTRA_LDFLAGS'		\\
-	"
+	MAKE_VARS=(
+		prefix="$INSTALL_PREFIX"
+		SYS="$sys"
+		XCFLAGS="${EXTRA_CFLAGS[*]}"
+		XLDFLAGS="${EXTRA_LDFLAGS[*]}"
+	)
 }
 rtmpdump_init

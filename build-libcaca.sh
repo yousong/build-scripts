@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -27,13 +27,13 @@ PKG_DEPENDS='imlib2 ncurses zlib'
 
 . "$PWD/env.sh"
 
-CONFIGURE_ARGS="$CONFIGURE_ARGS	\\
-	--enable-ncurses			\\
-	--disable-x11				\\
-	--disable-java				\\
-	--disable-cocoa				\\
-	--disable-csharp			\\
-	--disable-cxx				\\
-	--disable-python			\\
-	--disable-ruby				\\
-"
+CONFIGURE_ARGS+=(
+	--enable-ncurses
+	--disable-x11
+	--disable-java
+	--disable-cocoa
+	--disable-csharp
+	--disable-cxx
+	--disable-python
+	--disable-ruby
+)

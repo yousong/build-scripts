@@ -5,7 +5,7 @@ Scripts for quickly building/installing specified version of open source project
 
 	Previously experience with target projects and some shell scripting experience is expected
 
-- Scripts are executed with `/bin/sh -e`
+- Scripts are executed with `/bin/bash -e`
 - Scripts are written in a way trying to be "reentrant"
 - Use absolute path
 

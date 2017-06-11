@@ -37,8 +37,8 @@ compile() {
 		false
 	fi
 	$MAKEJ $target \
-		MYCFLAGS="$EXTRA_CFLAGS" \
-		MYLDFLAGS="$EXTRA_LDFLAGS" \
+		MYCFLAGS="${EXTRA_CFLAGS[*]}" \
+		MYLDFLAGS="${EXTRA_LDFLAGS[*]}" \
 		MYLIBS="-ltermcap"
 	$MAKEJ test
 }

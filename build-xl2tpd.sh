@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright 2016 (c) Yousong Zhou
 #
@@ -74,9 +74,9 @@ configure() {
 #	PATH_USR_SBIN=$INSTALL_PREFIX/sbin/pppd
 #	PATH_USR_SBIN=/usr/sbin/pppd
 #
-EXTRA_CFLAGS="$EXTRA_CFLAGS		\\
-	-DPPPD='\\\\\\\"$INSTALL_PREFIX/sbin/pppd\\\\\\\"'	\\
-"
-MAKE_VARS="$MAKE_VARS			\\
-	PREFIX='$INSTALL_PREFIX'	\\
-"
+EXTRA_CFLAGS+=(
+	-DPPPD="'\"$INSTALL_PREFIX/sbin/pppd\"'"
+)
+MAKE_VARS+=(
+	PREFIX="$INSTALL_PREFIX"
+)
