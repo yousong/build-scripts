@@ -5,6 +5,8 @@
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
 #
+PKG_DEPENDS="$PKG_DEPENDS bzip2"
+
 configure() {
 	cd "$PKG_SOURCE_DIR"
 	$PKG_SOURCE_DIR/bootstrap.sh
