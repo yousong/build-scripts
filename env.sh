@@ -350,7 +350,7 @@ build_configure_cmake() {
 		"$PKG_SOURCE_DIR/$PKG_CMAKE_SOURCE_SUBDIR"
 }
 
-compile() {
+build_compile_make() {
 	cd "$PKG_BUILD_DIR"
 	env CFLAGS="${EXTRA_CFLAGS[*]}"			\
 		CPPFLAGS="${EXTRA_CPPFLAGS[*]}"		\
@@ -359,7 +359,12 @@ compile() {
 		$MAKEJ								\
 			"${MAKE_ARGS[@]}"				\
 			${PKG_CMAKE:+VERBOSE=1}			\
-			"${MAKE_VARS[@]}"
+			"${MAKE_VARS[@]}"				\
+			"$@"
+}
+
+compile() {
+	build_compile_make
 }
 
 autoconf_fixup() {
@@ -389,15 +394,15 @@ staging_pre() {
 	rm -rf "$PKG_STAGING_DIR"
 }
 
-staging() {
+build_staging() {
 	cd "$PKG_BUILD_DIR"
 	env "${MAKE_ENVS[@]}"				\
 		$MAKEJ							\
 			"${MAKE_ARGS[@]}"			\
-			install						\
 			DESTDIR="$PKG_STAGING_DIR"	\
 			${PKG_CMAKE:+VERBOSE=1}		\
-			"${MAKE_VARS[@]}"
+			"${MAKE_VARS[@]}"			\
+			"$@"
 }
 
 staging_check_default() {
@@ -408,6 +413,10 @@ staging_check_default() {
 		__errmsg "$PKG_STAGING_DIR has $nsubdir subdirs"
 		return 1
 	fi
+}
+
+staging() {
+	build_staging 'install'
 }
 
 staging_post() {
