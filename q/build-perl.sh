@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 
 PKG_NAME=perl
 PKG_VERSION=5.22.1

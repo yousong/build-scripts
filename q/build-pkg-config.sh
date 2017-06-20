@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 
 PKG_NAME=pkg-config
 PKG_VERSION=0.29

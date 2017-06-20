@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 
 PKG_NAME=autoconf
 PKG_VERSION=2.69

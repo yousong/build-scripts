@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 
 PKG_NAME=m4
 PKG_VERSION=1.4.17

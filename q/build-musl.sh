@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -e
 
 PKG_NAME=musl
 PKG_VERSION=1.1.14
@@ -8,6 +8,6 @@ PKG_SOURCE_MD5SUM=d529ce4a2f7f79d8c3fd4b8329417b57
 
 . "$PWD/env.sh"
 
-CONFIGURE_ARGS="$CONFIGURE_ARGS			\\
-	--syslibdir='$INSTALL_PREFIX/lib'	\\
-"
+CONFIGURE_ARGS+=(
+	--syslibdir="$INSTALL_PREFIX/lib"
+)
