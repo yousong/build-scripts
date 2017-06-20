@@ -75,3 +75,10 @@ configure_pre() {
 	aclocal --output=- >>aclocal.m4
 	autoconf_fixup
 }
+
+# we do not want to depend on system's libdbus without setting RPATH.  This is
+# important for other packages like bmv2 depending on us yet failed to run
+# conftest because of dynamic linking issues
+CONFIGURE_ARGS+=(
+	--disable-dbus
+)
