@@ -62,13 +62,10 @@ CMAKE_ARGS+=(
 	-DUSE_MKID=OFF
 )
 
-boost1_59_lib="$INSTALL_PREFIX/lib/boost-1.59"
-boost1_59_inc="$INSTALL_PREFIX/include/boost-1.59"
+boost1_59_lib="$INSTALL_PREFIX/boost/boost-1.59/lib"
+boost1_59_inc="$INSTALL_PREFIX/boost/boost-1.59/include"
 if [ -d "$boost1_59_lib" -a -d $boost1_59_inc ]; then
-	EXTRA_LDFLAGS+=(
-		-L"$boost1_59_lib"
-		-Wl,-rpath,"$boost1_59_lib"
-	)
+	EXTRA_LDFLAGS+=( -L"$boost1_59_lib" -Wl,-rpath,"$boost1_59_lib" )
 	CMAKE_ARGS+=(
 		-DBOOST_INCLUDE_DIR="$boost1_59_inc"
 	)
