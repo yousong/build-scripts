@@ -82,7 +82,7 @@ env_init() {
 		EXTRA_CFLAGS+=( -isystem "$MACPORTS_PREFIX/include")
 		EXTRA_LDFLAGS+=( -L"$MACPORTS_PREFIX/lib" -Wl,-rpath,"$MACPORTS_PREFIX/lib")
 	fi
-	EXTRA_CXXFLAGS=( ${EXTRA_CFLAGS[@]} )
+	EXTRA_CXXFLAGS+=( ${EXTRA_CFLAGS[@]} )
 	export PKG_CONFIG_PATH
 	if ! running_in_make || [ -n "$NJOBS" ]; then
 		NJOBS="${NJOBS:-$((2 * $(ncpus)))}"
