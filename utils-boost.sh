@@ -7,6 +7,19 @@
 #
 PKG_DEPENDS="$PKG_DEPENDS bzip2"
 
+BOOST_MAJMIN="${PKG_VERSION%.*}"
+BOOST_PREFIX="$PKG_STAGING_DIR$INSTALL_PREFIX/boost/boost-$BOOST_MAJMIN"
+BOOST_LIBDIR="$BOOST_PREFIX/lib"
+BOOST_INCDIR="$BOOST_PREFIX/include"
+BOOST_EXTRA_CFLAGS=(
+	"${EXTRA_CFLAGS[@]}"
+	-I"$BOOST_PREFIX/include"
+)
+BOOST_EXTRA_LDFLAGS=(
+	"${EXTRA_LDFLAGS[@]}"
+	-L"$BOOST_PREFIX/lib" -Wl,-rpath,"$BOOST_PREFIX/lib"
+)
+
 configure() {
 	cd "$PKG_SOURCE_DIR"
 	$PKG_SOURCE_DIR/bootstrap.sh
@@ -14,10 +27,6 @@ configure() {
 
 boost_b2() {
 	local target="$1"
-	local prefix="$PKG_STAGING_DIR$INSTALL_PREFIX"
-	local majmin="${PKG_VERSION%.*}"
-	local libdir="$prefix/lib/boost-$majmin"
-	local incdir="$prefix/include/boost-$majmin"
 
 	cd "$PKG_BUILD_DIR"
 	mkdir -p build
@@ -31,17 +40,17 @@ boost_b2() {
 	# NJOBS can be undefined if running_in_make
 	#
 	$PKG_SOURCE_DIR/b2 \
-		--prefix="$prefix" \
-		--libdir="$libdir" \
-		--includedir="$incdir" \
+		--prefix="$BOOST_PREFIX" \
+		--libdir="$BOOST_LIBDIR" \
+		--includedir="$BOOST_INCDIR" \
 		--stagedir="$PKG_BUILD_DIR/stage" \
 		--build-dir="$PKG_BUILD_DIR/build" \
 		--layout=system \
 		${NJOBS:+-j "$NJOBS"} \
 		-q \
 		variant=release \
-		cflags="${EXTRA_CFLAGS[*]}" \
-		linkflags="${EXTRA_LDFLAGS[*]}" \
+		cflags="${BOOST_EXTRA_CFLAGS[*]}" \
+		linkflags="${BOOST_EXTRA_LDFLAGS[*]}" \
 		"$target"
 }
 
