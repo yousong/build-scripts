@@ -22,7 +22,7 @@ PKG_VERSION=$LLVM_VERSION
 PKG_SOURCE="$PKG_NAME-${PKG_VERSION}.src.tar.xz"
 PKG_SOURCE_URL="http://llvm.org/releases/$PKG_VERSION/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=ea9139a604be702454f6acf160b4f3a2
-PKG_DEPENDS='cmake zlib'
+PKG_DEPENDS='cmake zlib gcc-cross-pass2'
 PKG_CMAKE=1
 
 PKG_clang_NAME=clang
