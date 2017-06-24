@@ -630,7 +630,7 @@ EOF
 	done
 
 	for d in $PKG_DEPENDS; do
-		mdepends="$stampdir/stamp.$d.install $mdepends"
+		mdepends="$d/install $mdepends"
 	done
 	mdepends="${mdepends% }"
 
