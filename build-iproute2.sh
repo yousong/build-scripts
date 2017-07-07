@@ -10,7 +10,7 @@ PKG_VERSION=4.11.0
 PKG_SOURCE="$PKG_NAME-${PKG_VERSION}.tar.xz"
 PKG_SOURCE_URL="https://www.kernel.org/pub/linux/utils/net/iproute2/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=7a9498de88bcca95c305df6108ae197e
-PKG_DEPENDS='db libelf libmnl'
+PKG_DEPENDS='db elfutils libmnl'
 PKG_PLATFORM=linux
 
 . "$PWD/env.sh"
