@@ -72,10 +72,10 @@ download_extra() {
 }
 
 prepare_extra() {
-	untar "$BASE_DL_DIR/$PKG_clang_SOURCE"			"$PKG_SOURCE_DIR/tools/"	"s:^[^/]\\+:clang:"
-	untar "$BASE_DL_DIR/$PKG_compiler_rt_SOURCE"	"$PKG_SOURCE_DIR/projects/"	"s:^[^/]\\+:compiler-rt:"
-	untar "$BASE_DL_DIR/$PKG_libcxx_SOURCE"			"$PKG_SOURCE_DIR/projects/"	"s:^[^/]\\+:libcxx:"
-	untar "$BASE_DL_DIR/$PKG_libcxxabi_SOURCE"		"$PKG_SOURCE_DIR/projects/"	"s:^[^/]\\+:libcxxabi:"
+	unpack "$BASE_DL_DIR/$PKG_clang_SOURCE"			"$PKG_SOURCE_DIR/tools/"	"s:^[^/]\\+:clang:"
+	unpack "$BASE_DL_DIR/$PKG_compiler_rt_SOURCE"	"$PKG_SOURCE_DIR/projects/"	"s:^[^/]\\+:compiler-rt:"
+	unpack "$BASE_DL_DIR/$PKG_libcxx_SOURCE"		"$PKG_SOURCE_DIR/projects/"	"s:^[^/]\\+:libcxx:"
+	unpack "$BASE_DL_DIR/$PKG_libcxxabi_SOURCE"		"$PKG_SOURCE_DIR/projects/"	"s:^[^/]\\+:libcxxabi:"
 }
 
 . $PWD/utils-toolchain.sh

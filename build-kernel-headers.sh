@@ -24,7 +24,7 @@ download_extra() {
 }
 
 prepare_extra() {
-	untar "$BASE_DL_DIR/$RISCV_KERNEL_SOURCE" "$PKG_SOURCE_DIR" "s:^[^/]\\+::"
+	unpack "$BASE_DL_DIR/$RISCV_KERNEL_SOURCE" "$PKG_SOURCE_DIR" "s:^[^/]\\+::"
 }
 
 configure() {

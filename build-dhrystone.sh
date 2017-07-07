@@ -33,7 +33,7 @@ prepare_source() {
 
 	dir="$(basename $PKG_SOURCE_DIR)"
 	trans_exp="s:^:$dir/:"
-	untar "$BASE_DL_DIR/$PKG_SOURCE" "$BASE_BUILD_DIR" "$trans_exp"
+	unpack "$BASE_DL_DIR/$PKG_SOURCE" "$BASE_BUILD_DIR" "$trans_exp"
 }
 
 do_patch() {

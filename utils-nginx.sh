@@ -75,7 +75,7 @@ prepare_extra() {
 		source="$(nginx_get_mod_info source "$m")"
 		tarball="$BASE_DL_DIR/$source"
 
-		untar "$tarball" "$NGINX_MODS_DIR" "s:^[^/]\\+:$fn:"
+		unpack "$tarball" "$NGINX_MODS_DIR" "s:^[^/]\\+:$fn:"
 	done
 }
 

@@ -49,7 +49,7 @@ prepare_extra() {
 
 	for lib in $TOOLCHAIN_GCC_SUPPORT_LIBS; do
 		file="$(eval "echo \$PKG_${lib}_SOURCE")"
-		untar "$BASE_DL_DIR/$file" "$PKG_SOURCE_DIR" "s,^$lib[^/]*,$lib,"
+		unpack "$BASE_DL_DIR/$file" "$PKG_SOURCE_DIR" "s,^$lib[^/]*,$lib,"
 	done
 
 	sed -i'' -e 's,gcc_no_link=yes,gcc_no_link=no,' "$PKG_SOURCE_DIR/libstdc++-v3/configure"

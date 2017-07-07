@@ -121,10 +121,7 @@ env_init_pkg() {
 		if [ -n "$PKG_BUILD_DIR_BASENAME" ]; then
 			PKG_SOURCE_DIR="$BASE_BUILD_DIR/$PKG_BUILD_DIR_BASENAME"
 		else
-			PKG_SOURCE_DIR="$BASE_BUILD_DIR/$PKG_SOURCE"
-			PKG_SOURCE_DIR="${PKG_SOURCE_DIR%%.tar*}"
-			PKG_SOURCE_DIR="${PKG_SOURCE_DIR%%.tgz}"
-			PKG_SOURCE_DIR="${PKG_SOURCE_DIR%%.tbz2}"
+			PKG_SOURCE_DIR="$BASE_BUILD_DIR/$(unpack_dirname "$PKG_SOURCE")"
 		fi
 		PKG_STAGING_DIR="$BASE_DESTDIR/$PKG_NAME-$PKG_VERSION-install"
 	fi
@@ -291,12 +288,23 @@ download() {
 	download_extra
 }
 
-untar() {
+unpack_dirname() {
+	local fn="$1"
+
+	fn="${fn%%.tar*}"
+	fn="${fn%%.tgz}"
+	fn="${fn%%.tbz2}"
+	fn="${fn%%.zip}"
+	echo "$fn"
+}
+
+unpack() {
 	local file="$1"
 	local dir="$2"
 	local trans_exp="$3"
 	local fn="$(basename $file)"
-	local ftyp opts
+	local opt_ftyp opts
+	local ftyp
 
 	# The following options are only supported by GNU tar.
 	#
@@ -306,24 +314,36 @@ untar() {
 	#	--xz (-J)
 	#
 	# The MacPorts package name is gnutar
+	ftyp=tar
 	case "$fn" in
 		*.tar.gz|*.tgz)
-			ftyp="--gzip"
+			opt_ftyp="--gzip"
 			;;
 		*.tar.bz2)
-			ftyp="--bzip2"
+			opt_ftyp="--bzip2"
 			;;
 		*.tar.xz)
-			ftyp="--xz"
+			opt_ftyp="--xz"
+			;;
+		*.zip)
+			ftyp="zip"
 			;;
 		*)
 			__errmsg "unknown file type: $file"
 			return 1
 			;;
 	esac
-	[ ! -d "$dir" ] || opts="$opts -C $dir"
-	[ -z "$trans_exp" ] || opts="$opts --transform=$trans_exp"
-	tar $opts $ftyp -xf "$file"
+
+	if [ "$ftyp" = tar ]; then
+		[ -z "$dir" ] || opts="$opts -C $dir"
+		[ -z "$trans_exp" ] || opts="$opts --transform=$trans_exp"
+		tar $opts $opt_ftyp -xf "$file"
+	elif [ "$ftyp" = zip ]; then
+		( cd "$dir" && unzip "$file"; )
+	else
+		# unreachable
+		return 1
+	fi
 }
 
 prepare_source() {
@@ -334,7 +354,7 @@ prepare_source() {
 		dir="$(basename $PKG_SOURCE_DIR)"
 		trans_exp="s:^[^/]\\+:$dir:"
 	fi
-	untar "$BASE_DL_DIR/$PKG_SOURCE" "$BASE_BUILD_DIR" "$trans_exp"
+	unpack "$BASE_DL_DIR/$PKG_SOURCE" "$BASE_BUILD_DIR" "$trans_exp"
 }
 
 prepare_extra() {
