@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright 2016 (c) Yousong Zhou
+# Copyright 2016-2017 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -17,10 +17,10 @@
 #   https://debian-handbook.info/browse/stable/sect.kernel-compilation.html
 #
 PKG_NAME=linux-deb
-PKG_VERSION=4.9.26
+PKG_VERSION=4.9.38
 PKG_SOURCE="linux-${PKG_VERSION}.tar.xz"
 PKG_SOURCE_URL="https://cdn.kernel.org/pub/linux/kernel/v${PKG_VERSION%%.*}.x/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=fbf42a254cc36d4afd5b663ebc563948
+PKG_SOURCE_MD5SUM=73548b7a9539346f6e79dbfb61f93b17
 PKG_BUILD_DIR_BASENAME="$PKG_NAME-$PKG_VERSION"
 PKG_SOURCE_UNTAR_FIXUP=1
 PKG_PLATFORM=no
@@ -75,6 +75,20 @@ configure() {
 	# CONFIG_NF_IP_NAT will enable 'nat' table in iptables and is not available
 	# in 3.16 but reappeared in 4.8.
 	kconfig_set_option CONFIG_IP_NF_NAT m
+
+	# To use BBR
+	#
+	#	net.core.default_qdisc=fq
+	#	net.ipv4.tcp_congestion_control=bbr
+	#
+	# To find available tcp congestion algo
+	#
+	#	sysctl net.ipv4.tcp_available_congestion_control
+	#
+	kconfig_set_option CONFIG_TCP_CONG_BBR y
+	kconfig_set_option CONFIG_NET_SCH_CODEL y
+	kconfig_set_option CONFIG_NET_SCH_FQ y
+	kconfig_set_option CONFIG_NET_SCH_FQ_CODEL y
 	$MAKEJ ARCH=x86_64 olddefconfig
 }
 
