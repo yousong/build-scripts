@@ -6,10 +6,10 @@
 # See /LICENSE for more information.
 #
 PKG_NAME=shadowsocks-libev
-PKG_VERSION=3.0.6
+PKG_VERSION=3.0.7
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="https://github.com/shadowsocks/$PKG_NAME/releases/download/v$PKG_VERSION/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=2db5ac11e70e166575a07faa1d0478e4
+PKG_SOURCE_MD5SUM=92d2f088692574457a59d03202e8b7b2
 PKG_AUTOCONF_FIXUP=1
 PKG_DEPENDS='libcork libev libsodium mbedtls pcre udns'
 
@@ -114,9 +114,11 @@ do_patch() {
 EOF
 }
 
+# shared and static libraries cannot be both disabled.  It's written in the
+# generated configure script
 CONFIGURE_ARGS+=(
 	--enable-system-shared-lib
-	--disable-static
-	--enable-shared
 	--disable-silent-rules
+	--disable-documentation
+	--disable-shared
 )
