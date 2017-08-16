@@ -493,8 +493,10 @@ staging_post_strip() {
 }
 
 staging_post() {
-	staging_check_default
-	staging_post_strip "$PKG_STAGING_DIR$INSTALL_PREFIX"
+	if [ -d "$PKG_STAGING_DIR" ]; then
+		staging_check_default
+		staging_post_strip "$PKG_STAGING_DIR$INSTALL_PREFIX"
+	fi
 }
 
 install_pre() {
