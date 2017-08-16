@@ -27,6 +27,7 @@ PKG_PLATFORM=no
 
 . "$PWD/env.sh"
 . "$PWD/utils-kconfig.sh"
+. "$PWD/utils-linux.sh"
 
 EXTRA_CFLAGS=()
 EXTRA_CPPFLAGS=()
@@ -76,19 +77,8 @@ configure() {
 	# in 3.16 but reappeared in 4.8.
 	kconfig_set_option CONFIG_IP_NF_NAT m
 
-	# To use BBR
-	#
-	#	net.core.default_qdisc=fq
-	#	net.ipv4.tcp_congestion_control=bbr
-	#
-	# To find available tcp congestion algo
-	#
-	#	sysctl net.ipv4.tcp_available_congestion_control
-	#
-	kconfig_set_option CONFIG_TCP_CONG_BBR y
-	kconfig_set_option CONFIG_NET_SCH_CODEL y
-	kconfig_set_option CONFIG_NET_SCH_FQ y
-	kconfig_set_option CONFIG_NET_SCH_FQ_CODEL y
+	kconfig_bbr
+	kconfig_docker
 	$MAKEJ ARCH=x86_64 olddefconfig
 }
 
