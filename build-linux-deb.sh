@@ -17,10 +17,10 @@
 #   https://debian-handbook.info/browse/stable/sect.kernel-compilation.html
 #
 PKG_NAME=linux-deb
-PKG_VERSION=4.9.38
+PKG_VERSION=4.9.43
 PKG_SOURCE="linux-${PKG_VERSION}.tar.xz"
 PKG_SOURCE_URL="https://cdn.kernel.org/pub/linux/kernel/v${PKG_VERSION%%.*}.x/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=73548b7a9539346f6e79dbfb61f93b17
+PKG_SOURCE_MD5SUM=ec76b06f45e2ca874a71743febd4c230
 PKG_BUILD_DIR_BASENAME="$PKG_NAME-$PKG_VERSION"
 PKG_SOURCE_UNTAR_FIXUP=1
 PKG_PLATFORM=no
