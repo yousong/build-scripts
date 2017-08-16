@@ -10,6 +10,11 @@
 # - https://docs.docker.com/engine/installation/linux/docker-ce/binaries/
 # - https://docs.docker.com/engine/installation/linux/linux-postinstall/
 #
+# It seems that static binaries of docker does not have udev sync support
+# because on the machine it was built there was no static library of udev sync.
+#
+# - Just in case... http://www.draconyx.net/articles/build-a-dynamically-linked-docker.html
+#
 PKG_NAME=docker
 PKG_VERSION=17.06.0
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION-ce.tgz"
