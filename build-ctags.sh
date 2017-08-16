@@ -16,23 +16,23 @@ PKG_SOURCE_MD5SUM=c00f82ecdcc357434731913e5b48630d
 do_patch() {
 	cd "$PKG_SOURCE_DIR"
 
-	# 6 How to Use Variables, GNU make manual
-	#
-	#	A variable name may be any sequence of characters not containing ‘:’,
-	#	‘#’, ‘=’, or leading or trailing whitespace. However, variable names
-	#	containing characters other than letters, numbers, and underscores
-	#	should be avoided, as they may be given special meanings in the future,
-	#	and with some shells they cannot be passed through the environment to a
-	#	sub-make
-	#
-	# Allow '/' to be valid lexcial element of identifier
-	#
-	# The ungetc() is needed for the following case when c is "M" after reading
-	# "override"
-	#
-	#		override MAKE:=123
-	#
 	patch -p0 <<"EOF"
+6 How to Use Variables, GNU make manual
+
+	A variable name may be any sequence of characters not containing ‘:’,
+	‘#’, ‘=’, or leading or trailing whitespace. However, variable names
+	containing characters other than letters, numbers, and underscores
+	should be avoided, as they may be given special meanings in the future,
+	and with some shells they cannot be passed through the environment to a
+	sub-make
+
+Allow '/' to be valid lexcial element of identifier
+
+The ungetc() is needed for the following case when c is "M" after reading
+"override"
+
+	override MAKE:=123
+
 --- make.c.orig	2016-06-01 20:06:46.847104986 +0800
 +++ make.c	2016-06-01 20:07:02.839109892 +0800
 @@ -70,7 +70,7 @@ static int skipToNonWhite (void)
@@ -53,6 +53,46 @@ do_patch() {
  			}
  		}
  		else
+EOF
+
+	patch -p0 <<"EOF"
+According to "2. Shell Command Language", IEEE Std 1003.1, 2004 Edition
+
+	2.9.5 Function Definition Command
+
+	A function is a user-defined name that is used as a simple command to call
+	a compound command with new positional parameters. A function is defined with a
+	"function definition command".
+
+	The format of a function definition command is as follows:
+
+		fname() compound-command[io-redirect ...]
+
+	The function is named fname; the application shall ensure that it is a name
+	(see the Base Definitions volume of IEEE Std 1003.1-2001, Section 3.230,
+	Name).  An implementation may allow other characters in a function name as an
+	extension. The implementation shall maintain separate name spaces for functions
+	and variables.
+
+Colon character is allowed by bash in function names
+
+--- sh.c.orig	2017-08-16 14:45:39.781096557 +0800
++++ sh.c	2017-08-16 14:46:16.313107991 +0800
+@@ -75,9 +75,9 @@ static void findShTags (void)
+ 			while (isspace ((int) *cp))
+ 				++cp;
+ 		}
+-		if (! (isalnum ((int) *cp) || *cp == '_'))
++		if (! (isalnum ((int) *cp) || *cp == '_' || *cp == ':'))
+ 			continue;
+-		while (isalnum ((int) *cp)  ||  *cp == '_')
++		while (isalnum ((int) *cp)  ||  *cp == '_' || *cp == ':')
+ 		{
+ 			vStringPut (name, (int) *cp);
+ 			++cp;
+EOF
+
+	patch -p0 <<"EOF"
 --- Makefile.in.orig	2016-06-01 20:09:20.911155981 +0800
 +++ Makefile.in	2016-06-01 20:09:29.703156974 +0800
 @@ -24,7 +24,7 @@
