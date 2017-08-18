@@ -185,7 +185,7 @@ env_init_gnu_toolchain() {
 		return 1
 	fi
 	EXTRA_LDFLAGS+=( -Wl,--dynamic-linker="$GNU_TOOLCHAIN_DIR_LIB/ld-linux-x86-64.so.2" )
-	EXTRA_LDFLAGS+=( -Wl,-rpath "$GNU_TOOLCHAIN_DIR_LIB" -L"$GNU_TOOLCHAIN_DIR_LIB" )
+	EXTRA_LDFLAGS+=( -Wl,-rpath,"$GNU_TOOLCHAIN_DIR_LIB" -L"$GNU_TOOLCHAIN_DIR_LIB" )
 
 	CONFIGURE_VARS+=(
 		CC="$GNU_TOOLCHAIN_CC"
