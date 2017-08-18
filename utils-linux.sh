@@ -69,3 +69,13 @@ kconfig_bbr() {
 	kconfig_set_option CONFIG_NET_SCH_FQ y
 	kconfig_set_option CONFIG_NET_SCH_FQ_CODEL y
 }
+
+kconfig_openvswitch() {
+	kconfig_set_option CONFIG_NET_IPGRE y
+	kconfig_set_option CONFIG_VXLAN y
+	kconfig_set_option CONFIG_GENEVE y
+	kconfig_set_option CONFIG_OPENVSWITCH y
+	kconfig_set_option CONFIG_OPENVSWITCH_GRE y
+	kconfig_set_option CONFIG_OPENVSWITCH_VXLAN y
+	kconfig_set_option CONFIG_OPENVSWITCH_GENEVE y
+}
