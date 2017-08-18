@@ -37,6 +37,18 @@ PKG_googletest_SOURCE_MD5SUM=
 
 . "$PWD/env.sh"
 
+# If you get linker errors about undefined references to symbols that involve
+# types in the std::__cxx11 namespace or the tag [abi:cxx11] then it probably
+# indicates that you are trying to link together object files that were compiled
+# with different values for the _GLIBCXX_USE_CXX11_ABI macro. This commonly
+# happens when linking to a third-party library that was compiled with an older
+# version of GCC. If the third-party library cannot be rebuilt with the new ABI
+# then you will need to recompile your code with the old ABI.
+#
+# https://gcc.gnu.org/onlinedocs/gcc-5.2.0/libstdc++/manual/manual/using_dual_abi.html
+#
+env_init_gnu_toolchain
+
 download_extra() {
 	download_http "$PKG_googlemock_SOURCE"		"$PKG_googlemock_SOURCE_URL"			"$PKG_googlemock_SOURCE_MD5SUM"
 	download_http "$PKG_googletest_SOURCE"		"$PKG_googletest_SOURCE_URL"			"$PKG_googletest_SOURCE_MD5SUM"
