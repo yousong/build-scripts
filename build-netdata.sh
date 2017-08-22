@@ -27,10 +27,10 @@
 # - https://github.com/firehol/netdata/wiki/Log-Files
 #
 PKG_NAME=netdata
-PKG_VERSION=1.3.0
+PKG_VERSION=1.7.0
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.bz2"
 PKG_SOURCE_URL="https://github.com/firehol/netdata/releases/download/v$PKG_VERSION/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=b9dd9225ec81a8ee755fbfcd4d54f8f8
+PKG_SOURCE_MD5SUM=de53982cd43c1f6e060a3621984782de
 PKG_DEPENDS='e2fsprogs zlib'
 
 . "$PWD/env.sh"
