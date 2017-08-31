@@ -79,6 +79,7 @@ configure() {
 
 	kconfig_bbr
 	kconfig_docker
+	kconfig_dpdk
 	kconfig_openvswitch
 	$MAKEJ ARCH=x86_64 olddefconfig
 }

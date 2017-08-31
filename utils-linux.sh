@@ -79,3 +79,11 @@ kconfig_openvswitch() {
 	kconfig_set_option CONFIG_OPENVSWITCH_VXLAN y
 	kconfig_set_option CONFIG_OPENVSWITCH_GENEVE y
 }
+
+kconfig_dpdk() {
+	kconfig_set_option CONFIG_UIO y
+	kconfig_set_option CONFIG_HUGETLBFS y
+	kconfig_set_option CONFIG_PROC_PAGE_MONITOR y
+	kconfig_set_option CONFIG_HPET y
+	kconfig_set_option CONFIG_HPET_MMAP y
+}
