@@ -221,6 +221,17 @@ env_init_gnu_toolchain() {
 	)
 }
 
+# Some build systems passes $EXTRA_LDFLAGS directly to the linker, but
+# -Wl,-rpath,xxx is for the compiler
+env_fixup_extra_ldflags() {
+	local idx val
+
+	for idx in "${!EXTRA_LDFLAGS[@]}"; do
+		val="${EXTRA_LDFLAGS[$idx]}"
+		EXTRA_LDFLAGS[$idx]="${val/-Wl,-rpath,/-rpath=}"
+	done
+}
+
 env_csum_check() {
 	local file="$1"
 	local xcsum="$2"
