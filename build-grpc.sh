@@ -16,7 +16,29 @@ PKG_SOURCE_UNTAR_FIXUP=1
 PKG_DEPENDS='c-ares openssl protobuf zlib'
 
 . "$PWD/env.sh"
-env_init_gnu_toolchain
+
+# gRPC uses std::map emplace() which is only available since GCC 4.8
+grpc_use_gnu_toolchain() {
+	env_init_gnu_toolchain
+	MAKE_VARS+=(
+		AR="$GNU_TOOLCHAIN_DIR_BIN/$TRI_TARGET-ar cru"
+		LD="$GNU_TOOLCHAIN_DIR_BIN/$TRI_TARGET-gcc"
+		LDXX="$GNU_TOOLCHAIN_DIR_BIN/$TRI_TARGET-g++"
+	)
+	# -Wimplicit-fallthrough is only available since GCC 7
+	#
+	#	src/core/lib/support/murmur_hash.c: In function 'gpr_murmur_hash3':
+	#	src/core/lib/support/murmur_hash.c:79:10: error: this statement may fall through [-Werror=implicit-fallthrough=]
+	#	       k1 ^= ((uint32_t)tail[2]) << 16;
+	#	       ~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	#	src/core/lib/support/murmur_hash.c:80:5: note: here
+	#	     case 2:
+	#	     ^~~~
+	#
+	EXTRA_CFLAGS+=(
+		-Wno-error=implicit-fallthrough
+	)
+}
 
 # gRPC's Makefile was automatically generated from templates/Makefile.template.  The generated Makefile will have the following quirks and assumptions
 #
@@ -48,16 +70,6 @@ configure() {
 #	src/core/ext/filters/client_channel/client_channel.c:1459:40: error: declaration of ‘on_complete’ shadows a global declaration [-Werror=shadow]
 #	src/core/ext/filters/client_channel/client_channel.c:1243:13: error: shadowed declaration is here [-Werror=shadow]
 #
-# -Wno-error=implicit-fallthrough
-#
-#	src/core/lib/support/murmur_hash.c: In function 'gpr_murmur_hash3':
-#	src/core/lib/support/murmur_hash.c:79:10: error: this statement may fall through [-Werror=implicit-fallthrough=]
-#	       k1 ^= ((uint32_t)tail[2]) << 16;
-#	       ~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#	src/core/lib/support/murmur_hash.c:80:5: note: here
-#	     case 2:
-#	     ^~~~
-#
 # -Wno-error=conversion
 #
 #	src/core/ext/transport/cronet/transport/cronet_transport.c: In function 'create_grpc_frame':
@@ -66,15 +78,11 @@ configure() {
 #	          ^
 EXTRA_CFLAGS+=(
 	-Wno-error=shadow
-	-Wno-error=implicit-fallthrough
 	-Wno-error=conversion
 )
 
 MAKE_VARS+=(
 	prefix="$PKG_STAGING_DIR$INSTALL_PREFIX"
 	install_prefix="$INSTALL_PREFIX"
-	AR="$GNU_TOOLCHAIN_DIR_BIN/$TRI_TARGET-ar cru"
-	LD="$GNU_TOOLCHAIN_DIR_BIN/$TRI_TARGET-gcc"
-	LDXX="$GNU_TOOLCHAIN_DIR_BIN/$TRI_TARGET-g++"
-#	V=1
+	V=1
 )
