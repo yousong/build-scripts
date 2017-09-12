@@ -55,10 +55,10 @@
 #   Can be useful for inspirations
 #
 PKG_NAME=mininet
-PKG_VERSION=2.2.1
+PKG_VERSION=2.2.2
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="https://github.com/mininet/mininet/archive/$PKG_VERSION.tar.gz"
-PKG_SOURCE_MD5SUM=a11238ee25489d3aa20f7f8aa72fca69
+PKG_SOURCE_MD5SUM=6d19e8b8865805a2af91ee5600bec385
 PKG_DEPENDS='openvswitch python2'
 
 . "$PWD/env.sh"
