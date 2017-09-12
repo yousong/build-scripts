@@ -131,7 +131,8 @@ There are a few methods to work around this
 
 2. Edit `sudoers` setting with `visudo`.  See sudoers manual for syntax details
 
-		# keep PATH for user yousong
+		# keep PATH for user yousong: replace the default Defaults settings for
+		# secure_path
 		Defaults:  yousong env_keep += "PATH"
 		Defaults: !yousong secure_path = /sbin:/bin:/usr/sbin:/usr/bin
 
