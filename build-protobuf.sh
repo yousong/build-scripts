@@ -47,7 +47,7 @@ PKG_googletest_SOURCE_MD5SUM=
 #
 # https://gcc.gnu.org/onlinedocs/gcc-5.2.0/libstdc++/manual/manual/using_dual_abi.html
 #
-env_init_gnu_toolchain
+#env_init_gnu_toolchain
 
 download_extra() {
 	download_http "$PKG_googlemock_SOURCE"		"$PKG_googlemock_SOURCE_URL"			"$PKG_googlemock_SOURCE_MD5SUM"
