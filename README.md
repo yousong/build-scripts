@@ -18,6 +18,7 @@ Scripts for quickly building/installing specified version of open source project
 	uudecode, can be provided by debian package sharutils
 	md5sum
 	git
+	libtool
 	make
 	cmake
 	autoconf
@@ -25,6 +26,11 @@ Scripts for quickly building/installing specified version of open source project
 		- json-c requires at least autoconf 2.68
 	texinfo
 		- gdb requires makeinfo to build info pages
+
+Install on Debian
+
+	sudo apt-get install autoconf cmake libtool
+	sudo apt-get install sharutils
 
 - gzip complains with trailing garbage ignored, http://www.gzip.org/#faq8
 
