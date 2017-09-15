@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright 2015-2016 (c) Yousong Zhou
+# Copyright 2015-2017 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -24,10 +24,10 @@
 #	rm -rfv /home/yousong/.usr/share/perl/5.14.2/Git*
 #
 PKG_NAME=git
-PKG_VERSION=2.12.2
+PKG_VERSION=2.14.1
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="https://www.kernel.org/pub/software/scm/git/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=efe268db785e51d10454a501cd999cbb
+PKG_SOURCE_MD5SUM=b767f0b21aa41d10268b2075078d334e
 PKG_DEPENDS='curl libiconv openssl zlib'
 
 . "$PWD/env.sh"
