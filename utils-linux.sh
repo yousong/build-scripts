@@ -87,3 +87,12 @@ kconfig_dpdk() {
 	kconfig_set_option CONFIG_HPET y
 	kconfig_set_option CONFIG_HPET_MMAP y
 }
+
+kconfig_wireguard() {
+	# https://www.wireguard.com/install/
+	kconfig_set_option CONFIG_NET y # for basic networking support
+	kconfig_set_option CONFIG_INET y # for basic IP support
+	kconfig_set_option CONFIG_NET_UDP_TUNNEL y # for sending and receiving UDP packets
+	kconfig_set_option CONFIG_CRYPTO_BLKCIPHER y # for doing scatter-gather I/O
+	kconfig_set_option CONFIG_PADATA y # for parallel crypto, only available on multi-core machines
+}

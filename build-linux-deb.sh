@@ -81,6 +81,7 @@ configure() {
 	kconfig_docker
 	kconfig_dpdk
 	kconfig_openvswitch
+	kconfig_wireguard
 	$MAKEJ ARCH=x86_64 olddefconfig
 }
 
