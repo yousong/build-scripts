@@ -496,7 +496,7 @@ staging_post_strip() {
 	if [ "${#STRIP[@]}" -eq 0 ]; then
 		return 0
 	fi
-	find "$d" -type f -exec file {} \; | \
+	find "$d" -type f -a -not -name '*.ko' -exec file {} \; | \
 		sed -n -e 's/^\(.*\):.*ELF.*\(executable\|relocatable\|shared object\).*,.* stripped/\1 \2/p' | \
 			while read f t; do
 				if [ -w "$f" ]; then
