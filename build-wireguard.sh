@@ -19,25 +19,31 @@ configure() {
 	true
 }
 
+# wg-quick is a bash script that requires resolvconf and ip-rule with
+# suppress_prefixlength support
+MAKE_VARS+=(
+	PREFIX="$INSTALL_PREFIX"
+	DESTDIR="$PKG_STAGING_DIR"
+	INSTALL_MOD_PATH="$PKG_STAGING_DIR$INSTALL_PREFIX"
+	WITH_WGQUICK=yes
+	SYSCONFDIR="$INSTALL_PREFIX/etc"
+)
+
 compile() {
 	cd "$PKG_BUILD_DIR/src"
 
 	# building kernel module requires
 	#  - linux-headers-$arch on debian
-	$MAKEJ module
-	$MAKEJ \
-		PREFIX="$INSTALL_PREFIX" \
-		tools
+	$MAKEJ "${MAKE_VARS[@]}" \
+		module \
+		tools \
+
 }
 
 staging() {
 	# The INSTALL_MOD_PATH is for modules_install target
 	cd "$PKG_BUILD_DIR/src"
-	$MAKEJ \
-		PREFIX="$INSTALL_PREFIX" \
-		DESTDIR="$PKG_STAGING_DIR"	\
-		INSTALL_MOD_PATH="$PKG_STAGING_DIR$INSTALL_PREFIX" \
-		install
+	$MAKEJ "${MAKE_VARS[@]}" install
 }
 
 install_post() {
