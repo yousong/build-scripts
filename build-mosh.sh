@@ -24,9 +24,13 @@
 #   mosh --ssh='ssh -p <ssh_port>' <user>@<ip>
 #   mosh --ssh='ssh -p <ssh_port> -i id_rsa' <user>@<ip>
 #
-# Drawbacks
+# Drawbacks or quirks
 #
 #  - It syncs "screen": no local scrollback is possible
+#  - Reattach from another mosh-client is not possible without the initial
+#    parameters provided by mosh-server and as such the mosh-server needs to be
+#    manually killed when seeing messages like: "Mosh: You have a detached Mosh
+#    session on this server"
 #
 PKG_NAME=mosh
 PKG_VERSION=1.3.2
