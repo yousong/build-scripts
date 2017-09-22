@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright 2015-2016 (c) Yousong Zhou
+# Copyright 2015-2017 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -44,6 +44,7 @@ PKG_PLATFORM=linux
 
 . "$PWD/env.sh"
 
+STRIP=()
 CONFIGURE_ARGS+=(
 	--enable-shared
 	--enable-ndebug
@@ -71,26 +72,48 @@ CONFIGURE_ARGS+=(
 #   https://github.com/openvswitch/ovs/blob/master/Documentation/faq/releases.rst
 # - Are all features available with all datapaths?
 #   https://github.com/openvswitch/ovs/blob/master/Documentation/faq/releases.rst
-OVS_INSTALL_LINUX_MODULES=1
-if [ "$OVS_INSTALL_LINUX_MODULES" -gt 0 ]; then
-	KBUILD_DIR="/lib/modules/$(uname -r)/build"
-	# --with-linux, the Linux kernel build directory
-	# --with-linux-source, the Linux kernel source directory
-	# --with-dpdk, the DPDK build directory
+#
+# Configure options
+#
+#	--with-linux, the Linux kernel build directory
+#	--with-linux-source, the Linux kernel source directory
+#	--with-dpdk, the DPDK build directory
+#
+# With DPDK 17.05.1, it's possible that both ovs-vswitchd and libopenvswitch.so
+# links to libdpdk.so and constructors were called multiple times at dynamic
+# link stage causing the program fail early
+#
+#	EAL: VFIO_RESOURCE_LIST tailq is already registered
+#	PANIC in tailqinitfn_rte_vfio_tailq():
+#	Cannot initialize tailq: VFIO_RESOURCE_LIST
+#	6: [ovs-vswitchd() [0x4284d1]]
+#	5: [/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x90) [0x7f93a666ce40]]
+#
+ovs_enable_dpdk=0
+
+ovs_with_kmod="/lib/modules/$(uname -r)/build"
+ovs_with_dpdk="$("$TOPDIR/build-dpdk.sh" dpdk_prefix)"
+
+if [ -d "$ovs_with_kmod" ]; then
 	CONFIGURE_ARGS+=(
-		--with-linux="$KBUILD_DIR"
+		--with-linux="$ovs_with_kmod"
 	)
 fi
 
-install_post() {
-	if [ "$OVS_INSTALL_LINUX_MODULES" -gt 0 ]; then
-		cat <<EOF
+if [ "$ovs_enable_dpdk" -gt 0 -a -d "$ovs_with_dpdk" ]; then
+	CONFIGURE_ARGS+=(
+		--with-dpdk="$ovs_with_dpdk"
+	)
+	PKG_DEPENDS="$PKG_DEPENDS dpdk"
+fi
 
+install_post() {
+	if [ -d "$ovs_with_kmod" ]; then
+		__errmsg "
 To install built Linux kernel modules
 
 	cd "$PKG_BUILD_DIR"
 	sudo make modules_install
-
-EOF
+"
 	fi
 }
