@@ -112,3 +112,7 @@ dpdk_help() {
 http://dpdk.readthedocs.io/en/stable/linux_gsg/sys_reqs.html#running-dpdk-applications
 "
 }
+
+dpdk_prefix() {
+	echo "$dpdk_prefix"
+}
