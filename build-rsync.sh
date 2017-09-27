@@ -7,6 +7,22 @@
 #
 # See man rsyncd.conf and rsync for details of options and arguments
 #
+# A sample config: rsync --daemon --config=rsyncd.conf
+#
+#	max connections = 32
+#	use chroot = no
+#	lock file = /home/yousong/rsync/rsyncd.lock
+#	log file = /home/yousong/rsync/rsync.log
+#	port = 7873
+#	timeout = 300
+#	reverse lookup = no
+#
+#	[linux]
+#	                comment = linux
+#	                path = /home/yousong/git-repo/linux
+#	                read only = yes
+#	                list = yes
+#
 # "reverse lookup" is only available since version 3.1.0
 #
 PKG_NAME=rsync
