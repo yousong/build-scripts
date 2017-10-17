@@ -32,6 +32,10 @@ Install on Debian
 	sudo apt-get install autoconf cmake libtool pkg-config
 	sudo apt-get install sharutils
 
+Install on RHEL
+
+	sudo yum install -y sharutils
+
 - gzip complains with trailing garbage ignored, http://www.gzip.org/#faq8
 
 ### RHEL/CentOS 6
