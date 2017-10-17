@@ -46,9 +46,9 @@ configure() {
 	$MAKEJ depend
 }
 
-MAKE_VARS="								\\
-	MANDIR=$INSTALL_PREFIX/share/man	\\
-"
+MAKE_VARS=(
+	MANDIR="$INSTALL_PREFIX/share/man"
+)
 compile() {
 	cd "$PKG_BUILD_DIR"
 
