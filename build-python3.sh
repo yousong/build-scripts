@@ -63,3 +63,7 @@ So do it this way, as it was before. Needs some realignment later.
  #endif
 EOF
 }
+
+CONFIGURE_ARGS+=(
+	--enable-shared
+)

@@ -56,6 +56,7 @@ EOF
 }
 
 CONFIGURE_ARGS+=(
+	--enable-shared
 	--enable-unicode=ucs4
 	--with-ensurepip=upgrade
 )
