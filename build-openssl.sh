@@ -9,10 +9,10 @@
 # - Changelog of 1.0.2, https://www.openssl.org/news/cl102.txt
 #
 PKG_NAME=openssl
-PKG_VERSION=1.0.2j
+PKG_VERSION=1.0.2l
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="https://www.openssl.org/source/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=96322138f0b69e61b7212bc53d5e912b
+PKG_SOURCE_MD5SUM=f85123cd390e864dfbe517e7616e6566
 
 # OpenSSL currently does not support parallel build
 NJOBS=1
