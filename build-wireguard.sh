@@ -148,7 +148,7 @@ Prepare a simple start script: wg0.sh
 
 	ip link add wg0 type wireguard
 	ip addr add 192.168.175.2/24 dev wg0
-	wg setconf wg0 \"$INSTALL_PREFIX/.usr/etc/wireguard/wg0.conf\"
+	wg setconf wg0 \"$INSTALL_PREFIX/etc/wireguard/wg0.conf\"
 	ip link set wg0 up
 "
 }
