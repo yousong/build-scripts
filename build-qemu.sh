@@ -14,6 +14,10 @@
 #	libglib2.0-dev - Development files for the GLib library
 #	libpixman-1-dev - pixel-manipulation library for X and cairo (development files)
 #
+# When buliding on centos,
+#
+#	glib2-devel
+#
 # VirtFS support is only available on linux and libcap is required by
 # fsdev/virtfs-proxy-helper) and {get,set}xattr provided either by libc or
 # libxattr are also required
