@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright 2016 (c) Yousong Zhou
+# Copyright 2016-2017 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -13,6 +13,12 @@ PKG_VERSION=1.5.7
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://unbound.net/downloads/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=a1253cbbb339dbca03404dcc58365d71
-PKG_DEPENDS=openssl
+PKG_DEPENDS='expat libevent openssl'
 
 . "$PWD/env.sh"
+
+CONFIGURE_ARGS+=(
+	--with-libevent="$INSTALL_PREFIX"
+	--with-libexpat="$INSTALL_PREFIX"
+	--with-ssl="$INSTALL_PREFIX"
+)
