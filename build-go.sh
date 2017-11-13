@@ -20,13 +20,13 @@
 #	go get golang.org/x/tools/cmd/godoc
 #
 PKG_NAME=go
-PKG_VERSION=1.8.3
+PKG_VERSION=1.9.2
 PKG_SOURCE="$PKG_NAME$PKG_VERSION.src.tar.gz"
 PKG_SOURCE_URL="https://storage.googleapis.com/golang/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=64e9380e07bba907e26a00cf5fcbe77e
+PKG_SOURCE_MD5SUM=44105c865a1a810464df79233a05a568
 PKG_DEPENDS=go1.4
 
 . "$PWD/env.sh"
 . "$PWD/utils-go.sh"
 
-GOROOT_BOOTSTRAP="$INSTALL_PREFIX/go/goroot-1.4.3"
+GOROOT_BOOTSTRAP="$INSTALL_PREFIX/go/goroot-1.4.20170926"
