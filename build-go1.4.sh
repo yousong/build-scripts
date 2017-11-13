@@ -16,12 +16,14 @@
 #	go test -v net/ -run 'TestDial.*'
 #	go test -v net/ -run 'TestLookup.*'
 #
+# The tarballs at storage.googleapis.com are lagging behind that's why we are
+# using github tarballs, https://golang.org/doc/install/source
+#
 PKG_NAME=go1.4
-PKG_VERSION=1.4.3
-PKG_SOURCE="go$PKG_VERSION.src.tar.gz"
-PKG_SOURCE_URL="https://storage.googleapis.com/golang/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=dfb604511115dd402a77a553a5923a04
-PKG_BUILD_DIR_BASENAME="go-$PKG_VERSION"
+PKG_VERSION=1.4.20170926
+PKG_SOURCE_VERSION=4d5426a570c2820c5894a61b52e3dc147e4e7925
+PKG_SOURCE="go$PKG_VERSION-$PKG_SOURCE_VERSION.src.tar.gz"
+PKG_SOURCE_URL="https://github.com/golang/go/archive/$PKG_SOURCE_VERSION.tar.gz"
 
 . "$PWD/env.sh"
 . "$PWD/utils-go.sh"
