@@ -23,17 +23,6 @@ PKG_DEPENDS=ppp
 do_patch() {
 	cd "$PKG_SOURCE_DIR"
 	patch -p0 <<"EOF"
---- Makefile.orig	2016-03-09 13:49:50.000000000 +0800
-+++ Makefile	2016-03-09 13:49:55.000000000 +0800
-@@ -113,7 +113,7 @@ BINDIR?=$(DESTDIR)${PREFIX}/bin
- MANDIR?=$(DESTDIR)${PREFIX}/share/man
- 
- 
--all: $(EXEC) pfc $(CONTROL_EXEC)
-+all: $(EXEC) $(CONTROL_EXEC)
- 
- clean:
- 	rm -f $(OBJS) $(EXEC) pfc.o pfc $(CONTROL_EXEC)
 --- network.c.orig	2016-03-09 13:45:40.000000000 +0800
 +++ network.c	2016-03-09 13:46:08.000000000 +0800
 @@ -99,12 +99,14 @@ int init_network (void)
