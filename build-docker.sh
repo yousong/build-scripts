@@ -70,6 +70,6 @@ Run the daemon (docker-containerd, etc. need to be in PATH to be found by docker
 
 Test
 
-	sudo docker run hello-world
+	docker run hello-world
 EOF
 }
