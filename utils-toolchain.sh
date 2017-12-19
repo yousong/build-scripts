@@ -145,7 +145,7 @@ toolchain_init_vars_build_cross() {
 	local pkgname="$1"
 
 	# stripping host/target toolchain can be tricky, leave it alone for now
-	unset STRIP
+	STRIP=()
 	if [ "$PKG_NAME" != "${PKG_SOURCE%%-*}" ]; then
 		PKG_BUILD_DIR="$BASE_BUILD_DIR/$GNU_TOOLCHAIN_NAME/$PKG_NAME"
 		BASE_DESTDIR="$BASE_DESTDIR/$GNU_TOOLCHAIN_NAME"

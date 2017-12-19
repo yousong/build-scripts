@@ -72,12 +72,11 @@ PKG_kibana_SOURCE_URL="$ES_SOURCE_URL_BASE/$PKG_kibana_NAME/$PKG_kibana_SOURCE"
 PKG_kibana_SOURCE_MD5SUM=7525955de4aa728214cf0b34f32bcc74
 
 . "$PWD/env.sh"
+STRIP=()
 
 download_extra() {
 	download_http "$PKG_kibana_SOURCE"	"$PKG_kibana_SOURCE_URL"		"$PKG_kibana_SOURCE_MD5SUM"
 }
-
-unset STRIP
 
 prepare() {
 	local name

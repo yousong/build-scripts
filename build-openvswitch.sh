@@ -43,8 +43,8 @@ PKG_DEPENDS=openssl
 PKG_PLATFORM=linux
 
 . "$PWD/env.sh"
-
 STRIP=()
+
 CONFIGURE_ARGS+=(
 	--enable-shared
 	--enable-ndebug

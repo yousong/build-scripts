@@ -24,6 +24,7 @@ PKG_DEPENDS=linux
 PKG_SOURCE_UNTAR_FIXUP=1
 
 . "$PWD/env.sh"
+STRIP=()
 
 configure() {
 	true

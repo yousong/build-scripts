@@ -25,8 +25,8 @@ rust_init() {
 rust_init
 
 . "$PWD/env.sh"
-
 STRIP=()
+
 RUST_DIR="$INSTALL_PREFIX/rust/$PKG_VERSION"
 
 configure() {
