@@ -21,6 +21,8 @@ STAMP_DIR="${STAMP_DIR:-$TMP_DIR/stamp}"
 # where to put log files when building with Makefile
 LOG_DIR="${LOG_DIR:-$TMP_DIR/log}"
 
+METADATA_DIR="${METADATA_DIR:-$INSTALL_PREFIX/.build-scripts-metadata}"
+
 
 __errmsg() {
 	echo "$1" >&2
@@ -58,6 +60,7 @@ env_init() {
 	mkdir -p "$BASE_BUILD_DIR"
 	mkdir -p "$BASE_DESTDIR"
 	mkdir -p "$INSTALL_PREFIX"
+	mkdir -p "$METADATA_DIR"
 
 	STRIP=( strip --strip-all )
 	PKG_CONFIG_PATH="$INSTALL_PREFIX/lib/pkgconfig:$INSTALL_PREFIX/share/pkgconfig"
@@ -133,6 +136,8 @@ env_init_pkg() {
 	else
 		PKG_BUILD_DIR="$PKG_SOURCE_DIR"
 	fi
+
+	PKG_METADATA_DIR="$METADATA_DIR/$PKG_NAME-$PKG_VERSION"
 
 	CONFIGURE_PATH="${CONFIGURE_PATH:-$PKG_BUILD_DIR}"
 	CONFIGURE_CMD="${CONFIGURE_CMD:-$PKG_SOURCE_DIR/configure}"
@@ -540,7 +545,12 @@ install_post() {
 }
 
 archive() {
-	true
+	metadata_gen_listing
+}
+
+metadata_gen_listing() {
+	mkdir -p "$PKG_METADATA_DIR"
+	uninstall_gen_listing "$PKG_STAGING_DIR/$INSTALL_PREFIX" >"$PKG_METADATA_DIR/listing"
 }
 
 clean_extra() {
@@ -555,15 +565,23 @@ clean() {
 	clean_extra
 }
 
-uninstall_one_from_another() {
+uninstall_gen_listing() {
 	local one="$1"
-	local another="$2"
 	local sf tf
-	local r=0
 
 	# $one should not end with slash
 	for sf in $(find "$one" -mindepth 1 -depth); do
 		tf="${sf#$one/}"
+		echo "$tf"
+	done
+}
+
+uninstall_from_listing() {
+	local another="$1"
+	local tf
+	local r=0
+
+	while read tf; do
 		tf="$another/$tf"
 		# remove regular file and symbolic link
 		if [ -f "$tf" -o -L "$tf" ]; then
@@ -575,15 +593,25 @@ uninstall_one_from_another() {
 			r=1
 		fi
 	done
+}
 
-	return "$r"
+uninstall_one_from_another() {
+	local one="$1"
+	local another="$2"
+
+	uninstall_gen_listing "$one" \
+		| uninstall_from_listing "$another"
 }
 
 uninstall() {
 	local one="$PKG_STAGING_DIR/$INSTALL_PREFIX"
 	local another="$INSTALL_PREFIX"
 
-	uninstall_one_from_another "$one" "$another"
+	if [ ! -f "$PKG_METADATA_DIR/listing" -a -d "$one" ]; then
+		metadata_gen_listing
+	fi
+	uninstall_from_listing "$another" <"$PKG_METADATA_DIR/listing"
+	rm -rf "$PKG_METADATA_DIR"
 }
 
 platform_check() {
@@ -711,6 +739,7 @@ till() {
 		staging_pre
 		staging
 		staging_post
+		archive
 		install_pre
 		install
 		install_post
