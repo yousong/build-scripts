@@ -6,6 +6,15 @@
 #
 # All packages in toolchain supports out of source tree build
 #
+# Publicly available toolchains
+#
+# - Linaro toolchains for ARM and AAarch64,
+#   https://releases.linaro.org/components/toolchain/binaries/
+# - FreeElectrons toolchains built from Buildroot
+#   http://toolchains.free-electrons.com/
+# - Baremetal toolchains built by buildall script,
+#   https://www.kernel.org/pub/tools/crosstool/
+#
 # TODO
 #
 # 4. mconf support
