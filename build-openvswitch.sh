@@ -35,16 +35,20 @@
 #     /usr/local/share/openvswitch/scripts/ovs-ctl force-reload-kmod --system-id=random
 #
 PKG_NAME=openvswitch
-PKG_VERSION=2.8.0
+PKG_VERSION=2.8.1
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://openvswitch.org/releases/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=dba44be9abccbe8676cc58290e72a0e3
+PKG_SOURCE_MD5SUM=837e291cfd60af0fc455e77deb2e1172
 PKG_DEPENDS=openssl
 PKG_PLATFORM=linux
 
 . "$PWD/env.sh"
 STRIP=()
 
+# to disable building python-related code
+#CONFIGURE_VARS+=(
+#	ovs_cv_python=no
+#)
 CONFIGURE_ARGS+=(
 	--enable-shared
 	--enable-ndebug
@@ -69,9 +73,11 @@ CONFIGURE_ARGS+=(
 #    Tunnel - VXLAN             3.12              YES
 #
 # - What Linux kernel versions does each Open vSwitch release work with?
-#   https://github.com/openvswitch/ovs/blob/master/Documentation/faq/releases.rst
 # - Are all features available with all datapaths?
 #   https://github.com/openvswitch/ovs/blob/master/Documentation/faq/releases.rst
+# - where most checks are located,
+#   https://github.com/openvswitch/ovs/blob/master/acinclude.m4
+#   https://github.com/openvswitch/ovs/blob/master/m4/openvswitch.m4
 #
 # Configure options
 #
@@ -107,13 +113,17 @@ if [ "$ovs_enable_dpdk" -gt 0 -a -d "$ovs_with_dpdk" ]; then
 	PKG_DEPENDS="$PKG_DEPENDS dpdk"
 fi
 
+ovs_install_kmod() {
+	cd "$PKG_BUILD_DIR"
+	sudo make modules_install
+}
+
 install_post() {
 	if [ -d "$ovs_with_kmod" ]; then
 		__errmsg "
-To install built Linux kernel modules
+To install the built Linux kernel modules.  This requires root privileges
 
-	cd "$PKG_BUILD_DIR"
-	sudo make modules_install
+	$PKG_SCRIPT_NAME ovs_install_kmod
 "
 	fi
 }
