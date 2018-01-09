@@ -12,3 +12,8 @@ PKG_SOURCE_URL="ftp://ftp.netperf.org/netperf/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=ad1c5342d61f297c417a93133aeba65a
 
 . "$PWD/env.sh"
+
+CONFIGURE_ARGS+=(
+	--enable-intervals
+	--enable-demo
+)
