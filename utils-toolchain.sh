@@ -223,10 +223,13 @@ toolchain_init_vars_build_cross() {
 }
 
 toolchain_init_genmake_func() {
+	toolchain_name() {
+		echo "$GNU_TOOLCHAIN_NAME"
+	}
 	genmake_stampdir() {
-		echo "\$(STAMP_DIR)/$GNU_TOOLCHAIN_NAME"
+		echo "\$(STAMP_DIR)/\$(shell $PKG_SCRIPT_NAME toolchain_name)"
 	}
 	genmake_logdir() {
-		echo "\$(LOG_DIR)/$GNU_TOOLCHAIN_NAME"
+		echo "\$(LOG_DIR)/\$(shell $PKG_SCRIPT_NAME toolchain_name)"
 	}
 }
