@@ -1,5 +1,5 @@
 #
-# Copyright 2015-2016 (c) Yousong Zhou
+# Copyright 2015-2018 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -65,4 +65,45 @@ install() {
 
 	mkdir -p "$GOROOT_FINAL"
 	cpdir "$d" "$GOROOT_FINAL"
+}
+
+do_patch() {
+	local ver="${PKG_VERSION%.*}"
+
+	cd "$PKG_SOURCE_DIR"
+
+	if [ "$ver" != "1.4" ]; then
+		do_patch_go
+	fi
+}
+
+do_patch_go() {
+	patch -p1 <<"EOF"
+CentOS 7 does not have user namespace enabled by default.  The syscall test
+failed to detect and clone() call will fail with EINVAL
+
+diff --git a/src/syscall/exec_linux_test.go b/src/syscall/exec_linux_test.go
+index 114deec..7493787 100644
+--- a/src/syscall/exec_linux_test.go
++++ b/src/syscall/exec_linux_test.go
+@@ -35,6 +35,18 @@ func isChrooted(t *testing.T) bool {
+ }
+ 
+ func checkUserNS(t *testing.T) {
++	if whoami, err := exec.LookPath("whoami"); err == nil {
++		pid, err := syscall.ForkExec(whoami, []string{whoami}, &syscall.ProcAttr{
++			Sys: &syscall.SysProcAttr{
++				Cloneflags: syscall.CLONE_NEWUSER,
++			},
++		})
++		if err == nil {
++			syscall.Wait4(pid, nil, 0, nil)
++		} else {
++			t.Skipf("unable to clone with CLONE_NEWUSER: %v", err)
++		}
++	}
+ 	if _, err := os.Stat("/proc/self/ns/user"); err != nil {
+ 		if os.IsNotExist(err) {
+ 			t.Skip("kernel doesn't support user namespaces")
+EOF
 }

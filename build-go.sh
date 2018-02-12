@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright 2015-2017 (c) Yousong Zhou
+# Copyright 2015-2018 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -20,13 +20,34 @@
 #	go get golang.org/x/tools/cmd/godoc
 #
 PKG_NAME=go
-PKG_VERSION=1.9.2
+PKG_VERSION=1.9.4
 PKG_SOURCE="$PKG_NAME$PKG_VERSION.src.tar.gz"
 PKG_SOURCE_URL="https://storage.googleapis.com/golang/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=44105c865a1a810464df79233a05a568
+PKG_SOURCE_MD5SUM=6816441fd6680c63865cdd5cb8bc1960
 PKG_DEPENDS=go1.4
 
 . "$PWD/env.sh"
 . "$PWD/utils-go.sh"
 
 GOROOT_BOOTSTRAP="$INSTALL_PREFIX/go/goroot-1.4.20170926"
+
+godisttest() {
+	# We want it use dist tool in the build dir: ./pkg/tool/linux_amd64/dist
+	export GOROOT="$PKG_BUILD_DIR"
+	eval "$(go tool dist env -p)"
+
+	# -v, verbose
+	# -c, compile binary syscall.test
+	#
+	# go test -v syscall
+	# go test -v -c syscall
+	# ./syscall.test -test.list '.*'
+	# ./syscall.test -test.run TestName
+
+	cd "$PKG_BUILD_DIR/src"
+
+	# -run syscall
+	# -compile-only
+	# -no-rebuild -run syscall
+	./run.bash "$@"
+}
