@@ -79,14 +79,26 @@ do_patch() {
 
 do_patch_go() {
 	patch -p1 <<"EOF"
-CentOS 7 does not have user namespace enabled by default.  The syscall test
-failed to detect and clone() call will fail with EINVAL
+From f8b53aa44e24888d3ab15948ff04b7ff07ca81e0 Mon Sep 17 00:00:00 2001
+From: Yousong Zhou <yszhou4tech@gmail.com>
+Date: Mon, 12 Feb 2018 16:29:38 +0800
+Subject: [PATCH] syscall: linux: add detection for availability of
+ CLONE_NEWUSER
+
+CentOS 7 does not have user namespace enabled by default.  The syscall
+test failed to detect this situation and clone() call will fail with
+EINVAL
+
+Signed-off-by: Yousong Zhou <yszhou4tech@gmail.com>
+---
+ src/syscall/exec_linux_test.go | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
 diff --git a/src/syscall/exec_linux_test.go b/src/syscall/exec_linux_test.go
-index 114deec..7493787 100644
+index 17df8f4..90a6e73 100644
 --- a/src/syscall/exec_linux_test.go
 +++ b/src/syscall/exec_linux_test.go
-@@ -35,6 +35,18 @@ func isChrooted(t *testing.T) bool {
+@@ -53,6 +53,18 @@ func isChrooted(t *testing.T) bool {
  }
  
  func checkUserNS(t *testing.T) {
@@ -102,8 +114,10 @@ index 114deec..7493787 100644
 +			t.Skipf("unable to clone with CLONE_NEWUSER: %v", err)
 +		}
 +	}
+ 	skipInContainer(t)
  	if _, err := os.Stat("/proc/self/ns/user"); err != nil {
  		if os.IsNotExist(err) {
- 			t.Skip("kernel doesn't support user namespaces")
+-- 
+1.8.3.1
 EOF
 }

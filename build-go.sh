@@ -20,10 +20,10 @@
 #	go get golang.org/x/tools/cmd/godoc
 #
 PKG_NAME=go
-PKG_VERSION=1.9.4
+PKG_VERSION=1.10
 PKG_SOURCE="$PKG_NAME$PKG_VERSION.src.tar.gz"
 PKG_SOURCE_URL="https://storage.googleapis.com/golang/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=6816441fd6680c63865cdd5cb8bc1960
+PKG_SOURCE_MD5SUM=07cbb9d0091b846c6aea40bf5bc0cea7
 PKG_DEPENDS=go1.4
 
 . "$PWD/env.sh"
