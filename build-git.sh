@@ -24,10 +24,10 @@
 #	rm -rfv /home/yousong/.usr/share/perl/5.14.2/Git*
 #
 PKG_NAME=git
-PKG_VERSION=2.14.1
+PKG_VERSION=2.16.2
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="https://www.kernel.org/pub/software/scm/git/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=b767f0b21aa41d10268b2075078d334e
+PKG_SOURCE_MD5SUM=c2ed191d40692f3b595dc38374a11146
 PKG_DEPENDS='curl libiconv openssl zlib'
 
 . "$PWD/env.sh"
