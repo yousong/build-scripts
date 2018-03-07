@@ -41,8 +41,9 @@ godisttest() {
 	#
 	# go test -v syscall
 	# go test -v -c syscall
-	# ./syscall.test -test.list '.*'
+	# ./syscall.test -test.list .
 	# ./syscall.test -test.run TestName
+	# ./syscall.test -test.bench BenchmarkName
 
 	cd "$PKG_BUILD_DIR/src"
 
