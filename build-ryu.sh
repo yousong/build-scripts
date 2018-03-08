@@ -14,7 +14,7 @@ PKG_PYTHON_VERSIONS=2
 PKG_DEPENDS='python2'
 
 . "$PWD/env.sh"
-. "$PWD/utils-python.sh"
+. "$PWD/utils-python-package.sh"
 
 install_post() {
 	cat <<EOF

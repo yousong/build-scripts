@@ -14,4 +14,4 @@ PKG_SOURCE_UNTAR_FIXUP=1
 PKG_PYTHON_VERSIONS="2 3"
 
 . "$PWD/env.sh"
-. "$PWD/utils-python.sh"
+. "$PWD/utils-python-package.sh"

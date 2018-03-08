@@ -19,4 +19,4 @@ PKG_SOURCE_MD5SUM=cf19fa58f534700322250e70bb24fcc9
 PKG_PYTHON_VERSIONS=2
 
 . "$PWD/env.sh"
-. "$PWD/utils-python.sh"
+. "$PWD/utils-python-package.sh"
