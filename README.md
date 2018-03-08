@@ -89,7 +89,7 @@ Steps to setup environment variables to use the built binaries
 Compile one by one and handle dependencies by mind
 
 	# download, prepare, configure, compile, staging
-	./build-nginx-vanilla.sh till staging
+	./build-nginx-vanilla.sh to staging
 
 	# single action configure
 	./build-nginx-vanilla.sh configure

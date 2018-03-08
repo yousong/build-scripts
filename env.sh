@@ -727,35 +727,59 @@ $PKG_NAME/uninstall:
 EOF
 }
 
-till() {
-	local p="$1"
-	local a
-	local phases='
-		download
-		prepare
-		configure_pre
-		configure
-		compile
-		staging_pre
-		staging
-		staging_post
-		archive
-		install_pre
-		install
-		install_post
-	'
+o_phases='
+	download
+	prepare
+	configure_pre
+	configure
+	compile
+	staging_pre
+	staging
+	staging_post
+	archive
+	install_pre
+	install
+	install_post
+'
 
-	for a in $phases; do
-		$a
-		if [ "$a" = "$p" ]; then
-			return 0
+from_to() {
+	local from="${1%%:*}"
+	local to="${1##*:}"
+	local in_range=
+
+	[ -n "$from" ] || from=download
+	[ -n "$to" ] || to=install_post
+
+	set -- $o_phases
+	while [ "$#" -gt 0 ]; do
+		if [ -z "$in_range" ]; then
+			if [ "$1" = "$from" ]; then
+				in_range=1
+				"$1"
+			fi
+		else
+			"$1"
+			if [ "$1" = "$to" ]; then
+				break
+			fi
 		fi
+		shift
 	done
+}
+
+from() {
+	local from="$1"; shift
+	from_to "$from:"
+}
+
+to() {
+	local to="$1"; shift
+	from_to ":$p"
 }
 
 env_init
 env_init_pkg
 if [ "$#" -eq 0 ]; then
-	set -- till _end
+	set -- to _end
 fi
 trap "$*" EXIT
