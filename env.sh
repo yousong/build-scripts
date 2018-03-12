@@ -759,9 +759,9 @@ from_to() {
 			fi
 		else
 			"$1"
-			if [ "$1" = "$to" ]; then
-				break
-			fi
+		fi
+		if [ "$1" = "$to" ]; then
+			break
 		fi
 		shift
 	done
@@ -774,7 +774,7 @@ from() {
 
 to() {
 	local to="$1"; shift
-	from_to ":$p"
+	from_to ":$to"
 }
 
 env_init
