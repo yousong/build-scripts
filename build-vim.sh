@@ -8,21 +8,21 @@
 # Vim on Debian Wheezy 7 has version 7.3.547 (Fetched with command "vim --version")
 #
 #	sudo apt-get build-dep vim-nox
-#	sudo apt-get install gawk liblua5.2-dev libncurses5-dev
+#	sudo apt-get install gawk
 #
 # Vim on CentOS 7 has version 7.4.160
 #
 #	sudo yum-builddep vim-enhanced
 #	# or use the following method if you are on CentOS 6.5
-#	sudo yum install -y lua-devel ruby-devel python-devel ncurses-devel perl-devel perl-ExtUtils-Embed
+#	sudo yum install -y ruby-devel ncurses-devel perl-devel perl-ExtUtils-Embed
 #
 # 7.3 is the release version.
 # 547 is the number of applied patches provided by vim.org.
 PKG_NAME=vim
-PKG_VERSION=8.0.0512
+PKG_VERSION=8.0.1605
 PKG_SOURCE="vim-${PKG_VERSION}.tar.gz"
 PKG_SOURCE_URL="https://github.com/vim/vim/archive/v$PKG_VERSION.tar.gz"
-PKG_SOURCE_MD5SUM=5417b353524d2fd95b2217e757a16947
+PKG_SOURCE_MD5SUM=a6c106007802755765616fb03f8aaec6
 PKG_SOURCE_UNTAR_FIXUP=1
 PKG_DEPENDS='libiconv LuaJIT ncurses python2'
 
