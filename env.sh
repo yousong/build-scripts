@@ -365,7 +365,14 @@ unpack() {
 
 	if [ "$ftyp" = tar ]; then
 		[ -z "$dir" ] || opts="$opts -C $dir"
-		[ -z "$trans_exp" ] || opts="$opts --transform=$trans_exp"
+		# search transform_flags in tar source code
+		#
+		#  - r, R, regular file
+		#  - h, H, hard link
+		#  - s, S, symbolic link
+		#
+		# defaults to rhs; r=rhsHS
+		[ -z "$trans_exp" ] || opts="$opts --transform=flags=r;$trans_exp"
 		tar $opts $opt_ftyp -xf "$file"
 	elif [ "$ftyp" = zip ]; then
 		( cd "$dir" && unzip "$file"; )
