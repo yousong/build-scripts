@@ -61,3 +61,12 @@ staging() {
 	# OpenSSL use INSTALL_PREFIX instead of DESTDIR
 	$MAKEJ install INSTALL_PREFIX="$PKG_STAGING_DIR" "${MAKE_VARS[@]}"
 }
+
+install_post() {
+	__errmsg "
+To use system cert store
+
+	rmdir $INSTALL_PREFIX/ssl/certs
+	ln -sf /etc/ssl/certs $INSTALL_PREFIX/ssl/certs
+"
+}
