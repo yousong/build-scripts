@@ -36,6 +36,11 @@
 #
 # - The QEMU build system architecture, docs/build-system.txt
 #
+# TODO
+#
+#  - linux RISC-V on QEMU
+#  - QEMU with virgl support with swiftshader on host
+#
 PKG_NAME=qemu
 PKG_VERSION=2.11.1
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.bz2"
