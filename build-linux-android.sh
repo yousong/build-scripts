@@ -10,6 +10,7 @@
 # Requires
 #
 #	gcc-aarch64-linux-gnu
+#	gcc-arm-linux-gnu
 #
 PKG_NAME=linux-android
 PKG_VERSION=4.14.34
@@ -41,7 +42,21 @@ prepare_extra() {
 	done
 }
 
-make_linux_android="$MAKEJ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-"
+linux_android_arch=arm64
+linux_android_arch=arm
+case "$linux_android_arch" in
+	arm)
+		linux_android_make="$MAKEJ ARCH=$linux_android_arch CROSS_COMPILE=$linux_android_arch-linux-gnu-"
+		linux_android_img="$PKG_BUILD_DIR/src/arch/arm/boot/zImage"
+		;;
+	arm64)
+		linux_android_make="$MAKEJ ARCH=$linux_android_arch CROSS_COMPILE=aarch64-linux-gnu-"
+		linux_android_img="$PKG_BUILD_DIR/src/arch/arm64/boot/Image"
+		;;
+	*)
+		__errmsg "unknown linux_android_arch: $linux_android_arch"
+		false
+esac
 
 configure() {
 	cd "$PKG_BUILD_DIR/src"
@@ -50,7 +65,7 @@ configure() {
 	fi
 
 	# Taken from https://github.com/robherring/generic_device/wiki/Building
-	$make_linux_android \
+	$linux_android_make \
 		defconfig \
 		kvmconfig \
 		android-base.config \
@@ -70,13 +85,17 @@ configure() {
 	kconfig_set_option CONFIG_DRM_VIRTIO_GPU y
 	kconfig_set_option CONFIG_SECCOMP y
 
-	$make_linux_android olddefconfig
+	# Needed if we do not have kmod loading support in initrd
+	$linux_android_make olddefconfig
+	kconfig_set_m_y
+	$linux_android_make olddefconfig
+	kconfig_set_m_n
 }
 
 compile() {
 	cd "$PKG_BUILD_DIR/src"
 
-	$make_linux_android
+	$linux_android_make
 }
 
 staging() {
@@ -92,5 +111,5 @@ uninstall() {
 }
 
 install_post() {
-	__errmsg "The built image: $PKG_BUILD_DIR/src/arch/arm64/boot/Image"
+	__errmsg "The built image: $linux_android_img"
 }
