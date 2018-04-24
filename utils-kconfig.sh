@@ -29,3 +29,15 @@ kconfig_set_option() {
 		echo "$repl" >>"$dotc"
 	fi
 }
+
+kconfig_set_m_y() {
+	local dotc="${1:-.config}"
+
+	sed -i -e 's:^\(CONFIG_[^=]\+\)=m:\1=y:' "$dotc"
+}
+
+kconfig_set_m_n() {
+	local dotc="${1:-.config}"
+
+	sed -i -e 's:^\(CONFIG_[^=]\+\)=m:# \1 is not set:' "$dotc"
+}
