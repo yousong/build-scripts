@@ -44,9 +44,6 @@ prepare_extra() {
 make_linux_android="$MAKEJ ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-"
 
 configure() {
-	local rev
-	local dotconfig
-
 	cd "$PKG_BUILD_DIR/src"
 	if [ -s ".config" ]; then
 		mv ".config" ".config.old"
@@ -62,6 +59,7 @@ configure() {
 	kconfig_set_option CONFIG_ANDROID_LOW_MEMORY_KILLER n
 
 	# For s/w rendering support
+	kconfig_set_option CONFIG_DRM y
 	kconfig_set_option CONFIG_DRM_BOCHS y
 	kconfig_set_option CONFIG_FRAMEBUFFER_CONSOLE y
 	kconfig_set_option CONFIG_SW_SYNC y
