@@ -5,12 +5,14 @@
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
 #
-# For use with https://github.com/robherring/generic_device/wiki
-#
 # Requires
 #
 #	gcc-aarch64-linux-gnu
 #	gcc-arm-linux-gnu
+#
+# For use with https://github.com/robherring/generic_device/wiki
+#
+# - Daily build of android generic_device, http://snapshots.linaro.org/android/robher-aosp-gendev
 #
 PKG_NAME=linux-android
 PKG_VERSION=4.14.34
@@ -42,8 +44,8 @@ prepare_extra() {
 	done
 }
 
-linux_android_arch=arm64
 linux_android_arch=arm
+linux_android_arch=arm64
 case "$linux_android_arch" in
 	arm)
 		linux_android_make="$MAKEJ ARCH=$linux_android_arch CROSS_COMPILE=$linux_android_arch-linux-gnu-"
