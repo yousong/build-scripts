@@ -25,6 +25,17 @@
 #	libcap-dev - development libraries and header files for libcap2
 #	libattr1-dev - Extended attribute static libraries and headers
 #
+# VirGL requires QEMU ui supporting OpenGL: have_virgl = display_opengl
+#
+# Spice support requires the following packages. In addition, SPICE OpenGL
+# support requires spice-server version of at 0.13.1 while CentOS 7.4 provides
+# 0.12.8 by default.
+#
+#	spice-server-devel spice-protocol
+#
+# According to QEMU code, SPIECE GL support is local-only for now (as of
+# version 2.11.1) and incompatible with -spice port/tls-port
+#
 # We can specify make target manually
 #
 #	make qemu-img
@@ -39,8 +50,6 @@
 # TODO
 #
 #  - linux RISC-V on QEMU
-#  - QEMU with spice display support: Spice is currently the only remote QEMU
-#    ui that supports opengl: have_virgl = display_opengl
 #
 PKG_NAME=qemu
 PKG_VERSION=2.11.1
