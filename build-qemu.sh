@@ -39,14 +39,15 @@
 # TODO
 #
 #  - linux RISC-V on QEMU
-#  - QEMU with virgl support with swiftshader on host
+#  - QEMU with spice display support: Spice is currently the only remote QEMU
+#    ui that supports opengl: have_virgl = display_opengl
 #
 PKG_NAME=qemu
 PKG_VERSION=2.11.1
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.bz2"
 PKG_SOURCE_URL="http://wiki.qemu-project.org/download/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=61cf862b6007eba4ac98247776af2e27
-PKG_DEPENDS='bzip2 curl gnutls libjpeg-turbo libpng lzo ncurses nettle pixman zlib'
+PKG_DEPENDS='bzip2 curl gnutls libjpeg-turbo libpng lzo ncurses nettle pixman virglrenderer zlib'
 
 . "$PWD/env.sh"
 
@@ -128,6 +129,7 @@ CONFIGURE_ARGS+=(
 	--enable-curses
 	--enable-lzo
 	--enable-bzip2
+	--enable-virglrenderer
 	--enable-vnc
 	--enable-vnc-jpeg
 	--enable-vnc-png
