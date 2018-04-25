@@ -1,9 +1,14 @@
 #!/bin/bash -e
 #
-# Copyright 2016 (c) Yousong Zhou
+# Copyright 2016-2018 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
+#
+# Might as well just try universal-ctags or rewrite another one.  Should be fun
+# trying those lexer things
+#
+# - https://github.com/universal-ctags/ctags
 #
 PKG_NAME=ctags
 PKG_VERSION=5.8
