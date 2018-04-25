@@ -13,6 +13,8 @@ PKG_SOURCE_MD5SUM=c00f82ecdcc357434731913e5b48630d
 
 . "$PWD/env.sh"
 
+EXTRA_CFLAGS+=(-g)
+
 do_patch() {
 	cd "$PKG_SOURCE_DIR"
 
@@ -74,7 +76,14 @@ According to "2. Shell Command Language", IEEE Std 1003.1, 2004 Edition
 	extension. The implementation shall maintain separate name spaces for functions
 	and variables.
 
-Colon character is allowed by bash in function names
+Colon character is allowed by bash in function names though the bash manual says
+in its DEFINITIONS section
+
+	name   A word consisting only of alphanumeric characters and underscores, and
+	beginning with an alphabetic character or an underscore.  Also referred to as
+	an identifier.
+
+k8s also uses dash character in shell function names
 
 --- sh.c.orig	2017-08-16 14:45:39.781096557 +0800
 +++ sh.c	2017-08-16 14:46:16.313107991 +0800
@@ -83,10 +92,10 @@ Colon character is allowed by bash in function names
  				++cp;
  		}
 -		if (! (isalnum ((int) *cp) || *cp == '_'))
-+		if (! (isalnum ((int) *cp) || *cp == '_' || *cp == ':'))
++		if (! (isalnum ((int) *cp) || *cp == '_' || *cp == ':' || *cp == '-'))
  			continue;
 -		while (isalnum ((int) *cp)  ||  *cp == '_')
-+		while (isalnum ((int) *cp)  ||  *cp == '_' || *cp == ':')
++		while (isalnum ((int) *cp)  ||  *cp == '_' || *cp == ':' || *cp == '-')
  		{
  			vStringPut (name, (int) *cp);
  			++cp;
