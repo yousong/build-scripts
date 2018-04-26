@@ -44,6 +44,10 @@ compile() {
 	fi
 
 	cd "$PKG_SOURCE_DIR/src"
+	# To build cross toolchain, set GOOS and GOARCH environ for $script.
+	# List of supported GOOS, GOARCH defined in src/go/build/syslist.go.  List
+	# of supported GOOS, GOARCH combinations can be seen by "go tool dist list"
+	#
 	# --no-clean is for avoiding passing -a option to `go tool dist bootstrap`
 	# to avoid "rebuild all"
 	#
