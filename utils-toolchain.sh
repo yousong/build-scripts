@@ -243,3 +243,35 @@ toolchain_init_genmake_func() {
 		echo "\$(LOG_DIR)/\$(shell $PKG_SCRIPT_NAME toolchain_name)"
 	}
 }
+
+# This is for debugging purposes only
+toolchain_gcc_fixup() {
+	local srcdir="$PKG_SOURCE_DIR"
+	local objdir="$PKG_BUILD_DIR"
+	local d
+
+	# subdir go/ in repo github.com/golang/gofrontend actually corresponds to
+	# gcc/go/gofrontend/ dir in GCC source code
+	for d in libffi libgo; do
+		if [ -d "$srcdir/$d" ]; then
+			rm -rf "$srcdir/$d"
+		fi
+	done
+	ln -sf $HOME/git-repo/libffi "$srcdir/"
+
+	# The correspondence
+	#
+	#	gofrontend/libgo -> libgo/
+	#	gofrontend/go -> gcc/go/gofrontend
+	#
+	# The following facts may cause build error after symlinking
+	#
+	#  - gofrontend/go may depends on version-specific code in gcc/go/
+	#  - gcc/go of a later version may also depends on other parts of the GCC
+	#    source code
+	#
+	ln -sf $HOME/git-repo/gcc/libgo "$srcdir/"
+	ln -sf $HOME/git-repo/gofrontend/libgo "$srcdir/"
+
+	rm -rf "$objdir/riscv64-bs-linux-gnu/libgo/"*
+}
