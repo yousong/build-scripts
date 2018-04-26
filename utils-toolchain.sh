@@ -17,6 +17,16 @@
 #
 # TODO
 #
+# 17. Prepare symlinks for cross-gccgo
+#
+#	It also says in the golang wiki that a separate "go" tool will need to be
+#	built with native gccgo to make it aware of the GOOS, GOARCh combination
+#	supported by cross gccgo but not part of golang's own supported
+#	combinations.  Figure out how this works to see whether if this is still
+#	the case
+#
+# - https://github.com/golang/go/wiki/GccgoCrossCompilation
+#
 # 4. mconf support
 # 5. strip toolchain
 # 7. test build, with qemu user mode emulation at least
