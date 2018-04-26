@@ -47,15 +47,11 @@
 #
 # - The QEMU build system architecture, docs/build-system.txt
 #
-# TODO
-#
-#  - linux RISC-V on QEMU
-#
 PKG_NAME=qemu
-PKG_VERSION=2.11.1
+PKG_VERSION=2.12.0
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.bz2"
 PKG_SOURCE_URL="http://wiki.qemu-project.org/download/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=61cf862b6007eba4ac98247776af2e27
+PKG_SOURCE_MD5SUM=122fd7cdf241ff7eb1e42c0b503b5d1b
 PKG_DEPENDS='bzip2 curl gnutls libjpeg-turbo libpng lzo ncurses nettle pixman virglrenderer zlib'
 
 . "$PWD/env.sh"
@@ -75,9 +71,19 @@ fi
 # Others targets can be found in help text for `--target-list` option from
 # output of `./configure --help`
 #
-TARGETS+=( i386-softmmu x86_64-softmmu)
-TARGETS+=( mips-softmmu mipsel-softmmu mips64-softmmu mips64el-softmmu)
-TARGETS+=( arm-softmmu aarch64-softmmu)
+TARGETS+=( i386-softmmu )
+TARGETS+=( x86_64-softmmu )
+
+TARGETS+=( mips-softmmu )
+TARGETS+=( mipsel-softmmu )
+TARGETS+=( mips64-softmmu )
+TARGETS+=( mips64el-softmmu )
+
+TARGETS+=( arm-softmmu )
+TARGETS+=( aarch64-softmmu )
+
+TARGETS+=( riscv64-softmmu )
+
 #
 # Things to keep in mind when using user mode emulation with dynamically linked
 # binaries
