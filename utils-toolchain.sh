@@ -84,9 +84,9 @@ PKG_binutils_SOURCE="binutils-$PKG_binutils_VERSION.tar.xz"
 PKG_binutils_SOURCE_MD5SUM=ffc476dd46c96f932875d1b2e27e929f
 PKG_binutils_SOURCE_URL="http://ftpmirror.gnu.org/binutils/$PKG_binutils_SOURCE"
 
-PKG_linux_VERSION=4.15.1
+PKG_linux_VERSION=4.16.4
 PKG_linux_SOURCE="linux-${PKG_linux_VERSION}.tar.xz"
-PKG_linux_SOURCE_MD5SUM=e1a0defed7a7333ecb5715d63e9161a7
+PKG_linux_SOURCE_MD5SUM=4f8469f8d10bcf7876edf7cd708d5790
 PKG_linux_SOURCE_URL="https://cdn.kernel.org/pub/linux/kernel/v${PKG_linux_VERSION%%.*}.x/$PKG_linux_SOURCE"
 
 #
