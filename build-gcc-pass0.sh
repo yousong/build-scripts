@@ -58,13 +58,17 @@ prepare_extra() {
 do_patch() {
 	cd "$PKG_SOURCE_DIR"
 
-	# gccgo will link with libgo.so which depends on libgcc_s.so.1 and the
-	# linker will complain it cannot find it.  That's because shared libgcc is
-	# not present in the install directory yet.  libgo.so was made without
-	# problem because gcc will emit -lgcc_s when compiled with -shared option.
-	# When gotools were made, it was supplied with -static-libgcc thus no link
-	# option was provided.  Check LIBGO in gcc/go/gcc-spec.c for how gccgo make
-	# a builtin spec for linking with libgo.so
+	# libgo is "the runtime support library for the Go programming language.
+	# This library is intended for use with the Go frontend."
+	#
+	# gccgo will link target files with libgo.so which depends on libgcc_s.so.1
+	# and the linker will complain it cannot find it.  That's because shared
+	# libgcc is not present in the install directory yet.  libgo.so was made
+	# without problem because gcc will emit -lgcc_s when compiled with -shared
+	# option.  When gotools were being made, it was supplied with
+	# -static-libgcc thus no link option was provided.  Check LIBGO in
+	# gcc/go/gcc-spec.c for how gccgo make a builtin spec for linking with
+	# libgo.so
 	#
 	# - GccgoCrossCompilation, https://github.com/golang/go/wiki/GccgoCrossCompilation
 	# - Cross-building instructions, http://www.eglibc.org/archives/patches/msg00078.html

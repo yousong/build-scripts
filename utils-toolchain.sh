@@ -178,10 +178,10 @@ toolchain_init_vars_build_cross() {
 			# setting default built compiler's options for -march=, -mabi, etc.
 			# mips has at least 3 userland abi, i.e. o32, n32, n64 and
 			# -mabi=n32 will be the default as can be seen from -dumpspecs
-			# output.  Libraries like libgo and libc will detect and compile
-			# with the default abi by checking cpp macro _MIPS_SIM against
-			# _ABI{O32,N32,N64,O64}.  But we want a mips64 compiler with n64 as
-			# the default abi.
+			# output.  Source code of libraries like libgo and libc will detect
+			# and be compiled with the default abi by checking cpp macro
+			# _MIPS_SIM against _ABI{O32,N32,N64,O64}, but we want a mips64
+			# compiler with n64 as the default abi.
 			#
 			# The other thing is that there may exist a bug in autotools when
 			# installing libgo.so to lib32/ directory where the symbolic link
