@@ -82,14 +82,14 @@ configure() {
 	kconfig_dpdk
 	kconfig_openvswitch
 	kconfig_wireguard
-	$MAKEJ ARCH=x86_64 olddefconfig
+	"${MAKEJ[@]}" ARCH=x86_64 olddefconfig
 }
 
 compile() {
 	cd "$PKG_BUILD_DIR/src"
 	DEBFULLNAME="Yousong Zhou" \
 	DEBEMAIL="yszhou4tech@gmail.com" \
-	   $MAKEJ \
+	   "${MAKEJ[@]}" \
 		ARCH=x86_64 \
 		LOCALVERSION=-bs \
 		KDEB_PKGVERSION=$PKG_VERSION-1 \

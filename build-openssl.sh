@@ -39,11 +39,11 @@ configure() {
 
 	cd "$PKG_BUILD_DIR"
 	# "Configure" script is the one
-	eval MAKE="'$MAKEJ'" "$PKG_BUILD_DIR/Configure"		\
+	eval MAKE="'${MAKEJ[*]}'" "$PKG_BUILD_DIR/Configure"		\
 			--prefix="$INSTALL_PREFIX"	\
 			shared "$os"
 	# make depend on each configure
-	$MAKEJ depend
+	"${MAKEJ[@]}" depend
 }
 
 MAKE_VARS=(
@@ -52,14 +52,14 @@ MAKE_VARS=(
 compile() {
 	cd "$PKG_BUILD_DIR"
 
-	$MAKEJ "${MAKE_VARS[@]}" all
+	"${MAKEJ[@]}" "${MAKE_VARS[@]}" all
 }
 
 staging() {
 	cd "$PKG_BUILD_DIR"
 
 	# OpenSSL use INSTALL_PREFIX instead of DESTDIR
-	$MAKEJ install INSTALL_PREFIX="$PKG_STAGING_DIR" "${MAKE_VARS[@]}"
+	"${MAKEJ[@]}" install INSTALL_PREFIX="$PKG_STAGING_DIR" "${MAKE_VARS[@]}"
 }
 
 install_post() {

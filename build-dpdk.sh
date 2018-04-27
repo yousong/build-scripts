@@ -58,7 +58,7 @@ configure() {
 	cd "$PKG_BUILD_DIR"
 	kconfig_set_option CONFIG_RTE_BUILD_COMBINE_LIBS y "$dotc"
 	kconfig_set_option CONFIG_RTE_LIBRTE_VHOST y "$dotc"
-	$MAKEJ config "T=$dpdk_target"
+	"${MAKEJ[@]}" config "T=$dpdk_target"
 }
 
 #RTE_KERNELDIR='linux headers path'
@@ -87,7 +87,7 @@ dpdk_compile_examples() {
 	cd "$d"
 	RTE_SDK="$PKG_BUILD_DIR" \
 		RTE_TARGET="$dpdk_target" \
-		$MAKEJ
+		"${MAKEJ[@]}"
 }
 
 # Changes in build method from 2.0.0 to 2.2.0

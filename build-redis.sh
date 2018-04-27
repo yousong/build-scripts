@@ -71,5 +71,5 @@ configure() {
 staging() {
 	cd "$PKG_BUILD_DIR"
 	# build system of redis just install all its binaries in bin/ directory
-	$MAKEJ PREFIX="$PKG_STAGING_DIR/$INSTALL_PREFIX" install
+	"${MAKEJ[@]}" PREFIX="$PKG_STAGING_DIR/$INSTALL_PREFIX" install
 }

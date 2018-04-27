@@ -72,7 +72,7 @@ configure() {
 	# CONFIG_NF_IP_NAT will enable 'nat' table in iptables and is not available
 	# in 3.16 but reappeared in 4.8.
 	kconfig_set_option CONFIG_IP_NF_NAT m
-	$MAKEJ ARCH=x86_64 olddefconfig
+	"${MAKEJ[@]}" ARCH=x86_64 olddefconfig
 }
 
 compile() {
@@ -100,7 +100,7 @@ compile() {
 	#    enabled.
 	#
 	cd "$PKG_BUILD_DIR/src"
-	$MAKEJ \
+	"${MAKEJ[@]}" \
 		ARCH=x86_64 \
 		LOCALVERSION=-bs \
 		KDEB_PKGVERSION=$PKG_VERSION-1 \

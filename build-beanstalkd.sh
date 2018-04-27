@@ -110,6 +110,6 @@ MAKE_VARS+=(
 
 beanstalk_test_and_bench() {
 	cd "$PKG_BUILD_DIR"
-	$MAKEJ ct/_ctcheck
-	$MAKEJ bench
+	"${MAKEJ[@]}" ct/_ctcheck
+	"${MAKEJ[@]}" bench
 }

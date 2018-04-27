@@ -62,7 +62,7 @@ staging() {
 	# it is said that INSTALL_HDR_PATH will be cleaned up when making
 	# headers_install, so the staging step here is actually required
 	cd "$PKG_SOURCE_DIR"
-	$MAKEJ \
+	"${MAKEJ[@]}" \
 		ARCH="$arch" \
 		INSTALL_HDR_PATH="$PKG_STAGING_DIR$INSTALL_PREFIX" \
 			headers_install

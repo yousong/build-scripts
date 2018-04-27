@@ -89,9 +89,9 @@ env_init() {
 	export PKG_CONFIG_PATH
 	if ! running_in_make || [ -n "$NJOBS" ]; then
 		NJOBS="${NJOBS:-$((2 * $(ncpus)))}"
-		MAKEJ="make -j $NJOBS"
+		MAKEJ=(make -j "$NJOBS")
 	else
-		MAKEJ=make
+		MAKEJ=(make)
 	fi
 }
 
@@ -448,7 +448,7 @@ build_compile_make() {
 		CPPFLAGS="${EXTRA_CPPFLAGS[*]}"		\
 		LDFLAGS="${EXTRA_LDFLAGS[*]}"		\
 		"${MAKE_ENVS[@]}"					\
-		$MAKEJ								\
+		"${MAKEJ[@]}"								\
 			"${MAKE_ARGS[@]}"				\
 			${PKG_CMAKE:+VERBOSE=1}			\
 			"${MAKE_VARS[@]}"				\
@@ -489,7 +489,7 @@ staging_pre() {
 build_staging() {
 	cd "$PKG_BUILD_DIR"
 	env "${MAKE_ENVS[@]}"				\
-		$MAKEJ							\
+		"${MAKEJ[@]}"							\
 			"${MAKE_ARGS[@]}"			\
 			DESTDIR="$PKG_STAGING_DIR"	\
 			${PKG_CMAKE:+VERBOSE=1}		\

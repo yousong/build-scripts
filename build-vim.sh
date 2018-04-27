@@ -289,5 +289,5 @@ CONFIGURE_ARGS+=(
 
 configure_pre() {
 	cd "$PKG_SOURCE_DIR/src"
-	$MAKEJ autoconf
+	"${MAKEJ[@]}" autoconf
 }

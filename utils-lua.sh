@@ -36,16 +36,16 @@ compile() {
 		__errmsg 'unknown system'
 		false
 	fi
-	$MAKEJ $target \
+	"${MAKEJ[@]}" $target \
 		MYCFLAGS="${EXTRA_CFLAGS[*]}" \
 		MYLDFLAGS="${EXTRA_LDFLAGS[*]}" \
 		MYLIBS="-ltermcap"
-	$MAKEJ test
+	"${MAKEJ[@]}" test
 }
 
 staging() {
 	cd "$PKG_BUILD_DIR"
-	$MAKEJ echo install \
+	"${MAKEJ[@]}" echo install \
 		INSTALL_TOP="$PKG_STAGING_DIR$INSTALL_PREFIX" \
 		INSTALL_INC="$PKG_STAGING_DIR$INSTALL_PREFIX/include/$PKG_NAME" \
 		INSTALL_LIB="$PKG_STAGING_DIR$INSTALL_PREFIX/lib/$PKG_NAME" \

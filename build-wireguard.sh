@@ -111,7 +111,7 @@ compile() {
 
 	# building kernel module requires
 	#  - linux-headers-$arch on debian
-	$MAKEJ "${MAKE_VARS[@]}" \
+	"${MAKEJ[@]}" "${MAKE_VARS[@]}" \
 		module \
 		tools \
 
@@ -119,7 +119,7 @@ compile() {
 
 staging() {
 	cd "$PKG_BUILD_DIR/src"
-	$MAKEJ "${MAKE_VARS[@]}" install
+	"${MAKEJ[@]}" "${MAKE_VARS[@]}" install
 }
 
 install_post() {

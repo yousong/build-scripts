@@ -84,7 +84,7 @@ mOS_compile_dpdk() {
 	export RTE_TARGET="x86_64-native-linuxapp-gcc"
 
 	cd "$RTE_SDK"
-	$MAKEJ install \
+	"${MAKEJ[@]}" install \
 		V=1 \
 		T="$RTE_TARGET" \
 		DESTDIR=. \
@@ -110,13 +110,13 @@ mOS_compile_() {
 	local dbg
 
 	cd "$PKG_BUILD_DIR/core/src"
-	$MAKEJ clean
+	"${MAKEJ[@]}" clean
 
 	# some debug options may cause -Werror=unused-variable
 	dbg="$dbg -DDBGCERR -DDBGERR -DDBGFIN -DDBGFUNC -DDBGLOG -DDBGMSG -DDBGTEMP"
 	dbg="$dbg -DPKTDUMP -DDUMP_STREAM"
 	dbg="$dbg -Wno-error=unused-variable"
-	$MAKEJ DBG_OPT="$dbg"
+	"${MAKEJ[@]}" DBG_OPT="$dbg"
 }
 
 mOS_compile_samples() {
@@ -139,7 +139,7 @@ mOS_compile_samples() {
 
 			__errmsg "compiling $d"
 			cd "$d"
-			$MAKEJ
+			"${MAKEJ[@]}"
 		fi
 	done
 }

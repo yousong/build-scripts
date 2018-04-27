@@ -46,13 +46,15 @@ prepare_extra() {
 
 linux_android_arch=arm
 linux_android_arch=arm64
+linux_android_make=("${MAKEJ[@]}")
+linux_android_make+=("ARCH=$linux_android_arch")
 case "$linux_android_arch" in
 	arm)
-		linux_android_make="$MAKEJ ARCH=$linux_android_arch CROSS_COMPILE=$linux_android_arch-linux-gnu-"
+		linux_android_make+=("CROSS_COMPILE=$linux_android_arch-linux-gnu-")
 		linux_android_img="$PKG_BUILD_DIR/src/arch/arm/boot/zImage"
 		;;
 	arm64)
-		linux_android_make="$MAKEJ ARCH=$linux_android_arch CROSS_COMPILE=aarch64-linux-gnu-"
+		linux_android_make+=("CROSS_COMPILE=aarch64-linux-gnu-")
 		linux_android_img="$PKG_BUILD_DIR/src/arch/arm64/boot/Image"
 		;;
 	*)
@@ -67,7 +69,7 @@ configure() {
 	fi
 
 	# Taken from https://github.com/robherring/generic_device/wiki/Building
-	$linux_android_make \
+	"${linux_android_make[@]}" \
 		defconfig \
 		kvmconfig \
 		android-base.config \
@@ -88,16 +90,16 @@ configure() {
 	kconfig_set_option CONFIG_SECCOMP y
 
 	# Needed if we do not have kmod loading support in initrd
-	$linux_android_make olddefconfig
+	"${linux_android_make[@]}" olddefconfig
 	kconfig_set_m_y
-	$linux_android_make olddefconfig
+	"${linux_android_make[@]}" olddefconfig
 	kconfig_set_m_n
 }
 
 compile() {
 	cd "$PKG_BUILD_DIR/src"
 
-	$linux_android_make
+	"${linux_android_make[@]}"
 }
 
 staging() {
