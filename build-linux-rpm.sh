@@ -12,10 +12,10 @@
 #	yum install hmaccalc zlib-devel binutils-devel elfutils-libelf-devel
 #
 PKG_NAME=linux-rpm
-PKG_VERSION=4.9.26
+PKG_VERSION=4.14.37
 PKG_SOURCE="linux-${PKG_VERSION}.tar.xz"
 PKG_SOURCE_URL="https://cdn.kernel.org/pub/linux/kernel/v${PKG_VERSION%%.*}.x/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=fbf42a254cc36d4afd5b663ebc563948
+PKG_SOURCE_MD5SUM=82b7a828b228dd7a581dc3fc1174ea15
 PKG_BUILD_DIR_BASENAME="$PKG_NAME-$PKG_VERSION"
 PKG_SOURCE_UNTAR_FIXUP=1
 PKG_PLATFORM=no
