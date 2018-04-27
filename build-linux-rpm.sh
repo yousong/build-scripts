@@ -29,6 +29,7 @@ EXTRA_LDFLAGS=()
 MAKE_VARS=(
 	V=1
 )
+STRIP=()
 
 prepare_extra() {
 	local f fs
@@ -75,17 +76,36 @@ configure() {
 }
 
 compile() {
-	cd "$PKG_BUILD_DIR/src"
+	local rpmopts=()
+	local topdir="$PKG_BUILD_DIR/rpmbuild"
 
-	mkdir -p "$PKG_BUILD_DIR/rpmbuild"
-	# cannot use MAKEJ here because it may fail with "read pipe EOF"
-	RPM_BUILD_NCPUS="$NJOBS" \
-		make \
-			ARCH=x86_64 \
-			LOCALVERSION=-bs \
-			KDEB_PKGVERSION=$PKG_VERSION-1 \
-			RPMOPTS="-D '_topdir $PKG_BUILD_DIR/rpmbuild'" \
-				rpm-pkg
+	mkdir -p "$topdir"
+	rpmopts+=(--define "'_topdir $topdir'")
+
+	# scripts/package/mkspec provides packages kernel, kernel-devel,
+	# kernel-headers.  No --with debug, --with debuginfo provided as compared
+	# to the ones from rhel kernel.spec file
+	#
+	#  - kernel, the kernel
+	#  - kernel-headers, user api headers for use with glibc etc.
+	#  - kernel-devel, files for building kernel modules
+	#
+	# There are two Makefile target for rpms: rpm-pkg, binrpm-pkg.  The
+	# differences are as follows
+	#
+	#  - rpm-pkg intends to also provides source rpms
+	#  - rpm-pkg will do $(MAKE) clean on each run...  No idea why is that
+	#  - In recent kernel code, package kernel-devel will be disabled by mkspec
+	#    if source package was not to be built or CONFIG_MODULES was not
+	#    enabled.
+	#
+	cd "$PKG_BUILD_DIR/src"
+	$MAKEJ \
+		ARCH=x86_64 \
+		LOCALVERSION=-bs \
+		KDEB_PKGVERSION=$PKG_VERSION-1 \
+		RPMOPTS="${rpmopts[*]}" \
+			binrpm-pkg
 }
 
 staging() {
@@ -101,12 +121,12 @@ uninstall() {
 }
 
 install_post() {
+	local topdir="$PKG_BUILD_DIR/rpmbuild"
 	local frpm
-	local drpmbuild="$PKG_BUILD_DIR/rpmbuild"
 
 	__errmsg "List of packages"
 	__errmsg ""
-	for frpm in "$drpmbuild/RPMS/x86_64/"*.rpm "$drpmbuild/SRPMS/"*.rpm; do
+	for frpm in "$topdir/RPMS/x86_64/"*.rpm "$topdir/SRPMS/"*.rpm; do
 		if [ -f "$frpm" ]; then
 			__errmsg "	sudo rpm -ivh $frpm"
 		fi
