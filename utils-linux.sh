@@ -96,3 +96,32 @@ kconfig_wireguard() {
 	kconfig_set_option CONFIG_CRYPTO_BLKCIPHER y # for doing scatter-gather I/O
 	kconfig_set_option CONFIG_PADATA y # for parallel crypto, only available on multi-core machines
 }
+
+# Refs
+#
+# - Using systemtap with self-built kernels,
+#   https://sourceware.org/systemtap/wiki/SystemTapWithSelfBuiltKernel
+# - systemtap README, https://sourceware.org/git/gitweb.cgi?p=systemtap.git;a=blob;f=README
+kconfig_systemtap() {
+	# DEBUG_INFO means "gcc -g" and the resulting binaries have it.  In the
+	# case of RHEL family distributions
+	#
+	#  - kernel-debuginfo is mostly just the build tree installed into
+	#    /usr/lib/debug/lib/modules/<uname -r>/
+	#  - kernel-debuginfo-common contains the source code shared by all builds
+	#
+	# This can make the build tree very big (up to around 1GB)
+	kconfig_set_option CONFIG_DEBUG_INFO y
+	kconfig_set_option CONFIG_KPROBES y
+	kconfig_set_option CONFIG_RELAY y
+	kconfig_set_option CONFIG_DEBUG_FS y
+	kconfig_set_option CONFIG_MODULES y
+	kconfig_set_option CONFIG_MODULE_UNLOAD y
+
+	# uprobe was merged since mainline 3.5; utrace was deprecated then. For
+	# older kernels, have fun kniting patches
+	kconfig_set_option CONFIG_UPROBES y
+
+	# It says in the wiki that SystemTap does not support this
+	kconfig_set_option CONFIG_DEBUG_INFO_SPLIT n
+}
