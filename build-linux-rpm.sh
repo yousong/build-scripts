@@ -22,6 +22,7 @@ PKG_PLATFORM=no
 
 . "$PWD/env.sh"
 . "$PWD/utils-kconfig.sh"
+. "$PWD/utils-linux.sh"
 
 EXTRA_CFLAGS=()
 EXTRA_CPPFLAGS=()
@@ -53,22 +54,8 @@ configure() {
 	fi
 	# .version will be incremented by scripts/link-vmlinux.sh and read by scripts/package/builddeb
 	rm -f .version
-	# disable making dbg deb packages: too big (800+MB)
+	# Make build tree smaller
 	kconfig_set_option CONFIG_DEBUG_INFO n
-	# types of these options have changed from tristate to bool
-	for opt in \
-			MICROCODE \
-			CPU_FREQ_STAT \
-			X86_INTEL_PSTATE \
-			PCCARD_NONSTATIC \
-			MFD_WM8400 \
-			MFD_WM831X \
-			MFD_WM8350 \
-			MFD_WM8350_I2C \
-			AB3100_CORE \
-			; do
-		kconfig_set_option "CONFIG_$opt" y
-	done
 	# CONFIG_NF_IP_NAT will enable 'nat' table in iptables and is not available
 	# in 3.16 but reappeared in 4.8.
 	kconfig_set_option CONFIG_IP_NF_NAT m
