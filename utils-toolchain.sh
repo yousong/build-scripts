@@ -69,9 +69,9 @@
 # setarch utility from util-linux allows to prepare an environ where uname
 # output is customized
 #
-PKG_gcc_VERSION=7.3.0
+PKG_gcc_VERSION=8.1.0
 PKG_gcc_SOURCE="gcc-$PKG_gcc_VERSION.tar.xz"
-PKG_gcc_SOURCE_MD5SUM=be2da21680f27624f3a87055c4ba5af2
+PKG_gcc_SOURCE_MD5SUM=65f7c65818dc540b3437605026d329fc
 PKG_gcc_SOURCE_URL="http://ftpmirror.gnu.org/gcc/gcc-$PKG_gcc_VERSION/$PKG_gcc_SOURCE"
 
 PKG_glibc_VERSION=2.27
@@ -84,9 +84,9 @@ PKG_binutils_SOURCE="binutils-$PKG_binutils_VERSION.tar.xz"
 PKG_binutils_SOURCE_MD5SUM=ffc476dd46c96f932875d1b2e27e929f
 PKG_binutils_SOURCE_URL="http://ftpmirror.gnu.org/binutils/$PKG_binutils_SOURCE"
 
-PKG_linux_VERSION=4.16.4
+PKG_linux_VERSION=4.16.7
 PKG_linux_SOURCE="linux-${PKG_linux_VERSION}.tar.xz"
-PKG_linux_SOURCE_MD5SUM=4f8469f8d10bcf7876edf7cd708d5790
+PKG_linux_SOURCE_MD5SUM=9795a3187c791e3b79153519733f045d
 PKG_linux_SOURCE_URL="https://cdn.kernel.org/pub/linux/kernel/v${PKG_linux_VERSION%%.*}.x/$PKG_linux_SOURCE"
 
 #
