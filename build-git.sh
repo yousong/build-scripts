@@ -5,13 +5,13 @@
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
 #
-# Extra packages has to be installed to support http,https transport (git-http-backend, etc.)
+# Extra features support
 #
-#   sudo apt-get install -y libcurl4-openssl-dev libssl-dev libexpat-dev
-#   sudo yum install -y curl-devel openssl-devel expat-devel
+#	yum -y groupinstall "Development Tools"
+#	yum-builddep git-email
 #
-#   yum -y groupinstall "Development Tools"
-#   yum-builddep git-email
+#	# Manuals
+#	sudo yum install -y asciidoc xmlto
 #
 # Sometimes we need to install several perl modules for the git-send-email to work
 #
@@ -24,10 +24,22 @@
 #	rm -rfv /home/yousong/.usr/share/perl/5.14.2/Git*
 #
 PKG_NAME=git
-PKG_VERSION=2.16.2
+PKG_VERSION=2.16.3
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="https://www.kernel.org/pub/software/scm/git/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=c2ed191d40692f3b595dc38374a11146
-PKG_DEPENDS='curl libiconv openssl zlib'
+PKG_SOURCE_MD5SUM=1b75ee082169dfcad321a4dc13b37009
+PKG_DEPENDS='curl expat libiconv openssl zlib'
 
 . "$PWD/env.sh"
+
+# Git's handwritten Makefile does not detect build-dep then build/install
+# manpages by default.
+compile() {
+	build_compile_make all
+	build_compile_make man
+}
+
+staging() {
+	build_staging install
+	build_staging install-man
+}
