@@ -45,9 +45,8 @@ CONFIGURE_ARGS+=(
 	--disable-libmudflap
 )
 
-# GCC 7.3.0 does not yet support golang for RISC-V.  libffi is too old
-# (requires v3.3, see configure.host).  libgo support for riscv64 is also not
-# available in GCC 7.3.0 (see libgo/configure.ac)
+# GCC 8.1.0 does not yet support golang for RISC-V.  libffi is too old
+# (requires v3.3, see configure.host)
 #
 # Also useful info on issues of GCC riscv support as of 2018-04-09 by Jim
 # Wilson of sifive.com, https://gcc.gnu.org/ml/gcc/2018-04/msg00052.html
