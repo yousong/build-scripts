@@ -14,6 +14,12 @@
 #
 #    - Hardware/software requirements
 #    - Installation howto
+#
+#  - RFC: Default path for cross-compiled runtimes,
+#    http://lists.llvm.org/pipermail/llvm-dev/2017-December/119864.html
+#
+#	 As of 2017-12-19, libcxx and libcxxabi does not have proper directory
+#	 layout for multilib support
 
 LLVM_VERSION=6.0.0
 
@@ -150,7 +156,7 @@ download_extra() {
 prepare_extra() {
 	unpack "$BASE_DL_DIR/$PKG_clang_SOURCE"			"$PKG_SOURCE_DIR/tools/"	"s:^[^/]\\+:clang:"
 	unpack "$BASE_DL_DIR/$PKG_lld_SOURCE"			"$PKG_SOURCE_DIR/tools/"	"s:^[^/]\\+:lld:"
-	unpack "$BASE_DL_DIR/$PKG_compiler_rt_SOURCE"	"$PKG_SOURCE_DIR/projects/"	"s:^[^/]\\+:compiler-rt:"
+	unpack "$BASE_DL_DIR/$PKG_compiler_rt_SOURCE"	"$PKG_SOURCE_DIR/runtimes/"	"s:^[^/]\\+:compiler-rt:"
 	unpack "$BASE_DL_DIR/$PKG_libcxx_SOURCE"		"$PKG_SOURCE_DIR/projects/"	"s:^[^/]\\+:libcxx:"
 	unpack "$BASE_DL_DIR/$PKG_libcxxabi_SOURCE"		"$PKG_SOURCE_DIR/projects/"	"s:^[^/]\\+:libcxxabi:"
 }
