@@ -25,6 +25,11 @@ PKG_SOURCE_MD5SUM=788a11a35fa62eb008019b37187d09d2
 PKG_DEPENDS='cmake zlib gcc-cross-pass2'
 PKG_CMAKE=1
 
+# - Assembling a complete toolchain, https://clang.llvm.org/docs/Toolchain.html
+#
+#	It covers topics like language frontend, assembler, linker, and runtime
+#	libraries like compiler-rt, libgcc, libatmoic, libunwind etc.
+#
 PKG_clang_NAME=clang
 PKG_clang_VERSION=$LLVM_VERSION
 PKG_clang_SOURCE="cfe-$PKG_clang_VERSION.src.tar.xz"
@@ -33,10 +38,16 @@ PKG_clang_SOURCE_MD5SUM=121b3896cb0c7765d690acc5d9495d24
 
 # "compiler-rt" runtime libraries, http://compiler-rt.llvm.org/index.html
 #
-# - builtins
-# - sanitizer runtimes
-# - profile
-# - BlocksRuntime
+#  - builtins
+#  - sanitizer runtimes
+#  - profile
+#  - BlocksRuntime
+#
+# By default only arch x86_64 will be compiled.  It will be installed under
+# $INSTALL_PREFIX/lib/clang/$LLVM_VERSION/lib/<OS>/libclang_rt.*
+#
+# Clang will default to use compiler-rt when possible.  Use -rtlib=compiler-rt,
+# -rtlib=libgcc to change the default
 PKG_compiler_rt_NAME=compiler-rt
 PKG_compiler_rt_VERSION=$LLVM_VERSION
 PKG_compiler_rt_SOURCE="compiler-rt-$PKG_compiler_rt_VERSION.src.tar.xz"
