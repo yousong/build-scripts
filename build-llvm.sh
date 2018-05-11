@@ -95,6 +95,30 @@ PKG_lld_SOURCE="lld-$PKG_lld_VERSION.src.tar.xz"
 PKG_lld_SOURCE_URL="http://llvm.org/releases/$PKG_lld_VERSION/$PKG_lld_SOURCE"
 PKG_lld_SOURCE_MD5SUM=7ab2612417477b03538f11cd8b5e12f8
 
+# Golang frontend: there are actually two.  One already in llvm upstream,
+# another accepted by the Google Golang team.
+#
+# - http://llvm.org/svn/llvm-project/llgo/trunk/README.TXT
+#
+#   > llgo is a Go (http://golang.org) frontend for LLVM, written in Go.
+#   >
+#   > llgo is under active development. It compiles and passes most of the standard
+#   > library test suite and a substantial portion of the gc test suite, but there
+#   > are some corner cases that are known not to be handled correctly yet.
+#   > Nevertheless it can compile modestly substantial programs (including itself;
+#   > it is self hosting on x86-64 Linux).
+#
+#
+# - https://go.googlesource.com/gollvm/
+#
+#   > Gollvm is an LLVM-based Go compiler. It incorporates “gofrontend” (a Go
+#   > language front end written in C++ and shared with GCCGO), a bridge component
+#   > (which translates from gofrontend IR to LLVM IR), and a driver that sends the
+#   > resulting IR through the LLVM back end.
+#
+# There is also tools/llvm-go.  Looks like it's for working with $GOPATH.  How
+# and where it was used is unclear
+
 # test-suite too big: about 113MB as of version 3.9.1
 PKG_test_suite_NAME=test-suite
 PKG_test_suite_VERSION=$LLVM_VERSION
