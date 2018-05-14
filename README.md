@@ -203,6 +203,9 @@ convention from OpenWrt package `Makefile`.
 
 # TODO
 
+- check if newer versions are available
+	- uscan: https://manpages.debian.org/unstable/devscripts/uscan.1.en.html
+	- debian/watch: https://wiki.debian.org/debian/watch
 - archive
 
 # Backup Mirror
