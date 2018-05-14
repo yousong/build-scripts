@@ -203,11 +203,6 @@ convention from OpenWrt package `Makefile`.
 
 # TODO
 
-- Build toolchain: binutils, linux-headers, libc, gcc
-
-	- 5. Constructing a Temporary System, http://www.linuxfromscratch.org/lfs/view/stable/
-
-- provide listing and uninstall
 - archive
 
 # Backup Mirror
