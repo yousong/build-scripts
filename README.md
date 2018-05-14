@@ -9,7 +9,7 @@ Scripts for quickly building/installing specified version of open source project
 - Scripts are written in a way trying to be "reentrant"
 - Use absolute path
 
-## Prerequisites
+# Prerequisites
 
 	GNU wget
 	GNU tar, command line option --transform support
@@ -38,7 +38,7 @@ Install on RHEL
 
 - gzip complains with trailing garbage ignored, http://www.gzip.org/#faq8
 
-### RHEL/CentOS 6
+## RHEL/CentOS 6
 
 On RHEL/CentOS 6, the default toolchain is too old for building many packages of newest version.
 
@@ -69,7 +69,7 @@ The solution at the moment is to use newer toolchain from [Software Collections]
 	# Use them within a shell
 	scl enable devtoolset-3 rh-ruby22 autotools-latest zsh
 
-## How to use this
+# How to use this
 
 Packages built will be installed to `$INSTALL_PREFIX`, which is `$HOME/.usr/`
 at the moment.  Directory locations can be customized by editing `env.sh`
@@ -113,7 +113,7 @@ Compile with `Makefile`
 	make staging
 	make install/test
 
-## Tips
+# Tips
 
 Packages can depend on the installation of other packages to be successfully
 built and run.  We can use system's package manager to help us for packages not
@@ -126,9 +126,9 @@ provided here.
 	yum -y groupinstall "Development Tools"
 	yum-builddep openvpn
 
-## FAQ
+# FAQ
 
-### `sudo: flowtop: command not found`
+## `sudo: flowtop: command not found`
 
 Most of the time `sudo` will use a predefined `PATH` for its child processes,
 so binaries not in that directory list cannot be found.
@@ -146,7 +146,7 @@ There are a few methods to work around this
 		Defaults:  yousong env_keep += "PATH"
 		Defaults: !yousong secure_path = /sbin:/bin:/usr/sbin:/usr/bin
 
-### Versioned symbols
+## Versioned symbols
 
 On Debian, Warning messages like the following can be emitted by dynamic linker
 
@@ -183,7 +183,7 @@ Background information while debugging this
 - OpenSSL packaged by Debian is patched with `debian/patches/version-script.patch` to provide versioned symbols
 - Curl packaged by Debian is configured with `--enable-versioned-symbols`
 
-## Background
+# Background
 
 I want to build packages from source for reasons like
 
@@ -201,7 +201,7 @@ I want to build packages from source for reasons like
 The idea is not new, yet the result is rewarding.  Scripts here uses the naming
 convention from OpenWrt package `Makefile`.
 
-## TODO
+# TODO
 
 - Build toolchain: binutils, linux-headers, libc, gcc
 
@@ -210,6 +210,6 @@ convention from OpenWrt package `Makefile`.
 - provide listing and uninstall
 - archive
 
-## Backup Mirror
+# Backup Mirror
 
 - https://distfiles.macports.org/$PKG_NAME
