@@ -664,7 +664,7 @@ genmake() {
 		compile:compile:configure
 		staging:staging_pre#staging#staging_post:compile
 		archive:archive:staging
-		install:install_pre#install#install_post:staging
+		install:install_pre#install#install_post:archive
 	'
 	local stampdir="$(genmake_stampdir)"
 	local logdir="$(genmake_logdir)"
