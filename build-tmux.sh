@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright 2015-2016 (c) Yousong Zhou
+# Copyright 2015-2018 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -22,11 +22,10 @@
 #  - set focus-events off, >= 1.8, see CHANGES file in source code.
 #
 PKG_NAME=tmux
-PKG_VERSION=2.0
+PKG_VERSION=2.7
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="https://github.com/tmux/tmux/releases/download/$PKG_VERSION/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=9fb6b443392c3978da5d599f1e814eaa
+PKG_SOURCE_MD5SUM=bcdfcf910c94c3e02ce6b1c035880306
 PKG_DEPENDS='libevent ncurses'
 
 . "$PWD/env.sh"
-
