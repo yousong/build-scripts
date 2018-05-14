@@ -26,6 +26,6 @@ PKG_VERSION=2.7
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="https://github.com/tmux/tmux/releases/download/$PKG_VERSION/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=bcdfcf910c94c3e02ce6b1c035880306
-PKG_DEPENDS='libevent ncurses'
+PKG_DEPENDS='libevent'
 
 . "$PWD/env.sh"
