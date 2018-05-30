@@ -113,6 +113,23 @@ if [ "$ovs_enable_dpdk" -gt 0 -a -d "$ovs_with_dpdk" ]; then
 	PKG_DEPENDS="$PKG_DEPENDS dpdk"
 fi
 
+staging() {
+	local d="$PKG_STAGING_DIR$INSTALL_PREFIX"
+	local ds="$d/share/openvswitch/scripts"
+
+	build_staging 'install'
+	cat >"$ds/ovs-wrapper" <<-EOF
+		#/usr/bin/env bash
+		case "\$0" in
+		    *ovs-ctl) "$ds/ovs-ctl" "\$@" ;;
+		    *ovn-ctl) "$ds/ovn-ctl" "\$@" ;;
+		esac
+	EOF
+	chmod a+x "$ds/ovs-wrapper"
+	ln -sf "$ds/ovs-wrapper" "$d/bin/ovs-ctl"
+	ln -sf "$ds/ovs-wrapper" "$d/bin/ovn-ctl"
+}
+
 ovs_install_kmod() {
 	cd "$PKG_BUILD_DIR"
 	sudo make modules_install
