@@ -114,20 +114,22 @@ if [ "$ovs_enable_dpdk" -gt 0 -a -d "$ovs_with_dpdk" ]; then
 fi
 
 staging() {
-	local d="$PKG_STAGING_DIR$INSTALL_PREFIX"
-	local ds="$d/share/openvswitch/scripts"
+	local d0="$PKG_STAGING_DIR$INSTALL_PREFIX"
+	local d1="$INSTALL_PREFIX"
+	local ds0="$d0/share/openvswitch/scripts"
+	local ds1="$d1/share/openvswitch/scripts"
 
 	build_staging 'install'
-	cat >"$ds/ovs-wrapper" <<-EOF
+	cat >"$ds0/ovs-wrapper" <<-EOF
 		#/usr/bin/env bash
 		case "\$0" in
-		    *ovs-ctl) "$ds/ovs-ctl" "\$@" ;;
-		    *ovn-ctl) "$ds/ovn-ctl" "\$@" ;;
+		    *ovs-ctl) "$ds1/ovs-ctl" "\$@" ;;
+		    *ovn-ctl) "$ds1/ovn-ctl" "\$@" ;;
 		esac
 	EOF
-	chmod a+x "$ds/ovs-wrapper"
-	ln -sf "$ds/ovs-wrapper" "$d/bin/ovs-ctl"
-	ln -sf "$ds/ovs-wrapper" "$d/bin/ovn-ctl"
+	chmod a+x "$ds0/ovs-wrapper"
+	ln -sf "../share/openvswitch/scripts/ovs-wrapper" "$d0/bin/ovs-ctl"
+	ln -sf "../share/openvswitch/scripts/ovs-wrapper" "$d0/bin/ovn-ctl"
 }
 
 ovs_install_kmod() {
