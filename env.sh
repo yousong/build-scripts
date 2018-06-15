@@ -95,6 +95,21 @@ env_init() {
 	fi
 }
 
+env_check() {
+	local d
+	local dusergroup
+	local usergroup="$(id -u --name):"$(id -g --name)""
+
+	for d in var/log var/run; do
+		d="$INSTALL_PREFIX/$d"
+		[ -d "$d" ] || continue
+		dusergroup="$(stat --format=%U:%G "$d")"
+		if [ "$dusergroup" != "$usergroup" ]; then
+			__errmsg "directory $d is owned by $dusergroup, expecting: chown $usergroup $d"
+		fi
+	done
+}
+
 env_init_pkg() {
 	local proto
 	local dirbn
@@ -784,6 +799,7 @@ to() {
 	from_to ":$to"
 }
 
+env_check
 env_init
 env_init_pkg
 if [ "$#" -eq 0 ]; then
