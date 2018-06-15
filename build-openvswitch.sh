@@ -49,10 +49,16 @@ STRIP=()
 #CONFIGURE_VARS+=(
 #	ovs_cv_python=no
 #)
+
+# --enable-ndebug, disable debugging features for max performance
+# --with-debug, only takes effect for msvc by passing -O0
+#
 CONFIGURE_ARGS+=(
 	--enable-shared
 	--enable-ndebug
 )
+
+# EXTRA_CFLAGS+=(-g)
 
 # build only userspace tools by default
 #
