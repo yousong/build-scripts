@@ -274,22 +274,49 @@ env_csum_check() {
 }
 
 download_http() {
-	local file="$BASE_DL_DIR/$1"
+	local source="$1"
+	local path="$BASE_DL_DIR/$source"
 	local url="$2"
 	local csum="$3"
-	local tmp="$file.dl"
 
 	# expecting set -e will abort if anything bad happens
-	if [ -f "$file" ]; then
-		if env_csum_check "$file" "$csum"; then
+	if [ -f "$path" ]; then
+		if env_csum_check "$path" "$csum"; then
 			return 0
 		else
 			return 1
 		fi
 	fi
-	wget -c -O "$tmp" "$url"
-	mv "$tmp" "$file"
-	env_csum_check "$file" "$csum"
+
+	download_http_with_mirrors "$source" "$url"
+	env_csum_check "$path" "$csum"
+}
+
+download_http_with_mirrors() {
+	local source="$1"; shift
+	local url="$1"; shift
+	local path="$BASE_DL_DIR/$source"
+	local tmp="$path.dl"
+	local mirrors="
+		http://sources.openwrt.org
+		http://distfiles.gentoo.org/distfiles
+		https://fossies.org/linux/misc
+	"
+	local mirror
+
+	if wget -c -O "$tmp" "$url"; then
+		mv "$tmp" "$path"
+		return 0
+	else
+		for mirror in $mirrors; do
+			rm -vf "$tmp"
+			if wget -c -O "$tmp" "$mirror/$source"; then
+				mv "$tmp" "$path"
+				return 0
+			fi
+		done
+	fi
+	return 1
 }
 
 download_git() {
