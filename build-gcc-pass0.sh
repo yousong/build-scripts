@@ -21,10 +21,10 @@ PKG_gmp_SOURCE="gmp-$PKG_gmp_VERSION.tar.xz"
 PKG_gmp_SOURCE_URL="https://gmplib.org/download/gmp/$PKG_gmp_SOURCE"
 PKG_gmp_SOURCE_MD5SUM=a9868ef2556ad6a2909babcd1428f3c7
 
-PKG_mpfr_VERSION=3.1.4
+PKG_mpfr_VERSION=3.1.6
 PKG_mpfr_SOURCE="mpfr-$PKG_mpfr_VERSION.tar.xz"
 PKG_mpfr_SOURCE_URL="http://www.mpfr.org/mpfr-current/$PKG_mpfr_SOURCE"
-PKG_mpfr_SOURCE_MD5SUM=064b2c18185038e404a401b830d59be8
+PKG_mpfr_SOURCE_MD5SUM=51bfdbf81553966c8d43808122cc81b3
 
 PKG_mpc_VERSION=1.0.3
 PKG_mpc_SOURCE="mpc-$PKG_mpc_VERSION.tar.gz"
