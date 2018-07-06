@@ -21,14 +21,14 @@
 #	 As of 2017-12-19, libcxx and libcxxabi does not have proper directory
 #	 layout for multilib support
 
-LLVM_VERSION=6.0.0
+LLVM_VERSION=6.0.1
 
 PKG_NAME=llvm
 PKG_VERSION=$LLVM_VERSION
 PKG_SOURCE="$PKG_NAME-${PKG_VERSION}.src.tar.xz"
 PKG_SOURCE_URL="http://llvm.org/releases/$PKG_VERSION/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=788a11a35fa62eb008019b37187d09d2
-PKG_DEPENDS='cmake zlib gcc-cross-pass2'
+PKG_SOURCE_MD5SUM=c88c98709300ce2c285391f387fecce0
+PKG_DEPENDS='cmake lxml2 zlib gcc-cross-pass2'
 PKG_CMAKE=1
 
 # - Assembling a complete toolchain, https://clang.llvm.org/docs/Toolchain.html
@@ -40,7 +40,7 @@ PKG_clang_NAME=clang
 PKG_clang_VERSION=$LLVM_VERSION
 PKG_clang_SOURCE="cfe-$PKG_clang_VERSION.src.tar.xz"
 PKG_clang_SOURCE_URL="http://llvm.org/releases/$PKG_clang_VERSION/$PKG_clang_SOURCE"
-PKG_clang_SOURCE_MD5SUM=121b3896cb0c7765d690acc5d9495d24
+PKG_clang_SOURCE_MD5SUM=4e419bd4e3b55aa06d872320f754bd85
 
 # "compiler-rt" runtime libraries, http://compiler-rt.llvm.org/index.html
 #
@@ -58,19 +58,19 @@ PKG_compiler_rt_NAME=compiler-rt
 PKG_compiler_rt_VERSION=$LLVM_VERSION
 PKG_compiler_rt_SOURCE="compiler-rt-$PKG_compiler_rt_VERSION.src.tar.xz"
 PKG_compiler_rt_SOURCE_URL="http://llvm.org/releases/$PKG_compiler_rt_VERSION/$PKG_compiler_rt_SOURCE"
-PKG_compiler_rt_SOURCE_MD5SUM=ba6368e894b5528e527d86a69d8533c6
+PKG_compiler_rt_SOURCE_MD5SUM=99bf8bcb68ba96dda74f6aee6c55f639
 
 PKG_libcxx_NAME=libcxx
 PKG_libcxx_VERSION=$LLVM_VERSION
 PKG_libcxx_SOURCE="libcxx-$PKG_libcxx_VERSION.src.tar.xz"
 PKG_libcxx_SOURCE_URL="http://llvm.org/releases/$PKG_libcxx_VERSION/$PKG_libcxx_SOURCE"
-PKG_libcxx_SOURCE_MD5SUM=4ecad7dfd8ea636205d3ffef028df73a
+PKG_libcxx_SOURCE_MD5SUM=2c13cd0136ab6f8060a4cde85b5f86e2
 
 PKG_libcxxabi_NAME=libcxxabi
 PKG_libcxxabi_VERSION=$LLVM_VERSION
 PKG_libcxxabi_SOURCE="libcxxabi-$PKG_libcxxabi_VERSION.src.tar.xz"
 PKG_libcxxabi_SOURCE_URL="http://llvm.org/releases/$PKG_libcxxabi_VERSION/$PKG_libcxxabi_SOURCE"
-PKG_libcxxabi_SOURCE_MD5SUM=9d06327892fc5d8acec4ef2e2821ab3d
+PKG_libcxxabi_SOURCE_MD5SUM=41764959176d5fcc7baee8cd22ed1705
 
 # A linker, https://lld.llvm.org/
 #
@@ -110,7 +110,7 @@ PKG_lld_NAME=lld
 PKG_lld_VERSION=$LLVM_VERSION
 PKG_lld_SOURCE="lld-$PKG_lld_VERSION.src.tar.xz"
 PKG_lld_SOURCE_URL="http://llvm.org/releases/$PKG_lld_VERSION/$PKG_lld_SOURCE"
-PKG_lld_SOURCE_MD5SUM=7ab2612417477b03538f11cd8b5e12f8
+PKG_lld_SOURCE_MD5SUM=31cc580b32be124972c40c19c0839fed
 
 # Golang frontend: there are actually two.  One already in llvm upstream,
 # another accepted by the Google Golang team.
@@ -146,19 +146,19 @@ PKG_test_suite_SOURCE_MD5SUM=x
 . "$PWD/env.sh"
 
 download_extra() {
-	download_http "$PKG_clang_SOURCE"		"$PKG_clang_SOURCE_URL"			"$PKG_clang_SOURCE_MD5SUM"
-	download_http "$PKG_lld_SOURCE"			"$PKG_lld_SOURCE_URL"			"$PKG_lld_SOURCE_MD5SUM"
+	download_http "$PKG_clang_SOURCE"	"$PKG_clang_SOURCE_URL"		"$PKG_clang_SOURCE_MD5SUM"
+	download_http "$PKG_lld_SOURCE"		"$PKG_lld_SOURCE_URL"		"$PKG_lld_SOURCE_MD5SUM"
 	download_http "$PKG_compiler_rt_SOURCE"	"$PKG_compiler_rt_SOURCE_URL"	"$PKG_compiler_rt_SOURCE_MD5SUM"
-	download_http "$PKG_libcxx_SOURCE"		"$PKG_libcxx_SOURCE_URL"		"$PKG_libcxx_SOURCE_MD5SUM"
-	download_http "$PKG_libcxxabi_SOURCE"	"$PKG_libcxxabi_SOURCE_URL"		"$PKG_libcxxabi_SOURCE_MD5SUM"
+	download_http "$PKG_libcxx_SOURCE"	"$PKG_libcxx_SOURCE_URL"	"$PKG_libcxx_SOURCE_MD5SUM"
+	download_http "$PKG_libcxxabi_SOURCE"	"$PKG_libcxxabi_SOURCE_URL"	"$PKG_libcxxabi_SOURCE_MD5SUM"
 }
 
 prepare_extra() {
-	unpack "$BASE_DL_DIR/$PKG_clang_SOURCE"			"$PKG_SOURCE_DIR/tools/"	"s:^[^/]\\+:clang:"
-	unpack "$BASE_DL_DIR/$PKG_lld_SOURCE"			"$PKG_SOURCE_DIR/tools/"	"s:^[^/]\\+:lld:"
+	unpack "$BASE_DL_DIR/$PKG_clang_SOURCE"		"$PKG_SOURCE_DIR/tools/"	"s:^[^/]\\+:clang:"
+	unpack "$BASE_DL_DIR/$PKG_lld_SOURCE"		"$PKG_SOURCE_DIR/tools/"	"s:^[^/]\\+:lld:"
 	unpack "$BASE_DL_DIR/$PKG_compiler_rt_SOURCE"	"$PKG_SOURCE_DIR/runtimes/"	"s:^[^/]\\+:compiler-rt:"
-	unpack "$BASE_DL_DIR/$PKG_libcxx_SOURCE"		"$PKG_SOURCE_DIR/projects/"	"s:^[^/]\\+:libcxx:"
-	unpack "$BASE_DL_DIR/$PKG_libcxxabi_SOURCE"		"$PKG_SOURCE_DIR/projects/"	"s:^[^/]\\+:libcxxabi:"
+	unpack "$BASE_DL_DIR/$PKG_libcxx_SOURCE"	"$PKG_SOURCE_DIR/projects/"	"s:^[^/]\\+:libcxx:"
+	unpack "$BASE_DL_DIR/$PKG_libcxxabi_SOURCE"	"$PKG_SOURCE_DIR/projects/"	"s:^[^/]\\+:libcxxabi:"
 }
 
 . $PWD/utils-toolchain.sh
