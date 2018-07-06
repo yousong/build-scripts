@@ -130,8 +130,109 @@ index 13b13eed286..bcbe4710732 100644
  GOLINK = $(GOCOMPILER) $(GOCFLAGS) $(AM_GOCFLAGS) $(LDFLAGS) $(AM_LDFLAGS) -o $@
  libgosrcdir = $(srcdir)/../libgo/go
  cmdsrcdir = $(libgosrcdir)/cmd
--- 
-2.16.3
+EOF
+
+	patch -p1 <<"EOF"
+From a46854d91b1a21fb5718b304f739dfc90c64035b Mon Sep 17 00:00:00 2001
+From: Yousong Zhou <yszhou4tech@gmail.com>
+Date: Fri, 6 Jul 2018 09:37:52 +0800
+Subject: [PATCH] libgo: set GOARCH=arm64be when $host matches aarch64_be
+
+---
+ libgo/configure    | 3 +++
+ libgo/configure.ac | 3 +++
+ 2 files changed, 6 insertions(+)
+
+diff --git a/libgo/configure b/libgo/configure
+index 11e04aafc8b..8038bd39ef9 100755
+--- a/libgo/configure
++++ b/libgo/configure
+@@ -13666,6 +13666,9 @@ case ${host} in
+   aarch64-*-*)
+     GOARCH=arm64
+     ;;
++  aarch64_be-*-*)
++    GOARCH=arm64be
++    ;;
+   arm*-*-* | strongarm*-*-* | ep9312*-*-* | xscale-*-*)
+     GOARCH=arm
+     case ${host} in
+diff --git a/libgo/configure.ac b/libgo/configure.ac
+index 9f4bf50b22b..fa9c6575086 100644
+--- a/libgo/configure.ac
++++ b/libgo/configure.ac
+@@ -237,6 +237,9 @@ case ${host} in
+   aarch64-*-*)
+     GOARCH=arm64
+     ;;
++  aarch64_be-*-*)
++    GOARCH=arm64be
++    ;;
+   arm*-*-* | strongarm*-*-* | ep9312*-*-* | xscale-*-*)
+     GOARCH=arm
+     case ${host} in
+EOF
+	patch -p1 <<"EOF"
+From 846c80c5148d43ba2052daa5e7afdaa67d58b2d3 Mon Sep 17 00:00:00 2001
+From: Yousong Zhou <yszhou4tech@gmail.com>
+Date: Fri, 6 Jul 2018 10:45:45 +0800
+Subject: [PATCH] libgo: add syscall nr for getrandom for armbe, arm64, arm64be
+ arches
+
+---
+ libgo/go/internal/syscall/unix/getrandom_linux_arm64.go   | 9 +++++++++
+ libgo/go/internal/syscall/unix/getrandom_linux_arm64be.go | 9 +++++++++
+ libgo/go/internal/syscall/unix/getrandom_linux_armbe.go   | 9 +++++++++
+ 3 files changed, 27 insertions(+)
+ create mode 100644 libgo/go/internal/syscall/unix/getrandom_linux_arm64.go
+ create mode 100644 libgo/go/internal/syscall/unix/getrandom_linux_arm64be.go
+ create mode 100644 libgo/go/internal/syscall/unix/getrandom_linux_armbe.go
+
+diff --git a/libgo/go/internal/syscall/unix/getrandom_linux_arm64.go b/libgo/go/internal/syscall/unix/getrandom_linux_arm64.go
+new file mode 100644
+index 00000000000..92e2492cd03
+--- /dev/null
++++ b/libgo/go/internal/syscall/unix/getrandom_linux_arm64.go
+@@ -0,0 +1,9 @@
++// Copyright 2014 The Go Authors. All rights reserved.
++// Use of this source code is governed by a BSD-style
++// license that can be found in the LICENSE file.
++
++package unix
++
++// Linux getrandom system call number.
++// See GetRandom in getrandom_linux.go.
++const randomTrap uintptr = 384
+diff --git a/libgo/go/internal/syscall/unix/getrandom_linux_arm64be.go b/libgo/go/internal/syscall/unix/getrandom_linux_arm64be.go
+new file mode 100644
+index 00000000000..92e2492cd03
+--- /dev/null
++++ b/libgo/go/internal/syscall/unix/getrandom_linux_arm64be.go
+@@ -0,0 +1,9 @@
++// Copyright 2014 The Go Authors. All rights reserved.
++// Use of this source code is governed by a BSD-style
++// license that can be found in the LICENSE file.
++
++package unix
++
++// Linux getrandom system call number.
++// See GetRandom in getrandom_linux.go.
++const randomTrap uintptr = 384
+diff --git a/libgo/go/internal/syscall/unix/getrandom_linux_armbe.go b/libgo/go/internal/syscall/unix/getrandom_linux_armbe.go
+new file mode 100644
+index 00000000000..92e2492cd03
+--- /dev/null
++++ b/libgo/go/internal/syscall/unix/getrandom_linux_armbe.go
+@@ -0,0 +1,9 @@
++// Copyright 2014 The Go Authors. All rights reserved.
++// Use of this source code is governed by a BSD-style
++// license that can be found in the LICENSE file.
++
++package unix
++
++// Linux getrandom system call number.
++// See GetRandom in getrandom_linux.go.
++const randomTrap uintptr = 384
 EOF
 }
 
