@@ -25,6 +25,7 @@ METADATA_DIR="${METADATA_DIR:-$INSTALL_PREFIX/.build-scripts-metadata}"
 
 o_dl_cmd="${o_dl_cmd:-wget}"
 o_dl_jobs="${o_dl_jobs:-16}"
+o_csum_fixup="${o_csum_fixup:-0}"
 
 
 __errmsg() {
@@ -255,6 +256,10 @@ env_fixup_extra_ldflags() {
 	done
 }
 
+file_csum_() {
+	md5sum "$1" | cut -f1 -d' '
+}
+
 env_csum_check() {
 	local file="$1"
 	local xcsum="$2"
@@ -263,7 +268,7 @@ env_csum_check() {
 	if [ -z "$xcsum" ]; then
 		return 0
 	fi
-	csum="$(md5sum "$file" | cut -f1 -d' ')"
+	csum="$(file_csum_ "$file")"
 	if [ "$xcsum" = "$csum" ]; then
 		return 0
 	else
@@ -272,7 +277,12 @@ env_csum_check() {
 		__errmsg "        file: $file"
 		__errmsg "    expected: $xcsum"
 		__errmsg "      actual: $csum"
-		return 1
+		if [ "$o_csum_fixup" = 1 ]; then
+			sed -i -e "s/$xcsum/$csum/g" "$PKG_SCRIPT_NAME"
+			__errmsg "checksum fixed up"
+		else
+			return 1
+		fi
 	fi
 }
 
