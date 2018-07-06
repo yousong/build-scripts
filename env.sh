@@ -23,6 +23,9 @@ LOG_DIR="${LOG_DIR:-$TMP_DIR/log}"
 
 METADATA_DIR="${METADATA_DIR:-$INSTALL_PREFIX/.build-scripts-metadata}"
 
+o_dl_cmd="${o_dl_cmd:-wget}"
+o_dl_jobs="${o_dl_jobs:-16}"
+
 
 __errmsg() {
 	echo "$1" >&2
@@ -304,19 +307,33 @@ download_http_with_mirrors() {
 	"
 	local mirror
 
-	if wget -c -O "$tmp" "$url"; then
+	if "download_cmd_$o_dl_cmd" "$tmp" "$url"; then
 		mv "$tmp" "$path"
 		return 0
 	else
 		for mirror in $mirrors; do
 			rm -vf "$tmp"
-			if wget -c -O "$tmp" "$mirror/$source"; then
+			if "download_cmd_$o_dl_cmd" "$tmp" "$mirror/$source"; then
 				mv "$tmp" "$path"
 				return 0
 			fi
 		done
 	fi
 	return 1
+}
+
+download_cmd_mget() {
+	local output="$1"; shift
+	local url="$1"; shift
+
+	mget --output "$output" --url "$url" --count "$o_dl_jobs"
+}
+
+download_cmd_wget() {
+	local output="$1"; shift
+	local url="$1"; shift
+
+	wget -c -O "$output" "$url"
 }
 
 download_git() {
