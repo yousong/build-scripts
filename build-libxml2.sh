@@ -16,4 +16,5 @@ PKG_DEPENDS='libiconv xz'
 
 CONFIGURE_ARGS+=(
 	--disable-silent-rules
+	--without-python
 )
