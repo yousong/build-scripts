@@ -271,9 +271,9 @@ EOF
 CONFIGURE_ARGS+=(
 	--enable-fail-if-missing
 	--enable-luainterp
-	--enable-perlinterp
+	--disable-perlinterp
 	--enable-pythoninterp
-	--enable-rubyinterp
+	--disable-rubyinterp
 	--enable-cscope
 	--enable-multibyte
 	--disable-gui
