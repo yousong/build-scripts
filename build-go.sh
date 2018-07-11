@@ -34,6 +34,7 @@ GOROOT_BOOTSTRAP="$INSTALL_PREFIX/go/goroot-1.4.20170926"
 godisttest() {
 	# We want it use dist tool in the build dir: ./pkg/tool/linux_amd64/dist
 	export GOROOT="$PKG_BUILD_DIR"
+	export PATH=$PKG_BUILD_DIR/bin:$PATH
 	eval "$(go tool dist env -p)"
 
 	# -v, verbose
