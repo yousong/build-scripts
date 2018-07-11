@@ -92,6 +92,7 @@ staging_post() {
 
 	# link from normal version to the wchar version.  and the name ncurses++w
 	# is just right, not the ncursesw++
+	mkdir -p "$based/lib/pkgconfig"
 	for f in form menu panel ncurses ncurses++; do
 		ln -s "lib${f}w.$sufm" "$based/lib/lib${f}.$suf"
 		ln -s "lib${f}w.$sufm" "$based/lib/lib${f}.$sufm"
