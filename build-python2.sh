@@ -29,3 +29,17 @@ CONFIGURE_ARGS+=(
 	--enable-unicode=ucs4
 	--with-ensurepip=upgrade
 )
+
+install_post() {
+	local d p
+
+	__errmsg "To use packages installed in system site-packages"
+	__errmsg
+	__errmsg "	rm -vf $INSTALL_PREFIX/lib/python2.7/site-packages/system.pth"
+	for p in /usr/lib /usr/lib64; do
+		d="$p/python2.7/site-packages"
+		if [ -d "$d" ]; then
+			__errmsg "	echo $d >>$INSTALL_PREFIX/lib/python2.7/site-packages/system.pth"
+		fi
+	done
+}
