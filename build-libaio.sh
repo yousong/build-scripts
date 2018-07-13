@@ -7,8 +7,9 @@
 #
 PKG_NAME=libaio
 PKG_VERSION="0.3.110-1"
-PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.xz"
-PKG_SOURCE_URL="https://git.fedorahosted.org/cgit/libaio.git/snapshot/$PKG_SOURCE"
+PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
+PKG_SOURCE_URL="https://github.com/crossbuild/libaio/archive/$PKG_SOURCE"
+PKG_SOURCE_UNTAR_FIXUP=1
 PKG_PLATFORM=linux
 
 . "$PWD/env.sh"
