@@ -5,6 +5,10 @@
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
 #
+# Requires help2man
+#
+# 	sudo yum install -y help2man
+#
 # Read util/install.sh to see those companion components available
 #
 # Read bin/nm to get started
