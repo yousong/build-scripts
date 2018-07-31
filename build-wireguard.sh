@@ -5,11 +5,14 @@
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
 #
+# On RHEL/CentOS, wireguard expects distributions' recent kernel versions to
+# compile, https://lists.zx2c4.com/pipermail/wireguard/2018-July/003171.html
+#
 PKG_NAME=wireguard
-PKG_VERSION=0.0.20180202
+PKG_VERSION=0.0.20180718
 PKG_SOURCE="WireGuard-$PKG_VERSION.tar.xz"
 PKG_SOURCE_URL="https://git.zx2c4.com/WireGuard/snapshot/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=48f07f9a90d1101892b532229f199248
+PKG_SOURCE_MD5SUM=84ebc06f9efc5ea121df54bf6799d983
 PKG_DEPENDS='libmnl'
 PKG_PLATFORM=linux
 
@@ -28,62 +31,6 @@ wg_prep_patch() {
 do_patch() {
 	cd "$PKG_SOURCE_DIR"
 	sed -e "s:\$INSTALL_PREFIX:$INSTALL_PREFIX:g" <<"EOF" | patch -p0
---- src/tools/wg-quick.bash.orig	2018-02-16 14:10:13.885206395 +0800
-+++ src/tools/wg-quick.bash	2018-02-16 14:10:13.960206665 +0800
-@@ -29,7 +29,7 @@ ARGS=( "$@" )
- parse_options() {
- 	local interface_section=0 line key value
- 	CONFIG_FILE="$1"
--	[[ $CONFIG_FILE =~ ^[a-zA-Z0-9_=+.-]{1,15}$ ]] && CONFIG_FILE="/etc/wireguard/$CONFIG_FILE.conf"
-+	[[ $CONFIG_FILE =~ ^[a-zA-Z0-9_=+.-]{1,15}$ ]] && CONFIG_FILE="$INSTALL_PREFIX/etc/wireguard/$CONFIG_FILE.conf"
- 	[[ -e $CONFIG_FILE ]] || die "\`$CONFIG_FILE' does not exist"
- 	[[ $CONFIG_FILE =~ /?([a-zA-Z0-9_=+.-]{1,15})\.conf$ ]] || die "The config file must be a valid interface name, followed by .conf"
- 	CONFIG_FILE="$(readlink -f "$CONFIG_FILE")"
-@@ -235,7 +235,7 @@ cmd_usage() {
- 
- 	  CONFIG_FILE is a configuration file, whose filename is the interface name
- 	  followed by \`.conf'. Otherwise, INTERFACE is an interface name, with
--	  configuration found at /etc/wireguard/INTERFACE.conf. It is to be readable
-+	  configuration found at $INSTALL_PREFIX/etc/wireguard/INTERFACE.conf. It is to be readable
- 	  by wg(8)'s \`setconf' sub-command, with the exception of the following additions
- 	  to the [Interface] section, which are handled by $PROGRAM:
- 
---- src/tools/wg-quick.8.orig	2017-09-19 16:43:16.070306699 +0800
-+++ src/tools/wg-quick.8	2017-09-19 16:44:59.070430344 +0800
-@@ -28,7 +28,7 @@ runs pre/post down scripts.
- 
- \fICONFIG_FILE\fP is a configuration file, whose filename is the interface name
- followed by `.conf'. Otherwise, \fIINTERFACE\fP is an interface name, with configuration
--found at `/etc/wireguard/\fIINTERFACE\fP.conf'.
-+found at `$INSTALL_PREFIX/etc/wireguard/\fIINTERFACE\fP.conf'.
- 
- Generally speaking, this utility is just a simple script that wraps invocations to
- .BR wg (8)
-@@ -177,11 +177,11 @@ in the filename:
- \fB    # wg-quick up /path/to/wgnet0.conf\fP
- 
- For convienence, if only an interface name is supplied, it automatically chooses a path in
--`/etc/wireguard/':
-+`$INSTALL_PREFIX/etc/wireguard/':
- 
- \fB    # wg-quick up wgnet0\fP
- 
--This will load the configuration file `/etc/wireguard/wgnet0.conf'.
-+This will load the configuration file `$INSTALL_PREFIX/etc/wireguard/wgnet0.conf'.
- 
- .SH SEE ALSO
- .BR wg (8),
---- src/tools/completion/wg-quick.bash-completion.orig	2017-09-19 16:43:16.070306699 +0800
-+++ src/tools/completion/wg-quick.bash-completion	2017-09-19 16:44:59.074430348 +0800
-@@ -8,7 +8,7 @@ _wg_quick_completion() {
- 		if [[ ${COMP_WORDS[1]} == up ]]; then
- 			local old_glob="$(shopt -p nullglob)"
- 			shopt -s nullglob
--			for i in /etc/wireguard/*.conf; do
-+			for i in $INSTALL_PREFIX/etc/wireguard/*.conf; do
- 				i="${i##*/}"; i="${i%.conf}"
- 				mapfile -t a < <(compgen -W "$i" -- "${COMP_WORDS[2]}")
- 				COMPREPLY+=( "${a[@]}" )
 EOF
 }
 
