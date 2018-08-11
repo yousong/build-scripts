@@ -17,7 +17,7 @@ PKG_SOURCE_VERSION=de3f14b643f09c799845073eaf3577a334d0726d
 PKG_DEPENDS='json-c lua5.1'
 PKG_CMAKE=1
 
-. "$PWD/utils-lede.sh"
+. "$PWD/utils-openwrt.sh"
 . "$PWD/env.sh"
 
 do_patch() {
