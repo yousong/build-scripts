@@ -5,6 +5,12 @@
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
 #
+# Use Vim syntax file
+#
+#	wget https://www.haproxy.org/download/contrib/haproxy.vim
+#	mv haproxy.vim ~/.usr/share/vim/vim80/syntax/
+#	# vi: ft=haproxy
+#
 PKG_NAME=haproxy
 PKG_VERSION=1.8.13
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
@@ -13,6 +19,28 @@ PKG_SOURCE_MD5SUM=bf0b437bad78f5824d7e26ae0c81fee4
 PKG_DEPENDS='lua5.3 openssl pcre zlib'
 
 . "$PWD/env.sh"
+
+do_patch(){
+	cd "$PKG_SOURCE_DIR"
+	# the patch is for
+	#
+	#	make contrib/halog/halog
+	#
+	patch -p0 <<"EOF"
+--- Makefile.orig       2018-08-16 15:37:36.807599920 +0000
++++ Makefile    2018-08-16 15:37:52.450439948 +0000
+@@ -908,6 +908,9 @@ objsize: haproxy
+ %.o:   %.c $(DEP)
+ 	$(CC) $(COPTS) -c -o $@ $<
+
++contrib/%:
++	$(MAKE) -C $(dir $@)
++
+ src/trace.o: src/trace.c $(DEP)
+ 	$(CC) $(TRACE_COPTS) -c -o $@ $<
+
+EOF
+}
 
 if os_is_linux; then
 	MAKE_VARS+=(
@@ -31,6 +59,13 @@ MAKE_VARS+=(
 	USE_REGPARM=1
 	USE_OPENSSL=1
 	USE_ZLIB=1
+)
+
+#with sd_notify in mind, requires -lsystemd
+#MAKE_VARGS+=(USE_SYSTEMD=1)
+
+MAKE_VARS+=(
+	EXTRA="contrib/halog/halog"
 )
 
 haproxy_use_lua() {
