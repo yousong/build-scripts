@@ -5,6 +5,12 @@
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
 #
+# Netlink Protocol Library Suite (libnl), https://www.infradead.org/~tgr/libnl/
+#
+# > Support for 1.1.x releases is limited, backports are only done upon request.
+# > Do not develop new applications based on libnl1 and consider porting your
+# > applications to libnl3
+#
 PKG_NAME=libnl3
 PKG_VERSION=3.2.25
 PKG_SOURCE="libnl-$PKG_VERSION.tar.gz"
