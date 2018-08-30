@@ -69,7 +69,7 @@ env_init() {
 	STRIP=( strip --strip-all )
 	PKG_CONFIG_PATH="$INSTALL_PREFIX/lib/pkgconfig:$INSTALL_PREFIX/share/pkgconfig"
 	EXTRA_CPPFLAGS+=( -isystem "$INSTALL_PREFIX/include" )
-	EXTRA_CFLAGS+=( -isystem "$INSTALL_PREFIX/include" )
+	EXTRA_CFLAGS+=( -isystem "$INSTALL_PREFIX/include" -O2 )
 	EXTRA_LDFLAGS+=( -L"$INSTALL_PREFIX/lib" -Wl,-rpath,"$INSTALL_PREFIX/lib" )
 	if [ -d "$INSTALL_PREFIX/lib64" ]; then
 		PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$INSTALL_PREFIX/lib64/pkgconfig"
