@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright 2016 (c) Yousong Zhou
+# Copyright 2018 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -27,10 +27,10 @@
 # - https://github.com/firehol/netdata/wiki/Log-Files
 #
 PKG_NAME=netdata
-PKG_VERSION=1.7.0
+PKG_VERSION=1.10.0
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.bz2"
 PKG_SOURCE_URL="https://github.com/firehol/netdata/releases/download/v$PKG_VERSION/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=de53982cd43c1f6e060a3621984782de
+PKG_SOURCE_MD5SUM=0f881d3a0b5ba21eed3f5abdb38a131b
 PKG_DEPENDS='e2fsprogs zlib'
 
 . "$PWD/env.sh"
@@ -38,7 +38,7 @@ PKG_DEPENDS='e2fsprogs zlib'
 staging_post() {
 	local based="$PKG_STAGING_DIR$INSTALL_PREFIX"
 
+	staging_post_default
 	# touch an empty netdata.conf
 	touch "$based/etc/netdata/netdata.conf"
-	staging_post_strip "$based"
 }
