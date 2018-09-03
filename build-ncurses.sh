@@ -16,41 +16,15 @@ PKG_SOURCE_MD5SUM=8cb9c412e5f2d96bc6f459aa8c6282a1
 
 . "$PWD/env.sh"
 
-PATCHDATE=20141206
-PATCHBALL="ncurses-$PKG_VERSION-patch-$PATCHDATE.sh.gz"
-PATCHURL="ftp://invisible-island.net/ncurses/$PKG_VERSION/patch-$PKG_VERSION-$PATCHDATE.sh.gz"
-
-fetch_patches() {
-	download_http "$PATCHBALL" "$PATCHURL" "170392a335809136d8fb6ba175ee1dba"
-}
-
-apply_patches() {
-	local f
-
-	cd "$PKG_SOURCE_DIR"
-
-	if [ -f ".patched" ]; then
-		__errmsg "$PKG_SOURCE_DIR/.patched exists, skip patching."
-		return 0
-	fi
-
-	gunzip -c "$BASE_DL_DIR/$PATCHBALL" | sh -e
-	touch .patched
-}
-
-do_patch() {
-	cd "$PKG_SOURCE_DIR"
-
-	fetch_patches
-	apply_patches
-}
-
 # We don't want to be affected by ncurses libraries of the build system
 EXTRA_CPPFLAGS=()
 EXTRA_CFLAGS=()
 EXTRA_LDFLAGS=(
 	-L"$INSTALL_PREFIX/lib"
 	-Wl,-rpath,"$INSTALL_PREFIX/lib"
+)
+CONFIGURE_VARS+=(
+	PKG_CONFIG_LIBDIR="$INSTALL_PREFIX/lib/pkgconfig"
 )
 # - enable building shared libraries
 # - suppress check for ada95
@@ -82,6 +56,8 @@ staging_post() {
 	local f based="$PKG_STAGING_DIR$INSTALL_PREFIX"
 	local suf sufm
 
+	staging_post_default
+
 	if os_is_linux; then
 		suf=so
 		sufm="so.${major}"
@@ -94,19 +70,22 @@ staging_post() {
 	# is just right, not the ncursesw++
 	mkdir -p "$based/lib/pkgconfig"
 	for f in form menu panel ncurses ncurses++; do
-		ln -s "lib${f}w.$sufm" "$based/lib/lib${f}.$suf"
-		ln -s "lib${f}w.$sufm" "$based/lib/lib${f}.$sufm"
+		if [ "$f" != "ncurses++" ]; then
+			ln -s "lib${f}w.$sufm" "$based/lib/lib${f}.$suf"
+			ln -s "lib${f}w.$sufm" "$based/lib/lib${f}.$sufm"
+		fi
 		ln -s "lib${f}w.a" "$based/lib/lib${f}.a"
 		ln -s "${f}w.pc" "$based/lib/pkgconfig/${f}.pc"
 	done
 	# link from curses version to ncurses with wchar support version
 	for f in curses curses++; do
 		# or we can make a lib${f}.$suf with content INPUT(libn${f}w.$suf)
-		ln -s "libn${f}w.$suf" "$based/lib/lib${f}.$suf"
+		if [ "$f" != "curses++" ]; then
+			ln -s "libn${f}w.$suf" "$based/lib/lib${f}.$suf"
+		fi
 		ln -s "libn${f}w.a" "$based/lib/lib${f}.a"
 		ln -s "n${f}w.pc" "$based/lib/pkgconfig/${f}.pc"
 	done
 	ln -s "libncurses.$sufm" $based/lib/libtermcap.$suf
 	ln -s "ncursesw${major}-config" "$based/bin/ncurses${major}-config"
-	staging_post_strip "$based"
 }
