@@ -91,9 +91,11 @@ Prepare a simple config: wg0.conf
 Prepare a simple start script: wg0.sh
 
 	#!/bin/bash
-	sudo modprobe udp_tunnel
-	sudo modprobe ip6_udp_tunnel
-	sudo insmod \"$INSTALL_PREFIX/lib/modules/$(uname -r)/extra/wireguard.ko\"
+
+	# Make sure /etc/depmod.d/ has settings to lookup modules directories
+	# under $INSTALL_PREFIX
+	#
+	modprobe wireguard
 
 	ip link add wg0 type wireguard
 	ip addr add 192.168.175.2/24 dev wg0
