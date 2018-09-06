@@ -60,24 +60,6 @@ CONFIGURE_ARGS+=(
 
 # EXTRA_CFLAGS+=(-g)
 
-# build only userspace tools by default
-#
-# the Linux kernel versions against which the given versions of the Open
-# vSwitch kernel module will successfully build.
-#
-#    1.11.x        2.6.18 to 3.8
-#    2.3.x         2.6.32 to 3.14
-#    2.4.x         2.6.32 to 4.0
-#    2.5.x         2.6.32 to 4.3
-#    2.6.x         3.10 to 4.7
-#    2.7.x         3.10 to 4.9
-#
-# the datapath supported features from an Open vSwitch user's perspective
-#
-#    Feature                    Linux upstream    Linux OVS tree
-#    Connection tracking        4.3               3.10
-#    Tunnel - VXLAN             3.12              YES
-#
 # - What Linux kernel versions does each Open vSwitch release work with?
 # - Are all features available with all datapaths?
 #   https://github.com/openvswitch/ovs/blob/master/Documentation/faq/releases.rst
@@ -102,17 +84,25 @@ CONFIGURE_ARGS+=(
 #	5: [/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x90) [0x7f93a666ce40]]
 #
 ovs_enable_dpdk=0
+ovs_enable_kmod=1
 
-ovs_with_kmod="/lib/modules/$(uname -r)/build"
-ovs_with_dpdk="$("$TOPDIR/build-dpdk.sh" dpdk_prefix)"
-
-if [ -d "$ovs_with_kmod" ]; then
+if [ "$ovs_enable_kmod" -gt 0 ]; then
+	ovs_with_kmod="/lib/modules/$(uname -r)/build"
+	if [ ! -d "$ovs_with_kmod" ]; then
+		__errmsg "openvswitch: cannot find kernel build dir $ovs_with_kmod"
+		false
+	fi
 	CONFIGURE_ARGS+=(
 		--with-linux="$ovs_with_kmod"
 	)
 fi
 
-if [ "$ovs_enable_dpdk" -gt 0 -a -d "$ovs_with_dpdk" ]; then
+if [ "$ovs_enable_dpdk" -gt 0 ]; then
+	ovs_with_dpdk="$("$TOPDIR/build-dpdk.sh" dpdk_prefix)"
+	if [ ! -d "$ovs_with_dpdk" ]; then
+		__errmsg "openvswitch: cannot find dpdk dir dir $ovs_with_dpdk"
+		false
+	fi
 	CONFIGURE_ARGS+=(
 		--with-dpdk="$ovs_with_dpdk"
 	)
@@ -130,11 +120,13 @@ staging() {
 		#/usr/bin/env bash
 		case "\$0" in
 		    *ovs-ctl) "$ds1/ovs-ctl" "\$@" ;;
+		    *ovs-kmod-ctl) "$ds1/ovs-kmod-ctl" "\$@" ;;
 		    *ovn-ctl) "$ds1/ovn-ctl" "\$@" ;;
 		esac
 	EOF
 	chmod a+x "$ds0/ovs-wrapper"
 	ln -sf "../share/openvswitch/scripts/ovs-wrapper" "$d0/bin/ovs-ctl"
+	ln -sf "../share/openvswitch/scripts/ovs-wrapper" "$d0/bin/ovs-kmod-ctl"
 	ln -sf "../share/openvswitch/scripts/ovs-wrapper" "$d0/bin/ovn-ctl"
 }
 
