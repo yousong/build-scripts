@@ -86,6 +86,16 @@ Steps to setup environment variables to use the built binaries
 	# Use installed manpages
 	MANPATH="$INSTALL_PREFIX/share/man:$(manpath)"
 
+	# Use kernel modules.  Edit /etc/depmod.d/dist.conf to let depmod use
+	# external modules directories.
+	#
+	# Then execute "depmod -a" to update /lib/modules/$(uname -r)/modules.dep
+	# and check whether absolute paths to modules installed under
+	# $INSTALL_PATH appear there
+	#
+	search external updates extra built-in weak-updates
+	external * $INSTALL_PREFIX/lib/modules
+
 Compile one by one and handle dependencies by mind
 
 	# download, prepare, configure, compile, staging
