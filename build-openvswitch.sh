@@ -95,6 +95,9 @@ if [ "$ovs_enable_kmod" -gt 0 ]; then
 	CONFIGURE_ARGS+=(
 		--with-linux="$ovs_with_kmod"
 	)
+	MAKE_ENVS+=(
+		INSTALL_MOD_PATH=""$PKG_STAGING_DIR$INSTALL_PREFIX""
+	)
 fi
 
 if [ "$ovs_enable_dpdk" -gt 0 ]; then
@@ -116,6 +119,9 @@ staging() {
 	local ds1="$d1/share/openvswitch/scripts"
 
 	build_staging 'install'
+	if [ "$ovs_enable_kmod" -gt 0 ]; then
+		build_staging modules_install
+	fi
 	cat >"$ds0/ovs-wrapper" <<-EOF
 		#/usr/bin/env bash
 		case "\$0" in
@@ -130,17 +136,12 @@ staging() {
 	ln -sf "../share/openvswitch/scripts/ovs-wrapper" "$d0/bin/ovn-ctl"
 }
 
-ovs_install_kmod() {
-	cd "$PKG_BUILD_DIR"
-	sudo make modules_install
-}
-
 install_post() {
 	if [ -d "$ovs_with_kmod" ]; then
 		__errmsg "
-To install the built Linux kernel modules.  This requires root privileges
-
-	$PKG_SCRIPT_NAME ovs_install_kmod
+Note that different builds of openvswitch may have different --prefix hardcoded
+in.  You may not want to invoke 'ovs-ctl force-reload-kmod' against a running
+instance configured with different --prefix setting
 "
 	fi
 }
