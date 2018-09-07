@@ -629,8 +629,12 @@ archive() {
 }
 
 metadata_gen_listing() {
-	mkdir -p "$PKG_METADATA_DIR"
-	uninstall_gen_listing "$PKG_STAGING_DIR/$INSTALL_PREFIX" >"$PKG_METADATA_DIR/listing"
+	local d="$PKG_STAGING_DIR$INSTALL_PREFIX"
+
+	if [ -d "$d" ]; then
+		mkdir -p "$PKG_METADATA_DIR"
+		uninstall_gen_listing "$d" >"$PKG_METADATA_DIR/listing"
+	fi
 }
 
 clean_extra() {
