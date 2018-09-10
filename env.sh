@@ -597,9 +597,23 @@ staging_post_strip() {
 			done
 }
 
+staging_post_lib64() {
+	local base="$PKG_STAGING_DIR$INSTALL_PREFIX"
+	local d64="$base/lib64"
+	local d="$base/lib"
+
+	# move content of lib64/ to lib/ and prepare a symlink
+	if [ -d "$d64" -a ! -L "$d64" ]; then
+		cpdir "$d64" "$d"
+		rm -rf "$d64"
+		ln -sf lib "$d64"
+	fi
+}
+
 staging_post_default() {
 	if [ -d "$PKG_STAGING_DIR" ]; then
 		staging_check_default
+		staging_post_lib64
 		staging_post_strip "$PKG_STAGING_DIR$INSTALL_PREFIX"
 	fi
 }
