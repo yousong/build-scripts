@@ -21,27 +21,30 @@ NJOBS=1
 configure() {
 	local kern="$(uname -s)"
 	local mach="$(uname -m)"
-	local os
+	local preset
 
 	if [ "$kern" = Linux ]; then
 		if [ "$mach" = x86_64 ]; then
-			os=linux-x86_64
+			preset=linux-x86_64
 		else
-			os=linux-x32
+			preset=linux-x32
 		fi
 	elif [ "$kern" = Darwin ]; then
 		if [ "$mach" = x86_64 ]; then
-			os=darwin64-x86_64-cc
+			preset=darwin64-x86_64-cc
 		else
-			os=darwin-i386-cc
+			preset=darwin-i386-cc
 		fi
 	fi
 
 	cd "$PKG_BUILD_DIR"
 	# "Configure" script is the one
-	eval MAKE="'${MAKEJ[*]}'" "$PKG_BUILD_DIR/Configure"		\
-			--prefix="$INSTALL_PREFIX"	\
-			shared "$os"
+	#
+	# Run "Configure MAKE" and get more readable content from stdout
+	eval MAKE="'${MAKEJ[*]}'" "$PKG_BUILD_DIR/Configure"	\
+			--prefix="$INSTALL_PREFIX"		\
+			--libdir="lib"				\
+			shared "$preset"
 	# make depend on each configure
 	"${MAKEJ[@]}" depend
 }
