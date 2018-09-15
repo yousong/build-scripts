@@ -61,6 +61,13 @@ MAKE_VARS+=(
 	USE_ZLIB=1
 )
 
+if false; then
+	# IP_BIND_ADDRESS_NO_PORT is available since Linux 4.2, or CentOS 7.4 (3.10.693)
+	MAKE_VARS+=(
+		DEFINE="-DIP_BIND_ADDRESS_NO_PORT=24"
+	)
+fi
+
 #with sd_notify in mind, requires -lsystemd
 #MAKE_VARGS+=(USE_SYSTEMD=1)
 
