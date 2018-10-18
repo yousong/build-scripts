@@ -17,6 +17,12 @@ GOROOT_FINAL="$INSTALL_PREFIX/go/goroot-$PKG_VERSION"
 # even though `file` utility recognizes them
 STRIP=()
 
+go_os_arch() {
+	local gobin="$PKG_BUILD_DIR/bin/go"
+
+	echo "$("$gobin" env GOOS)_$("$gobin" env GOARCH)"
+}
+
 configure() {
 	true
 }
@@ -61,9 +67,24 @@ compile() {
 
 staging() {
 	local d="$PKG_STAGING_DIR$GOROOT_FINAL"
+	local osarch="$(go_os_arch)"
 
 	mkdir -p "$d"
 	cpdir "$PKG_SOURCE_DIR" "$d"
+	#
+	# - pkg/obj/ is for GOCACHE
+	# - pkg/bootstrap/ is bootstrap workspace root
+	# - pkg/tool/linux_amd64/api, api checker used by tests
+	# - pkg/linux_amd64/cmd/, intermediates for cmd/compile, cmd/link, etc.
+	#
+	# - https://github.com/golang/build/blob/master/cmd/release/release.go#L434
+	# - https://github.com/golang/build/blob/master/cmd/release/releaselet.go#L53
+	# - https://github.com/golang/go/issues/23299
+	#
+	rm -rf "$d/pkg/bootstrap"
+	rm -rf "$d/pkg/tool/$osarch/api"
+	rm -rf "$d/pkg/$osarch/cmd"
+	rm -rf "$d/pkg/obj"
 }
 
 install() {
