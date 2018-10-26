@@ -85,6 +85,7 @@ staging() {
 	rm -rf "$d/pkg/tool/$osarch/api"
 	rm -rf "$d/pkg/$osarch/cmd"
 	rm -rf "$d/pkg/obj"
+	chmod -R a-w "$d"
 }
 
 install() {
