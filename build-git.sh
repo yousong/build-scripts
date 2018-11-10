@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright 2015-2017 (c) Yousong Zhou
+# Copyright 2015-2018 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -23,11 +23,16 @@
 #	rm -rfv /home/yousong/.usr/share/man/man3/Git*
 #	rm -rfv /home/yousong/.usr/share/perl/5.14.2/Git*
 #
+# Install from .rpm compiled by third-party
+#
+#  - https://ius.io/GettingStarted/
+#  - https://dl.iuscommunity.org/pub/ius/stable/CentOS/7/x86_64/repoview/letter_g.group.html
+#
 PKG_NAME=git
-PKG_VERSION=2.16.3
+PKG_VERSION=2.19.1
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="https://www.kernel.org/pub/software/scm/git/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=1b75ee082169dfcad321a4dc13b37009
+PKG_SOURCE_MD5SUM=defb7d4f311d9de4e50b7bbdd36a6610
 PKG_DEPENDS='curl expat libiconv openssl zlib'
 
 . "$PWD/env.sh"
