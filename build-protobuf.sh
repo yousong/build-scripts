@@ -20,7 +20,7 @@
 # - Protocol Buffer Basics: Go, https://developers.google.com/protocol-buffers/docs/gotutorial
 #
 PKG_NAME=protobuf
-PKG_VERSION="3.3.0"
+PKG_VERSION="3.6.1"
 PKG_SOURCE="protobuf-${PKG_VERSION}.tar.gz"
 PKG_SOURCE_URL="https://github.com/google/protobuf/archive/v$PKG_VERSION.tar.gz"
 
@@ -62,4 +62,20 @@ prepare_extra() {
 configure_pre() {
 	cd "$PKG_SOURCE_DIR"
 	./autogen.sh
+}
+
+protobuf_use_prebuilt() {
+	local ver="$PKG_VERSION"
+	local comp_src="protoc-$ver-linux-x86_64.zip"
+	local comp_url="https://github.com/protocolbuffers/protobuf/releases/download/v$ver/$comp_src"
+	local comp_src_csum='a18f0c38ceb3c71c3b7db5994d4fd4fc'
+	local lang_src="protobuf-all-$ver.tar.gz"
+	local lang_url="https://github.com/protocolbuffers/protobuf/releases/download/v$ver/$lang_src"
+	local lang_src_csum='d4c50a611ac6486c6433eb53e3f60d1f'
+
+	download_http "$comp_src" "$comp_url" "$comp_src_csum"
+	unpack "$BASE_DL_DIR/$comp_src"	"$INSTALL_PREFIX"
+
+	download_http "$lang_src" "$lang_url" "$lang_src_csum"
+	unpack "$BASE_DL_DIR/$lang_src"	"$INSTALL_PREFIX/protobuf"
 }
