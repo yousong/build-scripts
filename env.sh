@@ -483,30 +483,30 @@ prepare() {
 build_configure_default() {
 	mkdir -p "$CONFIGURE_PATH"
 	cd "$CONFIGURE_PATH"
-	env	CPPFLAGS="${EXTRA_CPPFLAGS[*]}"	\
+	env	CPPFLAGS="${EXTRA_CPPFLAGS[*]}"		\
 		CFLAGS="${EXTRA_CFLAGS[*]}"		\
-		CXXFLAGS="${EXTRA_CXXFLAGS[*]}"	\
-		LDFLAGS="${EXTRA_LDFLAGS[*]}"	\
+		CXXFLAGS="${EXTRA_CXXFLAGS[*]}"		\
+		LDFLAGS="${EXTRA_LDFLAGS[*]}"		\
 		"${CONFIGURE_VARS[@]}"			\
-		"$CONFIGURE_CMD"				\
+		"$CONFIGURE_CMD"			\
 		"${CONFIGURE_ARGS[@]}"
 }
 
 build_configure_cmake() {
 	mkdir -p "$PKG_BUILD_DIR"
 	cd "$PKG_BUILD_DIR"
-	env "${CMAKE_ENVS[@]}"									\
-		cmake												\
-		-DCMAKE_BUILD_TYPE=Release							\
-		-DCMAKE_PREFIX_PATH="$INSTALL_PREFIX"				\
-		-DCMAKE_INSTALL_PREFIX="$INSTALL_PREFIX"			\
+	env "${CMAKE_ENVS[@]}"						\
+		cmake							\
+		-DCMAKE_BUILD_TYPE=Release				\
+		-DCMAKE_PREFIX_PATH="$INSTALL_PREFIX"			\
+		-DCMAKE_INSTALL_PREFIX="$INSTALL_PREFIX"		\
 		-DCMAKE_EXE_LINKER_FLAGS="${EXTRA_LDFLAGS[*]}"		\
 		-DCMAKE_SHARED_LINKER_FLAGS="${EXTRA_LDFLAGS[*]}"	\
-		-DCMAKE_C_FLAGS="${EXTRA_CFLAGS[*]}"				\
-		-DCMAKE_CXX_FLAGS="${EXTRA_CXXFLAGS[*]}"			\
-		-DCMAKE_BUILD_WITH_INSTALL_RPATH=on					\
-		-DCMAKE_MACOSX_RPATH=on								\
-		"${CMAKE_ARGS[@]}"									\
+		-DCMAKE_C_FLAGS="${EXTRA_CFLAGS[*]}"			\
+		-DCMAKE_CXX_FLAGS="${EXTRA_CXXFLAGS[*]}"		\
+		-DCMAKE_BUILD_WITH_INSTALL_RPATH=on			\
+		-DCMAKE_MACOSX_RPATH=on					\
+		"${CMAKE_ARGS[@]}"					\
 		"$PKG_SOURCE_DIR/$PKG_CMAKE_SOURCE_SUBDIR"
 }
 
@@ -516,11 +516,11 @@ build_compile_make() {
 		CXXFLAGS="${EXTRA_CXXFLAGS[*]}"		\
 		CPPFLAGS="${EXTRA_CPPFLAGS[*]}"		\
 		LDFLAGS="${EXTRA_LDFLAGS[*]}"		\
-		"${MAKE_ENVS[@]}"					\
-		"${MAKEJ[@]}"								\
-			"${MAKE_ARGS[@]}"				\
-			${PKG_CMAKE:+VERBOSE=1}			\
-			"${MAKE_VARS[@]}"				\
+		"${MAKE_ENVS[@]}"			\
+		"${MAKEJ[@]}"				\
+			"${MAKE_ARGS[@]}"		\
+			${PKG_CMAKE:+VERBOSE=1}		\
+			"${MAKE_VARS[@]}"		\
 			"$@"
 }
 
@@ -558,11 +558,11 @@ staging_pre() {
 build_staging() {
 	cd "$PKG_BUILD_DIR"
 	env "${MAKE_ENVS[@]}"				\
-		"${MAKEJ[@]}"							\
-			"${MAKE_ARGS[@]}"			\
+		"${MAKEJ[@]}"				\
+			"${MAKE_ARGS[@]}"		\
 			DESTDIR="$PKG_STAGING_DIR"	\
 			${PKG_CMAKE:+VERBOSE=1}		\
-			"${MAKE_VARS[@]}"			\
+			"${MAKE_VARS[@]}"		\
 			"$@"
 }
 
