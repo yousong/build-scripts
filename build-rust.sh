@@ -6,14 +6,14 @@
 # See /LICENSE for more information.
 #
 PKG_NAME=rust
-PKG_VERSION=1.20.0
+PKG_VERSION=1.30.1
 PKG_SOURCE="rustc-${PKG_VERSION}-src.tar.gz"
 
 rust_init() {
 	local os="$(uname -s)"
 	if [ "$os" = "Linux" ]; then
 		PKG_SOURCE="rust-$PKG_VERSION-x86_64-unknown-linux-gnu.tar.gz"
-		PKG_SOURCE_MD5SUM=5b63778b4877bcfd431b56c485f4876b
+		PKG_SOURCE_MD5SUM=9480f4c55d97bfdeb3d6e8b4cc32bd9b
 	elif [ "$os" = "Darwin" ]; then
 		PKG_SOURCE="rust-$PKG_VERSION-x86_64-apple-darwin.tar.gz"
 	else
