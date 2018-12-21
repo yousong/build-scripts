@@ -14,10 +14,10 @@
 # TODO use libslz
 #
 PKG_NAME=haproxy
-PKG_VERSION=1.8.15
+PKG_VERSION=1.9.0
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://www.haproxy.org/download/${PKG_VERSION%.*}/src/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=ae732cbce52b3e04112a32ef116a11de
+PKG_SOURCE_MD5SUM=be67ae289d9261940a31e5bc9a3bf79a
 PKG_DEPENDS='lua5.3 openssl pcre zlib'
 
 . "$PWD/env.sh"
@@ -89,6 +89,27 @@ haproxy_use_lua() {
 	)
 }
 haproxy_use_lua
+
+haproxy_reg_tests() {
+	# Environment variables
+	#
+	#	HAPROXY_PROGRAM			default to "haproxy"
+	#	VARNISHTEST_PROGRAM		default to "varnishtest"
+	#	TMPDIR				default to /tmp
+	#
+	# Run
+	#
+	#	cd "$PKG_SOURCE_DIR"
+	#	./scripts/run-regtests.sh reg-tests/checks
+	#	varnishtest regtets/checks -v regtests/checks/s00003.vtc
+	#
+	# Run as makefile target
+	#
+	# 	make reg-tests-help
+	#
+	cd "$PKG_BUILD_DIR"
+	make reg-tests REG_TEST_FILES="$*"
+}
 
 configure() {
 	true
