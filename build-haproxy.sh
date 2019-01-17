@@ -14,10 +14,10 @@
 # TODO use libslz
 #
 PKG_NAME=haproxy
-PKG_VERSION=1.9.1
+PKG_VERSION=1.9.2
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://www.haproxy.org/download/${PKG_VERSION%.*}/src/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=7694f210115e880af4e9e62cd357aebd
+PKG_SOURCE_MD5SUM=da1b5e5f1b005d88e012868979cfe0bd
 PKG_DEPENDS='lua5.3 openssl pcre zlib'
 
 . "$PWD/env.sh"
@@ -90,11 +90,32 @@ haproxy_use_lua() {
 }
 haproxy_use_lua
 
+vtest_SOURCE_URL=https://github.com/vtest/VTest.git
+vtest_VERSION=7174e5bbe528cc47f34975f003f50b5a1855e346
+vtest_SOURCE=vtest-2018-01-15.tar.gz
+download_extra() {
+	download_git vtest "$vtest_SOURCE_URL" "$vtest_VERSION" "$vtest_SOURCE"
+}
+
+prepare_extra() {
+	unpack "$BASE_DL_DIR/$vtest_SOURCE" "$PKG_SOURCE_DIR" "s:^[^/]\\+:vtest:"
+}
+
+compile() {
+	build_compile_make
+	cd "$PKG_BUILD_DIR/vtest"
+	"${MAKEJ[@]}"
+}
+
 haproxy_reg_tests() {
+	# HAproxy 1.9.2 switched to using program name vtest instead of
+	# varnishtest and env variable VTEST_PROGRAM from VARNISHTEST_PROGRAM.
+	# Read doc/regression-testing.txt for details on reg-testing of HAproxy
+	#
 	# Environment variables
 	#
 	#	HAPROXY_PROGRAM			default to "haproxy"
-	#	VARNISHTEST_PROGRAM		default to "varnishtest"
+	#	VTEST_PROGRAM			default to "vtest"
 	#	TMPDIR				default to /tmp
 	#
 	# Run
@@ -107,8 +128,14 @@ haproxy_reg_tests() {
 	#
 	# 	make reg-tests-help
 	#
+	if [ "$#" == 0 ]; then
+		set -- reg-tests
+	fi
 	cd "$PKG_BUILD_DIR"
-	make reg-tests REG_TEST_FILES="$*"
+	PATH="$PKG_BUILD_DIR/vtest:$PATH" \
+	VTEST_PROGRAM="$PKG_BUILD_DIR/vtest/vtest" \
+	HAPROXY_PROGRAM="$PKG_BUILD_DIR/haproxy" \
+		make reg-tests REG_TEST_FILES="$*"
 }
 
 configure() {
