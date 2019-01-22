@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright 2016 (c) Yousong Zhou
+# Copyright 2016-2019 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -8,13 +8,14 @@
 # configure requires gawk
 #
 PKG_NAME=quagga
-PKG_VERSION=0.99.24
-PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.xz"
+PKG_VERSION=0.99.24.1
+PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://download.savannah.gnu.org/releases/quagga/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=f1dce9efba8d1ca359f2998f4575206d
-
-# this is required otherwise configure script may complain that it
-# counldn't find install-sh or such things
-PKG_AUTOCONF_FIXUP=1
+PKG_SOURCE_MD5SUM=7986bdc2fe6027d4c9216f7f5791e718
 
 . "$PWD/env.sh"
+
+CONFIGURE_ARGS+=(
+	# requires makeinfo from texinfo
+	--disable-doc
+)
