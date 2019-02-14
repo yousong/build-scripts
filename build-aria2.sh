@@ -18,10 +18,10 @@
 #	aria2c -h#advanced
 #
 PKG_NAME=aria2
-PKG_VERSION=1.33.0
+PKG_VERSION=1.34.0
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.xz"
 PKG_SOURCE_URL="https://github.com/aria2/aria2/releases/download/release-$PKG_VERSION/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=46979c7291403a785e936d0ca244efea
+PKG_SOURCE_MD5SUM=923b2f6cab7414a8ef0c05a264e070bb
 PKG_DEPENDS='c-area gmp gnutls libxml2 nettle sqlite zlib'
 
 . "$PWD/env.sh"
