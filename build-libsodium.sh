@@ -6,9 +6,9 @@
 # See /LICENSE for more information.
 #
 PKG_NAME=libsodium
-PKG_VERSION=1.0.13
+PKG_VERSION=1.0.17
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="https://download.libsodium.org/libsodium/releases/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=f38aac160a4bd05f06f743863e54e499
+PKG_SOURCE_MD5SUM=0f71e2680187a1558b5461e6879342c5
 
 . "$PWD/env.sh"
