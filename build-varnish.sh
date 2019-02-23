@@ -14,8 +14,12 @@ PKG_DEPENDS='ncurses pcre readline'
 
 . "$PWD/env.sh"
 
+# these are for debugging varnishtest
+#EXTRA_CFLAGS+=(-ggdb -O0)
+
 # disable building docs
 CONFIGURE_ARGS+=(
 	--with-rst2man=:
 	--with-sphinx-build=:
+	--disable-silent-rules
 )
