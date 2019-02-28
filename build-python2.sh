@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright 2015-2018 (c) Yousong Zhou
+# Copyright 2015-2019 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -9,10 +9,10 @@
 # bumped release
 #
 PKG_NAME=python2
-PKG_VERSION=2.7.14
+PKG_VERSION=2.7.15
 PKG_SOURCE="Python-${PKG_VERSION}.tar.xz"
 PKG_SOURCE_URL="https://www.python.org/ftp/python/$PKG_VERSION/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=1f6db41ad91d9eb0a6f0c769b8613c5b
+PKG_SOURCE_MD5SUM=a80ae3cc478460b922242f43a1b4094d
 PKG_DEPENDS='bzip2 db openssl ncurses readline sqlite zlib'
 
 . "$PWD/env.sh"
