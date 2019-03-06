@@ -55,6 +55,7 @@ elif os_is_darwin; then
 fi
 MAKE_VARS+=(
 	PREFIX="$INSTALL_PREFIX"
+	DOCDIR="$INSTALL_PREFIX/share/doc/haproxy"
 	LDFLAGS="${EXTRA_LDFLAGS[*]}"
 	USE_PCRE=1
 	USE_PCRE_JIT=1
