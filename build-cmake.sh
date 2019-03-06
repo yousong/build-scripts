@@ -16,6 +16,7 @@ PKG_DEPENDS='openssl'
 
 # --parallel, bootstrap cmake in parallel
 CONFIGURE_ARGS+=(
+	--docdir="share/doc/cmake-${PKG_VERSION%.*}"
 	--verbose
 	--parallel=$NJOBS
 )
