@@ -9,15 +9,23 @@
 #
 # - Features and requirements, https://nghttp2.org/documentation/package_README.html#requirements
 #
+# Compiler requirements
+#
+# > Compiling libnghttp2 C source code requires a C99 compiler. gcc 4.8 is known
+# > to be adequate. In order to compile the C++ source code, gcc >= 6.0 or clang
+# > >= 6.0 is required. C++ source code requires C++14 language features.
+#
 PKG_NAME=nghttp2
-PKG_VERSION=1.5.0
-PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.bz2"
-PKG_SOURCE_URL="https://github.com/tatsuhiro-t/nghttp2/releases/download/v$PKG_VERSION/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=390f2cc0a4898069d5933ba8163365f2
+PKG_VERSION=1.36.0
+PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.xz"
+PKG_SOURCE_URL="https://github.com/nghttp2/nghttp2/releases/download/v$PKG_VERSION/$PKG_SOURCE"
+PKG_SOURCE_MD5SUM=f2ef3dd1e9fc6dc29fcdd4a465ebc020
 PKG_AUTOCONF_FIXUP=1
 PKG_DEPENDS='libevent'
 
 . "$PWD/env.sh"
+
+#env_init_gnu_toolchain
 
 do_patch() {
 	cd "$PKG_SOURCE_DIR"
@@ -48,22 +56,6 @@ do_patch() {
  
  uninstall-local:
  	rm -f $(DESTDIR)$(libdir)/python*/site-packages/nghttp2.so
---- src/util.cc.orig	2016-02-22 21:16:47.980201859 +0800
-+++ src/util.cc	2016-02-22 21:17:40.588218627 +0800
-@@ -1245,8 +1245,13 @@ int read_mime_types(std::map<std::string
-         break;
-       }
-       ext_end = std::find_if(ext_start, std::end(line), delim_pred);
-+#ifdef HAVE_STD_MAP_EMPLACE
-       res.emplace(std::string(ext_start, ext_end),
-                   std::string(std::begin(line), type_end));
-+#else
-+      res.insert(std::make_pair(std::string(ext_start, ext_end),
-+                  std::string(std::begin(line), type_end)));
-+#endif
-     }
-   }
- 
 EOF
 
 	# Including both event.h and event2/event.h will cause redefinition error.
