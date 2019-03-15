@@ -12,10 +12,10 @@
 # augtool requires readline
 #
 PKG_NAME=augeas
-PKG_VERSION=1.4.0
+PKG_VERSION=1.11.0
 PKG_SOURCE="${PKG_NAME}-${PKG_VERSION}.tar.gz"
 PKG_SOURCE_URL="http://download.augeas.net/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=a2536a9c3d744dc09d234228fe4b0c93
-PKG_DEPENDS=readline
+PKG_SOURCE_MD5SUM=abf51f4c0cf3901d167f23687f60434a
+PKG_DEPENDS="libxml2 readline"
 
 . "$PWD/env.sh"
