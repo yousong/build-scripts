@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright 2015-2016 (c) Yousong Zhou
+# Copyright 2015-2019 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -27,12 +27,12 @@
 # - You are not authorized to access bug #1286432, https://bugzilla.redhat.com/show_bug.cgi?id=1286432
 #
 PKG_NAME=libguestfs
-PKG_VERSION=1.30.2
+PKG_VERSION=1.40.2
 PKG_SOURCE="${PKG_NAME}-${PKG_VERSION}.tar.gz"
 PKG_SOURCE_URL="http://libguestfs.org/download/${PKG_VERSION%.*}-stable/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=6c5632779d13c0bf4a88724af71c6bc8
+PKG_SOURCE_MD5SUM=7cf90b71013c83f28fead844d3b343ea
 PKG_AUTOCONF_FIXUP=1
-PKG_DEPENDS='supermin augeas pcre qemu'
+PKG_DEPENDS='augeas file gperf hivex jansson libxml2 pcre qemu supermin'
 
 . "$PWD/env.sh"
 
@@ -53,18 +53,10 @@ do_patch() {
 	# Another option would be to disable supermin altogether and used a
 	# downloaded appliance
 	patch -p1 <<EOF
---- a/ocaml-link.sh.orig	2016-02-23 19:56:25.993736144 +0800
-+++ b/ocaml-link.sh	2016-02-23 19:57:50.853760838 +0800
-@@ -40,4 +40,4 @@ while true ; do
-   esac
- done
- 
--exec "\$@" -linkpkg -cclib "\${cclib}"
-+exec "\$@" -linkpkg -ccopt '${EXTRA_LDFLAGS}' -cclib "\${cclib}"
 --- a/appliance/hostfiles.in.orig 2015-12-12 15:36:10.002586624 +0800
 +++ b/appliance/hostfiles.in      2015-12-12 15:36:42.770595842 +0800
-@@ -15,3 +15,7 @@ dnl   MAGEIA=1     For Mageia.
-
+@@ -16,3 +16,7 @@
+ /etc/ld.so.cache
  /lib/lsb/*
  /usr/share/augeas/lenses/*.aug
 +$INSTALL_PREFIX/lib/libaugeas.*
@@ -73,20 +65,20 @@ do_patch() {
 +$INSTALL_PREFIX/share/augeas/lenses/dist/*
 --- a/builder/paths.ml.orig	2015-12-14 11:57:27.104578901 +0800
 +++ b/builder/paths.ml	2015-12-14 11:57:48.788586611 +0800
-@@ -35,7 +35,7 @@ let xdg_config_home () =
+@@ -36,7 +36,7 @@ let xdg_config_home () =
  let xdg_config_dirs () =
    let dirs =
      try Sys.getenv "XDG_CONFIG_DIRS"
 -    with Not_found -> "/etc/xdg" in
 +    with Not_found -> "$INSTALL_PREFIX/etc/xdg" in
-   let dirs = string_nsplit ":" dirs in
+   let dirs = String.nsplit ":" dirs in
    let dirs = List.filter (fun x -> x <> "") dirs in
    List.map (fun x -> x // prog) dirs
 EOF
 	patch -p1 <<"EOF"
---- a/configure.ac.orig	2015-12-12 10:44:43.397114670 +0800
-+++ b/configure.ac	2015-12-12 10:44:58.069115522 +0800
-@@ -1647,7 +1647,7 @@ dnl Bash completion.
+--- a/m4/guestfs-bash-completion.m4.orig	2015-12-12 10:44:43.397114670 +0800
++++ b/m4/guestfs-bash-completion.m4	2015-12-12 10:44:58.069115522 +0800
+@@ -19,7 +19,7 @@ dnl Bash completion.
  PKG_CHECK_MODULES([BASH_COMPLETION], [bash-completion >= 2.0], [
      bash_completion=yes
      AC_MSG_CHECKING([for bash-completions directory])
@@ -95,27 +87,31 @@ EOF
      AC_MSG_RESULT([$BASH_COMPLETIONS_DIR])
      AC_SUBST([BASH_COMPLETIONS_DIR])
  ],[
---- a/ocaml/Makefile.am.orig	2015-12-12 10:16:49.700585819 +0800
-+++ b/ocaml/Makefile.am	2015-12-12 10:17:44.040602943 +0800
-@@ -195,14 +195,14 @@ data_hook_files += *.cmx *.cmxa
+--- a/ocaml/Makefile.am.orig	2019-03-15 08:24:54.286174841 +0000
++++ b/ocaml/Makefile.am	2019-03-15 08:25:21.820195639 +0000
+@@ -183,16 +183,16 @@ data_hook_files += *.cmx *.cmxa
  endif
  
  install-data-hook:
 -	mkdir -p $(DESTDIR)$(OCAMLLIB)
 -	mkdir -p $(DESTDIR)$(OCAMLLIB)/stublibs
+-	rm -rf $(DESTDIR)$(OCAMLLIB)/guestfs
+-	rm -rf $(DESTDIR)$(OCAMLLIB)/stublibs/dllmlguestfs.so*
 +	mkdir -p $(DESTDIR)$(libdir)/ocaml
 +	mkdir -p $(DESTDIR)$(libdir)/ocaml/stublibs
++	rm -rf $(DESTDIR)$(libdir)/ocaml/guestfs
++	rm -rf $(DESTDIR)$(libdir)/ocaml/stublibs/dllmlguestfs.so*
  	$(OCAMLFIND) install \
 -	  -ldconf ignore -destdir $(DESTDIR)$(OCAMLLIB) \
 +	  -ldconf ignore -destdir $(DESTDIR)$(libdir)/ocaml \
  	  guestfs \
  	  $(data_hook_files)
--	rm $(DESTDIR)$(OCAMLLIB)/guestfs/bindtests.*
+-	rm -f $(DESTDIR)$(OCAMLLIB)/guestfs/bindtests.*
 -	rm $(DESTDIR)$(OCAMLLIB)/guestfs/libguestfsocaml.a
-+	rm $(DESTDIR)$(libdir)/ocaml/guestfs/bindtests.*
++	rm -f $(DESTDIR)$(libdir)/ocaml/guestfs/bindtests.*
 +	rm $(DESTDIR)$(libdir)/ocaml/guestfs/libguestfsocaml.a
  
- CLEANFILES += $(noinst_DATA)
+ CLEANFILES += $(noinst_DATA) $(check_DATA)
  
 EOF
 }
