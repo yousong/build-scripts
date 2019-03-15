@@ -1,20 +1,20 @@
 #!/bin/bash -e
 #
-# Copyright 2015-2016 (c) Yousong Zhou
+# Copyright 2015-2019 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
 #
 # supermin dependency
 #
-#	sudo apt-get install ocaml ocaml-findlib ext2fs-dev
-#	sudo yum install ocaml ocaml-findlib e2fsprogs-devel glibc-static
+#	sudo apt-get install ocaml ocaml-findlib
+#	sudo yum install ocaml ocaml-findlib glibc-static
 #
 PKG_NAME=supermin
-PKG_VERSION=5.1.13
+PKG_VERSION=5.1.20
 PKG_SOURCE="${PKG_NAME}-${PKG_VERSION}.tar.gz"
 PKG_SOURCE_URL="http://libguestfs.org/download/supermin/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=e39f95b07651b25d310687f4407b8466
+PKG_SOURCE_MD5SUM=13494294a7a0599d843051817ce450cd
 PKG_PLATFORM=linux
 PKG_DEPENDS=e2fsprogs
 
