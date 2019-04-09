@@ -570,10 +570,12 @@ build_staging() {
 staging_check_default() {
 	local nsubdir
 
-	nsubdir="$(ls "$PKG_STAGING_DIR" | wc -l )"
-	if [ "$nsubdir" -ge 2 ]; then
-		__errmsg "$PKG_STAGING_DIR has $nsubdir subdirs"
-		return 1
+	if [ -n "$INSTALL_PREFIX" -a "$INSTALL_PREFIX" != "/" ]; then
+		nsubdir="$(ls "$PKG_STAGING_DIR" | wc -l )"
+		if [ "$nsubdir" -ge 2 ]; then
+			__errmsg "$PKG_STAGING_DIR has $nsubdir subdirs"
+			return 1
+		fi
 	fi
 }
 
