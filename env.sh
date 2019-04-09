@@ -632,9 +632,41 @@ install_pre() {
 	true
 }
 
-install() {
+install_default() {
 	mkdir -p "$INSTALL_PREFIX"
 	cpdir "$PKG_STAGING_DIR$INSTALL_PREFIX" "$INSTALL_PREFIX"
+}
+
+# install fpm, https://fpm.readthedocs.io/en/latest/installing.html
+#
+#	yum install ruby-devel gcc make rpm-build rubygems
+#	gem install --no-ri --no-rdoc fpm
+#
+# or use docker, https://github.com/yunionio/yunion-dummy-gateway/blob/master/Dockerfile
+#
+#	docker run -it --rm -v "$TOPDIR:$TOPDIR" fpm ...
+#
+install_fpm() {
+	local typ
+
+	for typ in $FPM_OUTPUT_TYPES; do
+		mkdir -p "$TOPDIR/output/$typ"
+		docker run -it --rm -v "$TOPDIR:$TOPDIR" fpm fpm \
+			--chdir "$PKG_STAGING_DIR$INSTALL_PREFIX" \
+			--input-type dir \
+			--output-type "$typ" \
+			--name "$PKG_NAME" \
+			--version "$PKG_VERSION" \
+			--depends "$PKG_DEPENDS" \
+			--force \
+			--package "$TOPDIR/output/$typ/" \
+			".=$INSTALL_PREFIX" \
+
+	done
+}
+
+install() {
+	install_default
 }
 
 install_post() {
