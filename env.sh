@@ -13,7 +13,8 @@ BASE_BUILD_DIR="${BASE_BUILD_DIR:-$TOPDIR/build_dir}"
 # where to stage the install
 BASE_DESTDIR="${BASE_DESTDIR:-$TOPDIR/dest_dir}"
 # where to do the final install
-INSTALL_PREFIX="${INSTALL_PREFIX:-$HOME/.usr}"
+INSTALL_PREFIX="${INSTALL_PREFIX-$HOME/.usr}"
+INSTALL_PREFIX="${INSTALL_PREFIX:-/}"
 # where to put repos and files for Makefile
 TMP_DIR="${TMP_DIR:-$TOPDIR/tmp}"
 # where to put stamp files for Makefile
