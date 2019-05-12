@@ -1,5 +1,5 @@
 #
-# Copyright 2016 (c) Yousong Zhou
+# Copyright 2016-2019 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -69,24 +69,24 @@
 # setarch utility from util-linux allows to prepare an environ where uname
 # output is customized
 #
-PKG_gcc_VERSION=8.2.0
+PKG_gcc_VERSION=9.1.0
 PKG_gcc_SOURCE="gcc-$PKG_gcc_VERSION.tar.xz"
-PKG_gcc_SOURCE_MD5SUM=4ab282f414676496483b3e1793d07862
+PKG_gcc_SOURCE_MD5SUM=6069ae3737cf02bf2cb44a391ef0e937
 PKG_gcc_SOURCE_URL="http://ftpmirror.gnu.org/gcc/gcc-$PKG_gcc_VERSION/$PKG_gcc_SOURCE"
 
-PKG_glibc_VERSION=2.28
+PKG_glibc_VERSION=2.29
 PKG_glibc_SOURCE="glibc-$PKG_glibc_VERSION.tar.xz"
-PKG_glibc_SOURCE_MD5SUM=c81d2388896379997bc359d4f2084239
+PKG_glibc_SOURCE_MD5SUM=e6c279d5b2f0736f740216f152acf974
 PKG_glibc_SOURCE_URL="http://ftpmirror.gnu.org/glibc/$PKG_glibc_SOURCE"
 
-PKG_binutils_VERSION=2.31
+PKG_binutils_VERSION=2.32
 PKG_binutils_SOURCE="binutils-$PKG_binutils_VERSION.tar.xz"
-PKG_binutils_SOURCE_MD5SUM=ddbb923470fcf59c8c4d08a9e9a79cf9
+PKG_binutils_SOURCE_MD5SUM=0d174cdaf85721c5723bf52355be41e6
 PKG_binutils_SOURCE_URL="http://ftpmirror.gnu.org/binutils/$PKG_binutils_SOURCE"
 
-PKG_linux_VERSION=4.18.6
+PKG_linux_VERSION=4.19.42
 PKG_linux_SOURCE="linux-${PKG_linux_VERSION}.tar.xz"
-PKG_linux_SOURCE_MD5SUM=4ade3d15f3612287eec9626339fed722
+PKG_linux_SOURCE_MD5SUM=dc61af6b05ba11b320c8ed9e8d72defa
 PKG_linux_SOURCE_URL="https://cdn.kernel.org/pub/linux/kernel/v${PKG_linux_VERSION%%.*}.x/$PKG_linux_SOURCE"
 
 #
