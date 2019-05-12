@@ -45,16 +45,12 @@ CONFIGURE_ARGS+=(
 	--disable-libmudflap
 )
 
-# GCC 8.1.0 does not yet support golang for RISC-V.  libffi is too old
-# (requires v3.3, see configure.host)
-#
-# Also useful info on issues of GCC riscv support as of 2018-04-09 by Jim
+# Useful info on issues of GCC riscv support as of 2018-04-09 by Jim
 # Wilson of sifive.com, https://gcc.gnu.org/ml/gcc/2018-04/msg00052.html
 #
 # For gccgo MIPS support, it all did not compile when gcc was configured with
 # --with-float=soft.  See https://github.com/libffi/libffi/pull/272
 case "$TRI_ARCH" in
-	riscv*) CONFIGURE_ARGS+=( --enable-languages=c,c++ ) ;;
 	*) CONFIGURE_ARGS+=( --enable-languages=c,c++,go ) ;;
 esac
 
