@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright 2015-2017 (c) Yousong Zhou
+# Copyright 2015-2019 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -12,8 +12,8 @@
 # It's libjson0-dev on Debian Wheezy
 #
 PKG_NAME=libubox
-PKG_VERSION=2018-06-25
-PKG_SOURCE_VERSION=c83a84afbef2b24f960ddeda0b5e2ab01fba6981
+PKG_VERSION=2019-02-27
+PKG_SOURCE_VERSION=eeef7b50a06bc3c3218d560b4b513b4e7b19127f
 PKG_DEPENDS='json-c lua5.1'
 PKG_CMAKE=1
 
