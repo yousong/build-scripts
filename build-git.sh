@@ -29,10 +29,10 @@
 #  - https://dl.iuscommunity.org/pub/ius/stable/CentOS/7/x86_64/repoview/letter_g.group.html
 #
 PKG_NAME=git
-PKG_VERSION=2.19.1
+PKG_VERSION=2.22.0
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="https://www.kernel.org/pub/software/scm/git/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=defb7d4f311d9de4e50b7bbdd36a6610
+PKG_SOURCE_MD5SUM=6deab33485c07cb3391ea0f255a936f2
 PKG_DEPENDS='curl expat libiconv openssl zlib'
 
 . "$PWD/env.sh"
