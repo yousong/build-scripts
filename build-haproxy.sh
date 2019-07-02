@@ -49,8 +49,23 @@ if false; then
 	EXTRA_LDFLAGS+=(-static)
 
 	# libcrypt cannot be static built because it depends on NSSLOWxxx
-	# function from nsslowhash.o which for unknown reason yet is not
-	# bundled with libfreebl.a
+	# function from nsslowhash.o
+	#
+	# According to [1],
+	#
+	#  > Carlos O'Donell 2015-11-20 21:36:23 UTC
+	#  >
+	#  > Let me reiterate that it is very very dangerous to link statically
+	#  > with crypto routines and that you really want to link dynamically
+	#  > unless you have a very compelling reason not to.
+	#
+	#  > Elio Maldonado Batiz 2015-12-07 15:50:52 UTC
+	#  >
+	#  > For the reasons exposed above libfreebl3.a should not be made
+	#  > tolink statically with libcrypt.a.
+	#
+	# [1] Need libfreebl3.a to link statically with libcrypt.a,
+	#     https://bugzilla.redhat.com/show_bug.cgi?id=1284089
 	MAKE_VARS+=(
 		USE_LIBCRYPT=
 	)
