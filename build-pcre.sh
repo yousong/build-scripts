@@ -12,3 +12,8 @@ PKG_SOURCE_URL="ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/$PKG_SOURC
 PKG_SOURCE_MD5SUM=00aabbfe56d5a48b270f999b508c5ad2
 
 . "$PWD/env.sh"
+
+CONFIGURE_ARGS+=(
+	--enable-unicode-properties
+	--enable-jit
+)
