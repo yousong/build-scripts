@@ -22,7 +22,7 @@ PKG_DEPENDS='lua5.3 openssl pcre zlib'
 
 . "$PWD/env.sh"
 
-do_patch(){
+do_patch() {
 	cd "$PKG_SOURCE_DIR"
 	# the patch is for
 	#
@@ -44,6 +44,18 @@ do_patch(){
 EOF
 }
 
+# static build
+if false; then
+	EXTRA_LDFLAGS+=(-static)
+
+	# libcrypt cannot be static built because it depends on NSSLOWxxx
+	# function from nsslowhash.o which for unknown reason yet is not
+	# bundled with libfreebl.a
+	MAKE_VARS+=(
+		USE_LIBCRYPT=
+	)
+fi
+
 if os_is_linux; then
 	MAKE_VARS+=(
 		TARGET=linux2628
@@ -62,6 +74,7 @@ MAKE_VARS+=(
 	USE_REGPARM=1
 	USE_OPENSSL=1
 	USE_ZLIB=1
+	V=1
 )
 
 if false; then
