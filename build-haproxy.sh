@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright 2016-2018 (c) Yousong Zhou
+# Copyright 2016-2019 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -14,10 +14,10 @@
 # TODO use libslz
 #
 PKG_NAME=haproxy
-PKG_VERSION=1.9.4
+PKG_VERSION=2.0.1
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://www.haproxy.org/download/${PKG_VERSION%.*}/src/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=ebccaeee22c777f49a2d6285885c4509
+PKG_SOURCE_MD5SUM=96dd4897ac46d704e18554541686238d
 PKG_DEPENDS='lua5.3 openssl pcre zlib'
 
 . "$PWD/env.sh"
@@ -73,7 +73,7 @@ fi
 
 if os_is_linux; then
 	MAKE_VARS+=(
-		TARGET=linux2628
+		TARGET=linux-glibc
 	)
 elif os_is_darwin; then
 	MAKE_VARS+=(
