@@ -43,6 +43,7 @@ compile() {
 	# build gcc/xgcc but the dependency is not present in
 	# Makefile.tpl so that we cannot make them in a single
 	# command
+	cd "$PKG_BUILD_DIR"
 	build_compile_make 'all-gcc'
 	build_compile_make 'all-target-libgcc'
 }

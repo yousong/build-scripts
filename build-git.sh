@@ -40,6 +40,7 @@ PKG_DEPENDS='curl expat libiconv openssl zlib'
 # Git's handwritten Makefile does not detect build-dep then build/install
 # manpages by default.
 compile() {
+	cd "$PKG_BUILD_DIR"
 	build_compile_make all
 	build_compile_make man
 }

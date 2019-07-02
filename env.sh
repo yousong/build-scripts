@@ -512,7 +512,6 @@ build_configure_cmake() {
 }
 
 build_compile_make() {
-	cd "$PKG_BUILD_DIR"
 	env CFLAGS="${EXTRA_CFLAGS[*]}"			\
 		CXXFLAGS="${EXTRA_CXXFLAGS[*]}"		\
 		CPPFLAGS="${EXTRA_CPPFLAGS[*]}"		\
@@ -526,6 +525,7 @@ build_compile_make() {
 }
 
 compile() {
+	cd "$PKG_BUILD_DIR"
 	build_compile_make
 }
 

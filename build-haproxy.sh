@@ -103,6 +103,7 @@ prepare_extra() {
 }
 
 compile() {
+	cd "$PKG_BUILD_DIR"
 	build_compile_make
 	cd "$PKG_BUILD_DIR/vtest"
 	"${MAKEJ[@]}"

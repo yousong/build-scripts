@@ -55,6 +55,7 @@ case "$TRI_ARCH" in
 esac
 
 compile() {
+	cd "$PKG_BUILD_DIR"
 	build_compile_make 'all'
 }
 
