@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright 2015-2016 (c) Yousong Zhou
+# Copyright 2015-2019 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -9,10 +9,10 @@
 # - Changelog of 1.0.2, https://www.openssl.org/news/cl102.txt
 #
 PKG_NAME=openssl
-PKG_VERSION=1.0.2p
+PKG_VERSION=1.0.2s
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="https://www.openssl.org/source/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=ac5eb30bf5798aa14b1ae6d0e7da58df
+PKG_SOURCE_MD5SUM=98ec4e085962689b91d25e1dcdfc14a2
 
 # OpenSSL currently does not support parallel build
 NJOBS=1
