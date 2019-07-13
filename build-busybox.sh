@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright 2015-2016 (c) Yousong Zhou
+# Copyright 2015-2019 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -16,10 +16,10 @@
 #	for f in $(find . -type l) ; do i="$(readlink -f "$f")"; i="$(basename "$i")"; [ "$i" = busybox ] && rm -vf $f; done
 #
 PKG_NAME=busybox
-PKG_VERSION=1.27.2
+PKG_VERSION=1.30.1
 PKG_SOURCE="$PKG_NAME-${PKG_VERSION}.tar.bz2"
 PKG_SOURCE_URL="https://busybox.net/downloads/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=476186f4bab81781dab2369bfd42734e
+PKG_SOURCE_MD5SUM=4f72fc6abd736d5f4741fc4a2485547a
 PKG_PLATFORM=linux
 
 . "$PWD/env.sh"
