@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright 2017-2018 (c) Yousong Zhou
+# Copyright 2017-2019 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -9,10 +9,10 @@
 # compile, https://lists.zx2c4.com/pipermail/wireguard/2018-July/003171.html
 #
 PKG_NAME=wireguard
-PKG_VERSION=0.0.20180718
+PKG_VERSION=0.0.20190702
 PKG_SOURCE="WireGuard-$PKG_VERSION.tar.xz"
 PKG_SOURCE_URL="https://git.zx2c4.com/WireGuard/snapshot/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=84ebc06f9efc5ea121df54bf6799d983
+PKG_SOURCE_MD5SUM=7410a52bacc5eb85e1634a20c07d3bed
 PKG_DEPENDS='libmnl'
 PKG_PLATFORM=linux
 
