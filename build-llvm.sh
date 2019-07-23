@@ -1,11 +1,15 @@
 #!/bin/bash -e
 #
-# Copyright 2017 (c) Yousong Zhou
+# Copyright 2017-2019 (c) Yousong Zhou
 #
 # LLVM as of 3.9.1 requires at least
 #
 #  - cmake version 3.4.3
 #  - GCC 4.8
+#
+# LLVM as of 8.0.1
+#
+#  - Recommends GCC of version at least 5.1
 #
 # Links
 #
@@ -21,13 +25,13 @@
 #	 As of 2017-12-19, libcxx and libcxxabi does not have proper directory
 #	 layout for multilib support
 
-LLVM_VERSION=7.0.1
+. "$PWD/utils-llvm.sh"
 
 PKG_NAME=llvm
 PKG_VERSION=$LLVM_VERSION
 PKG_SOURCE="$PKG_NAME-${PKG_VERSION}.src.tar.xz"
-PKG_SOURCE_URL="http://llvm.org/releases/$PKG_VERSION/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=79f1256f97d52a054da8660706deb5f6
+PKG_SOURCE_URL="http://github.com/llvm/llvm-project/releases/download/llvmorg-$PKG_VERSION/$PKG_SOURCE"
+PKG_SOURCE_MD5SUM=9a3b63df01c52556f7afb5617934e79e
 PKG_DEPENDS='cmake lxml2 zlib gcc-cross-pass2'
 PKG_CMAKE=1
 
@@ -39,8 +43,8 @@ PKG_CMAKE=1
 PKG_clang_NAME=clang
 PKG_clang_VERSION=$LLVM_VERSION
 PKG_clang_SOURCE="cfe-$PKG_clang_VERSION.src.tar.xz"
-PKG_clang_SOURCE_URL="http://llvm.org/releases/$PKG_clang_VERSION/$PKG_clang_SOURCE"
-PKG_clang_SOURCE_MD5SUM=8583c9fb2af0ce61a7154fd9125363c1
+PKG_clang_SOURCE_URL="http://github.com/llvm/llvm-project/releases/download/llvmorg-$PKG_clang_VERSION/$PKG_clang_SOURCE"
+PKG_clang_SOURCE_MD5SUM=28db72b57ca99307259773e4ac74a6d3
 
 # "compiler-rt" runtime libraries, http://compiler-rt.llvm.org/index.html
 #
@@ -57,20 +61,20 @@ PKG_clang_SOURCE_MD5SUM=8583c9fb2af0ce61a7154fd9125363c1
 PKG_compiler_rt_NAME=compiler-rt
 PKG_compiler_rt_VERSION=$LLVM_VERSION
 PKG_compiler_rt_SOURCE="compiler-rt-$PKG_compiler_rt_VERSION.src.tar.xz"
-PKG_compiler_rt_SOURCE_URL="http://llvm.org/releases/$PKG_compiler_rt_VERSION/$PKG_compiler_rt_SOURCE"
-PKG_compiler_rt_SOURCE_MD5SUM=697b70141ae7cc854e4fbde1a07b7287
+PKG_compiler_rt_SOURCE_URL="http://github.com/llvm/llvm-project/releases/download/llvmorg-$PKG_compiler_rt_VERSION/$PKG_compiler_rt_SOURCE"
+PKG_compiler_rt_SOURCE_MD5SUM=c251e582862f9fcc880802f8f2920096
 
 PKG_libcxx_NAME=libcxx
 PKG_libcxx_VERSION=$LLVM_VERSION
 PKG_libcxx_SOURCE="libcxx-$PKG_libcxx_VERSION.src.tar.xz"
-PKG_libcxx_SOURCE_URL="http://llvm.org/releases/$PKG_libcxx_VERSION/$PKG_libcxx_SOURCE"
-PKG_libcxx_SOURCE_MD5SUM=aa9202ebb2aef2078fccfa24b3b1eed1
+PKG_libcxx_SOURCE_URL="http://github.com/llvm/llvm-project/releases/download/llvmorg-$PKG_libcxx_VERSION/$PKG_libcxx_SOURCE"
+PKG_libcxx_SOURCE_MD5SUM=1f5a621c2d3d8edd94ef16dc55ae5547
 
 PKG_libcxxabi_NAME=libcxxabi
 PKG_libcxxabi_VERSION=$LLVM_VERSION
 PKG_libcxxabi_SOURCE="libcxxabi-$PKG_libcxxabi_VERSION.src.tar.xz"
-PKG_libcxxabi_SOURCE_URL="http://llvm.org/releases/$PKG_libcxxabi_VERSION/$PKG_libcxxabi_SOURCE"
-PKG_libcxxabi_SOURCE_MD5SUM=c82a187e95744d15c040108bc2b8868f
+PKG_libcxxabi_SOURCE_URL="http://github.com/llvm/llvm-project/releases/download/llvmorg-$PKG_libcxxabi_VERSION/$PKG_libcxxabi_SOURCE"
+PKG_libcxxabi_SOURCE_MD5SUM=a9b3445a97e41abf836a397455c06b93
 
 # A linker, https://lld.llvm.org/
 #
@@ -109,8 +113,8 @@ PKG_libcxxabi_SOURCE_MD5SUM=c82a187e95744d15c040108bc2b8868f
 PKG_lld_NAME=lld
 PKG_lld_VERSION=$LLVM_VERSION
 PKG_lld_SOURCE="lld-$PKG_lld_VERSION.src.tar.xz"
-PKG_lld_SOURCE_URL="http://llvm.org/releases/$PKG_lld_VERSION/$PKG_lld_SOURCE"
-PKG_lld_SOURCE_MD5SUM=9162cde32887cd33facead766645ef1f
+PKG_lld_SOURCE_URL="http://github.com/llvm/llvm-project/releases/download/llvmorg-$PKG_lld_VERSION/$PKG_lld_SOURCE"
+PKG_lld_SOURCE_MD5SUM=ee4fe10c625bbc66b1055c5d33017daf
 
 # Golang frontend: there are actually two.  One already in llvm upstream,
 # another accepted by the Google Golang team.
@@ -140,7 +144,7 @@ PKG_lld_SOURCE_MD5SUM=9162cde32887cd33facead766645ef1f
 PKG_test_suite_NAME=test-suite
 PKG_test_suite_VERSION=$LLVM_VERSION
 PKG_test_suite_SOURCE="test-suite-$PKG_test_suite_VERSION.src.tar.xz"
-PKG_test_suite_SOURCE_URL="http://llvm.org/releases/$PKG_test_suite_VERSION/$PKG_test_suite_SOURCE"
+PKG_test_suite_SOURCE_URL="http://github.com/llvm/llvm-project/releases/download/llvmorg-$PKG_test_suite_VERSION/$PKG_test_suite_SOURCE"
 PKG_test_suite_SOURCE_MD5SUM=x
 
 . "$PWD/env.sh"
@@ -167,9 +171,14 @@ ORIG_INSTALL_PREFIX="$INSTALL_PREFIX"
 TOOLCHAIN_DIR_BASE="$ORIG_INSTALL_PREFIX/toolchain"
 INSTALL_PREFIX="$TOOLCHAIN_DIR_BASE/llvm-$LLVM_VERSION"
 
-LLVM_USE_BUILT_TOOLCHAIN=0
+LLVM_USE_BUILT_TOOLCHAIN=1
 if [ "$LLVM_USE_BUILT_TOOLCHAIN" -gt 0 ];  then
 	GNU_TOOLCHAIN_DIR="$TOOLCHAIN_DIR_BASE/$GNU_TOOLCHAIN_NAME"
+	if [ ! -d "$GNU_TOOLCHAIN_DIR" ]; then
+		__errmsg "GNU toolchain is not built yet: $GNU_TOOLCHAIN_DIR"
+		false
+	fi
+
 	GNU_TOOLCHAIN_DIR_BIN="$GNU_TOOLCHAIN_DIR/bin"
 	GNU_TOOLCHAIN_DIR_LIB="$GNU_TOOLCHAIN_DIR/lib"
 
