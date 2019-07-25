@@ -203,7 +203,7 @@ env_init_pkg_afl_() {
 }
 
 env_init_gnu_toolchain() {
-	. $PWD/utils-toolchain.sh
+	. "$PWD/utils-toolchain.sh"
 
 	if ! [ -x "$GNU_TOOLCHAIN_CC" -a -x "$GNU_TOOLCHAIN_CXX" ]; then
 		__errmsg "cannot find executable $GNU_TOOLCHAIN_CC, or $GNU_TOOLCHAIN_CXX"
@@ -243,6 +243,47 @@ env_init_gnu_toolchain() {
 	CMAKE_ARGS+=(
 		-DCMAKE_C_COMPILER="$GNU_TOOLCHAIN_CC"
 		-DCMAKE_CXX_COMPILER="$GNU_TOOLCHAIN_CXX"
+	)
+}
+
+env_init_llvm_toolchain() {
+	. "$PWD/utils-llvm.sh"
+
+	LLVM_DIR="$INSTALL_PREFIX/toolchain/llvm-$LLVM_VERSION"
+	LLVM_BIN="$LLVM_DIR/bin"
+	LLVM_CC="$LLVM_BIN/clang"
+	LLVM_CXX="$LLVM_BIN/clang++"
+	CONFIGURE_VARS+=(
+		CC="$LLVM_CC"
+		GCC="$LLVM_CC"
+		CXX="$LLVM_CXX"
+		LD="$LLVM_BIN/lld"
+		AS="$LLVM_BIN/llvm-as"
+		AR="$LLVM_BIN/llvm-ar"
+		NM="$LLVM_BIN/llvm-nm"
+		RANLIB="$LLVM_BIN/llvm-ranlib"
+		STRIP="$LLVM_BIN/llvm-strip"
+		OBJCOPY="$LLVM_BIN/llvm-objcopy"
+		OBJDUMP="$LLVM_BIN/llvm-objdump"
+		SIZE="$LLVM_BIN/llvm-size"
+	)
+	MAKE_VARS+=(
+		CC="$LLVM_CC"
+		GCC="$LLVM_CC"
+		CXX="$LLVM_CXX"
+		LD="$LLVM_BIN/lld"
+		AS="$LLVM_BIN/llvm-as"
+		AR="$LLVM_BIN/llvm-ar"
+		NM="$LLVM_BIN/llvm-nm"
+		RANLIB="$LLVM_BIN/llvm-ranlib"
+		STRIP="$LLVM_BIN/llvm-strip"
+		OBJCOPY="$LLVM_BIN/llvm-objcopy"
+		OBJDUMP="$LLVM_BIN/llvm-objdump"
+		SIZE="$LLVM_BIN/llvm-size"
+	)
+	CMAKE_ARGS+=(
+		-DCMAKE_C_COMPILER="$LLVM_CC"
+		-DCMAKE_CXX_COMPILER="$LLVM_CXX"
 	)
 }
 
