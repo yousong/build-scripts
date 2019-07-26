@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright 2015-2018 (c) Yousong Zhou
+# Copyright 2015-2019 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -46,10 +46,10 @@
 # Ruby implementation of redis client
 #
 PKG_NAME=redis
-PKG_VERSION=5.0.1
+PKG_VERSION=5.0.5
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://download.redis.io/releases/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=78bdba0e6caf9ba56af1054627b592f0
+PKG_SOURCE_MD5SUM=2d2c8142baf72e6543174fc7beccaaa1
 
 . "$PWD/env.sh"
 
