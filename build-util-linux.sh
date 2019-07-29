@@ -20,10 +20,10 @@ PKG_PLATFORM=linux
 do_patch() {
 	cd "$PKG_SOURCE_DIR"
 	patch -p1 <<"EOF"
-From 6c6a312474fb3954940a631a56ed045c84abfc9d Mon Sep 17 00:00:00 2001
+From a0491d2a8a4efbee8dec92f95245e8c349682ba3 Mon Sep 17 00:00:00 2001
 From: Yousong Zhou <zhouyousong@yunionyun.com>
 Date: Thu, 27 Jun 2019 08:27:18 +0000
-Subject: [PATCH] column: fix outputing empty column at the end of line
+Subject: [PATCH v2] column: fix outputing empty column at the end of line
 
 The following commands manifests the problem.  In old versions before
 commit 4762ae9d60 ("column: use libsmartcols for --table"), both of them
@@ -34,12 +34,16 @@ should output with 2 "|"
 
 Fixes: 4762ae9d60 ("column: use libsmartcols for --table")
 Signed-off-by: Yousong Zhou <zhouyousong@yunionyun.com>
+Reviewed-by: Sami Kerola <kerolasa@iki.fi>
 ---
- tests/expected/column/table-empty-column-at-eol  |  1 +
- tests/expected/column/table-empty-column-at-eol2 |  1 +
- tests/ts/column/table                            |  8 ++++++++
- text-utils/column.c                              | 15 ++++++++++-----
- 4 files changed, 20 insertions(+), 5 deletions(-)
+v2 <- v1 Simplify the patch as suggested by @kerolaso.  It seems that
+only local_wcstok() needs to be changed.
+
+ tests/expected/column/table-empty-column-at-eol  | 1 +
+ tests/expected/column/table-empty-column-at-eol2 | 1 +
+ tests/ts/column/table                            | 8 ++++++++
+ text-utils/column.c                              | 2 +-
+ 4 files changed, 11 insertions(+), 1 deletion(-)
  create mode 100644 tests/expected/column/table-empty-column-at-eol
  create mode 100644 tests/expected/column/table-empty-column-at-eol2
 
@@ -75,46 +79,18 @@ index bd1f16f3f..e64dee746 100755
 +
  ts_finalize
 diff --git a/text-utils/column.c b/text-utils/column.c
-index 13b39537e..64f1cf7e9 100644
+index 13b39537e..9d56e514c 100644
 --- a/text-utils/column.c
 +++ b/text-utils/column.c
-@@ -169,8 +169,9 @@ static wchar_t *local_wcstok(wchar_t *p, const wchar_t *separator, int greedy, w
+@@ -169,7 +169,7 @@ static wchar_t *local_wcstok(wchar_t *p, const wchar_t *separator, int greedy, w
  		return strtok_r(p, separator, state);
  #endif
  	if (!p) {
 -		if (!*state || !**state)
-+		if (!*state) {
++		if (!*state)
  			return NULL;
-+		}
  		p = *state;
  	}
- 	result = p;
-@@ -435,7 +436,7 @@ static int add_line_to_table(struct column_control *ctl, wchar_t *wcs)
- 	if (!ctl->tab)
- 		init_table(ctl);
- 
--	while ((wcdata = local_wcstok(wcs, ctl->input_separator, ctl->greedy, &sv))) {
-+	while ((wcdata = local_wcstok(wcs, ctl->input_separator, ctl->greedy, &sv)) || sv) {
- 		char *data;
- 
- 		if (scols_table_get_ncols(ctl->tab) < n + 1) {
-@@ -452,9 +453,13 @@ static int add_line_to_table(struct column_control *ctl, wchar_t *wcs)
- 				err(EXIT_FAILURE, _("failed to allocate output line"));
- 		}
- 
--		data = wcs_to_mbs(wcdata);
--		if (!data)
--			err(EXIT_FAILURE, _("failed to allocate output data"));
-+		if (wcdata) {
-+			data = wcs_to_mbs(wcdata);
-+			if (!data)
-+				err(EXIT_FAILURE, _("failed to allocate output data"));
-+		} else {
-+			data = NULL;
-+		}
- 		if (scols_line_refer_data(ln, n, data))
- 			err(EXIT_FAILURE, _("failed to add output data"));
- 		n++;
 EOF
 }
 
