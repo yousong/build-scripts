@@ -53,12 +53,16 @@ MAKE_VARS+=(
 	WITH_SYSTEMDUNITS=no
 )
 
-compile() {
+wg_compile() {
 	cd "$PKG_BUILD_DIR/src"
 
+	"${MAKEJ[@]}" "${MAKE_VARS[@]}" "$@"
+}
+
+compile() {
 	# building kernel module requires
 	#  - linux-headers-$arch on debian
-	"${MAKEJ[@]}" "${MAKE_VARS[@]}" \
+	wg_compile \
 		module \
 		tools \
 
