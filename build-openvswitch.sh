@@ -136,6 +136,24 @@ staging() {
 	ln -sf "../share/openvswitch/scripts/ovs-wrapper" "$d0/bin/ovn-ctl"
 }
 
+build_rpm() {
+	local topdir="$PKG_BUILD_DIR/rpmbuild"
+	local kversion
+
+	cd "$PKG_SOURCE_DIR"
+
+	mkdir -p "$topdir/SOURCES"
+	cp "$BASE_DL_DIR/$PKG_SOURCE" "$topdir/SOURCES"
+
+	if [ -z "$kversion" ]; then
+		kversion="$(uname -r)"
+	fi
+
+	#yum-builddep rhel/openvswitch.spec
+	rpmbuild -bb -D "%_topdir $topdir" -D "kversion $kversion" rhel/openvswitch.spec
+	rpmbuild -bb -D "%_topdir $topdir" -D "kversion $kversion" rhel/openvswitch-kmod-fedora.spec
+}
+
 install_post() {
 	if [ -d "$ovs_with_kmod" ]; then
 		__errmsg "
