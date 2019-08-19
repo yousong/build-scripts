@@ -136,7 +136,7 @@ env_init_pkg() {
 		return 1
 	fi
 	if [ "$PKG_SOURCE_PROTO" = git ]; then
-		PKG_SOURCE="$PKG_NAME-$PKG_VERSION-$PKG_SOURCE_VERSION.tar.gz"
+		PKG_SOURCE="${PKG_SOURCE:-$PKG_NAME-$PKG_VERSION-$PKG_SOURCE_VERSION.tar.gz}"
 		dirbn="${PKG_BUILD_DIR_BASENAME:-${PKG_SOURCE%.tar.gz}}"
 		PKG_SOURCE_DIR="$BASE_BUILD_DIR/$dirbn"
 		PKG_STAGING_DIR="$BASE_DESTDIR/$dirbn-install"
@@ -393,8 +393,9 @@ download_git() {
 	local url="$2"
 	local commit="$3"
 	local file="$4"
+	local filepath="$BASE_DL_DIR/$file"
 
-	if [ -f "$BASE_DL_DIR/$file" ]; then
+	if [ -f "$filepath" ]; then
 		return 0
 	fi
 
@@ -406,7 +407,7 @@ download_git() {
 	if [ "$(git cat-file -t "$commit" 2>/dev/null)" != commit ]; then
 		git pull
 	fi
-	git archive --prefix="${file%.tar.gz}/" --output "$BASE_DL_DIR/$file" "$commit"
+	git archive --prefix="${file%.tar.gz}/" --output "$filepath" "$commit"
 }
 
 download_extra() {
