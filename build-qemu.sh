@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright 2015-2018 (c) Yousong Zhou
+# Copyright 2015-2019 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -48,10 +48,10 @@
 # - The QEMU build system architecture, docs/build-system.txt
 #
 PKG_NAME=qemu
-PKG_VERSION=4.0.0
+PKG_VERSION=4.1.0
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.xz"
 PKG_SOURCE_URL="https://download.qemu.org/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=0afeca336fd57ae3d3086ec07f59d708
+PKG_SOURCE_MD5SUM=cdf2b5ca52b9abac9bacb5842fa420f8
 PKG_DEPENDS='bzip2 curl gnutls libjpeg-turbo libpng lzo ncurses nettle pixman virglrenderer zlib'
 
 . "$PWD/env.sh"
@@ -135,9 +135,6 @@ if os_is_darwin; then
 		-D_XOPEN_SOURCE=600
 	)
 fi
-CONFIGURE_VARS+=(
-	QEMU_CFLAGS="${EXTRA_CFLAGS[*]}"
-)
 CONFIGURE_ARGS+=(
 	--enable-gnutls
 	--enable-nettle
@@ -149,6 +146,9 @@ CONFIGURE_ARGS+=(
 	--enable-vnc-jpeg
 	--enable-vnc-png
 	--target-list="${TARGETS[*]}"
+	--extra-cflags="${EXTRA_CFLAGS[*]}"
+	--extra-cxxflags="${EXTRA_CXXFLAGS[*]}"
+	--extra-ldflags="${EXTRA_LDFLAGS[*]}"
 )
 MAKE_VARS+=(
 	V=s
