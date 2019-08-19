@@ -39,7 +39,7 @@
 # We can specify make target manually
 #
 #	make qemu-img
-#	make subdir-mips-softmmu
+#	make mips-softmmu/all
 #
 # If build errors caused by header files occur, just check if the order of
 # `-Idir` is correct and we do not incorrectly include header files from sys
@@ -52,7 +52,10 @@ PKG_VERSION=4.1.0
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.xz"
 PKG_SOURCE_URL="https://download.qemu.org/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=cdf2b5ca52b9abac9bacb5842fa420f8
-PKG_DEPENDS='bzip2 curl gnutls libjpeg-turbo libpng lzo ncurses nettle pixman virglrenderer zlib'
+
+# Add slirp when we can build dynamic library
+PKG_DEPENDS="$PKG_DEPENDS bzip2 capstone curl dtc gnutls libjpeg-turbo libpng"
+PKG_DEPENDS="$PKG_DEPENDS lzo ncurses nettle pixman virglrenderer zlib"
 
 . "$PWD/env.sh"
 
@@ -145,6 +148,7 @@ CONFIGURE_ARGS+=(
 	--enable-vnc
 	--enable-vnc-jpeg
 	--enable-vnc-png
+	--enable-capstone=system
 	--target-list="${TARGETS[*]}"
 	--extra-cflags="${EXTRA_CFLAGS[*]}"
 	--extra-cxxflags="${EXTRA_CXXFLAGS[*]}"
