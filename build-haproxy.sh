@@ -80,6 +80,7 @@ elif os_is_darwin; then
 		TARGET=osx
 	)
 fi
+
 MAKE_VARS+=(
 	PREFIX="$INSTALL_PREFIX"
 	DOCDIR="$INSTALL_PREFIX/share/doc/haproxy"
@@ -91,6 +92,17 @@ MAKE_VARS+=(
 	USE_ZLIB=1
 	V=1
 )
+
+if [ -n "$o_build_static" ]; then
+	# static linking with libcrypt.a is impossible on CentOS because there
+	# is no static version of libfreebl3.so from nss-softokn-freebl
+	#
+	# Without crypt(3) from libcrypt, encrypted password for "user" will
+	# not be supported
+	MAKE_VARS+=(
+		USE_LIBCRYPT=
+	)
+fi
 
 if false; then
 	# IP_BIND_ADDRESS_NO_PORT is available since Linux 4.2, or CentOS 7.4 (3.10.693)
