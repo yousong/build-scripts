@@ -24,6 +24,7 @@ LOG_DIR="${LOG_DIR:-$TMP_DIR/log}"
 
 METADATA_DIR="${METADATA_DIR:-$INSTALL_PREFIX/.build-scripts-metadata}"
 
+o_build_static="${o_build_static:-}"
 o_dl_cmd="${o_dl_cmd:-wget}"
 o_dl_jobs="${o_dl_jobs:-16}"
 o_csum_fixup="${o_csum_fixup:-0}"
@@ -75,6 +76,9 @@ env_init() {
 	if [ -d "$INSTALL_PREFIX/lib64" ]; then
 		PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$INSTALL_PREFIX/lib64/pkgconfig"
 		EXTRA_LDFLAGS+=( -L"$INSTALL_PREFIX/lib64" -Wl,-rpath,"$INSTALL_PREFIX/lib64")
+	fi
+	if [ -n "$o_build_static" ]; then
+		EXTRA_LDFLAGS+=(-static)
 	fi
 	if os_is_darwin; then
 		# ld: -rpath can only be used when targeting Mac OS X 10.5 or later
