@@ -79,6 +79,7 @@ env_init() {
 	fi
 	if [ -n "$o_build_static" ]; then
 		EXTRA_LDFLAGS+=(-static)
+		export PKG_CONFIG="pkg-config --static"
 	fi
 	if os_is_darwin; then
 		# ld: -rpath can only be used when targeting Mac OS X 10.5 or later
