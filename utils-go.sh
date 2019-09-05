@@ -1,5 +1,5 @@
 #
-# Copyright 2015-2018 (c) Yousong Zhou
+# Copyright 2015-2019 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -147,5 +147,24 @@ index 17df8f4..90a6e73 100644
  		if os.IsNotExist(err) {
 -- 
 1.8.3.1
+EOF
+
+	patch -p1 <<"EOF"
+From: Yousong Zhou <yszhou4tech@gmail.com>
+Subject: [PATCH] Fix TestScript/mod_convert_git when ancestry of $GOROOT is git repo
+
+Signed-off-by: Yousong Zhou <yszhou4tech@gmail.com>
+
+--- a/src/cmd/go/testdata/script/mod_convert_git.txt.orig	2019-09-05 12:41:47.549628109 +0000
++++ b/src/cmd/go/testdata/script/mod_convert_git.txt	2019-09-05 12:41:51.962609825 +0000
+@@ -16,7 +16,7 @@ stdout '^m$'
+ # We should not suggest creating a go.mod file in $GOROOT, even though there may be a .git/config there.
+ cd $GOROOT
+ ! go list .
+-! stderr 'go mod init'
++! stderr 'cd [.] && go mod init'
+ 
+ -- $WORK/test/.git/config --
+ -- $WORK/test/x/x.go --
 EOF
 }
