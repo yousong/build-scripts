@@ -45,6 +45,26 @@ PKG_PLATFORM=linux
 . "$PWD/env.sh"
 STRIP=()
 
+do_patch() {
+	cd "$PKG_SOURCE_DIR"
+
+	# no autostart on boot
+	patch -p1 <<"EOF"
+--- a/rhel/openvswitch.spec.orig	2019-10-11 14:27:23.562611813 +0000
++++ b/rhel/openvswitch.spec	2019-10-11 14:37:58.857525470 +0000
+@@ -170,7 +170,7 @@ fi
+ 
+ # Ensure all required services are set to run
+ /sbin/chkconfig --add openvswitch
+-/sbin/chkconfig openvswitch on
++/sbin/chkconfig openvswitch off
+ 
+ %post selinux-policy
+ /usr/sbin/semodule -i %{_datadir}/selinux/packages/%{name}/openvswitch-custom.pp &> /dev/null || :
+
+EOF
+}
+
 # to disable building python-related code
 #CONFIGURE_VARS+=(
 #	ovs_cv_python=no
