@@ -68,7 +68,7 @@ nginx_init_lua_conf
 #
 #	rm -v dl/*master*
 #
-MODS='
+MODS=(
 	master:openresty/lua-nginx-module
 	master:simpl/ngx_devel_kit
 	master:agentzh/array-var-nginx-module
@@ -80,7 +80,8 @@ MODS='
 	master:agentzh/redis2-nginx-module
 	master:agentzh/set-misc-nginx-module
 	master:agentzh/xss-nginx-module
-'
+)
+
 #
 # master njs requires master nginx
 #

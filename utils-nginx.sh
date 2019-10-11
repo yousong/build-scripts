@@ -57,7 +57,7 @@ download_extra() {
 	local m
 	local fn source source_url
 
-	for m in $MODS; do
+	for m in "${MODS[@]}"; do
 		source="$(nginx_get_mod_info source "$m")"
 		source_url="$(nginx_get_mod_info source_url "$m")"
 
@@ -70,7 +70,7 @@ prepare_extra() {
 	local fn tarball
 
 	mkdir -p "$NGINX_MODS_DIR"
-	for m in $MODS; do
+	for m in "${MODS[@]}"; do
 		fn="$(nginx_get_mod_info fn "$m")"
 		source="$(nginx_get_mod_info source "$m")"
 		tarball="$BASE_DL_DIR/$source"
@@ -84,7 +84,7 @@ nginx_add_modules() {
 	local mod_dir
 	local arg
 
-	for m in $MODS; do
+	for m in "${MODS[@]}"; do
 		mod_dir="$(nginx_get_mod_info mod_dir "$m")"
 		CONFIGURE_ARGS+=(
 			--add-module="$mod_dir"

@@ -39,7 +39,8 @@ CONFIGURE_ARGS+=(
 #
 # naxsi wiki: https://github.com/nbs-system/naxsi/wiki/naxsi-setup
 #
-MODS='
+MODS=(
 	0.55.3:nbs-system/naxsi:naxsi_src
-'
+)
+
 nginx_add_modules
