@@ -82,6 +82,36 @@ MODS=(
 	master:agentzh/xss-nginx-module
 )
 
+if true; then
+	# nginx-dav-ext-module requires data structures only available when
+	# http_dav_module is enabled
+	CONFIGURE_ARGS+=(
+		--with-http_dav_module
+	)
+	MODS+=(
+		v3.0.0:arut/nginx-dav-ext-module
+	)
+	do_patch_arut_nginx_dav_ext_module() {
+		patch -p1 <<"EOF"
+--- a/config	2018-12-17 08:45:12.000000000 +0000
++++ b/config	2019-10-11 13:49:41.446919258 +0000
+@@ -8,9 +8,10 @@ ngx_module_name=ngx_http_dav_ext_module
+ # building nginx with the xslt module, in which case libxslt will
+ # be linked anyway.  In other cases libxslt is just redundant.
+ # If that's a big deal, libxml2 can be linked directly:
+-# ngx_module_libs=-lxml2
++ngx_module_libs=-lxml2
++ngx_module_incs=$(pkg-config --cflags-only-I libxml-2.0 | sed 's/^-I//')
+ 
+-ngx_module_libs=LIBXSLT
++#ngx_module_libs=LIBXSLT
+ 
+ ngx_module_srcs="$ngx_addon_dir/ngx_http_dav_ext_module.c"
+ 
+EOF
+	}
+fi
+
 #
 # master njs requires master nginx
 #

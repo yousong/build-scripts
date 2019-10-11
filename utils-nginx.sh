@@ -46,6 +46,9 @@ nginx_get_mod_info() {
 		mod_dir)
 			echo "$NGINX_MODS_DIR/$fn${subdir:+/$subdir}"
 			;;
+		repo)
+			echo "$repo"
+			;;
 		*)
 			__errmsg "unknown what to provide: $what"
 			return 1
@@ -76,6 +79,23 @@ prepare_extra() {
 		tarball="$BASE_DL_DIR/$source"
 
 		unpack "$tarball" "$NGINX_MODS_DIR" "s:^[^/]\\+:$fn:"
+	done
+}
+
+do_patch() {
+	local m
+	local repo
+	local mod_dir
+	local func
+
+	for m in "${MODS[@]}"; do
+		repo="$(nginx_get_mod_info repo "$m")"
+		func="do_patch_${repo//[^a-z]/_}"
+		if type "$func" &>/dev/null; then
+			mod_dir="$(nginx_get_mod_info mod_dir "$m")"
+			cd "$mod_dir"
+			"$func"
+		fi
 	done
 }
 
