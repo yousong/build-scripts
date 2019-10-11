@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright 2015-2018 (c) Yousong Zhou
+# Copyright 2015-2019 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -26,10 +26,10 @@
 # - Benchmark results across accept_mutex, reuseport, https://www.nginx.com/blog/socket-sharding-nginx-release-1-9-1/
 #
 PKG_NAME=nginx
-PKG_VERSION=1.15.3
+PKG_VERSION=1.17.4
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://nginx.org/download/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=86387884aaf6ee7c529edba6b22ba16e
+PKG_SOURCE_MD5SUM=476a6d0bea58fbeefb5f6d0a81824a43
 PKG_DEPENDS='openssl pcre zlib'
 
 . "$PWD/env.sh"
