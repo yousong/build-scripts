@@ -37,7 +37,7 @@ compile() {
 		false
 	fi
 	"${MAKEJ[@]}" $target \
-		MYCFLAGS="${EXTRA_CFLAGS[*]}" \
+		MYCFLAGS="${EXTRA_CFLAGS[*]} -fPIC" \
 		MYLDFLAGS="${EXTRA_LDFLAGS[*]}" \
 		MYLIBS="-ltermcap"
 	"${MAKEJ[@]}" test
