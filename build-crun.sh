@@ -5,6 +5,9 @@
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
 #
+# It requires go-md2man for generating documentation
+#
+# - https://github.com/cpuguy83/go-md2man
 PKG_NAME=crun
 PKG_VERSION=0.10.2
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.xz"
