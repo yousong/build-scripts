@@ -25,7 +25,9 @@ CONFIGURE_ARGS+=(
 	--disable-silent-rules
 )
 
-if [ -n "$o_build_static" ]; then
+configure_static_build() {
+	configure_static_build_default
+
 	# requires static libraries from perl
 	CONFIGURE_ARGS+=(
 		--disable-snmp
@@ -34,8 +36,10 @@ if [ -n "$o_build_static" ]; then
 	MAKE_VARS+=(
 		LIBS="-lcrypto -ldl"
 	)
-else
+}
+
+configure_static_build_off() {
 	CONFIGURE_ARGS+=(
 		--enable-snmp
 	)
-fi
+}

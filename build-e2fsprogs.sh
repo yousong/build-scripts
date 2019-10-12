@@ -23,11 +23,14 @@ CONFIGURE_ARGS+=(
 	--with-udev-rules-dir="$INSTALL_PREFIX/lib/udev/rules.d"
 )
 
-if [ -z "$o_build_static" ]; then
-	CONFIGURE_ARGS+=( --enable-elf-shlibs)
-else
+configure_static_build() {
+	configure_static_build_default
 	CONFIGURE_ARGS+=( --disable-elf-shlibs)
-fi
+}
+
+configure_static_build_off() {
+	CONFIGURE_ARGS+=( --enable-elf-shlibs)
+}
 
 MAKE_VARS+=(
 	V=s

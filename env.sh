@@ -77,10 +77,6 @@ env_init() {
 		PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$INSTALL_PREFIX/lib64/pkgconfig"
 		EXTRA_LDFLAGS+=( -L"$INSTALL_PREFIX/lib64" -Wl,-rpath,"$INSTALL_PREFIX/lib64")
 	fi
-	if [ -n "$o_build_static" ]; then
-		EXTRA_LDFLAGS+=(-static)
-		export PKG_CONFIG="pkg-config --static"
-	fi
 	if os_is_darwin; then
 		# ld: -rpath can only be used when targeting Mac OS X 10.5 or later
 		#
@@ -584,7 +580,25 @@ autoconf_fixup() {
 	autoreconf --verbose --force --install
 }
 
+configure_static_build_default() {
+	EXTRA_LDFLAGS+=(-static)
+	export PKG_CONFIG="pkg-config --static"
+}
+
+configure_static_build() {
+	configure_static_build_default
+}
+
+configure_static_build_off() {
+	:
+}
+
 configure_pre() {
+	if [ -n "$o_build_static" ]; then
+		configure_static_build
+	else
+		configure_static_build_off
+	fi
 	if [ -n "$PKG_AUTOCONF_FIXUP" ]; then
 		cd "$PKG_SOURCE_DIR"
 		autoconf_fixup

@@ -93,7 +93,9 @@ MAKE_VARS+=(
 	V=1
 )
 
-if [ -n "$o_build_static" ]; then
+configure_static_build() {
+	configure_static_build_default
+
 	# static linking with libcrypt.a is impossible on CentOS because there
 	# is no static version of libfreebl3.so from nss-softokn-freebl
 	#
@@ -102,7 +104,10 @@ if [ -n "$o_build_static" ]; then
 	MAKE_VARS+=(
 		USE_LIBCRYPT=
 	)
-fi
+	MAKE_VARS+=(
+		LDFLAGS="${EXTRA_LDFLAGS[*]}"
+	)
+}
 
 if false; then
 	# IP_BIND_ADDRESS_NO_PORT is available since Linux 4.2, or CentOS 7.4 (3.10.693)
