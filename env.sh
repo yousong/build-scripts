@@ -254,11 +254,13 @@ env_init_llvm_toolchain() {
 	LLVM_BIN="$LLVM_DIR/bin"
 	LLVM_CC="$LLVM_BIN/clang"
 	LLVM_CXX="$LLVM_BIN/clang++"
+	# Even --with-gnu-ld, we still need to pass the "checking if the linker
+	# ($LD) is GNU ld" check
 	CONFIGURE_VARS+=(
 		CC="$LLVM_CC"
 		GCC="$LLVM_CC"
 		CXX="$LLVM_CXX"
-		LD="$LLVM_BIN/lld"
+		LD="$LLVM_BIN/ld.lld"
 		AS="$LLVM_BIN/llvm-as"
 		AR="$LLVM_BIN/llvm-ar"
 		NM="$LLVM_BIN/llvm-nm"
