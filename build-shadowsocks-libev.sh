@@ -1,15 +1,15 @@
 #!/bin/bash -e
 #
-# Copyright 2016-2018 (c) Yousong Zhou
+# Copyright 2016-2019 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
 #
 PKG_NAME=shadowsocks-libev
-PKG_VERSION=3.2.5
+PKG_VERSION=3.3.2
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="https://github.com/shadowsocks/$PKG_NAME/releases/download/v$PKG_VERSION/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=cd01dcd67946d4a536269a4e0384ad1c
+PKG_SOURCE_MD5SUM=e5de3f43aa8318b9ec1eee03706e433f
 PKG_AUTOCONF_FIXUP=1
 PKG_DEPENDS='c-ares libcork libev libsodium mbedtls pcre udns'
 
