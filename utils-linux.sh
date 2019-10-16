@@ -125,3 +125,8 @@ kconfig_systemtap() {
 	# It says in the wiki that SystemTap does not support this
 	kconfig_set_option CONFIG_DEBUG_INFO_SPLIT n
 }
+
+kconfig_blk_nbd() {
+	kconfig_set_option CONFIG_NET y
+	kconfig_set_option CONFIG_BLK_DEV_NBD m
+}
