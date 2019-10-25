@@ -15,13 +15,6 @@ PKG_DEPENDS='libubox ubus uci'
 PKG_CMAKE=1
 
 . "$PWD/env.sh"
-STRIP=()
-env_init_llvm_toolchain
-
-EXTRA_CFLAGS+=(
-	-fsanitize=address
-	-fno-omit-frame-pointer
-)
 
 do_patch() {
 	cd "$PKG_SOURCE_DIR"
