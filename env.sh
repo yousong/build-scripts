@@ -93,6 +93,7 @@ env_init() {
 	fi
 	EXTRA_CXXFLAGS+=( ${EXTRA_CFLAGS[@]} )
 	export PKG_CONFIG_PATH
+	export ACLOCAL_PATH="$INSTALL_PREFIX/share/aclocal"
 	if ! running_in_make || [ -n "$NJOBS" ]; then
 		NJOBS="${NJOBS:-$((2 * $(ncpus)))}"
 		MAKEJ=(make -j "$NJOBS")
