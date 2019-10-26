@@ -55,7 +55,7 @@ PKG_SOURCE_MD5SUM=cdf2b5ca52b9abac9bacb5842fa420f8
 
 # Add slirp when we can build dynamic library
 PKG_DEPENDS="$PKG_DEPENDS bzip2 capstone curl dtc gnutls libjpeg-turbo libpng"
-PKG_DEPENDS="$PKG_DEPENDS lzo ncurses nettle pixman virglrenderer zlib"
+PKG_DEPENDS="$PKG_DEPENDS lzo ncurses nettle pixman spice virglrenderer zlib"
 
 . "$PWD/env.sh"
 
@@ -200,6 +200,7 @@ CONFIGURE_ARGS+=(
 	--enable-vnc
 	--enable-vnc-jpeg
 	--enable-vnc-png
+	--enable-spice
 	--enable-capstone=system
 	--target-list="${TARGETS[*]}"
 	--extra-cflags="${EXTRA_CFLAGS[*]}"
