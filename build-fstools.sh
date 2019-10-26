@@ -89,4 +89,45 @@ index 3a9d5cb..2426e70 100644
  }
  
 EOF
+
+	patch -p1 <<"EOF"
+From dfb0d4478abcb5460e61d57de995ab136585da7f Mon Sep 17 00:00:00 2001
+From: Yousong Zhou <yszhou4tech@gmail.com>
+Date: Fri, 25 Oct 2019 10:39:51 +0000
+Subject: [PATCH fstools] block: use fsck.fat instead of dosfsck
+
+Dosfsck is only available when --enable-compat-symlinks was given when
+configuring dosfstools.  These symlinks are not enabled in OpenWrt
+dosfstools package
+
+Suggested by Reiner Otto in FS#2408
+
+Signed-off-by: Yousong Zhou <yszhou4tech@gmail.com>
+---
+ block.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/block.c b/block.c
+index 39212d2..a849500 100644
+--- a/block.c
++++ b/block.c
+@@ -708,7 +708,7 @@ static void check_filesystem(struct probe_info *pr)
+ 	struct stat statbuf;
+ 	const char *e2fsck = "/usr/sbin/e2fsck";
+ 	const char *f2fsck = "/usr/sbin/fsck.f2fs";
+-	const char *dosfsck = "/usr/sbin/dosfsck";
++	const char *fatfsck = "/usr/sbin/fsck.fat";
+ 	const char *btrfsck = "/usr/bin/btrfsck";
+ 	const char *ntfsck = "/usr/bin/ntfsfix";
+ 	const char *ckfs;
+@@ -718,7 +718,7 @@ static void check_filesystem(struct probe_info *pr)
+ 		return;
+ 
+ 	if (!strncmp(pr->type, "vfat", 4)) {
+-		ckfs = dosfsck;
++		ckfs = fatfsck;
+ 	} else if (!strncmp(pr->type, "f2fs", 4)) {
+ 		ckfs = f2fsck;
+ 	} else if (!strncmp(pr->type, "ext", 3)) {
+EOF
 }
