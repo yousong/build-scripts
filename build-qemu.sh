@@ -48,10 +48,10 @@
 # - The QEMU build system architecture, docs/build-system.txt
 #
 PKG_NAME=qemu
-PKG_VERSION=4.1.0
+PKG_VERSION=4.1.1
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.xz"
 PKG_SOURCE_URL="https://download.qemu.org/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=cdf2b5ca52b9abac9bacb5842fa420f8
+PKG_SOURCE_MD5SUM=53879f792ef2675c6c5e6cbf5cc1ac6c
 
 # Add slirp when we can build dynamic library
 PKG_DEPENDS="$PKG_DEPENDS bzip2 capstone curl dtc gnutls libjpeg-turbo libpng"
