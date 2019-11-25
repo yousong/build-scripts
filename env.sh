@@ -14,7 +14,6 @@ BASE_BUILD_DIR="${BASE_BUILD_DIR:-$TOPDIR/build_dir}"
 BASE_DESTDIR="${BASE_DESTDIR:-$TOPDIR/dest_dir}"
 # where to do the final install
 INSTALL_PREFIX="${INSTALL_PREFIX-$HOME/.usr}"
-INSTALL_PREFIX="${INSTALL_PREFIX:-/}"
 # where to put repos and files for Makefile
 TMP_DIR="${TMP_DIR:-$TOPDIR/tmp}"
 # where to put stamp files for Makefile
@@ -65,8 +64,6 @@ env_init() {
 	mkdir -p "$BASE_DL_DIR"
 	mkdir -p "$BASE_BUILD_DIR"
 	mkdir -p "$BASE_DESTDIR"
-	mkdir -p "$INSTALL_PREFIX"
-	mkdir -p "$METADATA_DIR"
 
 	STRIP=( strip --strip-all )
 	PKG_CONFIG_PATH="$INSTALL_PREFIX/lib/pkgconfig:$INSTALL_PREFIX/share/pkgconfig"
@@ -697,7 +694,9 @@ install_pre() {
 }
 
 install_default() {
-	mkdir -p "$INSTALL_PREFIX"
+	if [ -n "$INSTALL_PREFIX" ]; then
+		mkdir -p "$INSTALL_PREFIX"
+	fi
 	cpdir "$PKG_STAGING_DIR$INSTALL_PREFIX" "$INSTALL_PREFIX"
 }
 
