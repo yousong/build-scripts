@@ -216,7 +216,11 @@ convention from OpenWrt package `Makefile`.
 - check if newer versions are available
 	- uscan: https://manpages.debian.org/unstable/devscripts/uscan.1.en.html
 	- debian/watch: https://wiki.debian.org/debian/watch
-- archive
+
+redistributable packages
+
+ - separate runtime installdir, build-time libdir, incdir
+ - consistentency: /share vs. /usr/share
 
 # Backup Mirror
 
