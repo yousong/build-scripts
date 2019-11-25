@@ -45,7 +45,7 @@ EOF
 }
 
 # static build
-if false; then
+if [ -n "$o_build_static" ]; then
 	EXTRA_LDFLAGS+=(-static)
 
 	# libcrypt cannot be static built because it depends on NSSLOWxxx
