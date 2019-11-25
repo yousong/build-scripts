@@ -712,11 +712,17 @@ install_default() {
 install_fpm() {
 	local typ
 	local deps
+	local pfx
 
 	if [ -z "$o_build_static" ]; then
 		deps="$PKG_DEPENDS"
 	fi
-	for typ in $FPM_OUTPUT_TYPES; do
+	if [ -z "$o_fpm_prefix_root" ]; then
+		pfx="./=$INSTALL_PREFIX"
+	else
+		pfx="./=/"
+	fi
+	for typ in $o_fpm_output_types; do
 		mkdir -p "$TOPDIR/output/$typ"
 		docker run -it --rm -v "$TOPDIR:$TOPDIR" fpm fpm \
 			--chdir "$PKG_STAGING_DIR$INSTALL_PREFIX" \
@@ -727,7 +733,7 @@ install_fpm() {
 			${deps:+--depends "$deps"} \
 			--force \
 			--package "$TOPDIR/output/$typ/" \
-			".=$INSTALL_PREFIX" \
+			"$pfx" \
 
 	done
 }
