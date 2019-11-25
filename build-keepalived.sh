@@ -1,15 +1,15 @@
 #!/bin/bash -e
 #
-# Copyright 2016-2018 (c) Yousong Zhou
+# Copyright 2016-2019 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
 #
 PKG_NAME=keepalived
-PKG_VERSION=2.0.7
+PKG_VERSION=2.0.19
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://www.keepalived.org/software/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=5204f541c75f4f68339809f0761693c5
+PKG_SOURCE_MD5SUM=df670e0904d4e48e72ccc8409ad9c6de
 PKG_DEPENDS='libnl3 net-snmp openssl'
 PKG_PLATFORM=linux
 
