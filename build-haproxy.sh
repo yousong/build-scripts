@@ -18,7 +18,7 @@ PKG_VERSION=2.0.4
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://www.haproxy.org/download/${PKG_VERSION%.*}/src/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=e0a295b3aa468f70ba261cc5ae9a5f83
-PKG_DEPENDS='lua5.3 openssl pcre zlib'
+PKG_DEPENDS='lua5.3 openssl pcre libslz'
 
 . "$PWD/env.sh"
 
@@ -89,7 +89,7 @@ MAKE_VARS+=(
 	USE_PCRE_JIT=1
 	USE_REGPARM=1
 	USE_OPENSSL=1
-	USE_ZLIB=1
+	USE_SLZ=1
 	V=1
 )
 
