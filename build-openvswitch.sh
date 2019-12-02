@@ -141,24 +141,41 @@ staging() {
 
 build_rpm() {
 	local topdir="$PKG_BUILD_DIR/rpmbuild"
+	local bn="$PKG_NAME-$PKG_VERSION"
 
-	cd "$PKG_SOURCE_DIR"
-
+	cd "$PKG_SOURCE_DIR/.."
 	mkdir -p "$topdir/SOURCES"
-	cp "$BASE_DL_DIR/$PKG_SOURCE" "$topdir/SOURCES"
+	tar czf "$topdir/SOURCES/$PKG_SOURCE" \
+		--exclude "$bn/rpmbuild" \
+		"$bn" >"$topdir/SOURCES/$bn.tar.gz"
+	find "$PKG_SOURCE_DIR/rhel" -name '*.patch' | while read f; do
+		cp "$f" "$topdir/SOURCES"
+	done
 
+	cpdir "$PKG_SOURCE_DIR/rhel" "$topdir/SPECS"
+	cd "$topdir/SPECS"
 	# Use openvswitch-fedora as suggested by
 	# http://docs.openvswitch.org/en/latest/intro/install/fedora/
 	#
-	#yum-builddep rhel/openvswitch-fedora.spec
+	#sudo yum-builddep openvswitch-fedora.spec
 	rpmbuild \
 		-bb \
 		-D "%_topdir $topdir" \
-		-D "kversion $ovs_kversion" rhel/openvswitch-fedora.spec
+		openvswitch-fedora.spec
+
+	# Setting %kernel based on value of %kversion at the top of spec file
+	# can get reverted when applying patches.  That's way we set %kernel
+	# explicitly
+	#
+	# Also it's important that we remove the comment lines placed ahead of
+	# setting %kernel in the spec file, otherwise %kernel can always take
+	# value 3.1.5-1.fc16.x86_64
 	rpmbuild \
 		-bb \
 		-D "%_topdir $topdir" \
-		-D "kversion $ovs_kversion" rhel/openvswitch-kmod-fedora.spec
+		-D "kversion $ovs_kversion" \
+		-D "kernel $ovs_kversion" \
+		openvswitch-kmod-fedora.spec
 }
 
 install_post() {
