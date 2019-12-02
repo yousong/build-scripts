@@ -149,9 +149,18 @@ build_rpm() {
 		kversion="$(uname -r)"
 	fi
 
-	#yum-builddep rhel/openvswitch.spec
-	rpmbuild -bb -D "%_topdir $topdir" -D "kversion $kversion" rhel/openvswitch.spec
-	rpmbuild -bb -D "%_topdir $topdir" -D "kversion $kversion" rhel/openvswitch-kmod-fedora.spec
+	# Use openvswitch-fedora as suggested by
+	# http://docs.openvswitch.org/en/latest/intro/install/fedora/
+	#
+	#yum-builddep rhel/openvswitch-fedora.spec
+	rpmbuild \
+		-bb \
+		-D "%_topdir $topdir" \
+		-D "kversion $kversion" rhel/openvswitch-fedora.spec
+	rpmbuild \
+		-bb \
+		-D "%_topdir $topdir" \
+		-D "kversion $kversion" rhel/openvswitch-kmod-fedora.spec
 }
 
 install_post() {
