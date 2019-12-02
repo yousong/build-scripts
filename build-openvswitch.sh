@@ -105,6 +105,7 @@ CONFIGURE_ARGS+=(
 #
 ovs_enable_dpdk=0
 ovs_enable_kmod=1
+ovs_kversion="3.10.0-1062.4.3.el7.yn20191202.x86_64"
 if [ -z "$ovs_kversion" ]; then
 	ovs_kversion="$(uname -r)"
 fi
