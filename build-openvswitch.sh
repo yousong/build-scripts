@@ -35,10 +35,10 @@
 #     /usr/local/share/openvswitch/scripts/ovs-ctl force-reload-kmod --system-id=random
 #
 PKG_NAME=openvswitch
-PKG_VERSION=2.9.5
+PKG_VERSION=2.9.6
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://openvswitch.org/releases/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=5a221ba3497295d69f5c9b2202512ab2
+PKG_SOURCE_MD5SUM=8e85acaa2bd2a899b5b2814e9a46e3ed
 PKG_DEPENDS=openssl
 PKG_PLATFORM=linux
 
