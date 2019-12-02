@@ -85,9 +85,12 @@ CONFIGURE_ARGS+=(
 #
 ovs_enable_dpdk=0
 ovs_enable_kmod=1
+if [ -z "$ovs_kversion" ]; then
+	ovs_kversion="$(uname -r)"
+fi
 
 if [ "$ovs_enable_kmod" -gt 0 ]; then
-	ovs_with_kmod="/lib/modules/$(uname -r)/build"
+	ovs_with_kmod="/lib/modules/$ovs_kversion/build"
 	if [ ! -d "$ovs_with_kmod" ]; then
 		__errmsg "openvswitch: cannot find kernel build dir $ovs_with_kmod"
 		false
@@ -138,16 +141,11 @@ staging() {
 
 build_rpm() {
 	local topdir="$PKG_BUILD_DIR/rpmbuild"
-	local kversion
 
 	cd "$PKG_SOURCE_DIR"
 
 	mkdir -p "$topdir/SOURCES"
 	cp "$BASE_DL_DIR/$PKG_SOURCE" "$topdir/SOURCES"
-
-	if [ -z "$kversion" ]; then
-		kversion="$(uname -r)"
-	fi
 
 	# Use openvswitch-fedora as suggested by
 	# http://docs.openvswitch.org/en/latest/intro/install/fedora/
@@ -156,11 +154,11 @@ build_rpm() {
 	rpmbuild \
 		-bb \
 		-D "%_topdir $topdir" \
-		-D "kversion $kversion" rhel/openvswitch-fedora.spec
+		-D "kversion $ovs_kversion" rhel/openvswitch-fedora.spec
 	rpmbuild \
 		-bb \
 		-D "%_topdir $topdir" \
-		-D "kversion $kversion" rhel/openvswitch-kmod-fedora.spec
+		-D "kversion $ovs_kversion" rhel/openvswitch-kmod-fedora.spec
 }
 
 install_post() {
