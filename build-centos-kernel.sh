@@ -15,11 +15,16 @@
 #
 centos_major="${centos_major:-7}"
 centos_kernel_buildid="${centos_kernel_buildid:-.bs}"
+centos_kernel_buildid=.yn20191202
+if [ "${centos_kernel_buildid#.}" = "${centos_kernel_buildid}" ]; then
+	echo "bad \$centos_kernel_buildid: must start with a dot" >&2
+	false
+fi
+
 case "$centos_major" in
 	7)
 		centos_kernel_mainline_version=3.10.0
-		centos_kernel_revision_default=1062.4.1.el7
-		centos_kernel_revision_default=1062.1.2.el7
+		centos_kernel_revision_default=1062.4.3.el7
 		centos_kernel_revision="${centos_kernel_revision:-$centos_kernel_revision_default}"
 		centos_kernel_version="$centos_kernel_mainline_version-$centos_kernel_revision"
 		;;
@@ -43,7 +48,7 @@ else
 	PKG_SOURCE="kernel-$PKG_VERSION.src.rpm"
 	PKG_SOURCE_URL="http://vault.centos.org/centos/$centos_major/updates/Source/SPackages/$PKG_SOURCE"
 	: PKG_SOURCE_URL="http://vault.centos.org/centos/$centos_major/os/Source/SPackages/$PKG_SOURCE"
-	PKG_SOURCE_MD5SUM=e553a371e493a69dd864a17fd4e4f75d
+	PKG_SOURCE_MD5SUM=361e1129ce338348f3daffba083297b5
 fi
 
 PKG_BUILD_DIR_BASENAME="$PKG_NAME-$PKG_VERSION"
