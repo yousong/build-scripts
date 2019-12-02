@@ -185,6 +185,7 @@ build_rpm() {
 	#
 	#sudo yum-builddep openvswitch-fedora.spec
 	rpmbuild \
+		--without check \
 		-bb \
 		-D "%_topdir $topdir" \
 		openvswitch-fedora.spec
