@@ -88,15 +88,21 @@ ovs_enable_kmod=1
 if [ -z "$ovs_kversion" ]; then
 	ovs_kversion="$(uname -r)"
 fi
+ovs_kbuild_dir=
 
 if [ "$ovs_enable_kmod" -gt 0 ]; then
 	ovs_with_kmod="/lib/modules/$ovs_kversion/build"
-	if [ ! -d "$ovs_with_kmod" ]; then
-		__errmsg "openvswitch: cannot find kernel build dir $ovs_with_kmod"
-		false
+	if [ -d "$ovs_with_kmod" ]; then
+		ovs_kbuild_dir="$ovs_with_kmod"
+	else
+		ovs_kbuild_dir="/usr/src/kernels/$ovs_kversion"
+		if [ ! -d "$ovs_kbuild_dir" ]; then
+			__errmsg "openvswitch: cannot find kernel build dir $ovs_kbuild_dir, or $ovs_with_kmod"
+			false
+		fi
 	fi
 	CONFIGURE_ARGS+=(
-		--with-linux="$ovs_with_kmod"
+		--with-linux="$ovs_kbuild_dir"
 	)
 	MAKE_ENVS+=(
 		INSTALL_MOD_PATH=""$PKG_STAGING_DIR$INSTALL_PREFIX""
@@ -170,6 +176,10 @@ build_rpm() {
 	# Also it's important that we remove the comment lines placed ahead of
 	# setting %kernel in the spec file, otherwise %kernel can always take
 	# value 3.1.5-1.fc16.x86_64
+	sed -i -e 's/openvswitch-kmod/kmod-openvswitch/g' \
+		openvswitch-kmod-fedora.spec
+	sed -i -e "s:=/lib/modules/%{kernel}/build:=${ovs_kbuild_dir}:g" \
+		openvswitch-kmod-fedora.spec
 	rpmbuild \
 		-bb \
 		-D "%_topdir $topdir" \
