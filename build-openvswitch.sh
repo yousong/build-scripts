@@ -63,6 +63,111 @@ do_patch() {
  /usr/sbin/semodule -i %{_datadir}/selinux/packages/%{name}/openvswitch-custom.pp &> /dev/null || :
 
 EOF
+
+	patch -p0 <<"EOF"
+--- rhel/openvswitch-kmod-fedora.spec.orig	2019-12-02 09:03:51.707248599 +0000
++++ rhel/openvswitch-kmod-fedora.spec	2019-12-02 09:03:57.601258652 +0000
+@@ -10,8 +10,6 @@
+ 
+ %global debug_package %{nil}
+ 
+-#%define kernel 3.1.5-1.fc16.x86_64
+-#define kernel %{kernel_source}
+ %{?kversion:%define kernel %kversion}
+ 
+ Name: openvswitch-kmod
+@@ -25,6 +25,7 @@ Version: 2.9.6
+ License: GPLv2
+ Release: 1%{?dist}
+ Source: openvswitch-%{version}.tar.gz
++Patch0: 0001-build-fix-invoking-ip_tunnel_info_opts_set.patch
+ #Source1: openvswitch-init
+ Buildroot: /tmp/openvswitch-xen-rpm
+ 
+@@ -35,6 +36,7 @@ traffic. This package contains the kerne
+ 
+ %prep
+-%setup -q -n openvswitch-%{version}
++%autosetup -p1 -n openvswitch-%{version}
++autoreconf --verbose --force --install
+ 
+ %build
+ %configure --with-linux=/lib/modules/%{kernel}/build --enable-ssl
+--- rhel/openvswitch-fedora.spec.orig	2019-12-02 09:03:49.824245387 +0000
++++ rhel/openvswitch-fedora.spec	2019-12-02 09:04:03.224268244 +0000
+@@ -66,6 +66,7 @@ Version: 2.9.6
+ License: ASL 2.0 and LGPLv2+ and SISSL
+ Release: 1%{?dist}
+ Source: http://openvswitch.org/releases/%{name}-%{version}.tar.gz
++Patch0: 0001-build-fix-invoking-ip_tunnel_info_opts_set.patch
+ 
+ BuildRequires: autoconf automake libtool
+ BuildRequires: systemd-units openssl openssl-devel
+@@ -215,6 +216,7 @@ Docker network plugins for OVN.
+ 
+ %prep
+-%setup -q
++%autosetup -p1
++autoreconf --verbose --force --install
+ 
+ %build
+ %configure \
+EOF
+
+	cat >rhel/0001-build-fix-invoking-ip_tunnel_info_opts_set.patch <<"EOF"
+From bf02f3b6f1a671eac37e02391d55fdc9cffcf290 Mon Sep 17 00:00:00 2001
+From: Yousong Zhou <zhouyousong@yunionyun.com>
+Date: Mon, 2 Dec 2019 08:11:15 +0000
+Subject: [PATCH] build: fix invoking ip_tunnel_info_opts_set()
+
+When USE_UPSTREAM_TUNNEL
+
+	/home/yunion/git-repo/build-scripts/build_dir/openvswitch-2.9.6/rpmbuild/BUILD/openvswitch-2.9.6/datapath/linux/flow_netlink.c: In function 'validate_and_copy_set_tun':
+	/home/yunion/git-repo/build-scripts/build_dir/openvswitch-2.9.6/rpmbuild/BUILD/openvswitch-2.9.6/datapath/linux/flow_netlink.c:2530:5: error: too few arguments to function 'ip_tunnel_info_opts_set'
+	     key.tun_opts_len);
+	     ^
+	In file included from /home/yunion/git-repo/build-scripts/build_dir/openvswitch-2.9.6/rpmbuild/BUILD/openvswitch-2.9.6/datapath/linux/compat/include/net/ip_tunnels.h:10:0,
+			 from include/net/dst_metadata.h:6,
+			 from /home/yunion/git-repo/build-scripts/build_dir/openvswitch-2.9.6/rpmbuild/BUILD/openvswitch-2.9.6/datapath/linux/compat/include/net/dst_metadata.h:5,
+			 from /home/yunion/git-repo/build-scripts/build_dir/openvswitch-2.9.6/rpmbuild/BUILD/openvswitch-2.9.6/datapath/linux/compat/include/net/udp_tunnel.h:8,
+			 from /home/yunion/git-repo/build-scripts/build_dir/openvswitch-2.9.6/rpmbuild/BUILD/openvswitch-2.9.6/datapath/linux/compat/include/net/geneve.h:5,
+			 from /home/yunion/git-repo/build-scripts/build_dir/openvswitch-2.9.6/rpmbuild/BUILD/openvswitch-2.9.6/datapath/linux/flow_netlink.c:43:
+	include/net/ip_tunnels.h:425:20: note: declared here
+	 static inline void ip_tunnel_info_opts_set(struct ip_tunnel_info *info,
+			    ^
+	make[2]: *** [scripts/Makefile.build:333: /home/yunion/git-repo/build-scripts/build_dir/openvswitch-2.9.6/rpmbuild/BUILD/openvswitch-2.9.6/datapath/linux/flow_netlink.o] Error 1
+---
+ datapath/flow_netlink.c        | 2 +-
+ datapath/linux/compat/geneve.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/datapath/flow_netlink.c b/datapath/flow_netlink.c
+index d378d1f11..10c119ed7 100644
+--- a/datapath/flow_netlink.c
++++ b/datapath/flow_netlink.c
+@@ -2527,7 +2527,7 @@ static int validate_and_copy_set_tun(const struct nlattr *attr,
+ 	 */
+ 	ip_tunnel_info_opts_set(tun_info,
+ 				TUN_METADATA_OPTS(&key, key.tun_opts_len),
+-				key.tun_opts_len);
++				key.tun_opts_len, 0);
+ 	add_nested_action_end(*sfa, start);
+ 
+ 	return err;
+diff --git a/datapath/linux/compat/geneve.c b/datapath/linux/compat/geneve.c
+index 0fcc6e51d..9ee74db18 100644
+--- a/datapath/linux/compat/geneve.c
++++ b/datapath/linux/compat/geneve.c
+@@ -252,7 +252,7 @@ static void geneve_rx(struct geneve_dev *geneve, struct geneve_sock *gs,
+ 			goto drop;
+ 		/* Update tunnel dst according to Geneve options. */
+ 		ip_tunnel_info_opts_set(&tun_dst->u.tun_info,
+-					gnvh->options, gnvh->opt_len * 4);
++					gnvh->options, gnvh->opt_len * 4, 0);
+ 	} else {
+ 		/* Drop packets w/ critical options,
+ 		 * since we don't support any...
+EOF
 }
 
 # to disable building python-related code
