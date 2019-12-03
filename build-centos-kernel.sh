@@ -11,7 +11,14 @@
 #	yum install ncurses-devel
 #	yum install hmaccalc zlib-devel binutils-devel elfutils-libelf-devel
 #
+# Read git.centos.org git logs, you may find that kernel versions are not
+# continuous.  One tagged version may get lost in the "%changelog" on later
+# version bump, e.g. the entry for 1062.1.2 got lost when bumping to 1062.4.1
+# in commit b876298a
+#
 # - https://git.centos.org/rpms/kernel/commits/c7
+# - http://vault.centos.org/centos/7/updates/Source/SPackages/
+# - Red Hat Enterprise Linux Release Dates, https://access.redhat.com/articles/3078
 #
 centos_major="${centos_major:-7}"
 centos_kernel_buildid="${centos_kernel_buildid:-.bs}"
