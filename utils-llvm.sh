@@ -5,5 +5,7 @@
 # See /LICENSE for more information.
 #
 
-LLVM_VERSION=8.0.1
+# starting with 9.0.0, no llvmorg-$LLVM_VERSION in the download url
+LLVM_VERSION=9.0.0
 LLVM_SOURCE_URL_BASE="http://github.com/llvm/llvm-project/releases/download/llvmorg-$LLVM_VERSION"
+LLVM_SOURCE_URL_BASE="http://releases.llvm.org/$LLVM_VERSION"

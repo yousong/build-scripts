@@ -31,7 +31,7 @@ PKG_NAME=llvm
 PKG_VERSION=$LLVM_VERSION
 PKG_SOURCE="$PKG_NAME-${PKG_VERSION}.src.tar.xz"
 PKG_SOURCE_URL="$LLVM_SOURCE_URL_BASE/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=9a3b63df01c52556f7afb5617934e79e
+PKG_SOURCE_MD5SUM=0fd4283ff485dffb71a4f1cc8fd3fc72
 PKG_DEPENDS='cmake lxml2 zlib gcc-cross-pass2'
 PKG_CMAKE=1
 
@@ -44,7 +44,7 @@ PKG_clang_NAME=clang
 PKG_clang_VERSION=$LLVM_VERSION
 PKG_clang_SOURCE="cfe-$PKG_clang_VERSION.src.tar.xz"
 PKG_clang_SOURCE_URL="$LLVM_SOURCE_URL_BASE/$PKG_clang_SOURCE"
-PKG_clang_SOURCE_MD5SUM=28db72b57ca99307259773e4ac74a6d3
+PKG_clang_SOURCE_MD5SUM=0df6971e2f99b1e99e7bfb533e4067af
 
 # "compiler-rt" runtime libraries, http://compiler-rt.llvm.org/index.html
 #
@@ -62,19 +62,19 @@ PKG_compiler_rt_NAME=compiler-rt
 PKG_compiler_rt_VERSION=$LLVM_VERSION
 PKG_compiler_rt_SOURCE="compiler-rt-$PKG_compiler_rt_VERSION.src.tar.xz"
 PKG_compiler_rt_SOURCE_URL="$LLVM_SOURCE_URL_BASE/$PKG_compiler_rt_SOURCE"
-PKG_compiler_rt_SOURCE_MD5SUM=c251e582862f9fcc880802f8f2920096
+PKG_compiler_rt_SOURCE_MD5SUM=c92b8a1aed654463962d77445ebee10b
 
 PKG_libcxx_NAME=libcxx
 PKG_libcxx_VERSION=$LLVM_VERSION
 PKG_libcxx_SOURCE="libcxx-$PKG_libcxx_VERSION.src.tar.xz"
 PKG_libcxx_SOURCE_URL="$LLVM_SOURCE_URL_BASE/$PKG_libcxx_SOURCE"
-PKG_libcxx_SOURCE_MD5SUM=1f5a621c2d3d8edd94ef16dc55ae5547
+PKG_libcxx_SOURCE_MD5SUM=3b26e4c37aac2650b594668437a57966
 
 PKG_libcxxabi_NAME=libcxxabi
 PKG_libcxxabi_VERSION=$LLVM_VERSION
 PKG_libcxxabi_SOURCE="libcxxabi-$PKG_libcxxabi_VERSION.src.tar.xz"
 PKG_libcxxabi_SOURCE_URL="$LLVM_SOURCE_URL_BASE/$PKG_libcxxabi_SOURCE"
-PKG_libcxxabi_SOURCE_MD5SUM=a9b3445a97e41abf836a397455c06b93
+PKG_libcxxabi_SOURCE_MD5SUM=bd8799cc69c7660c7a4729019fbfe286
 
 # A linker, https://lld.llvm.org/
 #
@@ -114,7 +114,7 @@ PKG_lld_NAME=lld
 PKG_lld_VERSION=$LLVM_VERSION
 PKG_lld_SOURCE="lld-$PKG_lld_VERSION.src.tar.xz"
 PKG_lld_SOURCE_URL="$LLVM_SOURCE_URL_BASE/$PKG_lld_SOURCE"
-PKG_lld_SOURCE_MD5SUM=ee4fe10c625bbc66b1055c5d33017daf
+PKG_lld_SOURCE_MD5SUM=aa70e956ddbe0c7bff029b8358ff6c44
 
 # Golang frontend: there are actually two.  One already in llvm upstream,
 # another accepted by the Google Golang team.
@@ -192,6 +192,17 @@ if [ "$LLVM_USE_BUILT_TOOLCHAIN" -gt 0 ];  then
 		CXX="$GNU_TOOLCHAIN_DIR_BIN/$TRI_TARGET-g++"
 	)
 fi
+
+# To avoid link failure caused by "-lz -lcurses".  See cmake/config-ix.cmake.
+#
+# For some reason, the linker -L option is present when configuring, yet absent
+# at the compiling stage
+CMAKE_ARGS+=(
+	-DLLVM_ENABLE_ZLIB=off
+	-DLLVM_ENABLE_LIBEDIT=off
+	-DLLVM_ENABLE_TERMINFO=off
+	-DLLVM_ENABLE_LIBXML2=off
+)
 
 CMAKE_ARGS+=(
 	-G 'Unix Makefiles'
