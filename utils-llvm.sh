@@ -6,3 +6,4 @@
 #
 
 LLVM_VERSION=8.0.1
+LLVM_SOURCE_URL_BASE="http://github.com/llvm/llvm-project/releases/download/llvmorg-$LLVM_VERSION"

@@ -30,7 +30,7 @@
 PKG_NAME=llvm
 PKG_VERSION=$LLVM_VERSION
 PKG_SOURCE="$PKG_NAME-${PKG_VERSION}.src.tar.xz"
-PKG_SOURCE_URL="http://github.com/llvm/llvm-project/releases/download/llvmorg-$PKG_VERSION/$PKG_SOURCE"
+PKG_SOURCE_URL="$LLVM_SOURCE_URL_BASE/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=9a3b63df01c52556f7afb5617934e79e
 PKG_DEPENDS='cmake lxml2 zlib gcc-cross-pass2'
 PKG_CMAKE=1
@@ -43,7 +43,7 @@ PKG_CMAKE=1
 PKG_clang_NAME=clang
 PKG_clang_VERSION=$LLVM_VERSION
 PKG_clang_SOURCE="cfe-$PKG_clang_VERSION.src.tar.xz"
-PKG_clang_SOURCE_URL="http://github.com/llvm/llvm-project/releases/download/llvmorg-$PKG_clang_VERSION/$PKG_clang_SOURCE"
+PKG_clang_SOURCE_URL="$LLVM_SOURCE_URL_BASE/$PKG_clang_SOURCE"
 PKG_clang_SOURCE_MD5SUM=28db72b57ca99307259773e4ac74a6d3
 
 # "compiler-rt" runtime libraries, http://compiler-rt.llvm.org/index.html
@@ -61,19 +61,19 @@ PKG_clang_SOURCE_MD5SUM=28db72b57ca99307259773e4ac74a6d3
 PKG_compiler_rt_NAME=compiler-rt
 PKG_compiler_rt_VERSION=$LLVM_VERSION
 PKG_compiler_rt_SOURCE="compiler-rt-$PKG_compiler_rt_VERSION.src.tar.xz"
-PKG_compiler_rt_SOURCE_URL="http://github.com/llvm/llvm-project/releases/download/llvmorg-$PKG_compiler_rt_VERSION/$PKG_compiler_rt_SOURCE"
+PKG_compiler_rt_SOURCE_URL="$LLVM_SOURCE_URL_BASE/$PKG_compiler_rt_SOURCE"
 PKG_compiler_rt_SOURCE_MD5SUM=c251e582862f9fcc880802f8f2920096
 
 PKG_libcxx_NAME=libcxx
 PKG_libcxx_VERSION=$LLVM_VERSION
 PKG_libcxx_SOURCE="libcxx-$PKG_libcxx_VERSION.src.tar.xz"
-PKG_libcxx_SOURCE_URL="http://github.com/llvm/llvm-project/releases/download/llvmorg-$PKG_libcxx_VERSION/$PKG_libcxx_SOURCE"
+PKG_libcxx_SOURCE_URL="$LLVM_SOURCE_URL_BASE/$PKG_libcxx_SOURCE"
 PKG_libcxx_SOURCE_MD5SUM=1f5a621c2d3d8edd94ef16dc55ae5547
 
 PKG_libcxxabi_NAME=libcxxabi
 PKG_libcxxabi_VERSION=$LLVM_VERSION
 PKG_libcxxabi_SOURCE="libcxxabi-$PKG_libcxxabi_VERSION.src.tar.xz"
-PKG_libcxxabi_SOURCE_URL="http://github.com/llvm/llvm-project/releases/download/llvmorg-$PKG_libcxxabi_VERSION/$PKG_libcxxabi_SOURCE"
+PKG_libcxxabi_SOURCE_URL="$LLVM_SOURCE_URL_BASE/$PKG_libcxxabi_SOURCE"
 PKG_libcxxabi_SOURCE_MD5SUM=a9b3445a97e41abf836a397455c06b93
 
 # A linker, https://lld.llvm.org/
@@ -113,7 +113,7 @@ PKG_libcxxabi_SOURCE_MD5SUM=a9b3445a97e41abf836a397455c06b93
 PKG_lld_NAME=lld
 PKG_lld_VERSION=$LLVM_VERSION
 PKG_lld_SOURCE="lld-$PKG_lld_VERSION.src.tar.xz"
-PKG_lld_SOURCE_URL="http://github.com/llvm/llvm-project/releases/download/llvmorg-$PKG_lld_VERSION/$PKG_lld_SOURCE"
+PKG_lld_SOURCE_URL="$LLVM_SOURCE_URL_BASE/$PKG_lld_SOURCE"
 PKG_lld_SOURCE_MD5SUM=ee4fe10c625bbc66b1055c5d33017daf
 
 # Golang frontend: there are actually two.  One already in llvm upstream,
@@ -144,7 +144,7 @@ PKG_lld_SOURCE_MD5SUM=ee4fe10c625bbc66b1055c5d33017daf
 PKG_test_suite_NAME=test-suite
 PKG_test_suite_VERSION=$LLVM_VERSION
 PKG_test_suite_SOURCE="test-suite-$PKG_test_suite_VERSION.src.tar.xz"
-PKG_test_suite_SOURCE_URL="http://github.com/llvm/llvm-project/releases/download/llvmorg-$PKG_test_suite_VERSION/$PKG_test_suite_SOURCE"
+PKG_test_suite_SOURCE_URL="$LLVM_SOURCE_URL_BASE/$PKG_test_suite_SOURCE"
 PKG_test_suite_SOURCE_MD5SUM=x
 
 . "$PWD/env.sh"
