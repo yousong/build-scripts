@@ -495,6 +495,23 @@ unpack() {
 	fi
 }
 
+apply_patch() {
+	if [ -n "$o_quilt" ]; then
+		if [ -z "$o_quilt_n" ]; then
+			o_quilt_n=0
+		fi
+		local d f
+		d="$PKG_SOURCE_DIR/patches"
+		f="$(printf "%04d.patch" "$o_quilt_n")"
+		mkdir -p "$d"
+		cat >"$d/$f"
+		echo "$f" >>"$PKG_SOURCE_DIR/patches/series"
+		o_quilt_n="$(($o_quilt_n + 1))"
+	else
+		patch -p1
+	fi
+}
+
 prepare_source() {
 	local dir
 	local trans_exp
@@ -521,6 +538,12 @@ prepare() {
 		prepare_source
 		prepare_extra
 		do_patch
+		if [ -n "$o_quilt" ]; then
+			if [ -s "$PKG_SOURCE_DIR/patches/series" ]; then
+				cd "$PKG_SOURCE_DIR"
+				quilt push -a
+			fi
+		fi
 	fi
 }
 
