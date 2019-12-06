@@ -23,7 +23,7 @@ EXTRA_CFLAGS+=(-g)
 do_patch() {
 	cd "$PKG_SOURCE_DIR"
 
-	patch -p0 <<"EOF"
+	apply_patch <<"EOF"
 6 How to Use Variables, GNU make manual
 
 	A variable name may be any sequence of characters not containing ‘:’,
@@ -40,9 +40,11 @@ The ungetc() is needed for the following case when c is "M" after reading
 
 	override MAKE:=123
 
---- make.c.orig	2016-06-01 20:06:46.847104986 +0800
-+++ make.c	2016-06-01 20:07:02.839109892 +0800
-@@ -70,7 +70,7 @@ static int skipToNonWhite (void)
+Index: ctags-5.8/make.c
+===================================================================
+--- ctags-5.8.orig/make.c
++++ ctags-5.8/make.c
+@@ -70,17 +70,19 @@ static int skipToNonWhite (void)
  
  static boolean isIdentifier (int c)
  {
@@ -50,7 +52,65 @@ The ungetc() is needed for the following case when c is "M" after reading
 +	return (boolean)(c != '\0' && (isalnum (c)  ||  strchr (".-_/", c) != NULL));
  }
  
- static void readIdentifier (const int first, vString *const id)
+-static void readIdentifier (const int first, vString *const id)
++static void readIdentifier (const int first, vString *const id, int in_define)
+ {
+ 	int c = first;
+ 	vStringClear (id);
+-	while (isIdentifier (c))
++	while (isIdentifier (c) || (in_define && c != '\0' && strchr("$(, )", c) != NULL))
+ 	{
+ 		vStringPut (id, c);
+ 		c = nextChar ();
++		if (!strcmp (vStringValue (id), "define") && c == ' ')
++			break;
+ 	}
+ 	fileUngetc (c);
+ 	vStringTerminate (id);
+@@ -112,9 +114,9 @@ static void findMakeTags (void)
+ {
+ 	vString *name = vStringNew ();
+ 	boolean newline = TRUE;
+-	boolean in_define = FALSE;
+ 	boolean in_rule = FALSE;
+ 	boolean variable_possible = TRUE;
++	int in_define = 0;
+ 	int c;
+ 
+ 	while ((c = nextChar ()) != EOF)
+@@ -151,26 +153,24 @@ static void findMakeTags (void)
+ 		}
+ 		else if (variable_possible && isIdentifier (c))
+ 		{
+-			readIdentifier (c, name);
++			readIdentifier (c, name, in_define);
+ 			if (strcmp (vStringValue (name), "endef") == 0)
+-				in_define = FALSE;
+-			else if (in_define)
+-				skipLine ();
++				in_define -= 1;
+ 			else if (strcmp (vStringValue (name), "define") == 0  &&
+ 				isIdentifier (c))
+ 			{
+-				in_define = TRUE;
++				in_define += 1;
+ 				c = skipToNonWhite ();
+-				readIdentifier (c, name);
++				readIdentifier (c, name, in_define);
+ 				makeSimpleTag (name, MakeKinds, K_MACRO);
+ 				skipLine ();
+ 			}
+-			else {
++			else if (!in_define) {
+ 				if (strcmp(vStringValue (name), "export") == 0 &&
+ 					isIdentifier (c))
+ 				{
+ 					c = skipToNonWhite ();
+-					readIdentifier (c, name);
++					readIdentifier (c, name, in_define);
+ 				}
+ 				c = skipToNonWhite ();
+ 				if (strchr (":?+", c) != NULL)
 @@ -193,6 +193,8 @@ static void findMakeTags (void)
  					in_rule = FALSE;
  					skipLine ();
@@ -62,7 +122,7 @@ The ungetc() is needed for the following case when c is "M" after reading
  		else
 EOF
 
-	patch -p0 <<"EOF"
+	apply_patch <<"EOF"
 According to "2. Shell Command Language", IEEE Std 1003.1, 2004 Edition
 
 	2.9.5 Function Definition Command
@@ -90,8 +150,8 @@ in its DEFINITIONS section
 
 k8s also uses dash character in shell function names
 
---- sh.c.orig	2017-08-16 14:45:39.781096557 +0800
-+++ sh.c	2017-08-16 14:46:16.313107991 +0800
+--- a/sh.c.orig	2017-08-16 14:45:39.781096557 +0800
++++ b/sh.c	2017-08-16 14:46:16.313107991 +0800
 @@ -75,9 +75,9 @@ static void findShTags (void)
  			while (isspace ((int) *cp))
  				++cp;
@@ -106,9 +166,9 @@ k8s also uses dash character in shell function names
  			++cp;
 EOF
 
-	patch -p0 <<"EOF"
---- Makefile.in.orig	2016-06-01 20:09:20.911155981 +0800
-+++ Makefile.in	2016-06-01 20:09:29.703156974 +0800
+	apply_patch <<"EOF"
+--- a/Makefile.in.orig	2016-06-01 20:09:20.911155981 +0800
++++ b/Makefile.in	2016-06-01 20:09:29.703156974 +0800
 @@ -24,7 +24,7 @@
  libdir	= @libdir@
  incdir	= @includedir@
