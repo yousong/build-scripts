@@ -652,10 +652,12 @@ staging_post_strip() {
 	if [ "${#STRIP[@]}" -eq 0 ]; then
 		return 0
 	fi
-	find "$d" -type f -a -not -name '*.ko' -exec file {} \; | \
+	find "$d" -type f -a -not -name '*.ko' -exec file '{}' ';' | \
 		sed -n -e 's/^\(.*\):.*ELF.*\(executable\|relocatable\|shared object\).*,.* stripped/\1 \2/p' | \
 			while read f t; do
 				if [ -w "$f" ]; then
+					# strip can segfault (binutils-2.27-34.base.el7.x86_64).
+					# Maybe we should strip on a backup
 					"${STRIP[@]}" "$f"
 				fi
 			done
