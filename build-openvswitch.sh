@@ -84,7 +84,7 @@ CONFIGURE_ARGS+=(
 #	5: [/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x90) [0x7f93a666ce40]]
 #
 ovs_enable_dpdk=0
-ovs_enable_kmod=1
+ovs_enable_kmod=0
 if [ -z "$ovs_kversion" ]; then
 	ovs_kversion="$(uname -r)"
 fi
