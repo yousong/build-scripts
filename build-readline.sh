@@ -8,7 +8,7 @@
 PKG_NAME=readline
 PKG_VERSION=6.3
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
-PKG_SOURCE_URL="ftp://ftp.cwru.edu/pub/bash/$PKG_SOURCE"
+PKG_SOURCE_URL="https://ftpmirror.gnu.org/readline/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=33c8fb279e981274f485fd91da77e94a
 PKG_DEPENDS=ncurses
 
@@ -36,7 +36,7 @@ patches_all_fetched() {
 
 fetch_patches() {
 	local ver="$PKG_VERSION"
-	local baseurl="ftp://ftp.cwru.edu/pub/bash/readline-$PKG_VERSION-patches"
+	local baseurl="http://ftpmirror.gnu.org/readline/readline-$PKG_VERSION-patches"
 	local l
 
 	mkdir -p "$PATCH_DIR"
