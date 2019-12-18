@@ -70,7 +70,7 @@ install_post() {
 Two ways to use system cert store
 
 	# 1. symlink to the bundle (preferred)
-	ln -sf /etc/ssl/certs/ca-bundle.trust.crt $INSTALL_PREFIX/ssl/certs/cert.pem
+	ln -sf /etc/ssl/certs/ca-bundle.trust.crt $INSTALL_PREFIX/ssl/cert.pem
 
 	# 2. symlink to those made by c_rehash
 	rmdir $INSTALL_PREFIX/ssl/certs
