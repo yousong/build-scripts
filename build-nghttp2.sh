@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright 2015-2016 (c) Yousong Zhou
+# Copyright 2015-2019 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -16,10 +16,10 @@
 # > >= 6.0 is required. C++ source code requires C++14 language features.
 #
 PKG_NAME=nghttp2
-PKG_VERSION=1.36.0
+PKG_VERSION=1.40.0
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.xz"
 PKG_SOURCE_URL="https://github.com/nghttp2/nghttp2/releases/download/v$PKG_VERSION/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=f2ef3dd1e9fc6dc29fcdd4a465ebc020
+PKG_SOURCE_MD5SUM=8d1a6b96760254e4dd142d7176e8fb7c
 PKG_AUTOCONF_FIXUP=1
 PKG_DEPENDS='libevent'
 
