@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright 2015-2018 (c) Yousong Zhou
+# Copyright 2015-2019 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -29,10 +29,10 @@
 #  - https://dl.iuscommunity.org/pub/ius/stable/CentOS/7/x86_64/repoview/letter_g.group.html
 #
 PKG_NAME=git
-PKG_VERSION=2.22.0
+PKG_VERSION=2.24.1
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="https://www.kernel.org/pub/software/scm/git/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=6deab33485c07cb3391ea0f255a936f2
+PKG_SOURCE_MD5SUM=166bde96adbbc11c8843d4f8f4f9811b
 PKG_DEPENDS='curl expat libiconv openssl zlib'
 
 . "$PWD/env.sh"
