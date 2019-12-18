@@ -8,7 +8,7 @@
 PKG_NAME=bzip2
 PKG_VERSION=1.0.6
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
-PKG_SOURCE_URL="http://www.bzip.org/1.0.6/$PKG_SOURCE"
+PKG_SOURCE_URL="https://downloads.sourceforge.net/bzip2/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=00b516f4704d4a7cb50a1d97e6e8e15b
 
 . "$PWD/env.sh"
