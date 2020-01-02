@@ -31,7 +31,7 @@ PKG_NAME=llvm
 PKG_VERSION=$LLVM_VERSION
 PKG_SOURCE="$PKG_NAME-${PKG_VERSION}.src.tar.xz"
 PKG_SOURCE_URL="$LLVM_SOURCE_URL_BASE/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=0fd4283ff485dffb71a4f1cc8fd3fc72
+PKG_SOURCE_MD5SUM=31eb9ce73dd2a0f8dcab8319fb03f8fc
 PKG_DEPENDS='cmake lxml2 zlib gcc-cross-pass2'
 PKG_CMAKE=1
 
@@ -42,9 +42,15 @@ PKG_CMAKE=1
 #
 PKG_clang_NAME=clang
 PKG_clang_VERSION=$LLVM_VERSION
-PKG_clang_SOURCE="cfe-$PKG_clang_VERSION.src.tar.xz"
+PKG_clang_SOURCE="clang-$PKG_clang_VERSION.src.tar.xz"
 PKG_clang_SOURCE_URL="$LLVM_SOURCE_URL_BASE/$PKG_clang_SOURCE"
-PKG_clang_SOURCE_MD5SUM=0df6971e2f99b1e99e7bfb533e4067af
+PKG_clang_SOURCE_MD5SUM=13468e4a44940efef1b75e8641752f90
+
+PKG_clang_tools_extra_NAME=clang-tools-extra
+PKG_clang_tools_extra_VERSION=$LLVM_VERSION
+PKG_clang_tools_extra_SOURCE="clang-tools-extra-$PKG_clang_tools_extra_VERSION.src.tar.xz"
+PKG_clang_tools_extra_SOURCE_URL="$LLVM_SOURCE_URL_BASE/$PKG_clang_tools_extra_SOURCE"
+PKG_clang_tools_extra_SOURCE_MD5SUM=c76293870b564c6a7968622b475b7646
 
 # "compiler-rt" runtime libraries, http://compiler-rt.llvm.org/index.html
 #
@@ -62,19 +68,19 @@ PKG_compiler_rt_NAME=compiler-rt
 PKG_compiler_rt_VERSION=$LLVM_VERSION
 PKG_compiler_rt_SOURCE="compiler-rt-$PKG_compiler_rt_VERSION.src.tar.xz"
 PKG_compiler_rt_SOURCE_URL="$LLVM_SOURCE_URL_BASE/$PKG_compiler_rt_SOURCE"
-PKG_compiler_rt_SOURCE_MD5SUM=c92b8a1aed654463962d77445ebee10b
+PKG_compiler_rt_SOURCE_MD5SUM=1b39b9b90007a2170ebe77d6214ec581
 
 PKG_libcxx_NAME=libcxx
 PKG_libcxx_VERSION=$LLVM_VERSION
 PKG_libcxx_SOURCE="libcxx-$PKG_libcxx_VERSION.src.tar.xz"
 PKG_libcxx_SOURCE_URL="$LLVM_SOURCE_URL_BASE/$PKG_libcxx_SOURCE"
-PKG_libcxx_SOURCE_MD5SUM=3b26e4c37aac2650b594668437a57966
+PKG_libcxx_SOURCE_MD5SUM=689a42dbae917ed2a20b92deb4fd6de7
 
 PKG_libcxxabi_NAME=libcxxabi
 PKG_libcxxabi_VERSION=$LLVM_VERSION
 PKG_libcxxabi_SOURCE="libcxxabi-$PKG_libcxxabi_VERSION.src.tar.xz"
 PKG_libcxxabi_SOURCE_URL="$LLVM_SOURCE_URL_BASE/$PKG_libcxxabi_SOURCE"
-PKG_libcxxabi_SOURCE_MD5SUM=bd8799cc69c7660c7a4729019fbfe286
+PKG_libcxxabi_SOURCE_MD5SUM=1395b30a937e28779cd9707c6357b801
 
 # A linker, https://lld.llvm.org/
 #
@@ -114,7 +120,7 @@ PKG_lld_NAME=lld
 PKG_lld_VERSION=$LLVM_VERSION
 PKG_lld_SOURCE="lld-$PKG_lld_VERSION.src.tar.xz"
 PKG_lld_SOURCE_URL="$LLVM_SOURCE_URL_BASE/$PKG_lld_SOURCE"
-PKG_lld_SOURCE_MD5SUM=aa70e956ddbe0c7bff029b8358ff6c44
+PKG_lld_SOURCE_MD5SUM=63d74ba4d80edf0199ca3d00f9285ba1
 
 # Golang frontend: there are actually two.  One already in llvm upstream,
 # another accepted by the Google Golang team.
@@ -151,6 +157,7 @@ PKG_test_suite_SOURCE_MD5SUM=x
 
 download_extra() {
 	download_http "$PKG_clang_SOURCE"	"$PKG_clang_SOURCE_URL"		"$PKG_clang_SOURCE_MD5SUM"
+	download_http "$PKG_clang_tools_extra_SOURCE"	"$PKG_clang_tools_extra_SOURCE_URL"		"$PKG_clang_tools_extra_SOURCE_MD5SUM"
 	download_http "$PKG_lld_SOURCE"		"$PKG_lld_SOURCE_URL"		"$PKG_lld_SOURCE_MD5SUM"
 	download_http "$PKG_compiler_rt_SOURCE"	"$PKG_compiler_rt_SOURCE_URL"	"$PKG_compiler_rt_SOURCE_MD5SUM"
 	download_http "$PKG_libcxx_SOURCE"	"$PKG_libcxx_SOURCE_URL"	"$PKG_libcxx_SOURCE_MD5SUM"
@@ -158,7 +165,9 @@ download_extra() {
 }
 
 prepare_extra() {
+	mkdir -p "$PKG_SOURCE_DIR/tools/extra"
 	unpack "$BASE_DL_DIR/$PKG_clang_SOURCE"		"$PKG_SOURCE_DIR/tools/"	"s:^[^/]\\+:clang:"
+	unpack "$BASE_DL_DIR/$PKG_clang_tools_extra_SOURCE"		"$PKG_SOURCE_DIR/tools/extra"	"s:^[^/]\\+:clang-tools-extra:"
 	unpack "$BASE_DL_DIR/$PKG_lld_SOURCE"		"$PKG_SOURCE_DIR/tools/"	"s:^[^/]\\+:lld:"
 	unpack "$BASE_DL_DIR/$PKG_compiler_rt_SOURCE"	"$PKG_SOURCE_DIR/runtimes/"	"s:^[^/]\\+:compiler-rt:"
 	unpack "$BASE_DL_DIR/$PKG_libcxx_SOURCE"	"$PKG_SOURCE_DIR/projects/"	"s:^[^/]\\+:libcxx:"
