@@ -191,3 +191,11 @@ index e642d7f..dbafa51 100644
 cgit v1.0-41-gc330
 EOF
 }
+
+staging_post() {
+	local based="$PKG_STAGING_DIR$INSTALL_PREFIX"
+
+	staging_post_strip "$based"
+	ln -s "make" "$based/bin/gmake"
+	ln -s "make.1" "$based/share/man/man1/gmake.1"
+}
