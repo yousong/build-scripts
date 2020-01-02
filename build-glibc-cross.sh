@@ -8,6 +8,9 @@
 # glibc requires out of tree build, i.e. it will fail explicitly if configure
 # was run in source tree
 #
+# glibc starting from 2.28 requires at GNU make 4.0.  See f2873d2 ("testrun.sh:
+# Implement --tool=strace, --tool=valgrind")
+#
 # To debug dynamic linker, try LD_DEBUG.  It's far better a facility than
 # strace on this job
 #
