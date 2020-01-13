@@ -6,10 +6,10 @@
 # See /LICENSE for more information.
 #
 PKG_NAME=shadowsocks-libev
-PKG_VERSION=3.3.3
+PKG_VERSION=3.3.4
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="https://github.com/shadowsocks/$PKG_NAME/releases/download/v$PKG_VERSION/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=c453caff983be120faf3f35e9c83eb62
+PKG_SOURCE_MD5SUM=fb41e60db217b658a14fe3519cd78c62
 PKG_AUTOCONF_FIXUP=1
 PKG_DEPENDS='c-ares libcork libev libsodium mbedtls pcre udns'
 
