@@ -14,10 +14,10 @@
 # TODO use libslz
 #
 PKG_NAME=haproxy
-PKG_VERSION=2.0.4
+PKG_VERSION=1.8.19
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://www.haproxy.org/download/${PKG_VERSION%.*}/src/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=e0a295b3aa468f70ba261cc5ae9a5f83
+PKG_SOURCE_MD5SUM=713d995d8b072a4ca8561ab389b82b7a
 PKG_DEPENDS='lua5.3 openssl pcre libslz'
 
 . "$PWD/env.sh"
