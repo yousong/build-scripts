@@ -145,16 +145,13 @@ so binaries not in that directory list cannot be found.
 
 There are a few methods to work around this
 
-1. Use absolute path
+- Use absolute path
 
 		sudo `which flowtop` -h
 
-2. Edit `sudoers` setting with `visudo`.  See sudoers manual for syntax details
+- Put the following file to `/etc/sudoers.d/yousong`
 
-		# keep PATH for user yousong: replace the default Defaults settings for
-		# secure_path
-		Defaults:  yousong env_keep += "PATH"
-		Defaults: !yousong secure_path = /sbin:/bin:/usr/sbin:/usr/bin
+		Defaults: yousong env_keep += "PATH", !secure_path
 
 ## Versioned symbols
 
