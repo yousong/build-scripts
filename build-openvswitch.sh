@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright 2015-2017 (c) Yousong Zhou
+# Copyright 2015-2020 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -35,11 +35,11 @@
 #     /usr/local/share/openvswitch/scripts/ovs-ctl force-reload-kmod --system-id=random
 #
 PKG_NAME=openvswitch
-PKG_VERSION=2.12.0
+PKG_VERSION=2.13.0
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://openvswitch.org/releases/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=1a75af1dcb4364f5a7d7526be6346b13
-PKG_DEPENDS=openssl
+PKG_SOURCE_MD5SUM=b2f22b780e20cb3855d05e88f1e0ace9
+PKG_DEPENDS="libunwind openssl unbound"
 PKG_PLATFORM=linux
 
 . "$PWD/env.sh"
@@ -126,6 +126,7 @@ staging() {
 	local d1="$INSTALL_PREFIX"
 	local ds0="$d0/share/openvswitch/scripts"
 	local ds1="$d1/share/openvswitch/scripts"
+	local ds2="$d1/share/ovn/scripts"
 
 	build_staging 'install'
 	if [ "$ovs_enable_kmod" -gt 0 ]; then
@@ -136,7 +137,7 @@ staging() {
 		case "\$0" in
 		    *ovs-ctl) "$ds1/ovs-ctl" "\$@" ;;
 		    *ovs-kmod-ctl) "$ds1/ovs-kmod-ctl" "\$@" ;;
-		    *ovn-ctl) "$ds1/ovn-ctl" "\$@" ;;
+		    *ovn-ctl) "$ds2/ovn-ctl" "\$@" ;;
 		esac
 	EOF
 	chmod a+x "$ds0/ovs-wrapper"
