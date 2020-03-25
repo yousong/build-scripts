@@ -616,7 +616,7 @@ configure_static_build_off() {
 	:
 }
 
-configure_pre() {
+configure_pre_default() {
 	if [ -n "$o_build_static" ]; then
 		configure_static_build
 	else
@@ -626,6 +626,10 @@ configure_pre() {
 		cd "$PKG_SOURCE_DIR"
 		autoconf_fixup
 	fi
+}
+
+configure_pre() {
+	configure_pre_default
 }
 
 configure() {
