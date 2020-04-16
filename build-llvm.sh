@@ -11,6 +11,13 @@
 #
 #  - Recommends GCC of version at least 5.1
 #
+# CMake
+#
+#  - https://llvm.org/docs/CMakePrimer.html
+#  - https://llvm.org/docs/CMake.html
+#  - https://llvm.org/docs/BuildingADistribution.html
+#  - https://llvm.org/docs/AdvancedBuilds.html
+#
 # Links
 #
 #  - http://releases.llvm.org/download.html
