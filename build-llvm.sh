@@ -126,6 +126,12 @@ PKG_lld_SOURCE="lld-$PKG_lld_VERSION.src.tar.xz"
 PKG_lld_SOURCE_URL="$LLVM_SOURCE_URL_BASE/$PKG_lld_SOURCE"
 PKG_lld_SOURCE_MD5SUM=481ab4e01c8c5549c8aff5ef1bd25425
 
+PKG_lldb_NAME=lldb
+PKG_lldb_VERSION=$LLVM_VERSION
+PKG_lldb_SOURCE="lldb-$PKG_lldb_VERSION.src.tar.xz"
+PKG_lldb_SOURCE_URL="$LLVM_SOURCE_URL_BASE/$PKG_lldb_SOURCE"
+PKG_lldb_SOURCE_MD5SUM=9828da982f3088cece20e0db9e76e06d
+
 # Golang frontend: there are actually two.  One already in llvm upstream,
 # another accepted by the Google Golang team.
 #
@@ -163,6 +169,7 @@ download_extra() {
 	download_http "$PKG_clang_SOURCE"	"$PKG_clang_SOURCE_URL"		"$PKG_clang_SOURCE_MD5SUM"
 	download_http "$PKG_clang_tools_extra_SOURCE"	"$PKG_clang_tools_extra_SOURCE_URL"		"$PKG_clang_tools_extra_SOURCE_MD5SUM"
 	download_http "$PKG_lld_SOURCE"		"$PKG_lld_SOURCE_URL"		"$PKG_lld_SOURCE_MD5SUM"
+	download_http "$PKG_lldb_SOURCE"	"$PKG_lldb_SOURCE_URL"		"$PKG_lldb_SOURCE_MD5SUM"
 	download_http "$PKG_compiler_rt_SOURCE"	"$PKG_compiler_rt_SOURCE_URL"	"$PKG_compiler_rt_SOURCE_MD5SUM"
 	download_http "$PKG_libcxx_SOURCE"	"$PKG_libcxx_SOURCE_URL"	"$PKG_libcxx_SOURCE_MD5SUM"
 	download_http "$PKG_libcxxabi_SOURCE"	"$PKG_libcxxabi_SOURCE_URL"	"$PKG_libcxxabi_SOURCE_MD5SUM"
@@ -172,6 +179,7 @@ prepare_extra() {
 	unpack "$BASE_DL_DIR/$PKG_clang_SOURCE"		"$PKG_SOURCE_DIR/tools/"	"s:^[^/]\\+:clang:"
 	unpack "$BASE_DL_DIR/$PKG_clang_tools_extra_SOURCE"		"$PKG_SOURCE_DIR/tools/clang/tools"	"s:^[^/]\\+:extra:"
 	unpack "$BASE_DL_DIR/$PKG_lld_SOURCE"		"$PKG_SOURCE_DIR/tools/"	"s:^[^/]\\+:lld:"
+	unpack "$BASE_DL_DIR/$PKG_lldb_SOURCE"		"$PKG_SOURCE_DIR/tools/"	"s:^[^/]\\+:lldb:"
 	unpack "$BASE_DL_DIR/$PKG_compiler_rt_SOURCE"	"$PKG_SOURCE_DIR/runtimes/"	"s:^[^/]\\+:compiler-rt:"
 	unpack "$BASE_DL_DIR/$PKG_libcxx_SOURCE"	"$PKG_SOURCE_DIR/projects/"	"s:^[^/]\\+:libcxx:"
 	unpack "$BASE_DL_DIR/$PKG_libcxxabi_SOURCE"	"$PKG_SOURCE_DIR/projects/"	"s:^[^/]\\+:libcxxabi:"
