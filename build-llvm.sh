@@ -74,6 +74,12 @@ PKG_compiler_rt_SOURCE="compiler-rt-$PKG_compiler_rt_VERSION.src.tar.xz"
 PKG_compiler_rt_SOURCE_URL="$LLVM_SOURCE_URL_BASE/$PKG_compiler_rt_SOURCE"
 PKG_compiler_rt_SOURCE_MD5SUM=3a8477233f69600f3e2ca997405c29db
 
+PKG_libunwind_NAME=libunwind
+PKG_libunwind_VERSION=$LLVM_VERSION
+PKG_libunwind_SOURCE="libunwind-$PKG_libunwind_VERSION.src.tar.xz"
+PKG_libunwind_SOURCE_URL="$LLVM_SOURCE_URL_BASE/$PKG_libunwind_SOURCE"
+PKG_libunwind_SOURCE_MD5SUM=a5a6daaf6e554e7ca6aea0cb55370998
+
 PKG_libcxx_NAME=libcxx
 PKG_libcxx_VERSION=$LLVM_VERSION
 PKG_libcxx_SOURCE="libcxx-$PKG_libcxx_VERSION.src.tar.xz"
@@ -171,6 +177,7 @@ download_extra() {
 	download_http "$PKG_lld_SOURCE"		"$PKG_lld_SOURCE_URL"		"$PKG_lld_SOURCE_MD5SUM"
 	download_http "$PKG_lldb_SOURCE"	"$PKG_lldb_SOURCE_URL"		"$PKG_lldb_SOURCE_MD5SUM"
 	download_http "$PKG_compiler_rt_SOURCE"	"$PKG_compiler_rt_SOURCE_URL"	"$PKG_compiler_rt_SOURCE_MD5SUM"
+	download_http "$PKG_libunwind_SOURCE"	"$PKG_libunwind_SOURCE_URL"	"$PKG_libunwind_SOURCE_MD5SUM"
 	download_http "$PKG_libcxx_SOURCE"	"$PKG_libcxx_SOURCE_URL"	"$PKG_libcxx_SOURCE_MD5SUM"
 	download_http "$PKG_libcxxabi_SOURCE"	"$PKG_libcxxabi_SOURCE_URL"	"$PKG_libcxxabi_SOURCE_MD5SUM"
 }
@@ -181,6 +188,7 @@ prepare_extra() {
 	unpack "$BASE_DL_DIR/$PKG_lld_SOURCE"		"$PKG_SOURCE_DIR/tools/"	"s:^[^/]\\+:lld:"
 	unpack "$BASE_DL_DIR/$PKG_lldb_SOURCE"		"$PKG_SOURCE_DIR/tools/"	"s:^[^/]\\+:lldb:"
 	unpack "$BASE_DL_DIR/$PKG_compiler_rt_SOURCE"	"$PKG_SOURCE_DIR/runtimes/"	"s:^[^/]\\+:compiler-rt:"
+	unpack "$BASE_DL_DIR/$PKG_libunwind_SOURCE"	"$PKG_SOURCE_DIR/runtimes/"	"s:^[^/]\\+:libunwind:"
 	unpack "$BASE_DL_DIR/$PKG_libcxx_SOURCE"	"$PKG_SOURCE_DIR/projects/"	"s:^[^/]\\+:libcxx:"
 	unpack "$BASE_DL_DIR/$PKG_libcxxabi_SOURCE"	"$PKG_SOURCE_DIR/projects/"	"s:^[^/]\\+:libcxxabi:"
 }
