@@ -169,9 +169,8 @@ download_extra() {
 }
 
 prepare_extra() {
-	mkdir -p "$PKG_SOURCE_DIR/tools/extra"
 	unpack "$BASE_DL_DIR/$PKG_clang_SOURCE"		"$PKG_SOURCE_DIR/tools/"	"s:^[^/]\\+:clang:"
-	unpack "$BASE_DL_DIR/$PKG_clang_tools_extra_SOURCE"		"$PKG_SOURCE_DIR/tools/extra"	"s:^[^/]\\+:clang-tools-extra:"
+	unpack "$BASE_DL_DIR/$PKG_clang_tools_extra_SOURCE"		"$PKG_SOURCE_DIR/tools/clang/tools"	"s:^[^/]\\+:extra:"
 	unpack "$BASE_DL_DIR/$PKG_lld_SOURCE"		"$PKG_SOURCE_DIR/tools/"	"s:^[^/]\\+:lld:"
 	unpack "$BASE_DL_DIR/$PKG_compiler_rt_SOURCE"	"$PKG_SOURCE_DIR/runtimes/"	"s:^[^/]\\+:compiler-rt:"
 	unpack "$BASE_DL_DIR/$PKG_libcxx_SOURCE"	"$PKG_SOURCE_DIR/projects/"	"s:^[^/]\\+:libcxx:"
