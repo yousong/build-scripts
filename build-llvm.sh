@@ -43,8 +43,9 @@ PKG_VERSION=$LLVM_VERSION
 PKG_SOURCE="$PKG_NAME-${PKG_VERSION}.src.tar.xz"
 PKG_SOURCE_URL="$LLVM_SOURCE_URL_BASE/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=693cefdc49d618f828144486a18b473f
-PKG_DEPENDS='cmake lxml2 z3 zlib gcc-cross-pass2'
+PKG_DEPENDS='cmake lxml2 ninja z3 zlib gcc-cross-pass2'
 PKG_CMAKE=1
+PKG_CMAKE_GEN=ninja
 
 # - Assembling a complete toolchain, https://clang.llvm.org/docs/Toolchain.html
 #
@@ -237,8 +238,4 @@ CMAKE_ARGS+=(
 	-DLLVM_ENABLE_LIBEDIT=off
 	-DLLVM_ENABLE_TERMINFO=off
 	-DLLVM_ENABLE_LIBXML2=off
-)
-
-CMAKE_ARGS+=(
-	-G 'Unix Makefiles'
 )
