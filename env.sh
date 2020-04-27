@@ -94,8 +94,10 @@ env_init() {
 	if ! running_in_make || [ -n "$NJOBS" ]; then
 		NJOBS="${NJOBS:-$((2 * $(ncpus)))}"
 		MAKEJ=(make -j "$NJOBS")
+		NINJA=(ninja -j "$NJOBS")
 	else
 		MAKEJ=(make)
+		NINJA=(ninja)
 	fi
 }
 
@@ -148,10 +150,24 @@ env_init_pkg() {
 		PKG_STAGING_DIR="$BASE_DESTDIR/$PKG_NAME-$PKG_VERSION-install"
 	fi
 	if [ -n "$PKG_CMAKE" ]; then
-		if [ -z "$PKG_CMAKE_BUILD_SUBDIR" ]; then
-			PKG_CMAKE_BUILD_SUBDIR=build
-		fi
+		PKG_CMAKE_BUILD_SUBDIR="${PKG_CMAKE_BUILD_SUBDIR-build}"
 		PKG_BUILD_DIR="$PKG_SOURCE_DIR/$PKG_CMAKE_BUILD_SUBDIR"
+		PKG_CMAKE_GEN="${PKG_CMAKE_GEN-make}"
+		if [ "$PKG_CMAKE_GEN" = "ninja" ]; then
+			PKG_NINJA=1
+		fi
+		case "$PKG_CMAKE_GEN" in
+			make)
+				CMAKE_ARGS+=( -G "Unix Makefiles" )
+				;;
+			ninja)
+				CMAKE_ARGS+=( -G "Ninja" )
+				;;
+			*)
+				__errmsg "unknown cmake generator option: $PKG_CMAKE_GEN"
+				false
+				;;
+		esac
 	else
 		PKG_BUILD_DIR="$PKG_SOURCE_DIR"
 	fi
@@ -590,9 +606,19 @@ build_compile_make() {
 			"$@"
 }
 
+build_compile_ninja() {
+	"${NINJA[@]}"			\
+		--verbose		\
+		"$@"
+}
+
 compile() {
 	cd "$PKG_BUILD_DIR"
-	build_compile_make
+	if [ -n "$PKG_NINJA" ]; then
+		build_compile_ninja
+	else
+		build_compile_make
+	fi
 }
 
 autoconf_fixup() {
@@ -644,7 +670,7 @@ staging_pre() {
 	rm -rf "$PKG_STAGING_DIR"
 }
 
-build_staging() {
+build_staging_make() {
 	cd "$PKG_BUILD_DIR"
 	env "${MAKE_ENVS[@]}"				\
 		"${MAKEJ[@]}"				\
@@ -652,6 +678,14 @@ build_staging() {
 			DESTDIR="$PKG_STAGING_DIR"	\
 			${PKG_CMAKE:+VERBOSE=1}		\
 			"${MAKE_VARS[@]}"		\
+			"$@"
+}
+
+build_staging_ninja() {
+	cd "$PKG_BUILD_DIR"
+	DESTDIR="$PKG_STAGING_DIR"			\
+		"${NINJA[@]}"				\
+			--verbose			\
 			"$@"
 }
 
@@ -668,7 +702,11 @@ staging_check_default() {
 }
 
 staging() {
-	build_staging 'install'
+	if [ -n "$PKG_NINJA" ]; then
+		build_staging_ninja 'install'
+	else
+		build_staging_make 'install'
+	fi
 }
 
 staging_post_strip() {
