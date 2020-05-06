@@ -6,10 +6,10 @@
 # See /LICENSE for more information.
 #
 PKG_NAME=iproute2
-PKG_VERSION=5.2.0
+PKG_VERSION=5.6.0
 PKG_SOURCE="$PKG_NAME-${PKG_VERSION}.tar.xz"
 PKG_SOURCE_URL="https://www.kernel.org/pub/linux/utils/net/iproute2/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=0cb2736e7bc2f56254a363d3d23703b7
+PKG_SOURCE_MD5SUM=9da0c352707c34b8b1fec3bf42fcfd09
 PKG_DEPENDS='db elfutils libmnl'
 PKG_PLATFORM=linux
 
@@ -30,10 +30,10 @@ do_patch() {
           -DNETNS_RUN_DIR=\"$(NETNS_RUN_DIR)\" \
           -DNETNS_ETC_DIR=\"$(NETNS_ETC_DIR)\"
  
-@@ -92,7 +93,7 @@ install: all
- 		$(DESTDIR)$(DOCDIR)/examples
- 	install -m 0644 $(shell find examples/diffserv -maxdepth 1 -type f) \
- 		$(DESTDIR)$(DOCDIR)/examples/diffserv
+@@ -87,7 +87,7 @@ install: all
+ 	install -m 0755 -d $(DESTDIR)$(CONFDIR)
+ 	install -m 0755 -d $(DESTDIR)$(ARPDDIR)
+ 	install -m 0755 -d $(DESTDIR)$(HDRDIR)
 -	@for i in $(SUBDIRS);  do $(MAKE) -C $$i install; done
 +	@set -e; for i in $(SUBDIRS);  do $(MAKE) -C $$i install; done
  	install -m 0644 $(shell find etc/iproute2 -maxdepth 1 -type f) $(DESTDIR)$(CONFDIR)
