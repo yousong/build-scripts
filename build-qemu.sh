@@ -48,68 +48,16 @@
 # - The QEMU build system architecture, docs/build-system.txt
 #
 PKG_NAME=qemu
-PKG_VERSION=4.2.0
+PKG_VERSION=5.0.0
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.xz"
 PKG_SOURCE_URL="https://download.qemu.org/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=278eeb294e4b497e79af7a57e660cb9a
+PKG_SOURCE_MD5SUM=ede6005d7143fe994dd089d31dc2cf6c
 
 # Add slirp when we can build dynamic library
 PKG_DEPENDS="$PKG_DEPENDS bzip2 capstone curl dtc gnutls libjpeg-turbo libpng"
 PKG_DEPENDS="$PKG_DEPENDS lzo ncurses nettle pixman spice virglrenderer zlib"
 
 . "$PWD/env.sh"
-
-do_patch() {
-	cd "$PKG_SOURCE_DIR"
-
-	# backported from https://gitlab.freedesktop.org/slirp/libslirp/commit/c5927943
-	# https://nvd.nist.gov/vuln/detail/CVE-2019-15890
-	patch -p1 <<"EOF"
-From c59279437eda91841b9d26079c70b8a540d41204 Mon Sep 17 00:00:00 2001
-From: Samuel Thibault <samuel.thibault@ens-lyon.org>
-Date: Mon, 26 Aug 2019 00:55:03 +0200
-Subject: [PATCH] ip_reass: Fix use after free
-
-Using ip_deq after m_free might read pointers from an allocation reuse.
-
-This would be difficult to exploit, but that is still related with
-CVE-2019-14378 which generates fragmented IP packets that would trigger this
-issue and at least produce a DoS.
-
-Signed-off-by: Samuel Thibault <samuel.thibault@ens-lyon.org>
----
- slirp/src/ip_input.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/slirp/src/ip_input.c b/slirp/src/ip_input.c
-index 7364ce0..aa514ae 100644
---- a/slirp/src/ip_input.c
-+++ b/slirp/src/ip_input.c
-@@ -292,6 +292,7 @@ static struct ip *ip_reass(Slirp *slirp, struct ip *ip, struct ipq *fp)
-      */
-     while (q != (struct ipasfrag *)&fp->frag_link &&
-            ip->ip_off + ip->ip_len > q->ipf_off) {
-+        struct ipasfrag *prev;
-         i = (ip->ip_off + ip->ip_len) - q->ipf_off;
-         if (i < q->ipf_len) {
-             q->ipf_len -= i;
-@@ -299,9 +300,10 @@ static struct ip *ip_reass(Slirp *slirp, struct ip *ip, struct ipq *fp)
-             m_adj(dtom(slirp, q), i);
-             break;
-         }
-+        prev = q;
-         q = q->ipf_next;
--        m_free(dtom(slirp, q->ipf_prev));
--        ip_deq(q->ipf_prev);
-+        ip_deq(prev);
-+        m_free(dtom(slirp, prev));
-     }
- 
- insert:
--- 
-2.22.0
-EOF
-}
 
 # build system of qemu knows how to strip those compiled components
 STRIP=()
