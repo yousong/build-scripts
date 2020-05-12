@@ -701,12 +701,16 @@ staging_check_default() {
 	fi
 }
 
-staging() {
+build_staging() {
 	if [ -n "$PKG_NINJA" ]; then
-		build_staging_ninja 'install'
+		build_staging_ninja "$@"
 	else
-		build_staging_make 'install'
+		build_staging_make "$@"
 	fi
+}
+
+staging() {
+	build_staging install
 }
 
 staging_post_strip() {
