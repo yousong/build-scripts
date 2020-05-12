@@ -133,46 +133,6 @@ index 13b13eed286..bcbe4710732 100644
 EOF
 
 	patch -p1 <<"EOF"
-From a46854d91b1a21fb5718b304f739dfc90c64035b Mon Sep 17 00:00:00 2001
-From: Yousong Zhou <yszhou4tech@gmail.com>
-Date: Fri, 6 Jul 2018 09:37:52 +0800
-Subject: [PATCH] libgo: set GOARCH=arm64be when $host matches aarch64_be
-
----
- libgo/configure    | 3 +++
- libgo/configure.ac | 3 +++
- 2 files changed, 6 insertions(+)
-
-diff --git a/libgo/configure b/libgo/configure
-index 11e04aafc8b..8038bd39ef9 100755
---- a/libgo/configure
-+++ b/libgo/configure
-@@ -13666,6 +13666,9 @@ case ${host} in
-   aarch64-*-*)
-     GOARCH=arm64
-     ;;
-+  aarch64_be-*-*)
-+    GOARCH=arm64be
-+    ;;
-   arm*-*-* | strongarm*-*-* | ep9312*-*-* | xscale-*-*)
-     GOARCH=arm
-     case ${host} in
-diff --git a/libgo/configure.ac b/libgo/configure.ac
-index 9f4bf50b22b..fa9c6575086 100644
---- a/libgo/configure.ac
-+++ b/libgo/configure.ac
-@@ -237,6 +237,9 @@ case ${host} in
-   aarch64-*-*)
-     GOARCH=arm64
-     ;;
-+  aarch64_be-*-*)
-+    GOARCH=arm64be
-+    ;;
-   arm*-*-* | strongarm*-*-* | ep9312*-*-* | xscale-*-*)
-     GOARCH=arm
-     case ${host} in
-EOF
-	patch -p1 <<"EOF"
 From 846c80c5148d43ba2052daa5e7afdaa67d58b2d3 Mon Sep 17 00:00:00 2001
 From: Yousong Zhou <yszhou4tech@gmail.com>
 Date: Fri, 6 Jul 2018 10:45:45 +0800

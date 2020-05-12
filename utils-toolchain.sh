@@ -69,22 +69,22 @@
 # setarch utility from util-linux allows to prepare an environ where uname
 # output is customized
 #
-PKG_gcc_VERSION=9.2.0
+PKG_gcc_VERSION=10.1.0
 PKG_gcc_SOURCE="gcc-$PKG_gcc_VERSION.tar.xz"
 PKG_gcc_SOURCE_MD5SUM=3818ad8600447f05349098232c2ddc78
 PKG_gcc_SOURCE_URL="http://ftpmirror.gnu.org/gcc/gcc-$PKG_gcc_VERSION/$PKG_gcc_SOURCE"
 
-PKG_glibc_VERSION=2.30
+PKG_glibc_VERSION=2.31
 PKG_glibc_SOURCE="glibc-$PKG_glibc_VERSION.tar.xz"
 PKG_glibc_SOURCE_MD5SUM=2b1dbdf27b28620752956c061d62f60c
 PKG_glibc_SOURCE_URL="http://ftpmirror.gnu.org/glibc/$PKG_glibc_SOURCE"
 
-PKG_binutils_VERSION=2.33.1
+PKG_binutils_VERSION=2.34
 PKG_binutils_SOURCE="binutils-$PKG_binutils_VERSION.tar.xz"
 PKG_binutils_SOURCE_MD5SUM=9406231b7d9dd93731c2d06cefe8aaf1
 PKG_binutils_SOURCE_URL="http://ftpmirror.gnu.org/binutils/$PKG_binutils_SOURCE"
 
-PKG_linux_VERSION=5.4.2
+PKG_linux_VERSION=5.4.40
 PKG_linux_SOURCE="linux-${PKG_linux_VERSION}.tar.xz"
 PKG_linux_SOURCE_MD5SUM=07a4df090466eb7b24eec5fe4fbd5500
 PKG_linux_SOURCE_URL="https://cdn.kernel.org/pub/linux/kernel/v${PKG_linux_VERSION%%.*}.x/$PKG_linux_SOURCE"
