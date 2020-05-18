@@ -168,6 +168,10 @@ env_init_pkg() {
 				false
 				;;
 		esac
+	elif [ -n "$PKG_MESON" ]; then
+		PKG_MESON_BUILD_SUBDIR="${PKG_MESON_BUILD_SUBDIR-build}"
+		PKG_BUILD_DIR="$PKG_SOURCE_DIR/$PKG_MESON_BUILD_SUBDIR"
+		PKG_NINJA=1
 	else
 		PKG_BUILD_DIR="$PKG_SOURCE_DIR"
 	fi
@@ -593,6 +597,31 @@ build_configure_cmake() {
 		"$PKG_SOURCE_DIR/$PKG_CMAKE_SOURCE_SUBDIR"
 }
 
+meson_args_fmt() {
+	local r
+	local arg
+
+	for arg in "$@"; do
+		r="$r${r:+,}'$arg'"
+	done
+	echo "$r"
+}
+
+build_configure_meson() {
+	meson									\
+		--prefix="$INSTALL_PREFIX"					\
+		--backend ninja							\
+		--buildtype release						\
+		--default-library shared					\
+		-Dc_args="$(meson_args_fmt "${EXTRA_CFLAGS[@]}")"		\
+		-Dc_link_args="$(meson_args_fmt "${EXTRA_LDFLAGS[@]}")"		\
+		-Dcpp_args="$(meson_args_fmt "${EXTRA_CXXFLAGS[@]}")"		\
+		-Dcpp_link_args="$(meson_args_fmt "${EXTRA_LDFLAGS[@]}")"	\
+		--strip								\
+		"$PKG_SOURCE_DIR/$PKG_MESON_BUILD_SUBDIR"			\
+		"$PKG_SOURCE_DIR/$PKG_MESON_SOURCE_SUBDIR"
+}
+
 build_compile_make() {
 	env CFLAGS="${EXTRA_CFLAGS[*]}"			\
 		CXXFLAGS="${EXTRA_CXXFLAGS[*]}"		\
@@ -661,6 +690,8 @@ configure_pre() {
 configure() {
 	if [ -n "$PKG_CMAKE" ]; then
 		build_configure_cmake
+	elif [ -n "$PKG_MESON" ]; then
+		build_configure_meson
 	else
 		build_configure_default
 	fi
