@@ -35,10 +35,10 @@
 #     /usr/local/share/openvswitch/scripts/ovs-ctl force-reload-kmod --system-id=random
 #
 PKG_NAME=openvswitch
-PKG_VERSION=2.9.6
+PKG_VERSION=2.10.2
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://openvswitch.org/releases/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=8e85acaa2bd2a899b5b2814e9a46e3ed
+PKG_SOURCE_MD5SUM=bdb0a97aac6dc95ea77e12a89df184d8
 PKG_DEPENDS=openssl
 PKG_PLATFORM=linux
 
@@ -80,7 +80,7 @@ EOF
  License: GPLv2
  Release: 1%{?dist}
  Source: openvswitch-%{version}.tar.gz
-+Patch0: 0001-build-fix-invoking-ip_tunnel_info_opts_set.patch
++Patch0: 0001-compat-Fix-compilation-error-on-CentOS-7.6.patch
  #Source1: openvswitch-init
  Buildroot: /tmp/openvswitch-xen-rpm
  
@@ -99,7 +99,7 @@ EOF
  License: ASL 2.0 and LGPLv2+ and SISSL
  Release: 1%{?dist}
  Source: http://openvswitch.org/releases/%{name}-%{version}.tar.gz
-+Patch0: 0001-build-fix-invoking-ip_tunnel_info_opts_set.patch
++Patch0: 0001-compat-Fix-compilation-error-on-CentOS-7.6.patch
  
  BuildRequires: autoconf automake libtool
  BuildRequires: systemd-units openssl openssl-devel
@@ -114,59 +114,36 @@ EOF
  %configure \
 EOF
 
-	cat >rhel/0001-build-fix-invoking-ip_tunnel_info_opts_set.patch <<"EOF"
-From bf02f3b6f1a671eac37e02391d55fdc9cffcf290 Mon Sep 17 00:00:00 2001
-From: Yousong Zhou <zhouyousong@yunionyun.com>
-Date: Mon, 2 Dec 2019 08:11:15 +0000
-Subject: [PATCH] build: fix invoking ip_tunnel_info_opts_set()
+	cat >rhel/0001-compat-Fix-compilation-error-on-CentOS-7.6.patch <<"EOF"
+From 17292e9189fef0e58c590861a125b986b1f50727 Mon Sep 17 00:00:00 2001
+From: Yi-Hung Wei <yihung.wei@gmail.com>
+Date: Tue, 25 Jun 2019 11:09:07 -0700
+Subject: [PATCH] compat: Fix compilation error on CentOS 7.6
 
-When USE_UPSTREAM_TUNNEL
+This fix the compilation issue on CentOS 7.6 kernel
+(3.10.0-957.21.3.el7.x86_64).
 
-	/home/yunion/git-repo/build-scripts/build_dir/openvswitch-2.9.6/rpmbuild/BUILD/openvswitch-2.9.6/datapath/linux/flow_netlink.c: In function 'validate_and_copy_set_tun':
-	/home/yunion/git-repo/build-scripts/build_dir/openvswitch-2.9.6/rpmbuild/BUILD/openvswitch-2.9.6/datapath/linux/flow_netlink.c:2530:5: error: too few arguments to function 'ip_tunnel_info_opts_set'
-	     key.tun_opts_len);
-	     ^
-	In file included from /home/yunion/git-repo/build-scripts/build_dir/openvswitch-2.9.6/rpmbuild/BUILD/openvswitch-2.9.6/datapath/linux/compat/include/net/ip_tunnels.h:10:0,
-			 from include/net/dst_metadata.h:6,
-			 from /home/yunion/git-repo/build-scripts/build_dir/openvswitch-2.9.6/rpmbuild/BUILD/openvswitch-2.9.6/datapath/linux/compat/include/net/dst_metadata.h:5,
-			 from /home/yunion/git-repo/build-scripts/build_dir/openvswitch-2.9.6/rpmbuild/BUILD/openvswitch-2.9.6/datapath/linux/compat/include/net/udp_tunnel.h:8,
-			 from /home/yunion/git-repo/build-scripts/build_dir/openvswitch-2.9.6/rpmbuild/BUILD/openvswitch-2.9.6/datapath/linux/compat/include/net/geneve.h:5,
-			 from /home/yunion/git-repo/build-scripts/build_dir/openvswitch-2.9.6/rpmbuild/BUILD/openvswitch-2.9.6/datapath/linux/flow_netlink.c:43:
-	include/net/ip_tunnels.h:425:20: note: declared here
-	 static inline void ip_tunnel_info_opts_set(struct ip_tunnel_info *info,
-			    ^
-	make[2]: *** [scripts/Makefile.build:333: /home/yunion/git-repo/build-scripts/build_dir/openvswitch-2.9.6/rpmbuild/BUILD/openvswitch-2.9.6/datapath/linux/flow_netlink.o] Error 1
+Reported-at: https://mail.openvswitch.org/pipermail/ovs-dev/2019-June/360013.html
+Reported-by: Fred Neubauer <fred.neubauer@gmail.com>
+Fixes: 6660a9597a49 ("datapath: compat: Introduce static key support")
+Signed-off-by: Yi-Hung Wei <yihung.wei@gmail.com>
+Signed-off-by: Ben Pfaff <blp@ovn.org>
 ---
- datapath/flow_netlink.c        | 2 +-
- datapath/linux/compat/geneve.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ datapath/linux/compat/include/linux/static_key.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/datapath/flow_netlink.c b/datapath/flow_netlink.c
-index d378d1f11..10c119ed7 100644
---- a/datapath/flow_netlink.c
-+++ b/datapath/flow_netlink.c
-@@ -2527,7 +2527,7 @@ static int validate_and_copy_set_tun(const struct nlattr *attr,
- 	 */
- 	ip_tunnel_info_opts_set(tun_info,
- 				TUN_METADATA_OPTS(&key, key.tun_opts_len),
--				key.tun_opts_len);
-+				key.tun_opts_len, 0);
- 	add_nested_action_end(*sfa, start);
+diff --git a/datapath/linux/compat/include/linux/static_key.h b/datapath/linux/compat/include/linux/static_key.h
+index 01c6a93f0..7e43a49e8 100644
+--- a/datapath/linux/compat/include/linux/static_key.h
++++ b/datapath/linux/compat/include/linux/static_key.h
+@@ -1,6 +1,7 @@
+ #ifndef _STATIC_KEY_WRAPPER_H
+ #define _STATIC_KEY_WRAPPER_H
  
- 	return err;
-diff --git a/datapath/linux/compat/geneve.c b/datapath/linux/compat/geneve.c
-index 0fcc6e51d..9ee74db18 100644
---- a/datapath/linux/compat/geneve.c
-+++ b/datapath/linux/compat/geneve.c
-@@ -252,7 +252,7 @@ static void geneve_rx(struct geneve_dev *geneve, struct geneve_sock *gs,
- 			goto drop;
- 		/* Update tunnel dst according to Geneve options. */
- 		ip_tunnel_info_opts_set(&tun_dst->u.tun_info,
--					gnvh->options, gnvh->opt_len * 4);
-+					gnvh->options, gnvh->opt_len * 4, 0);
- 	} else {
- 		/* Drop packets w/ critical options,
- 		 * since we don't support any...
++#include <linux/atomic.h>
+ #include_next <linux/static_key.h>
+ #ifndef HAVE_UPSTREAM_STATIC_KEY
+ /*
 EOF
 }
 
