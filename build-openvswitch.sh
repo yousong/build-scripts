@@ -275,6 +275,8 @@ build_rpm() {
 	local topdir="$PKG_BUILD_DIR/rpmbuild"
 	local bn="$PKG_NAME-$PKG_VERSION"
 
+	unset PKG_CONFIG_PATH
+
 	cd "$PKG_SOURCE_DIR/.."
 	mkdir -p "$topdir/SOURCES"
 	tar czf "$topdir/SOURCES/$PKG_SOURCE" \
