@@ -35,10 +35,10 @@
 #     /usr/local/share/openvswitch/scripts/ovs-ctl force-reload-kmod --system-id=random
 #
 PKG_NAME=openvswitch
-PKG_VERSION=2.10.2
+PKG_VERSION=2.10.4
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://openvswitch.org/releases/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=bdb0a97aac6dc95ea77e12a89df184d8
+PKG_SOURCE_MD5SUM=b565ec9c3f1e922323c005cff4cc20aa
 PKG_DEPENDS=openssl
 PKG_PLATFORM=linux
 
@@ -80,7 +80,7 @@ EOF
  License: GPLv2
  Release: 1%{?dist}
  Source: openvswitch-%{version}.tar.gz
-+Patch0: 0001-compat-Fix-compilation-error-on-CentOS-7.6.patch
++Patch0: 0001-compat-Remove-unused-function.patch
  #Source1: openvswitch-init
  Buildroot: /tmp/openvswitch-xen-rpm
  
@@ -99,7 +99,7 @@ EOF
  License: ASL 2.0 and LGPLv2+ and SISSL
  Release: 1%{?dist}
  Source: http://openvswitch.org/releases/%{name}-%{version}.tar.gz
-+Patch0: 0001-compat-Fix-compilation-error-on-CentOS-7.6.patch
++Patch0: 0001-compat-Remove-unused-function.patch
  
  BuildRequires: autoconf automake libtool
  BuildRequires: systemd-units openssl openssl-devel
@@ -114,36 +114,68 @@ EOF
  %configure \
 EOF
 
-	cat >rhel/0001-compat-Fix-compilation-error-on-CentOS-7.6.patch <<"EOF"
-From 17292e9189fef0e58c590861a125b986b1f50727 Mon Sep 17 00:00:00 2001
-From: Yi-Hung Wei <yihung.wei@gmail.com>
-Date: Tue, 25 Jun 2019 11:09:07 -0700
-Subject: [PATCH] compat: Fix compilation error on CentOS 7.6
+	cat >rhel/0001-compat-Remove-unused-function.patch <<"EOF"
+From 590656ae952b5cbc8d5746a08045bd1ff3ffb09b Mon Sep 17 00:00:00 2001
+From: Greg Rose <gvrose8192@gmail.com>
+Date: Fri, 25 Oct 2019 12:13:36 +0200
+Subject: [PATCH] compat: Remove unused function
 
-This fix the compilation issue on CentOS 7.6 kernel
-(3.10.0-957.21.3.el7.x86_64).
+The compat function rpl_nf_conntrack_in() does not appear to be used
+anywhere and emits warnings as such during builds < 4.10.
 
-Reported-at: https://mail.openvswitch.org/pipermail/ovs-dev/2019-June/360013.html
-Reported-by: Fred Neubauer <fred.neubauer@gmail.com>
-Fixes: 6660a9597a49 ("datapath: compat: Introduce static key support")
-Signed-off-by: Yi-Hung Wei <yihung.wei@gmail.com>
+The patch passes Travis:
+
+https://travis-ci.org/gvrose8192/ovs-experimental/builds/423097292
+
+Remove it.
+
+A backport of this patch to branch-2.10 seems to be required
+to fix build errors when compiling against v3.16.54
+
+  before: https://travis-ci.org/openvswitch/ovs/builds/602518689
+  after: https://travis-ci.org/horms2/ovs/builds/602665800
+
+Signed-off-by: Greg Rose <gvrose8192@gmail.com>
+Signed-off-by: Ben Pfaff <blp@ovn.org>
+Signed-off-by: Simon Horman <simon.horman@netronome.com>
+Reviewed-by: John Hurley <john.hurley@netronome.com>
 Signed-off-by: Ben Pfaff <blp@ovn.org>
 ---
- datapath/linux/compat/include/linux/static_key.h | 1 +
- 1 file changed, 1 insertion(+)
+ .../include/net/netfilter/nf_conntrack_core.h | 21 -------------------
+ 1 file changed, 21 deletions(-)
 
-diff --git a/datapath/linux/compat/include/linux/static_key.h b/datapath/linux/compat/include/linux/static_key.h
-index 01c6a93f0..7e43a49e8 100644
---- a/datapath/linux/compat/include/linux/static_key.h
-+++ b/datapath/linux/compat/include/linux/static_key.h
-@@ -1,6 +1,7 @@
- #ifndef _STATIC_KEY_WRAPPER_H
- #define _STATIC_KEY_WRAPPER_H
+diff --git a/datapath/linux/compat/include/net/netfilter/nf_conntrack_core.h b/datapath/linux/compat/include/net/netfilter/nf_conntrack_core.h
+index cd55843c3..10158011f 100644
+--- a/datapath/linux/compat/include/net/netfilter/nf_conntrack_core.h
++++ b/datapath/linux/compat/include/net/netfilter/nf_conntrack_core.h
+@@ -67,27 +67,6 @@ static inline bool rpl_nf_ct_get_tuple(const struct sk_buff *skb,
+ #define nf_ct_get_tuple rpl_nf_ct_get_tuple
+ #endif /* HAVE_NF_CT_GET_TUPLEPR_TAKES_STRUCT_NET */
  
-+#include <linux/atomic.h>
- #include_next <linux/static_key.h>
- #ifndef HAVE_UPSTREAM_STATIC_KEY
- /*
+-/* Commit 08733a0cb7de ("netfilter: handle NF_REPEAT from nf_conntrack_in()")
+- * introduced behavioural changes to this function which cannot be detected
+- * in the headers. Unconditionally backport to kernels older than the one which
+- * contains this commit. */
+-#if LINUX_VERSION_CODE < KERNEL_VERSION(4,10,0)
+-static unsigned int rpl_nf_conntrack_in(struct net *net, u_int8_t pf,
+-					unsigned int hooknum,
+-					struct sk_buff *skb)
+-{
+-	int err;
+-
+-	/* Repeat if requested, see nf_iterate(). */
+-	do {
+-		err = nf_conntrack_in(net, pf, hooknum, skb);
+-	} while (err == NF_REPEAT);
+-
+-	return err;
+-}
+-#define nf_conntrack_in rpl_nf_conntrack_in
+-#endif /* < 4.10 */
+-
+ #ifdef HAVE_NF_CONN_TIMER
+ 
+ #ifndef HAVE_NF_CT_DELETE
 EOF
 }
 
