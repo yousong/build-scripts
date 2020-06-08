@@ -628,6 +628,7 @@ build_compile_make() {
 		CPPFLAGS="${EXTRA_CPPFLAGS[*]}"		\
 		LDFLAGS="${EXTRA_LDFLAGS[*]}"		\
 		"${MAKE_ENVS[@]}"			\
+		${o_compiledb:+compiledb}		\
 		"${MAKEJ[@]}"				\
 			"${MAKE_ARGS[@]}"		\
 			${PKG_CMAKE:+VERBOSE=1}		\
