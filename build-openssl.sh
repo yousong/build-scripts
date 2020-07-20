@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright 2015-2019 (c) Yousong Zhou
+# Copyright 2015-2020 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -9,10 +9,10 @@
 # - Changelog of 1.0.2, https://www.openssl.org/news/cl102.txt
 #
 PKG_NAME=openssl
-PKG_VERSION=1.0.2t
+PKG_VERSION=1.1.1g
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="https://www.openssl.org/source/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=ef66581b80f06eae42f5268bc0b50c6d
+PKG_SOURCE_MD5SUM=76766e98997660138cdaf13a187bd234
 
 # OpenSSL currently does not support parallel build
 NJOBS=1
@@ -49,20 +49,10 @@ configure() {
 	"${MAKEJ[@]}" depend
 }
 
-MAKE_VARS=(
-	MANDIR="$INSTALL_PREFIX/share/man"
-)
 compile() {
 	cd "$PKG_BUILD_DIR"
 
 	"${MAKEJ[@]}" "${MAKE_VARS[@]}" all
-}
-
-staging() {
-	cd "$PKG_BUILD_DIR"
-
-	# OpenSSL use INSTALL_PREFIX instead of DESTDIR
-	"${MAKEJ[@]}" install INSTALL_PREFIX="$PKG_STAGING_DIR" "${MAKE_VARS[@]}"
 }
 
 install_post() {
