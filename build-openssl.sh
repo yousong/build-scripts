@@ -37,16 +37,15 @@ configure() {
 		fi
 	fi
 
-	cd "$PKG_BUILD_DIR"
-	# "Configure" script is the one
-	#
 	# Run "Configure MAKE" and get more readable content from stdout
-	eval MAKE="'${MAKEJ[*]}'" "$PKG_BUILD_DIR/Configure"	\
-			--prefix="$INSTALL_PREFIX"		\
-			--libdir="lib"				\
-			shared "$preset"
-	# make depend on each configure
-	"${MAKEJ[@]}" depend
+	CONFIGURE_CMD="$PKG_BUILD_DIR/Configure"
+	CONFIGURE_ARGS+=(
+		--libdir=lib
+		shared
+		"$preset"
+	)
+	cd "$PKG_BUILD_DIR"
+	build_configure_default
 }
 
 compile() {
