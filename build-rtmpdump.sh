@@ -8,10 +8,10 @@
 # rtmpdump 2.4 is still in the git repo and contains a lot of features and
 # bugfixes not available in 2.3 which was released at 2010-06-30
 PKG_NAME=rtmpdump
-PKG_VERSION=2015-12-23
+PKG_VERSION=2019-03-30
 PKG_SOURCE_URL="git://git.ffmpeg.org/rtmpdump"
-PKG_SOURCE_VERSION=fa8646daeb19dfd12c181f7d19de708d623704c0
-PKG_DEPENDS=openssl
+PKG_SOURCE_VERSION=c5f04a58fc2aeea6296ca7c44ee4734c18401aa3
+PKG_DEPENDS=gnutls
 
 . "$PWD/env.sh"
 
@@ -65,6 +65,7 @@ rtmpdump_init() {
 		sys=posix
 	fi
 	MAKE_VARS=(
+		CRYPTO=GNUTLS
 		prefix="$INSTALL_PREFIX"
 		SYS="$sys"
 		XCFLAGS="${EXTRA_CFLAGS[*]}"
