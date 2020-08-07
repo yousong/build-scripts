@@ -1,15 +1,15 @@
 #!/bin/bash -e
 #
-# Copyright 2016 (c) Yousong Zhou
+# Copyright 2016-2020 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
 #
 PKG_NAME=nettle
-PKG_VERSION=3.2
+PKG_VERSION=3.6
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="https://ftp.gnu.org/gnu/nettle/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=afb15b4764ebf1b4e6d06c62bd4d29e4
+PKG_SOURCE_MD5SUM=c45ee24ed7361dcda152a035d396fe8a
 PKG_DEPENDS=gmp
 
 . "$PWD/env.sh"
