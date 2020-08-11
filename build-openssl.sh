@@ -8,6 +8,14 @@
 # - Instructions of compilation and installation, https://wiki.openssl.org/index.php/Compilation_and_Installation
 # - Changelog of 1.0.2, https://www.openssl.org/news/cl102.txt
 #
+# Other dependencies
+#
+#	# Test
+#	yum install -y perl-Test-Most
+#
+#	# OpenSSL 3.0
+#	yum install -y perl-IPC-Cmd
+#
 PKG_NAME=openssl
 PKG_VERSION=1.1.1g
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
@@ -65,4 +73,11 @@ Two ways to use system cert store
 	rmdir $INSTALL_PREFIX/ssl/certs
 	ln -sf /etc/ssl/certs $INSTALL_PREFIX/ssl/certs
 "
+}
+
+ossl_test() {
+	cd "$PKG_BUILD_DIR"
+	# "${MAKEJ[@]}" test TESTS=test_evp
+	# "${MAKEJ[@]}" test TESTS=test_evp V=1
+	"${MAKEJ[@]}" test
 }
