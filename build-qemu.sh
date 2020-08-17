@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright 2015-2019 (c) Yousong Zhou
+# Copyright 2015-2020 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -48,10 +48,10 @@
 # - The QEMU build system architecture, docs/build-system.txt
 #
 PKG_NAME=qemu
-PKG_VERSION=5.0.0
+PKG_VERSION=5.1.0
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.xz"
 PKG_SOURCE_URL="https://download.qemu.org/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=ede6005d7143fe994dd089d31dc2cf6c
+PKG_SOURCE_MD5SUM=f3eb729786591f05a9ac5d8ab03b9269
 
 # Add slirp when we can build dynamic library
 PKG_DEPENDS="$PKG_DEPENDS bzip2 capstone curl dtc gnutls libjpeg-turbo libpng"
