@@ -12,10 +12,10 @@
 # 	ronn, ruby-conn, manpages
 #
 PKG_NAME=ocserv
-PKG_VERSION=0.12.1
+PKG_VERSION=1.1.0
 PKG_SOURCE="$PKG_NAME-${PKG_VERSION}.tar.xz"
 PKG_SOURCE_URL="ftp://ftp.infradead.org/pub/ocserv/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=050b0eebf911b595cc56ee104e2dbade
+PKG_SOURCE_MD5SUM=f80180689ec11a95315eeef89b3db48c
 PKG_DEPENDS='gnutls libnl3 libpcl libprotobuf-c lz4 pcl readline talloc zlib'
 
 . "$PWD/env.sh"
