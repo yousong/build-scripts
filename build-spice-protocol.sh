@@ -8,10 +8,10 @@
 # > headers defining protocols
 #
 PKG_NAME=spice-protocol
-PKG_VERSION=0.14.2
+PKG_VERSION=0.14.3
 PKG_SOURCE="$PKG_NAME-${PKG_VERSION}.tar.xz"
 PKG_SOURCE_URL="https://www.spice-space.org/download/releases/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=a8db4b8a02ed87074cba56967fcad6c8
+PKG_SOURCE_MD5SUM=950e08044497ca9cf64e368cb3ceb395
 PKG_MESON=1
 
 . "$PWD/env.sh"
