@@ -34,11 +34,15 @@
 #     sudo apt-get install uuid-runtime
 #     /usr/local/share/openvswitch/scripts/ovs-ctl force-reload-kmod --system-id=random
 #
+
+. "$PWD/utils-openvswitch.sh"
+
+PKG_VERSION="$PKG_openvswitch_VERSION"
+PKG_SOURCE="$PKG_openvswitch_SOURCE"
+PKG_SOURCE_URL="$PKG_openvswitch_SOURCE_URL"
+PKG_SOURCE_MD5SUM="$PKG_openvswitch_SOURCE_MD5SUM"
+
 PKG_NAME=openvswitch
-PKG_VERSION=2.14.0
-PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
-PKG_SOURCE_URL="http://openvswitch.org/releases/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=92e464f962c5ebbac73c58ad799fa9d9
 PKG_DEPENDS="libunwind openssl unbound"
 PKG_PLATFORM=linux
 
