@@ -19,10 +19,10 @@
 # 7.3 is the release version.
 # 547 is the number of applied patches provided by vim.org.
 PKG_NAME=vim
-PKG_VERSION=8.1.2333
+PKG_VERSION=8.2.1905
 PKG_SOURCE="vim-${PKG_VERSION}.tar.gz"
 PKG_SOURCE_URL="https://github.com/vim/vim/archive/v$PKG_VERSION.tar.gz"
-PKG_SOURCE_MD5SUM=d5d3eba1d923613077f74acc43c02b2a
+PKG_SOURCE_MD5SUM=414884acee334f006b0df328b5996177
 PKG_SOURCE_UNTAR_FIXUP=1
 PKG_DEPENDS='libiconv LuaJIT ncurses python2 python3'
 
