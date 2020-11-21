@@ -210,7 +210,6 @@ compile() {
 	_rpmbuild \
 		-bb \
 		--without debug \
-		--without debuginfo \
 		--without doc \
 		--without kabichk \
 		--without perf \
