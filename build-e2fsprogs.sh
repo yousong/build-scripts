@@ -9,6 +9,9 @@
 # But util-linux is linux-specific so that libuuid should better be provided by
 # e2fsprogs
 #
+# The other thing is that it also provides blkid utility and its usage is not
+# compatible with the one provided by util-linux
+#
 PKG_NAME=e2fsprogs
 PKG_VERSION=1.45.3
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.xz"
