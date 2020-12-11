@@ -159,6 +159,16 @@ MAKE_VARS+=(
 	V=s
 )
 
+staging_post() {
+	staging_post_default
+
+	local d="$PKG_STAGING_DIR$INSTALL_PREFIX/share/qemu"
+
+	find "$d" -maxdepth 1 -name 'edk2-*.fd' | xargs --no-run-if-empty chmod a-w
+	find "$d" -maxdepth 1 -name '*.rom' | xargs --no-run-if-empty chmod a-w
+	find "$d" -maxdepth 1 -name '*.bin' | xargs --no-run-if-empty chmod a-w
+}
+
 install_post() {
 	local helper="$INSTALL_PREFIX/libexec/qemu-bridge-helper"
 
