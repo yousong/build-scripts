@@ -48,10 +48,10 @@
 # - The QEMU build system architecture, docs/build-system.txt
 #
 PKG_NAME=qemu
-PKG_VERSION=5.1.0
+PKG_VERSION=5.2.0
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.xz"
 PKG_SOURCE_URL="https://download.qemu.org/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=f3eb729786591f05a9ac5d8ab03b9269
+PKG_SOURCE_MD5SUM=179f86928835da857c237b42f4b2df73
 
 # Add slirp when we can build dynamic library
 PKG_DEPENDS="$PKG_DEPENDS bzip2 capstone curl dtc gnutls libjpeg-turbo libpng"
@@ -136,6 +136,20 @@ if os_is_darwin; then
 	EXTRA_CFLAGS+=(
 		-D_DARWIN_C_SOURCE
 		-D_XOPEN_SOURCE=600
+	)
+else
+	# _GNU_SOURCE triggers define of _XOPEN_SOURCE_EXTENDED in
+	# /usr/include/features.h
+	#
+	# _XOPEN_SOURCE_EXTENDED is needed in curses.h to include WACS_DEGREE.
+	# NCURSES_WIDECHAR alone is not enough
+	#
+	# _GNU_SOURCE is used by qemu all over the code base anyway
+	EXTRA_CPPFLAGS+=(
+		-D_GNU_SOURCE
+	)
+	EXTRA_CFLAGS+=(
+		-D_GNU_SOURCE
 	)
 fi
 CONFIGURE_ARGS+=(
