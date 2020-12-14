@@ -15,3 +15,24 @@ PKG_SOURCE_MD5SUM=950e08044497ca9cf64e368cb3ceb395
 PKG_MESON=1
 
 . "$PWD/env.sh"
+
+do_patch() {
+	cd "$PKG_SOURCE_DIR"
+
+	patch -p1 <<"EOF"
+GCC 4.8.5 on CentOS 7 does not support this use of __attribute__((deprecated))
+on individual enumerator
+
+--- a/spice/enums.h.orig	2020-12-14 14:05:08.337987803 +0800
++++ b/spice/enums.h	2020-12-14 14:05:12.970983491 +0800
+@@ -377,7 +377,7 @@ typedef enum SpiceCursorFlags {
+ typedef enum SpiceAudioDataMode {
+     SPICE_AUDIO_DATA_MODE_INVALID,
+     SPICE_AUDIO_DATA_MODE_RAW,
+-    SPICE_AUDIO_DATA_MODE_CELT_0_5_1 SPICE_GNUC_DEPRECATED,
++    SPICE_AUDIO_DATA_MODE_CELT_0_5_1,
+     SPICE_AUDIO_DATA_MODE_OPUS,
+ 
+     SPICE_AUDIO_DATA_MODE_ENUM_END
+EOF
+}
