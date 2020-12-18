@@ -15,10 +15,10 @@
 #	it. https://gcc.gnu.org/bugzilla/show_bug.cgi?id=46158
 #
 PKG_NAME=python3
-PKG_VERSION=3.7.5
+PKG_VERSION=3.9.1
 PKG_SOURCE="Python-${PKG_VERSION}.tar.xz"
 PKG_SOURCE_URL="https://www.python.org/ftp/python/$PKG_VERSION/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=08ed8030b1183107c48f2092e79a87e2
+PKG_SOURCE_MD5SUM=61981498e75ac8f00adcb908281fadb6
 PKG_DEPENDS='bzip2 db openssl libffi ncurses readline sqlite zlib'
 
 . "$PWD/env.sh"
