@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright 2015-2019 (c) Yousong Zhou
+# Copyright 2015-2020 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -19,10 +19,10 @@
 # 7.3 is the release version.
 # 547 is the number of applied patches provided by vim.org.
 PKG_NAME=vim
-PKG_VERSION=8.2.1905
+PKG_VERSION=8.2.2154
 PKG_SOURCE="vim-${PKG_VERSION}.tar.gz"
 PKG_SOURCE_URL="https://github.com/vim/vim/archive/v$PKG_VERSION.tar.gz"
-PKG_SOURCE_MD5SUM=414884acee334f006b0df328b5996177
+PKG_SOURCE_MD5SUM=28e420dd1109fa56262163b84d342c73
 PKG_SOURCE_UNTAR_FIXUP=1
 PKG_DEPENDS='libiconv LuaJIT ncurses python2 python3'
 
