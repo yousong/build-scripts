@@ -9,10 +9,10 @@
 #   http://invisible-island.net/ncurses/ncurses.faq.html
 #
 PKG_NAME=ncurses
-PKG_VERSION=5.9
-PKG_SOURCE="ncurses-$PKG_VERSION.tar.gz"
+PKG_VERSION=6.2
+PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://ftp.gnu.org/gnu/ncurses/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=8cb9c412e5f2d96bc6f459aa8c6282a1
+PKG_SOURCE_MD5SUM=e812da327b1c2214ac1aed440ea3ae8d
 
 . "$PWD/env.sh"
 
