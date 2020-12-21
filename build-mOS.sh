@@ -66,7 +66,7 @@ mOS_compile_mOS_dpdk() {
 
 	mOS_compile_dpdk
 
-	args==( "${CONFIGURE_ARGS[@]}" )
+	args=( "${CONFIGURE_ARGS[@]}" )
 	CONFIGURE_ARGS+=(
 		--enable-dpdk
 	)
@@ -96,7 +96,7 @@ mOS_compile_dpdk() {
 }
 
 mOS_compile_mOS_pcap() {
-	args==( "${CONFIGURE_ARGS[@]}" )
+	args=( "${CONFIGURE_ARGS[@]}" )
 	CONFIGURE_ARGS+=(
 		--enable-pcap
 	)
