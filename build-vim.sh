@@ -24,7 +24,7 @@ PKG_SOURCE="vim-${PKG_VERSION}.tar.gz"
 PKG_SOURCE_URL="https://github.com/vim/vim/archive/v$PKG_VERSION.tar.gz"
 PKG_SOURCE_MD5SUM=28e420dd1109fa56262163b84d342c73
 PKG_SOURCE_UNTAR_FIXUP=1
-PKG_DEPENDS='libiconv LuaJIT ncurses python2 python3'
+PKG_DEPENDS='libiconv LuaJIT ncurses python3'
 
 . "$PWD/env.sh"
 
@@ -129,7 +129,6 @@ CONFIGURE_ARGS+=(
 	--enable-fail-if-missing
 	--enable-luainterp
 	--disable-perlinterp
-	--enable-pythoninterp
 	--enable-python3interp
 	--disable-rubyinterp
 	--enable-cscope
