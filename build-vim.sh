@@ -129,6 +129,7 @@ CONFIGURE_ARGS+=(
 	--enable-fail-if-missing
 	--enable-luainterp
 	--disable-perlinterp
+	--disable-pythoninterp
 	--enable-python3interp
 	--disable-rubyinterp
 	--enable-cscope
