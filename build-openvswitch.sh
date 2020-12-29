@@ -76,13 +76,14 @@ EOF
  %{?kversion:%define kernel %kversion}
  
  Name: openvswitch-kmod
-@@ -25,6 +25,9 @@ Version: 2.9.6
+@@ -25,6 +25,10 @@ Version: 2.9.6
  License: GPLv2
  Release: 1%{?dist}
  Source: openvswitch-%{version}.tar.gz
 +Patch0: compat-add-SCTP-netfilter-states-for-older-kernels.patch
 +Patch1: compat-Fix-ipv6_dst_lookup-build-error.patch
 +Patch2: compat-Backport-ipv6_stub-change.patch
++Patch3: ofproto-dpif-fix-xcache-mem-leak-in-nxt_resume.patch
  #Source1: openvswitch-init
  Buildroot: /tmp/openvswitch-xen-rpm
  
@@ -97,13 +98,14 @@ EOF
  %configure --with-linux=/lib/modules/%{kernel}/build --enable-ssl
 --- rhel/openvswitch-fedora.spec.orig	2019-12-02 09:03:49.824245387 +0000
 +++ rhel/openvswitch-fedora.spec	2019-12-02 09:04:03.224268244 +0000
-@@ -66,6 +66,9 @@ Version: 2.9.6
+@@ -66,6 +66,10 @@ Version: 2.9.6
  License: ASL 2.0 and LGPLv2+ and SISSL
  Release: 1%{?dist}
  Source: http://openvswitch.org/releases/%{name}-%{version}.tar.gz
 +Patch0: compat-add-SCTP-netfilter-states-for-older-kernels.patch
 +Patch1: compat-Fix-ipv6_dst_lookup-build-error.patch
 +Patch2: compat-Backport-ipv6_stub-change.patch
++Patch3: ofproto-dpif-fix-xcache-mem-leak-in-nxt_resume.patch
  
  BuildRequires: autoconf automake libtool
  BuildRequires: systemd-units openssl openssl-devel
@@ -456,6 +458,32 @@ index 47e148db8..69837fed3 100644
  
  	*saddr = fl6.saddr;
  	if (use_cache)
+EOF
+
+	cat >rhel/ofproto-dpif-fix-xcache-mem-leak-in-nxt_resume.patch <<"EOF"
+From 6e56458229d81aa48cc0c7e2f4d03af23733f0ba Mon Sep 17 00:00:00 2001
+From: Yousong Zhou <yszhou4tech@gmail.com>
+Date: Tue, 29 Dec 2020 12:04:27 +0800
+Subject: [PATCH] ofproto-dpif: fix xcache mem leak in nxt_resume
+
+Fixes: 72700fe0 ("ofproto-dpif: Fix NXT_RESUME flow stats")
+Signed-off-by: Yousong Zhou <yszhou4tech@gmail.com>
+---
+ ofproto/ofproto-dpif.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/ofproto/ofproto-dpif.c b/ofproto/ofproto-dpif.c
+index 6ad7b85fc..51fd0f463 100644
+--- a/ofproto/ofproto-dpif.c
++++ b/ofproto/ofproto-dpif.c
+@@ -5117,6 +5117,7 @@ nxt_resume(struct ofproto *ofproto_,
+     /* Clean up. */
+     ofpbuf_uninit(&odp_actions);
+     dp_packet_uninit(&packet);
++    xlate_cache_uninit(&xcache);
+ 
+     return error;
+ }
 EOF
 }
 
