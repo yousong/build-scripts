@@ -12,7 +12,7 @@ PKG_openvswitch_SOURCE_URL="http://openvswitch.org/releases/$PKG_openvswitch_SOU
 PKG_openvswitch_SOURCE_MD5SUM=92e464f962c5ebbac73c58ad799fa9d9
 
 PKG_ovn_NAME=ovn
-PKG_ovn_VERSION=20.09.0
+PKG_ovn_VERSION=20.12.0
 PKG_ovn_SOURCE="$PKG_ovn_NAME-$PKG_ovn_VERSION.tar.gz"
 PKG_ovn_SOURCE_URL="https://github.com/ovn-org/ovn/archive/v$PKG_ovn_VERSION.tar.gz"
-PKG_ovn_SOURCE_MD5SUM=f78015c39335d1f3b6b94ec222a5533c
+PKG_ovn_SOURCE_MD5SUM=84f0681f51ff579e6ac324603a760c41
