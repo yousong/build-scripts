@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright 2015-2020 (c) Yousong Zhou
+# Copyright 2015-2021 (c) Yousong Zhou
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -20,10 +20,10 @@
 #	go get golang.org/x/tools/cmd/godoc
 #
 PKG_NAME=go
-PKG_VERSION=1.15.6
+PKG_VERSION=1.16.3
 PKG_SOURCE="$PKG_NAME$PKG_VERSION.src.tar.gz"
 PKG_SOURCE_URL="https://storage.googleapis.com/golang/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=a7b153746baa6499264b48ca8f0a8038
+PKG_SOURCE_MD5SUM=48183a40d6522f1ea59b7d63377b7072
 PKG_DEPENDS=go1.4
 
 . "$PWD/env.sh"
