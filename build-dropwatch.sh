@@ -14,6 +14,9 @@ PKG_DEPENDS="libnl3 libpcap readline"
 do_patch() {
 	cd "$PKG_SOURCE_DIR"
 
+	# Upstream may not want to have patch anymore
+	#
+	# https://github.com/nhorman/dropwatch/commit/c18f3d25a94eb72145c663797794d2697a226594
 	patch -p0 <<"EOF"
 --- configure.ac.orig	2021-05-27 19:50:03.162948021 +0800
 +++ configure.ac	2021-05-27 19:53:15.409200896 +0800
