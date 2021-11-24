@@ -12,6 +12,25 @@
 #
 # - https://github.com/the-tcpdump-group/tcpdump/commit/9e6ba479d8cee861a396cae59d7cf91bd3a5a563
 #
+# len(100) is the packet length on the wire and caplen(116) is the portion
+# present in the capture.  It seems tcpdump 4.9 can write packets with snaplen
+# 16 bytes bigger than actual length.
+#
+# pcap format:
+#  - /usr/include/pcap/pcap.h
+#  - https://wiki.wireshark.org/Development/LibpcapFileFormat
+#
+# Integers in the pcap file will use native endianness and the endianness can
+# be inferred by check layout of the magic 0xa1b2c3d4
+#
+# 	pcap file header: 24 bytes
+# 	pcap packet header: 16 bytes: 4 sec, 4 usec, 4 caplen, 4 len
+# 	pcap packet data
+# 	pcap packet header: 16 bytes: 4 sec, 4 usec, 4 caplen, 4 len
+# 	pcap packet data
+# 	...
+#
+#
 PKG_NAME=tcpdump
 PKG_VERSION=4.9.3
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
