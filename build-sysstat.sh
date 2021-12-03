@@ -30,6 +30,9 @@ CONFIGURE_VARS+=(
 	sa_dir="$INSTALL_PREFIX/var/log/sa"
 )
 
+if [ -n "$o_build_static" ]; then
+	EXTRA_LDFLAGS+=( -static )
+fi
 MAKE_VARS+=(
-	LFLAGS="${EXTRA_LDFLAGS[*]} -static"
+	LFLAGS="${EXTRA_LDFLAGS[*]}"
 )
