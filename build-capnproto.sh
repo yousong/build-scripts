@@ -12,3 +12,15 @@ PKG_SOURCE_URL="https://capnproto.org/$PKG_SOURCE"
 PKG_SOURCE_MD5SUM=4e86cda4bd894c94b1ac96bf3c447b8e
 
 . "$PWD/env.sh"
+
+check() {
+	# Issue: https://github.com/capnproto/capnproto/issues/1398
+	#
+	# Run tests
+	#
+	#	./capnp-test --list | grep  AncillaryMessageHandler
+	#	./capnp-test --verbose --filter=kj/async-io-test.c++:307
+	#
+	cd "$PKG_BUILD_DIR"
+	"${MAKEJ[@]}" check
+}
