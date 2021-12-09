@@ -409,6 +409,14 @@ download_cmd_wget() {
 	wget -c -O "$output" "$url"
 }
 
+download_cmd_curl() {
+	local output="$1"; shift
+	local url="$1"; shift
+
+	curl --location --output "$output" "$url"
+}
+
+
 download_git() {
 	local name="$1"
 	local url="$2"
