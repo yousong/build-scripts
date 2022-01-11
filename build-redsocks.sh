@@ -21,6 +21,7 @@
 # 		| grep -E '^\s*local_port = ' \
 # 		| grep -oE '[0-9]+')"
 # 	iptables -t nat -A OUTPUT -p tcp -m owner --uid-owner $USER -j REDIRECT --to-ports 12345
+# 	iptables -t nat -A OUTPUT -d github.com -p tcp -j REDIRECT --to-ports 12345
 #
 PKG_NAME=redsocks
 PKG_VERSION=2019-07-16
