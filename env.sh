@@ -620,14 +620,15 @@ build_configure_meson() {
 		--prefix="$INSTALL_PREFIX"					\
 		--backend ninja							\
 		--buildtype release						\
-		--default-library shared					\
 		-Dc_args="$(meson_args_fmt "${EXTRA_CFLAGS[@]}")"		\
 		-Dc_link_args="$(meson_args_fmt "${EXTRA_LDFLAGS[@]}")"		\
 		-Dcpp_args="$(meson_args_fmt "${EXTRA_CXXFLAGS[@]}")"		\
 		-Dcpp_link_args="$(meson_args_fmt "${EXTRA_LDFLAGS[@]}")"	\
 		--strip								\
 		"$PKG_SOURCE_DIR/$PKG_MESON_BUILD_SUBDIR"			\
-		"$PKG_SOURCE_DIR/$PKG_MESON_SOURCE_SUBDIR"
+		"$PKG_SOURCE_DIR/$PKG_MESON_SOURCE_SUBDIR"			\
+		"${MESON_ARGS[@]}"						\
+
 }
 
 build_compile_make() {
@@ -669,6 +670,12 @@ autoconf_fixup() {
 
 configure_static_build_default() {
 	EXTRA_LDFLAGS+=(-static)
+	MESON_ARGS+=(
+		-Ddefault_library=both
+	)
+	CONFIGURE_ARGS+=(
+		--enable-static
+	)
 	export PKG_CONFIG="pkg-config --static"
 }
 
