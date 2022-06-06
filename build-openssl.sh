@@ -8,7 +8,9 @@
 # - Instructions of compilation and installation, https://wiki.openssl.org/index.php/Compilation_and_Installation
 # - Changelog of 1.0.2, https://www.openssl.org/news/cl102.txt
 #
-# Other dependencies
+# Dependencies
+#
+# 	yum install -y perl-FindBin
 #
 #	# Test
 #	yum install -y perl-Test-Most
