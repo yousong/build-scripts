@@ -13,3 +13,9 @@ PKG_SOURCE_MD5SUM=c45ee24ed7361dcda152a035d396fe8a
 PKG_DEPENDS=gmp
 
 . "$PWD/env.sh"
+
+configure_static_build() {
+	CONFIGURE_ARGS+=(
+		--enable-static
+	)
+}

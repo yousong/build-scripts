@@ -29,3 +29,9 @@ CONFIGURE_ARGS+=(
 	--disable-guile
 	--disable-silent-rules
 )
+
+configure_static_build() {
+	CONFIGURE_ARGS+=(
+		--enable-static
+	)
+}
