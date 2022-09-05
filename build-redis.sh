@@ -46,10 +46,10 @@
 # Ruby implementation of redis client
 #
 PKG_NAME=redis
-PKG_VERSION=5.0.5
+PKG_VERSION=5.0.14
 PKG_SOURCE="$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_SOURCE_URL="http://download.redis.io/releases/$PKG_SOURCE"
-PKG_SOURCE_MD5SUM=2d2c8142baf72e6543174fc7beccaaa1
+PKG_SOURCE_MD5SUM=406a4ddbdf0b60b4f288bf0c3cb06933
 
 . "$PWD/env.sh"
 
